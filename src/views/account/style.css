@@ -1,0 +1,16 @@
+.user-info {
+    padding-left: 50px;
+}
+.password-strength-high {
+    color: #03bd69;
+}
+.password-strength-midlle {
+    color: #e6a23b;
+}
+.password-strength-low {
+    color: #f56c6c;
+}
+.form-label {
+    font-weight: bold;
+    font-size: 14px;
+}

@@ -64,7 +64,7 @@
                             {{ $t('message.tableCommon.updateVersion') }}
                         </el-button>
                         <el-button size="large" text type="primary" @click="onDelete(scope.row)"
-                            :disabled="true">删除</el-button>
+                            :disabled="false">{{ $t('message.tableCommon.delete') }}</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -214,17 +214,30 @@ const onUpdate = (row: ListSensorReply_Details) => {
 }
 
 const onDelete = (row: ListSensorReply_Details) => {
-    const req: CmdSensorReq = {
-        iD: row.iD,
-        cmd: 'delete',
-    };
+    ElMessageBox.confirm(
+        t('message.dialog.singleSensitive'), // Using a generic sensitive delete message for now
+        t('message.dialog.prompt'),
+        {
+            confirmButtonText: t('message.dialog.confirm'),
+            cancelButtonText: t('message.dialog.cancel'),
+            type: 'warning',
+        }
+    ).then(() => {
+        const req: CmdSensorReq = {
+            iD: row.iD,
+            cmd: 'delete',
+        };
 
-    console.log('cmdSensor', req)
-    api.cmdSensor(req)
-    .then(resp => resp.response)
-    .then(data => alertResult(data.result, t('message.sysConfig.sensorConfig.deleteSucc'), t('message.sysConfig.sensorConfig.deleteFail')))
-    .catch(err => alertApiError(err))
-    .finally(() => refresh());
+        console.log('cmdSensor', req)
+        api.cmdSensor(req)
+            .then(resp => resp.response)
+            .then(data => alertResult(data.result, t('message.sysConfig.sensorConfig.deleteSucc'), t('message.sysConfig.sensorConfig.deleteFail')))
+            .catch(err => alertApiError(err))
+            .finally(() => refresh());
+    }).catch(() => {
+        // User clicked cancel or closed the dialog
+        console.log('Delete cancelled');
+    });
 }
 
 onMounted(() => {

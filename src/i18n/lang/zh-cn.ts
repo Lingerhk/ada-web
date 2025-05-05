@@ -883,8 +883,9 @@ export default {
 			ip: 'IP地址',
 			systemName: '系统名称',
 			uploadLogoFailFormat: '仅支持png格式',
-			updateCompanyIconSucc: '更新图标成功',
-			updateCompanyIconFail: '更新图标失败',
+			uploadLogoFailSize: '图片大小不能超过2MB',
+			updateProductIconSucc: '更新图标成功',
+			updateProductIconFail: '更新图标失败',
 		},
 		license: {
 			version: '产品版本',

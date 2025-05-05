@@ -880,9 +880,10 @@ export default {
 			companyWebsite: 'companyWebsite',
 			ip: 'ip',
 			systemName: 'systemName',
-			uploadLogoFailFormat: 'uploadLogoFailFormat',
-			updateCompanyIconSucc: 'updateCompanyIconSucc',
-			updateCompanyIconFail: 'updateCompanyIconFail',
+			uploadLogoFailFormat: 'upload Logo Faild: format error',
+			uploadLogoFailSize: 'upload Logo Faild: size > 2MB',
+			updateProductIconSucc: 'updateProductIconSucc',
+			updateProductIconFail: 'updateProductIconFail',
 		},
 		license: {
 			version: 'version',

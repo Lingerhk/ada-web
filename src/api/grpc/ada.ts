@@ -1149,9 +1149,9 @@ export interface GetSystemInfoReply {
      */
     companyWebsite: string; // 官网
     /**
-     * @generated from protobuf field: string companyIcon = 8;
+     * @generated from protobuf field: string productIcon = 8;
      */
-    companyIcon: string; // Logo
+    productIcon: string; // Logo
     /**
      * @generated from protobuf field: string systemVersion = 9;
      */
@@ -1208,32 +1208,32 @@ export interface GetSystemInfoReply {
     }; // 系统监控参数
 }
 /**
- * @generated from protobuf message ada.GetCompanyIconReq
+ * @generated from protobuf message ada.GetProductIconReq
  */
-export interface GetCompanyIconReq {
+export interface GetProductIconReq {
 }
 /**
- * @generated from protobuf message ada.GetCompanyIconReply
+ * @generated from protobuf message ada.GetProductIconReply
  */
-export interface GetCompanyIconReply {
+export interface GetProductIconReply {
     /**
      * @generated from protobuf field: string icon = 1;
      */
     icon: string;
 }
 /**
- * @generated from protobuf message ada.UpdateCompanyIconReq
+ * @generated from protobuf message ada.UpdateProductIconReq
  */
-export interface UpdateCompanyIconReq {
+export interface UpdateProductIconReq {
     /**
      * @generated from protobuf field: string file = 1;
      */
     file: string; // 将文件转为base64字符串传过来
 }
 /**
- * @generated from protobuf message ada.UpdateCompanyIconReply
+ * @generated from protobuf message ada.UpdateProductIconReply
  */
-export interface UpdateCompanyIconReply {
+export interface UpdateProductIconReply {
     /**
      * @generated from protobuf field: string result = 1;
      */
@@ -8249,7 +8249,7 @@ class GetSystemInfoReply$Type extends MessageType<GetSystemInfoReply> {
             { no: 5, name: "systemName", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 6, name: "companyName", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 7, name: "companyWebsite", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 8, name: "companyIcon", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 8, name: "productIcon", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 9, name: "systemVersion", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 10, name: "systemInstallTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 11, name: "systemUpgradeTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
@@ -8274,7 +8274,7 @@ class GetSystemInfoReply$Type extends MessageType<GetSystemInfoReply> {
         message.systemName = "";
         message.companyName = "";
         message.companyWebsite = "";
-        message.companyIcon = "";
+        message.productIcon = "";
         message.systemVersion = "";
         message.systemInstallTm = "";
         message.systemUpgradeTm = "";
@@ -8318,8 +8318,8 @@ class GetSystemInfoReply$Type extends MessageType<GetSystemInfoReply> {
                 case /* string companyWebsite */ 7:
                     message.companyWebsite = reader.string();
                     break;
-                case /* string companyIcon */ 8:
-                    message.companyIcon = reader.string();
+                case /* string productIcon */ 8:
+                    message.productIcon = reader.string();
                     break;
                 case /* string systemVersion */ 9:
                     message.systemVersion = reader.string();
@@ -8409,9 +8409,9 @@ class GetSystemInfoReply$Type extends MessageType<GetSystemInfoReply> {
         /* string companyWebsite = 7; */
         if (message.companyWebsite !== "")
             writer.tag(7, WireType.LengthDelimited).string(message.companyWebsite);
-        /* string companyIcon = 8; */
-        if (message.companyIcon !== "")
-            writer.tag(8, WireType.LengthDelimited).string(message.companyIcon);
+        /* string productIcon = 8; */
+        if (message.productIcon !== "")
+            writer.tag(8, WireType.LengthDelimited).string(message.productIcon);
         /* string systemVersion = 9; */
         if (message.systemVersion !== "")
             writer.tag(9, WireType.LengthDelimited).string(message.systemVersion);
@@ -8462,20 +8462,20 @@ class GetSystemInfoReply$Type extends MessageType<GetSystemInfoReply> {
  */
 export const GetSystemInfoReply = new GetSystemInfoReply$Type();
 // @generated message type with reflection information, may provide speed optimized methods
-class GetCompanyIconReq$Type extends MessageType<GetCompanyIconReq> {
+class GetProductIconReq$Type extends MessageType<GetProductIconReq> {
     constructor() {
-        super("ada.GetCompanyIconReq", []);
+        super("ada.GetProductIconReq", []);
     }
-    create(value?: PartialMessage<GetCompanyIconReq>): GetCompanyIconReq {
+    create(value?: PartialMessage<GetProductIconReq>): GetProductIconReq {
         const message = globalThis.Object.create((this.messagePrototype!));
         if (value !== undefined)
-            reflectionMergePartial<GetCompanyIconReq>(this, message, value);
+            reflectionMergePartial<GetProductIconReq>(this, message, value);
         return message;
     }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetCompanyIconReq): GetCompanyIconReq {
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetProductIconReq): GetProductIconReq {
         return target ?? this.create();
     }
-    internalBinaryWrite(message: GetCompanyIconReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+    internalBinaryWrite(message: GetProductIconReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -8483,24 +8483,24 @@ class GetCompanyIconReq$Type extends MessageType<GetCompanyIconReq> {
     }
 }
 /**
- * @generated MessageType for protobuf message ada.GetCompanyIconReq
+ * @generated MessageType for protobuf message ada.GetProductIconReq
  */
-export const GetCompanyIconReq = new GetCompanyIconReq$Type();
+export const GetProductIconReq = new GetProductIconReq$Type();
 // @generated message type with reflection information, may provide speed optimized methods
-class GetCompanyIconReply$Type extends MessageType<GetCompanyIconReply> {
+class GetProductIconReply$Type extends MessageType<GetProductIconReply> {
     constructor() {
-        super("ada.GetCompanyIconReply", [
+        super("ada.GetProductIconReply", [
             { no: 1, name: "icon", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
-    create(value?: PartialMessage<GetCompanyIconReply>): GetCompanyIconReply {
+    create(value?: PartialMessage<GetProductIconReply>): GetProductIconReply {
         const message = globalThis.Object.create((this.messagePrototype!));
         message.icon = "";
         if (value !== undefined)
-            reflectionMergePartial<GetCompanyIconReply>(this, message, value);
+            reflectionMergePartial<GetProductIconReply>(this, message, value);
         return message;
     }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetCompanyIconReply): GetCompanyIconReply {
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetProductIconReply): GetProductIconReply {
         let message = target ?? this.create(), end = reader.pos + length;
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
@@ -8519,7 +8519,7 @@ class GetCompanyIconReply$Type extends MessageType<GetCompanyIconReply> {
         }
         return message;
     }
-    internalBinaryWrite(message: GetCompanyIconReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+    internalBinaryWrite(message: GetProductIconReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
         /* string icon = 1; */
         if (message.icon !== "")
             writer.tag(1, WireType.LengthDelimited).string(message.icon);
@@ -8530,24 +8530,24 @@ class GetCompanyIconReply$Type extends MessageType<GetCompanyIconReply> {
     }
 }
 /**
- * @generated MessageType for protobuf message ada.GetCompanyIconReply
+ * @generated MessageType for protobuf message ada.GetProductIconReply
  */
-export const GetCompanyIconReply = new GetCompanyIconReply$Type();
+export const GetProductIconReply = new GetProductIconReply$Type();
 // @generated message type with reflection information, may provide speed optimized methods
-class UpdateCompanyIconReq$Type extends MessageType<UpdateCompanyIconReq> {
+class UpdateProductIconReq$Type extends MessageType<UpdateProductIconReq> {
     constructor() {
-        super("ada.UpdateCompanyIconReq", [
+        super("ada.UpdateProductIconReq", [
             { no: 1, name: "file", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
-    create(value?: PartialMessage<UpdateCompanyIconReq>): UpdateCompanyIconReq {
+    create(value?: PartialMessage<UpdateProductIconReq>): UpdateProductIconReq {
         const message = globalThis.Object.create((this.messagePrototype!));
         message.file = "";
         if (value !== undefined)
-            reflectionMergePartial<UpdateCompanyIconReq>(this, message, value);
+            reflectionMergePartial<UpdateProductIconReq>(this, message, value);
         return message;
     }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: UpdateCompanyIconReq): UpdateCompanyIconReq {
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: UpdateProductIconReq): UpdateProductIconReq {
         let message = target ?? this.create(), end = reader.pos + length;
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
@@ -8566,7 +8566,7 @@ class UpdateCompanyIconReq$Type extends MessageType<UpdateCompanyIconReq> {
         }
         return message;
     }
-    internalBinaryWrite(message: UpdateCompanyIconReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+    internalBinaryWrite(message: UpdateProductIconReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
         /* string file = 1; */
         if (message.file !== "")
             writer.tag(1, WireType.LengthDelimited).string(message.file);
@@ -8577,24 +8577,24 @@ class UpdateCompanyIconReq$Type extends MessageType<UpdateCompanyIconReq> {
     }
 }
 /**
- * @generated MessageType for protobuf message ada.UpdateCompanyIconReq
+ * @generated MessageType for protobuf message ada.UpdateProductIconReq
  */
-export const UpdateCompanyIconReq = new UpdateCompanyIconReq$Type();
+export const UpdateProductIconReq = new UpdateProductIconReq$Type();
 // @generated message type with reflection information, may provide speed optimized methods
-class UpdateCompanyIconReply$Type extends MessageType<UpdateCompanyIconReply> {
+class UpdateProductIconReply$Type extends MessageType<UpdateProductIconReply> {
     constructor() {
-        super("ada.UpdateCompanyIconReply", [
+        super("ada.UpdateProductIconReply", [
             { no: 1, name: "result", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
-    create(value?: PartialMessage<UpdateCompanyIconReply>): UpdateCompanyIconReply {
+    create(value?: PartialMessage<UpdateProductIconReply>): UpdateProductIconReply {
         const message = globalThis.Object.create((this.messagePrototype!));
         message.result = "";
         if (value !== undefined)
-            reflectionMergePartial<UpdateCompanyIconReply>(this, message, value);
+            reflectionMergePartial<UpdateProductIconReply>(this, message, value);
         return message;
     }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: UpdateCompanyIconReply): UpdateCompanyIconReply {
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: UpdateProductIconReply): UpdateProductIconReply {
         let message = target ?? this.create(), end = reader.pos + length;
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
@@ -8613,7 +8613,7 @@ class UpdateCompanyIconReply$Type extends MessageType<UpdateCompanyIconReply> {
         }
         return message;
     }
-    internalBinaryWrite(message: UpdateCompanyIconReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+    internalBinaryWrite(message: UpdateProductIconReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
         /* string result = 1; */
         if (message.result !== "")
             writer.tag(1, WireType.LengthDelimited).string(message.result);
@@ -8624,9 +8624,9 @@ class UpdateCompanyIconReply$Type extends MessageType<UpdateCompanyIconReply> {
     }
 }
 /**
- * @generated MessageType for protobuf message ada.UpdateCompanyIconReply
+ * @generated MessageType for protobuf message ada.UpdateProductIconReply
  */
-export const UpdateCompanyIconReply = new UpdateCompanyIconReply$Type();
+export const UpdateProductIconReply = new UpdateProductIconReply$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class UpdateNtpAddressReq$Type extends MessageType<UpdateNtpAddressReq> {
     constructor() {
@@ -20142,8 +20142,8 @@ export const ADA = new ServiceType("ada.ADA", [
     { name: "CmdSensor", options: {}, I: CmdSensorReq, O: CmdSensorReply },
     { name: "UpdateSensorVersion", options: {}, I: UpdateSensorVersionReq, O: UpdateSensorVersionReply },
     { name: "GetSystemInfo", options: {}, I: GetSystemInfoReq, O: GetSystemInfoReply },
-    { name: "GetCompanyIcon", options: {}, I: GetCompanyIconReq, O: GetCompanyIconReply },
-    { name: "UpdateCompanyIcon", options: {}, I: UpdateCompanyIconReq, O: UpdateCompanyIconReply },
+    { name: "GetProductIcon", options: {}, I: GetProductIconReq, O: GetProductIconReply },
+    { name: "UpdateProductIcon", options: {}, I: UpdateProductIconReq, O: UpdateProductIconReply },
     { name: "UpdateNtpAddress", options: {}, I: UpdateNtpAddressReq, O: UpdateNtpAddressReply },
     { name: "UpdateSystemLanguage", options: {}, I: UpdateSystemLanguageReq, O: UpdateSystemLanguageReply },
     { name: "GetSystemStats", options: {}, I: GetSystemStatsReq, O: GetSystemStatsReply },

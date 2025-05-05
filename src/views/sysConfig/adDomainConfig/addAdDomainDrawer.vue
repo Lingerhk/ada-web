@@ -33,7 +33,7 @@
                         <el-col :span="4">
                             <el-select v-model="state.data.port" :clearable="false" :disabled="state.ro">
                                 <el-option label="389" value="389"></el-option>
-                                <el-option label="1234" value="1234"></el-option>
+                                <el-option label="636" value="636"></el-option>
                             </el-select>
                         </el-col>
                     </el-row>

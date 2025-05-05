@@ -147,10 +147,10 @@ import type { UpdateSystemLanguageReply } from "./ada";
 import type { UpdateSystemLanguageReq } from "./ada";
 import type { UpdateNtpAddressReply } from "./ada";
 import type { UpdateNtpAddressReq } from "./ada";
-import type { UpdateCompanyIconReply } from "./ada";
-import type { UpdateCompanyIconReq } from "./ada";
-import type { GetCompanyIconReply } from "./ada";
-import type { GetCompanyIconReq } from "./ada";
+import type { UpdateProductIconReply } from "./ada";
+import type { UpdateProductIconReq } from "./ada";
+import type { GetProductIconReply } from "./ada";
+import type { GetProductIconReq } from "./ada";
 import type { GetSystemInfoReply } from "./ada";
 import type { GetSystemInfoReq } from "./ada";
 import type { UpdateSensorVersionReply } from "./ada";
@@ -328,13 +328,13 @@ export interface IADAClient {
      */
     getSystemInfo(input: GetSystemInfoReq, options?: RpcOptions): UnaryCall<GetSystemInfoReq, GetSystemInfoReply>;
     /**
-     * @generated from protobuf rpc: GetCompanyIcon(ada.GetCompanyIconReq) returns (ada.GetCompanyIconReply);
+     * @generated from protobuf rpc: GetProductIcon(ada.GetProductIconReq) returns (ada.GetProductIconReply);
      */
-    getCompanyIcon(input: GetCompanyIconReq, options?: RpcOptions): UnaryCall<GetCompanyIconReq, GetCompanyIconReply>;
+    getProductIcon(input: GetProductIconReq, options?: RpcOptions): UnaryCall<GetProductIconReq, GetProductIconReply>;
     /**
-     * @generated from protobuf rpc: UpdateCompanyIcon(ada.UpdateCompanyIconReq) returns (ada.UpdateCompanyIconReply);
+     * @generated from protobuf rpc: UpdateProductIcon(ada.UpdateProductIconReq) returns (ada.UpdateProductIconReply);
      */
-    updateCompanyIcon(input: UpdateCompanyIconReq, options?: RpcOptions): UnaryCall<UpdateCompanyIconReq, UpdateCompanyIconReply>;
+    updateProductIcon(input: UpdateProductIconReq, options?: RpcOptions): UnaryCall<UpdateProductIconReq, UpdateProductIconReply>;
     /**
      * @generated from protobuf rpc: UpdateNtpAddress(ada.UpdateNtpAddressReq) returns (ada.UpdateNtpAddressReply);
      */
@@ -845,18 +845,18 @@ export class ADAClient implements IADAClient, ServiceInfo {
         return stackIntercept<GetSystemInfoReq, GetSystemInfoReply>("unary", this._transport, method, opt, input);
     }
     /**
-     * @generated from protobuf rpc: GetCompanyIcon(ada.GetCompanyIconReq) returns (ada.GetCompanyIconReply);
+     * @generated from protobuf rpc: GetProductIcon(ada.GetProductIconReq) returns (ada.GetProductIconReply);
      */
-    getCompanyIcon(input: GetCompanyIconReq, options?: RpcOptions): UnaryCall<GetCompanyIconReq, GetCompanyIconReply> {
+    getProductIcon(input: GetProductIconReq, options?: RpcOptions): UnaryCall<GetProductIconReq, GetProductIconReply> {
         const method = this.methods[26], opt = this._transport.mergeOptions(options);
-        return stackIntercept<GetCompanyIconReq, GetCompanyIconReply>("unary", this._transport, method, opt, input);
+        return stackIntercept<GetProductIconReq, GetProductIconReply>("unary", this._transport, method, opt, input);
     }
     /**
-     * @generated from protobuf rpc: UpdateCompanyIcon(ada.UpdateCompanyIconReq) returns (ada.UpdateCompanyIconReply);
+     * @generated from protobuf rpc: UpdateProductIcon(ada.UpdateProductIconReq) returns (ada.UpdateProductIconReply);
      */
-    updateCompanyIcon(input: UpdateCompanyIconReq, options?: RpcOptions): UnaryCall<UpdateCompanyIconReq, UpdateCompanyIconReply> {
+    updateProductIcon(input: UpdateProductIconReq, options?: RpcOptions): UnaryCall<UpdateProductIconReq, UpdateProductIconReply> {
         const method = this.methods[27], opt = this._transport.mergeOptions(options);
-        return stackIntercept<UpdateCompanyIconReq, UpdateCompanyIconReply>("unary", this._transport, method, opt, input);
+        return stackIntercept<UpdateProductIconReq, UpdateProductIconReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: UpdateNtpAddress(ada.UpdateNtpAddressReq) returns (ada.UpdateNtpAddressReply);

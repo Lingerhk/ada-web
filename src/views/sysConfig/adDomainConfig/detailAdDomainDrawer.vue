@@ -91,7 +91,7 @@ const testDomain = () => {
     let req: TestDomainReq = {
         ldapAddr: `ldap://${state.data.dcHostname}.${state.data.name}`, //:${state.data.port}`,
         username: state.data.domainInfo.user,
-        password: '',
+        password: state.data.domainInfo.password,
         dNS: state.data.domainInfo.dns,
     };
 

@@ -71,12 +71,12 @@ const handleUpload = (options: any) => {
         return;
     }
 
-    api.updateCompanyIcon({
+    api.updateProductIcon({
         file: state.iconUpload
     })
     .then(resp => resp.response)
     .then(data => {
-        alertResult(data.result, t('message.system.basicInfo.updateCompanyIconSucc'), t('message.system.basicInfo.updateCompanyIconFail'))
+        alertResult(data.result, t('message.system.basicInfo.updateProductIconSucc'), t('message.system.basicInfo.updateProductIconFail'))
     })
     .catch(err => alertApiError(err))
     .finally(() => refreshIcon());
@@ -87,10 +87,10 @@ const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
         ElMessage.error(t('message.system.basicInfo.uploadLogoFailFormat'));
         return false
     }
-  // else if (rawFile.size / 1024 / 1024 > 2) {
-  //   ElMessage.error('Avatar picture size can not exceed 2MB!')
-  //   return false
-  // }
+    else if (rawFile.size / 1024 / 1024 > 2) {
+        ElMessage.error(t('message.system.basicInfo.uploadLogoFailSize'));
+        return false
+    }
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -98,7 +98,7 @@ const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
                 state.iconUpload = '';
                 resolve(false);
             } else {
-                state.iconUpload = e.target.result ?? state.icon;
+                state.iconUpload = e.target.result as string;
                 state.iconUpload = state.iconUpload.replace(/^data:.*?;base64,/, '');
                 console.log(state.iconUpload);
                 resolve(true);
@@ -118,7 +118,7 @@ const refreshInfo = () => {
 };
 
 const refreshIcon = () => {
-    api.getCompanyIcon({})
+    api.getProductIcon({})
     .then(resp => resp.response)
     .then(data => {
         if (!state.icon.startsWith('data:image/png;base64,')) {

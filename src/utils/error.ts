@@ -8,8 +8,8 @@ export function alertApiError(
     subfix: string = '',
 ) {
     const msg = decodeURIComponent(err.message);
-    // ElMessage.error(prefix + msg + subfix);
-    ElMessage.error(i18n.global.t('message.api.alertMessage'));
+    ElMessage.error(prefix + msg + subfix);
+    //ElMessage.error(i18n.global.t('message.api.alertMessage'));
     console.error(err.code, msg);
 };
 

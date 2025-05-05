@@ -23,9 +23,9 @@
             </div>
             <!-- entry table -->
             <el-row style="padding: 0 20px;">
-                <el-table v-if="state.data?.type !== 'weakpwd' ?? false" ref="tableRef"
+                <el-table v-if="state.data?.type !== 'weakpwd'" ref="tableRef"
                     :data="state.dataMore?.plugins.slice(state.pageIdx - 1, state.pageIdx - 1 + state.pageSize) ?? []"
-                    :border="true" row-class-name="pointer-cursor" row-key="iD" :expand-row-keys="state.expandedKeys">
+                    :border="true" row-class-name="pointer-cursor" row-key="ID" :expand-row-keys="state.expandedKeys">
                     <el-table-column v-for="key in state.keys" :prop="key"
                         :label="$t(`message.risk.ruleConfig.${state.data?.type}DetailTitle_${key}`)" :key="key">
                         <template #default="props">
@@ -66,7 +66,7 @@
             <!-- 分页 -->
             <el-row style="margin-top: 10px; padding: 0 20px;" justify="space-between">
                 <div></div>
-                <el-pagination v-if="state.data?.type !== 'weakpwd' ?? false" v-model:current-page="state.pageIdx"
+                <el-pagination v-if="state.data?.type !== 'weakpwd'" v-model:current-page="state.pageIdx"
                     v-model:page-size="state.pageSize" :page-sizes="[10, 20, 30, 40, 50]"
                     layout='sizes, prev, pager, next, jumper' :total="state.dataMore?.plugins.length ?? 0"
                     @size-change="(val: number) => state.pageSize = val"

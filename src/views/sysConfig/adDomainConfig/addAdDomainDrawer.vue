@@ -89,7 +89,7 @@
 
 import { reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { AddDomainReply, AddDomainReq, ListDomainReply_Details, UpdateDomainReply, UpdateDomainReq } from '/@/api/grpc/ada';
+import { AddDomainReply, AddDomainReq, ListDomainReply_Details, TestDomainReply, UpdateDomainReply, UpdateDomainReq } from '/@/api/grpc/ada';
 import { ElMessage, FormInstance, FormRules } from 'element-plus';
 import api from '/@/api/grpc';
 import { alertApiError, alertResult } from '/@/utils/error';
@@ -255,8 +255,12 @@ const testDomain = () => {
 
         api.testDomain(req)
             .then(resp => resp.response)
-            .then((data: AddDomainReply) => {
-                alertResult(data.result, t('message.adDomain.testSucc'), t('message.adDomain.testFail'));
+            .then((data: TestDomainReply) => {
+                if (data.status === 1) {
+                    ElMessage.success(t('message.adDomain.testSucc'));
+                } else {
+                    ElMessage.warning(data.msg);
+                }
             })
             .catch(err => alertApiError(err));
     });

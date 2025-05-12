@@ -27,6 +27,55 @@
                             }}</el-button>
                     </el-descriptions-item>
                 </el-descriptions>
+
+                <!-- DC List Table -->
+                <div style="margin-top: 20px;">
+                    <h3>{{ $t('message.adDomain.dcList') }}</h3>
+                    <el-table 
+                        :data="state.data.dCs || []" 
+                        style="width: 100%; margin-top: 10px;" 
+                        border
+                        table-layout="auto"
+                        :max-height="400">
+                        <el-table-column prop="hostname" :label="$t('message.adDomain.dcHostname')" min-width="120" fixed>
+                            <template #default="scope">
+                                <el-tooltip :content="scope.row.platform" placement="top">
+                                    <span>{{ scope.row.hostname }}</span>
+                                </el-tooltip>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="ips" :label="$t('message.adDomain.ip')" min-width="120"></el-table-column>
+                        <el-table-column prop="timeout" :label="$t('message.adDomain.timeout')" min-width="90"></el-table-column>
+                        <el-table-column prop="status" :label="$t('message.adDomain.status')" min-width="100">
+                            <template #default="scope">
+                                <el-tag :type="getStatusType(scope.row.status)">
+                                    {{ $t('message.adDomain.state.' + scope.row.status) }}
+                                    <el-tooltip v-if="scope.row.errMsg && scope.row.errMsg !== ''" :content="scope.row.errMsg" placement="top">
+                                        <el-icon class="error-icon"><QuestionFilled /></el-icon>
+                                    </el-tooltip>
+                                </el-tag>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="hasSensor" :label="$t('message.adDomain.hasSensor')" min-width="100" align="center">
+                            <template #default="scope">
+                                <el-icon v-if="scope.row.hasSensor" color="#67C23A"><Check /></el-icon>
+                                <el-icon v-else color="#F56C6C"><Close /></el-icon>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="isMaster" :label="$t('message.adDomain.isMaster')" min-width="100" align="center">
+                            <template #default="scope">
+                                <el-icon v-if="scope.row.isMaster" color="#67C23A"><Check /></el-icon>
+                                <el-icon v-else color="#F56C6C"><Close /></el-icon>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="fsmoRole" :label="$t('message.adDomain.fsmoRole')" min-width="180"></el-table-column>
+                        <el-table-column prop="lastOnlineTm" :label="$t('message.adDomain.lastOnlineTm')" min-width="180">
+                            <template #default="scope">
+                                {{ formatApiTime(scope.row.lastOnlineTm) }}
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
             </div>
         </template>
         <template #footer>
@@ -47,7 +96,7 @@ import api from '/@/api/grpc';
 import { alertApiError } from '/@/utils/error';
 import { formatApiTime } from '/@/utils/formatTime';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { listDchostNum } from '/@/api/grpc/method';
+import { QuestionFilled, Check, Close } from '@element-plus/icons-vue';
 
 const { t } = useI18n();
 
@@ -67,6 +116,20 @@ const state = reactive({
     dcHostNum: 1,
     onClose: null as OnCloseFunc | null,
 });
+
+// Function to determine el-tag type based on status
+const getStatusType = (status: string): 'success' | 'warning' | 'danger' => {
+    switch (status) {
+        case 'run':
+            return 'success';
+        case 'init':
+            return 'warning';
+        case 'error':
+        case 'stop':
+        default:
+            return 'danger';
+    }
+};
 
 const updateDomainData = () => {
     const req: UpdateDomainDataReq = {
@@ -131,7 +194,7 @@ const open = (row: ListDomainReply_Details, onClose: OnCloseFunc | null) => {
     state.data = row;
     state.onClose = onClose;
 
-    listDchostNum(row.name).then(num => state.dcHostNum = num).catch(err => {});
+    state.dcHostNum = row.dCs?.length || 0;
 }
 
 defineExpose({
@@ -159,6 +222,12 @@ defineExpose({
   margin-top: 0;
 }
 
+.error-icon {
+  margin-left: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  vertical-align: middle;
+}
 </style>
 
 

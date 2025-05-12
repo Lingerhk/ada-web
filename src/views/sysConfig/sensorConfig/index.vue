@@ -21,7 +21,7 @@
                 </el-form>
             </div>
             <el-table :data="state.data" v-loading="state.loading" style="width: 100%">
-                <el-table-column type="index" width="80px" />
+                <el-table-column type="index" :label="$t('message.tableCommon.index')" width="40px" />
                 <el-table-column prop="iP" :label="$t('message.sysConfig.sensorConfig.iP')"></el-table-column>
                 <el-table-column prop="domain" :label="$t('message.advancedSearch.domain')"></el-table-column>
                 <el-table-column prop="hostname" :label="$t('message.tableCommon.dcHostname')"></el-table-column>
@@ -46,7 +46,7 @@
                     </template>
                 </el-table-column>
                 
-                <el-table-column prop="bindNetIface" :label="$t('message.sysConfig.sensorConfig.bindNetIface')" :formatter="(row, __, value, ___) => value.map(idx => row.netIface[idx]).join(', ')"/>
+                <el-table-column prop="bindNetIface" :label="$t('message.sysConfig.sensorConfig.bindNetIface')" :formatter="(row: ListSensorReply_Details, _: any, value: string[], __: any) => value.map((idx: string) => row.netIface[idx]).join(', ')"/>
                 <el-table-column prop="lastOnlineTm" :label="$t('message.time.lastOnlineTm')">
                     <template #default="scope">
                         {{ formatApiTime(scope.row.lastOnlineTm) }}
@@ -56,13 +56,9 @@
                 <el-table-column :label="$t('message.tableCommon.operation')">
                     <template #default="scope">
                         <el-button size="large" text type="primary" @click="onEdit(scope.row)">{{
-                            $t('message.tableCommon.edit2') }}</el-button>
+                            $t('message.tableCommon.edit') }}</el-button>
                         <el-button size="large" text type="primary" @click="onDetail(scope.row)">{{
-                            $t('message.tableCommon.detailShort') }}</el-button>
-                        <el-button size="large" text type="primary" @click="onUpdate(scope.row)"
-                            :disabled="scope.row.version === scope.row.newVersion || scope.row.newVersion === ''">
-                            {{ $t('message.tableCommon.updateVersion') }}
-                        </el-button>
+                            $t('message.tableCommon.detail') }}</el-button>
                         <el-button size="large" text type="primary" @click="onDelete(scope.row)"
                             :disabled="false">{{ $t('message.tableCommon.delete') }}</el-button>
                     </template>
@@ -188,29 +184,11 @@ const handleConfirm = (title: string, row: ListSensorReply_Details, done: (row: 
 
 // 操作按钮
 const onDetail = (row: ListSensorReply_Details) => {
-    detailDrawerRef.value.open('传感器详情', row);
+    detailDrawerRef.value.open('传感器详情', row, refresh);
 }
 
 const onEdit = (row: ListSensorReply_Details) => {
     editDrawerRef.value.open('编辑域控传感器', row, refresh);
-}
-
-const onUpdate = (row: ListSensorReply_Details) => {
-    if (row.newVersion === "") {
-        return;
-    }
-
-    const req: UpdateSensorVersionReq = {
-        sensorId: row.iD,
-        version: row.newVersion,
-    };
-
-    api.updateSensorVersion(req)
-    .then(resp => resp.response)
-    .then(data => {
-        alertResult(data.result, t('message.sysConfig.sensorConfig.updateVersionSucc'), t('message.sysConfig.sensorConfig.updateVersionFail'))
-    })
-    .catch(err => alertApiError(err));
 }
 
 const onDelete = (row: ListSensorReply_Details) => {

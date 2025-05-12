@@ -56,22 +56,6 @@ export const listDchostOptions = async (): Promise<OptionType[]> => {
     return ret;
 };
 
-export const listDchostNum = (domain: string): Promise<number> => {
-    const req: ListDomainReq = {
-        pageIdx: 1,
-        pageSize: 50,
-        filterDomain: domain,
-        filterStatus: "",
-        filterKeyword: ""
-    };
-
-    return api.listDomain(req)
-    .then(response => response.response)
-	.then((data: ListDomainReply) => {
-        return data.list.length;
-	});
-};
-
 export const listActivityOptions = async (): Promise<OptionType[]> => {
     const req: GetActivityNamesReq = {
         dcHostname: [],

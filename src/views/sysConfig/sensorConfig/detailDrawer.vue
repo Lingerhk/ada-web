@@ -54,6 +54,15 @@
                         </span>
                         <span v-else style="font-size: 12px; color: #e6a23c; margin-left: 8px;">
                             ({{ $t('message.sysConfig.sensorConfig.canUpgrade') }})
+                            <el-button 
+                                type="primary" 
+                                size="small" 
+                                link 
+                                style="margin-left: 5px;" 
+                                @click="updateVersion"
+                                :disabled="!canUpdate">
+                                {{ $t('message.tableCommon.updateVersion') }}
+                            </el-button>
                         </span>
                     </span>
                 </el-descriptions-item>
@@ -73,29 +82,92 @@
                     }}</el-descriptions-item>
             </el-descriptions>
         </template>
+        <template #footer>
+            <div style="display: flex; justify-content: flex-end; margin-right: 20px;">
+                <el-button @click="state.open = false">{{ $t('message.tableCommon.close') }}</el-button>
+            </div>
+        </template>
     </el-drawer>
 </template>
 
 <script setup lang="ts">
 
-import { reactive } from 'vue';
-import { ListSensorReply_Details } from '/@/api/grpc/ada';
+import { reactive, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { ListSensorReply_Details, UpdateSensorVersionReply } from '/@/api/grpc/ada';
 import { formatApiTime } from '/@/utils/formatTime';
+import api from '/@/api/grpc';
+import { ElMessage, ElMessageBox } from 'element-plus';
+import { alertApiError } from '/@/utils/error';
+
+const { t } = useI18n();
+
+type OnUpdateFunc = () => void;
 
 const state = reactive({
     open: false,
     title: '',
     data: null as ListSensorReply_Details | null,
-})
+    onUpdate: null as OnUpdateFunc | null,
+});
 
-const open = (title: string, row: ListSensorReply_Details) => {
+const canUpdate = computed(() => {
+    if (!state.data) return false;
+    return state.data.version !== state.data.newVersion && state.data.newVersion !== '';
+});
+
+const updateVersion = () => {
+    if (!state.data) return;
+    
+    ElMessageBox.confirm(
+        t('message.sysConfig.sensorConfig.confirmUpdateVersion', [state.data.version, state.data.newVersion]),
+        t('message.dialog.prompt'),
+        {
+            confirmButtonText: t('message.dialog.confirm'),
+            cancelButtonText: t('message.dialog.cancel'),
+            type: 'warning',
+        }
+    ).then(() => {
+        api.updateSensorVersion({
+            sensorId: state.data!.iD,
+            version: state.data!.newVersion
+        })
+        .then(resp => resp.response)
+        .then((data: UpdateSensorVersionReply) => {
+            if (data.result === 'success') {
+                ElMessage.success(t('message.sysConfig.sensorConfig.updateVersionSucc'));
+                if (state.onUpdate) {
+                    state.onUpdate();
+                }
+                state.open = false;
+            } else {
+                ElMessage.warning(t('message.sysConfig.sensorConfig.updateVersionFail'));
+            }
+        })
+        .catch(err => alertApiError(err));
+    }).catch(() => {
+        // User cancelled
+        console.log('Version update cancelled');
+    });
+};
+
+const open = (title: string, row: ListSensorReply_Details, onUpdate?: OnUpdateFunc) => {
     state.open = true;
     state.title = title;
     state.data = row;
-    console.log(row);
+    state.onUpdate = onUpdate || null;
 }
 
 defineExpose({
     open,
-})
+});
 </script>
+
+<style scoped>
+.success-color {
+    color: #67c23a;
+}
+.failed-color {
+    color: #f56c6c;
+}
+</style>

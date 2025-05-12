@@ -615,6 +615,51 @@ export interface ListDomainReply {
     exhausted: boolean; // if this is last page
 }
 /**
+ * @generated from protobuf message ada.ListDomainReply.dcList
+ */
+export interface ListDomainReply_dcList {
+    /**
+     * @generated from protobuf field: string hostname = 1;
+     */
+    hostname: string;
+    /**
+     * @generated from protobuf field: string platform = 2;
+     */
+    platform: string;
+    /**
+     * @generated from protobuf field: string ips = 3;
+     */
+    ips: string;
+    /**
+     * @generated from protobuf field: string timeout = 4;
+     */
+    timeout: string;
+    /**
+     * @generated from protobuf field: string status = 5;
+     */
+    status: string;
+    /**
+     * @generated from protobuf field: bool hasSensor = 6;
+     */
+    hasSensor: boolean;
+    /**
+     * @generated from protobuf field: bool isMaster = 7;
+     */
+    isMaster: boolean;
+    /**
+     * @generated from protobuf field: string fsmoRole = 8;
+     */
+    fsmoRole: string;
+    /**
+     * @generated from protobuf field: string errMsg = 9;
+     */
+    errMsg: string;
+    /**
+     * @generated from protobuf field: string lastOnlineTm = 10;
+     */
+    lastOnlineTm: string;
+}
+/**
  * @generated from protobuf message ada.ListDomainReply.Details
  */
 export interface ListDomainReply_Details {
@@ -648,6 +693,10 @@ export interface ListDomainReply_Details {
      * @generated from protobuf field: string errMsg = 7;
      */
     errMsg: string;
+    /**
+     * @generated from protobuf field: repeated ada.ListDomainReply.dcList DCs = 8 [json_name = "DCs"];
+     */
+    dCs: ListDomainReply_dcList[];
 }
 /**
  * @generated from protobuf message ada.AddDomainReq
@@ -6494,6 +6543,125 @@ class ListDomainReply$Type extends MessageType<ListDomainReply> {
  */
 export const ListDomainReply = new ListDomainReply$Type();
 // @generated message type with reflection information, may provide speed optimized methods
+class ListDomainReply_dcList$Type extends MessageType<ListDomainReply_dcList> {
+    constructor() {
+        super("ada.ListDomainReply.dcList", [
+            { no: 1, name: "hostname", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "platform", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "ips", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "timeout", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 5, name: "status", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 6, name: "hasSensor", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 7, name: "isMaster", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 8, name: "fsmoRole", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 9, name: "errMsg", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 10, name: "lastOnlineTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<ListDomainReply_dcList>): ListDomainReply_dcList {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.hostname = "";
+        message.platform = "";
+        message.ips = "";
+        message.timeout = "";
+        message.status = "";
+        message.hasSensor = false;
+        message.isMaster = false;
+        message.fsmoRole = "";
+        message.errMsg = "";
+        message.lastOnlineTm = "";
+        if (value !== undefined)
+            reflectionMergePartial<ListDomainReply_dcList>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ListDomainReply_dcList): ListDomainReply_dcList {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string hostname */ 1:
+                    message.hostname = reader.string();
+                    break;
+                case /* string platform */ 2:
+                    message.platform = reader.string();
+                    break;
+                case /* string ips */ 3:
+                    message.ips = reader.string();
+                    break;
+                case /* string timeout */ 4:
+                    message.timeout = reader.string();
+                    break;
+                case /* string status */ 5:
+                    message.status = reader.string();
+                    break;
+                case /* bool hasSensor */ 6:
+                    message.hasSensor = reader.bool();
+                    break;
+                case /* bool isMaster */ 7:
+                    message.isMaster = reader.bool();
+                    break;
+                case /* string fsmoRole */ 8:
+                    message.fsmoRole = reader.string();
+                    break;
+                case /* string errMsg */ 9:
+                    message.errMsg = reader.string();
+                    break;
+                case /* string lastOnlineTm */ 10:
+                    message.lastOnlineTm = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: ListDomainReply_dcList, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string hostname = 1; */
+        if (message.hostname !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.hostname);
+        /* string platform = 2; */
+        if (message.platform !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.platform);
+        /* string ips = 3; */
+        if (message.ips !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.ips);
+        /* string timeout = 4; */
+        if (message.timeout !== "")
+            writer.tag(4, WireType.LengthDelimited).string(message.timeout);
+        /* string status = 5; */
+        if (message.status !== "")
+            writer.tag(5, WireType.LengthDelimited).string(message.status);
+        /* bool hasSensor = 6; */
+        if (message.hasSensor !== false)
+            writer.tag(6, WireType.Varint).bool(message.hasSensor);
+        /* bool isMaster = 7; */
+        if (message.isMaster !== false)
+            writer.tag(7, WireType.Varint).bool(message.isMaster);
+        /* string fsmoRole = 8; */
+        if (message.fsmoRole !== "")
+            writer.tag(8, WireType.LengthDelimited).string(message.fsmoRole);
+        /* string errMsg = 9; */
+        if (message.errMsg !== "")
+            writer.tag(9, WireType.LengthDelimited).string(message.errMsg);
+        /* string lastOnlineTm = 10; */
+        if (message.lastOnlineTm !== "")
+            writer.tag(10, WireType.LengthDelimited).string(message.lastOnlineTm);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.ListDomainReply.dcList
+ */
+export const ListDomainReply_dcList = new ListDomainReply_dcList$Type();
+// @generated message type with reflection information, may provide speed optimized methods
 class ListDomainReply_Details$Type extends MessageType<ListDomainReply_Details> {
     constructor() {
         super("ada.ListDomainReply.Details", [
@@ -6503,7 +6671,8 @@ class ListDomainReply_Details$Type extends MessageType<ListDomainReply_Details> 
             { no: 4, name: "status", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 5, name: "domainInfo", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 9 /*ScalarType.STRING*/ } },
             { no: 6, name: "createTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 7, name: "errMsg", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 7, name: "errMsg", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 8, name: "DCs", kind: "message", jsonName: "DCs", repeat: 1 /*RepeatType.PACKED*/, T: () => ListDomainReply_dcList }
         ]);
     }
     create(value?: PartialMessage<ListDomainReply_Details>): ListDomainReply_Details {
@@ -6515,6 +6684,7 @@ class ListDomainReply_Details$Type extends MessageType<ListDomainReply_Details> 
         message.domainInfo = {};
         message.createTm = "";
         message.errMsg = "";
+        message.dCs = [];
         if (value !== undefined)
             reflectionMergePartial<ListDomainReply_Details>(this, message, value);
         return message;
@@ -6544,6 +6714,9 @@ class ListDomainReply_Details$Type extends MessageType<ListDomainReply_Details> 
                     break;
                 case /* string errMsg */ 7:
                     message.errMsg = reader.string();
+                    break;
+                case /* repeated ada.ListDomainReply.dcList DCs = 8 [json_name = "DCs"];*/ 8:
+                    message.dCs.push(ListDomainReply_dcList.internalBinaryRead(reader, reader.uint32(), options));
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -6594,6 +6767,9 @@ class ListDomainReply_Details$Type extends MessageType<ListDomainReply_Details> 
         /* string errMsg = 7; */
         if (message.errMsg !== "")
             writer.tag(7, WireType.LengthDelimited).string(message.errMsg);
+        /* repeated ada.ListDomainReply.dcList DCs = 8 [json_name = "DCs"]; */
+        for (let i = 0; i < message.dCs.length; i++)
+            ListDomainReply_dcList.internalBinaryWrite(message.dCs[i], writer.tag(8, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

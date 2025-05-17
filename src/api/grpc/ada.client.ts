@@ -163,6 +163,8 @@ import type { UpdateSensorReply } from "./ada";
 import type { UpdateSensorReq } from "./ada";
 import type { ListSensorReply } from "./ada";
 import type { ListSensorReq } from "./ada";
+import type { DeploySensorReply } from "./ada";
+import type { DeploySensorReq } from "./ada";
 import type { UpdateDomainDataReply } from "./ada";
 import type { UpdateDomainDataReq } from "./ada";
 import type { DeleteDomainReply } from "./ada";
@@ -298,6 +300,10 @@ export interface IADAClient {
      * @generated from protobuf rpc: UpdateDomainData(ada.UpdateDomainDataReq) returns (ada.UpdateDomainDataReply);
      */
     updateDomainData(input: UpdateDomainDataReq, options?: RpcOptions): UnaryCall<UpdateDomainDataReq, UpdateDomainDataReply>;
+    /**
+     * @generated from protobuf rpc: DeploySensor(ada.DeploySensorReq) returns (ada.DeploySensorReply);
+     */
+    deploySensor(input: DeploySensorReq, options?: RpcOptions): UnaryCall<DeploySensorReq, DeploySensorReply>;
     /**
      * sensor
      *
@@ -798,40 +804,47 @@ export class ADAClient implements IADAClient, ServiceInfo {
         return stackIntercept<UpdateDomainDataReq, UpdateDomainDataReply>("unary", this._transport, method, opt, input);
     }
     /**
+     * @generated from protobuf rpc: DeploySensor(ada.DeploySensorReq) returns (ada.DeploySensorReply);
+     */
+    deploySensor(input: DeploySensorReq, options?: RpcOptions): UnaryCall<DeploySensorReq, DeploySensorReply> {
+        const method = this.methods[20], opt = this._transport.mergeOptions(options);
+        return stackIntercept<DeploySensorReq, DeploySensorReply>("unary", this._transport, method, opt, input);
+    }
+    /**
      * sensor
      *
      * @generated from protobuf rpc: ListSensor(ada.ListSensorReq) returns (ada.ListSensorReply);
      */
     listSensor(input: ListSensorReq, options?: RpcOptions): UnaryCall<ListSensorReq, ListSensorReply> {
-        const method = this.methods[20], opt = this._transport.mergeOptions(options);
+        const method = this.methods[21], opt = this._transport.mergeOptions(options);
         return stackIntercept<ListSensorReq, ListSensorReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: UpdateSensor(ada.UpdateSensorReq) returns (ada.UpdateSensorReply);
      */
     updateSensor(input: UpdateSensorReq, options?: RpcOptions): UnaryCall<UpdateSensorReq, UpdateSensorReply> {
-        const method = this.methods[21], opt = this._transport.mergeOptions(options);
+        const method = this.methods[22], opt = this._transport.mergeOptions(options);
         return stackIntercept<UpdateSensorReq, UpdateSensorReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: DownloadSensor(ada.DownloadSensorReq) returns (ada.DownloadSensorReply);
      */
     downloadSensor(input: DownloadSensorReq, options?: RpcOptions): UnaryCall<DownloadSensorReq, DownloadSensorReply> {
-        const method = this.methods[22], opt = this._transport.mergeOptions(options);
+        const method = this.methods[23], opt = this._transport.mergeOptions(options);
         return stackIntercept<DownloadSensorReq, DownloadSensorReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: CmdSensor(ada.CmdSensorReq) returns (ada.CmdSensorReply);
      */
     cmdSensor(input: CmdSensorReq, options?: RpcOptions): UnaryCall<CmdSensorReq, CmdSensorReply> {
-        const method = this.methods[23], opt = this._transport.mergeOptions(options);
+        const method = this.methods[24], opt = this._transport.mergeOptions(options);
         return stackIntercept<CmdSensorReq, CmdSensorReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: UpdateSensorVersion(ada.UpdateSensorVersionReq) returns (ada.UpdateSensorVersionReply);
      */
     updateSensorVersion(input: UpdateSensorVersionReq, options?: RpcOptions): UnaryCall<UpdateSensorVersionReq, UpdateSensorVersionReply> {
-        const method = this.methods[24], opt = this._transport.mergeOptions(options);
+        const method = this.methods[25], opt = this._transport.mergeOptions(options);
         return stackIntercept<UpdateSensorVersionReq, UpdateSensorVersionReply>("unary", this._transport, method, opt, input);
     }
     /**
@@ -841,35 +854,35 @@ export class ADAClient implements IADAClient, ServiceInfo {
      * @generated from protobuf rpc: GetSystemInfo(ada.GetSystemInfoReq) returns (ada.GetSystemInfoReply);
      */
     getSystemInfo(input: GetSystemInfoReq, options?: RpcOptions): UnaryCall<GetSystemInfoReq, GetSystemInfoReply> {
-        const method = this.methods[25], opt = this._transport.mergeOptions(options);
+        const method = this.methods[26], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetSystemInfoReq, GetSystemInfoReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: GetProductIcon(ada.GetProductIconReq) returns (ada.GetProductIconReply);
      */
     getProductIcon(input: GetProductIconReq, options?: RpcOptions): UnaryCall<GetProductIconReq, GetProductIconReply> {
-        const method = this.methods[26], opt = this._transport.mergeOptions(options);
+        const method = this.methods[27], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetProductIconReq, GetProductIconReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: UpdateProductIcon(ada.UpdateProductIconReq) returns (ada.UpdateProductIconReply);
      */
     updateProductIcon(input: UpdateProductIconReq, options?: RpcOptions): UnaryCall<UpdateProductIconReq, UpdateProductIconReply> {
-        const method = this.methods[27], opt = this._transport.mergeOptions(options);
+        const method = this.methods[28], opt = this._transport.mergeOptions(options);
         return stackIntercept<UpdateProductIconReq, UpdateProductIconReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: UpdateNtpAddress(ada.UpdateNtpAddressReq) returns (ada.UpdateNtpAddressReply);
      */
     updateNtpAddress(input: UpdateNtpAddressReq, options?: RpcOptions): UnaryCall<UpdateNtpAddressReq, UpdateNtpAddressReply> {
-        const method = this.methods[28], opt = this._transport.mergeOptions(options);
+        const method = this.methods[29], opt = this._transport.mergeOptions(options);
         return stackIntercept<UpdateNtpAddressReq, UpdateNtpAddressReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: UpdateSystemLanguage(ada.UpdateSystemLanguageReq) returns (ada.UpdateSystemLanguageReply);
      */
     updateSystemLanguage(input: UpdateSystemLanguageReq, options?: RpcOptions): UnaryCall<UpdateSystemLanguageReq, UpdateSystemLanguageReply> {
-        const method = this.methods[29], opt = this._transport.mergeOptions(options);
+        const method = this.methods[30], opt = this._transport.mergeOptions(options);
         return stackIntercept<UpdateSystemLanguageReq, UpdateSystemLanguageReply>("unary", this._transport, method, opt, input);
     }
     /**
@@ -878,14 +891,14 @@ export class ADAClient implements IADAClient, ServiceInfo {
      * @generated from protobuf rpc: GetSystemStats(ada.GetSystemStatsReq) returns (ada.GetSystemStatsReply);
      */
     getSystemStats(input: GetSystemStatsReq, options?: RpcOptions): UnaryCall<GetSystemStatsReq, GetSystemStatsReply> {
-        const method = this.methods[30], opt = this._transport.mergeOptions(options);
+        const method = this.methods[31], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetSystemStatsReq, GetSystemStatsReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: SetSystemStatsCfg(ada.SetSystemStatsCfgReq) returns (ada.SetSystemStatsCfgReply);
      */
     setSystemStatsCfg(input: SetSystemStatsCfgReq, options?: RpcOptions): UnaryCall<SetSystemStatsCfgReq, SetSystemStatsCfgReply> {
-        const method = this.methods[31], opt = this._transport.mergeOptions(options);
+        const method = this.methods[32], opt = this._transport.mergeOptions(options);
         return stackIntercept<SetSystemStatsCfgReq, SetSystemStatsCfgReply>("unary", this._transport, method, opt, input);
     }
     /**
@@ -894,14 +907,14 @@ export class ADAClient implements IADAClient, ServiceInfo {
      * @generated from protobuf rpc: GetLicense(ada.GetLicenseReq) returns (ada.GetLicenseReply);
      */
     getLicense(input: GetLicenseReq, options?: RpcOptions): UnaryCall<GetLicenseReq, GetLicenseReply> {
-        const method = this.methods[32], opt = this._transport.mergeOptions(options);
+        const method = this.methods[33], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetLicenseReq, GetLicenseReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: UpdateLicense(ada.UpdateLicenseReq) returns (ada.UpdateLicenseReply);
      */
     updateLicense(input: UpdateLicenseReq, options?: RpcOptions): UnaryCall<UpdateLicenseReq, UpdateLicenseReply> {
-        const method = this.methods[33], opt = this._transport.mergeOptions(options);
+        const method = this.methods[34], opt = this._transport.mergeOptions(options);
         return stackIntercept<UpdateLicenseReq, UpdateLicenseReply>("unary", this._transport, method, opt, input);
     }
     /**
@@ -910,7 +923,7 @@ export class ADAClient implements IADAClient, ServiceInfo {
      * @generated from protobuf rpc: NetworkDebug(ada.NetworkDebugReq) returns (ada.NetworkDebugReply);
      */
     networkDebug(input: NetworkDebugReq, options?: RpcOptions): UnaryCall<NetworkDebugReq, NetworkDebugReply> {
-        const method = this.methods[34], opt = this._transport.mergeOptions(options);
+        const method = this.methods[35], opt = this._transport.mergeOptions(options);
         return stackIntercept<NetworkDebugReq, NetworkDebugReply>("unary", this._transport, method, opt, input);
     }
     /**
@@ -919,28 +932,28 @@ export class ADAClient implements IADAClient, ServiceInfo {
      * @generated from protobuf rpc: ListNotifyConf(ada.ListNotifyConfReq) returns (ada.ListNotifyConfReply);
      */
     listNotifyConf(input: ListNotifyConfReq, options?: RpcOptions): UnaryCall<ListNotifyConfReq, ListNotifyConfReply> {
-        const method = this.methods[35], opt = this._transport.mergeOptions(options);
+        const method = this.methods[36], opt = this._transport.mergeOptions(options);
         return stackIntercept<ListNotifyConfReq, ListNotifyConfReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: UpdateNotifyConf(ada.UpdateNotifyConfReq) returns (ada.UpdateNotifyConfReply);
      */
     updateNotifyConf(input: UpdateNotifyConfReq, options?: RpcOptions): UnaryCall<UpdateNotifyConfReq, UpdateNotifyConfReply> {
-        const method = this.methods[36], opt = this._transport.mergeOptions(options);
+        const method = this.methods[37], opt = this._transport.mergeOptions(options);
         return stackIntercept<UpdateNotifyConfReq, UpdateNotifyConfReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: EnableNotifyConf(ada.EnableNotifyConfReq) returns (ada.EnableNotifyConfReply);
      */
     enableNotifyConf(input: EnableNotifyConfReq, options?: RpcOptions): UnaryCall<EnableNotifyConfReq, EnableNotifyConfReply> {
-        const method = this.methods[37], opt = this._transport.mergeOptions(options);
+        const method = this.methods[38], opt = this._transport.mergeOptions(options);
         return stackIntercept<EnableNotifyConfReq, EnableNotifyConfReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: TestNotifyConf(ada.TestNotifyConfReq) returns (ada.TestNotifyConfReply);
      */
     testNotifyConf(input: TestNotifyConfReq, options?: RpcOptions): UnaryCall<TestNotifyConfReq, TestNotifyConfReply> {
-        const method = this.methods[38], opt = this._transport.mergeOptions(options);
+        const method = this.methods[39], opt = this._transport.mergeOptions(options);
         return stackIntercept<TestNotifyConfReq, TestNotifyConfReply>("unary", this._transport, method, opt, input);
     }
     /**
@@ -949,21 +962,21 @@ export class ADAClient implements IADAClient, ServiceInfo {
      * @generated from protobuf rpc: ListExportTask(ada.ListExportTaskReq) returns (ada.ListExportTaskReply);
      */
     listExportTask(input: ListExportTaskReq, options?: RpcOptions): UnaryCall<ListExportTaskReq, ListExportTaskReply> {
-        const method = this.methods[39], opt = this._transport.mergeOptions(options);
+        const method = this.methods[40], opt = this._transport.mergeOptions(options);
         return stackIntercept<ListExportTaskReq, ListExportTaskReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: AddExportTask(ada.AddExportTaskReq) returns (ada.AddExportTaskReply);
      */
     addExportTask(input: AddExportTaskReq, options?: RpcOptions): UnaryCall<AddExportTaskReq, AddExportTaskReply> {
-        const method = this.methods[40], opt = this._transport.mergeOptions(options);
+        const method = this.methods[41], opt = this._transport.mergeOptions(options);
         return stackIntercept<AddExportTaskReq, AddExportTaskReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: DeleteExportTask(ada.DeleteExportTaskReq) returns (ada.DeleteExportTaskReply);
      */
     deleteExportTask(input: DeleteExportTaskReq, options?: RpcOptions): UnaryCall<DeleteExportTaskReq, DeleteExportTaskReply> {
-        const method = this.methods[41], opt = this._transport.mergeOptions(options);
+        const method = this.methods[42], opt = this._transport.mergeOptions(options);
         return stackIntercept<DeleteExportTaskReq, DeleteExportTaskReply>("unary", this._transport, method, opt, input);
     }
     /**
@@ -972,21 +985,21 @@ export class ADAClient implements IADAClient, ServiceInfo {
      * @generated from protobuf rpc: ListNotify(ada.ListNotifyReq) returns (ada.ListNotifyReply);
      */
     listNotify(input: ListNotifyReq, options?: RpcOptions): UnaryCall<ListNotifyReq, ListNotifyReply> {
-        const method = this.methods[42], opt = this._transport.mergeOptions(options);
+        const method = this.methods[43], opt = this._transport.mergeOptions(options);
         return stackIntercept<ListNotifyReq, ListNotifyReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: UpdateNotify(ada.UpdateNotifyReq) returns (ada.UpdateNotifyReply);
      */
     updateNotify(input: UpdateNotifyReq, options?: RpcOptions): UnaryCall<UpdateNotifyReq, UpdateNotifyReply> {
-        const method = this.methods[43], opt = this._transport.mergeOptions(options);
+        const method = this.methods[44], opt = this._transport.mergeOptions(options);
         return stackIntercept<UpdateNotifyReq, UpdateNotifyReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: StatsNotify(ada.StatsNotifyReq) returns (ada.StatsNotifyReply);
      */
     statsNotify(input: StatsNotifyReq, options?: RpcOptions): UnaryCall<StatsNotifyReq, StatsNotifyReply> {
-        const method = this.methods[44], opt = this._transport.mergeOptions(options);
+        const method = this.methods[45], opt = this._transport.mergeOptions(options);
         return stackIntercept<StatsNotifyReq, StatsNotifyReply>("unary", this._transport, method, opt, input);
     }
     /**
@@ -995,7 +1008,7 @@ export class ADAClient implements IADAClient, ServiceInfo {
      * @generated from protobuf rpc: ListAuditLog(ada.ListAuditLogReq) returns (ada.ListAuditLogReply);
      */
     listAuditLog(input: ListAuditLogReq, options?: RpcOptions): UnaryCall<ListAuditLogReq, ListAuditLogReply> {
-        const method = this.methods[45], opt = this._transport.mergeOptions(options);
+        const method = this.methods[46], opt = this._transport.mergeOptions(options);
         return stackIntercept<ListAuditLogReq, ListAuditLogReply>("unary", this._transport, method, opt, input);
     }
     /**
@@ -1005,14 +1018,14 @@ export class ADAClient implements IADAClient, ServiceInfo {
      * @generated from protobuf rpc: ThreatTops(ada.ThreatTopsReq) returns (ada.ThreatTopsReply);
      */
     threatTops(input: ThreatTopsReq, options?: RpcOptions): UnaryCall<ThreatTopsReq, ThreatTopsReply> {
-        const method = this.methods[46], opt = this._transport.mergeOptions(options);
+        const method = this.methods[47], opt = this._transport.mergeOptions(options);
         return stackIntercept<ThreatTopsReq, ThreatTopsReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: ThreatTrends(ada.ThreatTrendsReq) returns (ada.ThreatTrendsReply);
      */
     threatTrends(input: ThreatTrendsReq, options?: RpcOptions): UnaryCall<ThreatTrendsReq, ThreatTrendsReply> {
-        const method = this.methods[47], opt = this._transport.mergeOptions(options);
+        const method = this.methods[48], opt = this._transport.mergeOptions(options);
         return stackIntercept<ThreatTrendsReq, ThreatTrendsReply>("unary", this._transport, method, opt, input);
     }
     /**
@@ -1021,168 +1034,168 @@ export class ADAClient implements IADAClient, ServiceInfo {
      * @generated from protobuf rpc: ListThreat(ada.ListThreatReq) returns (ada.ListThreatReply);
      */
     listThreat(input: ListThreatReq, options?: RpcOptions): UnaryCall<ListThreatReq, ListThreatReply> {
-        const method = this.methods[48], opt = this._transport.mergeOptions(options);
+        const method = this.methods[49], opt = this._transport.mergeOptions(options);
         return stackIntercept<ListThreatReq, ListThreatReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: GetThreatNames(ada.GetThreatNamesReq) returns (ada.GetThreatNamesReply);
      */
     getThreatNames(input: GetThreatNamesReq, options?: RpcOptions): UnaryCall<GetThreatNamesReq, GetThreatNamesReply> {
-        const method = this.methods[49], opt = this._transport.mergeOptions(options);
+        const method = this.methods[50], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetThreatNamesReq, GetThreatNamesReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: ListThreatRule(ada.ListThreatRuleReq) returns (ada.ListThreatRuleReply);
      */
     listThreatRule(input: ListThreatRuleReq, options?: RpcOptions): UnaryCall<ListThreatRuleReq, ListThreatRuleReply> {
-        const method = this.methods[50], opt = this._transport.mergeOptions(options);
+        const method = this.methods[51], opt = this._transport.mergeOptions(options);
         return stackIntercept<ListThreatRuleReq, ListThreatRuleReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: ActionThreatRule(ada.ActionThreatRuleReq) returns (ada.ActionThreatRuleReply);
      */
     actionThreatRule(input: ActionThreatRuleReq, options?: RpcOptions): UnaryCall<ActionThreatRuleReq, ActionThreatRuleReply> {
-        const method = this.methods[51], opt = this._transport.mergeOptions(options);
+        const method = this.methods[52], opt = this._transport.mergeOptions(options);
         return stackIntercept<ActionThreatRuleReq, ActionThreatRuleReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: GetThreat(ada.GetThreatReq) returns (ada.GetThreatReply);
      */
     getThreat(input: GetThreatReq, options?: RpcOptions): UnaryCall<GetThreatReq, GetThreatReply> {
-        const method = this.methods[52], opt = this._transport.mergeOptions(options);
+        const method = this.methods[53], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetThreatReq, GetThreatReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: ActionThreat(ada.ActionThreatReq) returns (ada.ActionThreatReply);
      */
     actionThreat(input: ActionThreatReq, options?: RpcOptions): UnaryCall<ActionThreatReq, ActionThreatReply> {
-        const method = this.methods[53], opt = this._transport.mergeOptions(options);
+        const method = this.methods[54], opt = this._transport.mergeOptions(options);
         return stackIntercept<ActionThreatReq, ActionThreatReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: ListActivity(ada.ListActivityReq) returns (ada.ListActivityReply);
      */
     listActivity(input: ListActivityReq, options?: RpcOptions): UnaryCall<ListActivityReq, ListActivityReply> {
-        const method = this.methods[54], opt = this._transport.mergeOptions(options);
+        const method = this.methods[55], opt = this._transport.mergeOptions(options);
         return stackIntercept<ListActivityReq, ListActivityReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: GetActivityNames(ada.GetActivityNamesReq) returns (ada.GetActivityNamesReply);
      */
     getActivityNames(input: GetActivityNamesReq, options?: RpcOptions): UnaryCall<GetActivityNamesReq, GetActivityNamesReply> {
-        const method = this.methods[55], opt = this._transport.mergeOptions(options);
+        const method = this.methods[56], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetActivityNamesReq, GetActivityNamesReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: GetActivity(ada.GetActivityReq) returns (ada.GetActivityReply);
      */
     getActivity(input: GetActivityReq, options?: RpcOptions): UnaryCall<GetActivityReq, GetActivityReply> {
-        const method = this.methods[56], opt = this._transport.mergeOptions(options);
+        const method = this.methods[57], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetActivityReq, GetActivityReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: ListThreatConf(ada.ListThreatConfReq) returns (ada.ListThreatConfReply);
      */
     listThreatConf(input: ListThreatConfReq, options?: RpcOptions): UnaryCall<ListThreatConfReq, ListThreatConfReply> {
-        const method = this.methods[57], opt = this._transport.mergeOptions(options);
+        const method = this.methods[58], opt = this._transport.mergeOptions(options);
         return stackIntercept<ListThreatConfReq, ListThreatConfReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: UpdateThreatConf(ada.UpdateThreatConfReq) returns (ada.UpdateThreatConfReply);
      */
     updateThreatConf(input: UpdateThreatConfReq, options?: RpcOptions): UnaryCall<UpdateThreatConfReq, UpdateThreatConfReply> {
-        const method = this.methods[58], opt = this._transport.mergeOptions(options);
+        const method = this.methods[59], opt = this._transport.mergeOptions(options);
         return stackIntercept<UpdateThreatConfReq, UpdateThreatConfReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: ListSensitiveEntry(ada.ListSensitiveEntryReq) returns (ada.ListSensitiveEntryReply);
      */
     listSensitiveEntry(input: ListSensitiveEntryReq, options?: RpcOptions): UnaryCall<ListSensitiveEntryReq, ListSensitiveEntryReply> {
-        const method = this.methods[59], opt = this._transport.mergeOptions(options);
+        const method = this.methods[60], opt = this._transport.mergeOptions(options);
         return stackIntercept<ListSensitiveEntryReq, ListSensitiveEntryReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: AddSensitiveEntry(ada.AddSensitiveEntryReq) returns (ada.AddSensitiveEntryReply);
      */
     addSensitiveEntry(input: AddSensitiveEntryReq, options?: RpcOptions): UnaryCall<AddSensitiveEntryReq, AddSensitiveEntryReply> {
-        const method = this.methods[60], opt = this._transport.mergeOptions(options);
+        const method = this.methods[61], opt = this._transport.mergeOptions(options);
         return stackIntercept<AddSensitiveEntryReq, AddSensitiveEntryReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: ListDomainEntry(ada.ListDomainEntryReq) returns (ada.ListDomainEntryReply);
      */
     listDomainEntry(input: ListDomainEntryReq, options?: RpcOptions): UnaryCall<ListDomainEntryReq, ListDomainEntryReply> {
-        const method = this.methods[61], opt = this._transport.mergeOptions(options);
+        const method = this.methods[62], opt = this._transport.mergeOptions(options);
         return stackIntercept<ListDomainEntryReq, ListDomainEntryReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: DeleteSensitiveEntry(ada.DeleteSensitiveEntryReq) returns (ada.DeleteSensitiveEntryReply);
      */
     deleteSensitiveEntry(input: DeleteSensitiveEntryReq, options?: RpcOptions): UnaryCall<DeleteSensitiveEntryReq, DeleteSensitiveEntryReply> {
-        const method = this.methods[62], opt = this._transport.mergeOptions(options);
+        const method = this.methods[63], opt = this._transport.mergeOptions(options);
         return stackIntercept<DeleteSensitiveEntryReq, DeleteSensitiveEntryReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: ListThreatWhitelist(ada.ListThreatWhitelistReq) returns (ada.ListThreatWhitelistReply);
      */
     listThreatWhitelist(input: ListThreatWhitelistReq, options?: RpcOptions): UnaryCall<ListThreatWhitelistReq, ListThreatWhitelistReply> {
-        const method = this.methods[63], opt = this._transport.mergeOptions(options);
+        const method = this.methods[64], opt = this._transport.mergeOptions(options);
         return stackIntercept<ListThreatWhitelistReq, ListThreatWhitelistReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: GetThreatWhitelistField(ada.GetThreatWhitelistFieldReq) returns (ada.GetThreatWhitelistFieldReply);
      */
     getThreatWhitelistField(input: GetThreatWhitelistFieldReq, options?: RpcOptions): UnaryCall<GetThreatWhitelistFieldReq, GetThreatWhitelistFieldReply> {
-        const method = this.methods[64], opt = this._transport.mergeOptions(options);
+        const method = this.methods[65], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetThreatWhitelistFieldReq, GetThreatWhitelistFieldReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: AddThreatWhitelist(ada.AddThreatWhitelistReq) returns (ada.AddThreatWhitelistReply);
      */
     addThreatWhitelist(input: AddThreatWhitelistReq, options?: RpcOptions): UnaryCall<AddThreatWhitelistReq, AddThreatWhitelistReply> {
-        const method = this.methods[65], opt = this._transport.mergeOptions(options);
+        const method = this.methods[66], opt = this._transport.mergeOptions(options);
         return stackIntercept<AddThreatWhitelistReq, AddThreatWhitelistReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: UpdateThreatWhitelist(ada.UpdateThreatWhitelistReq) returns (ada.UpdateThreatWhitelistReply);
      */
     updateThreatWhitelist(input: UpdateThreatWhitelistReq, options?: RpcOptions): UnaryCall<UpdateThreatWhitelistReq, UpdateThreatWhitelistReply> {
-        const method = this.methods[66], opt = this._transport.mergeOptions(options);
+        const method = this.methods[67], opt = this._transport.mergeOptions(options);
         return stackIntercept<UpdateThreatWhitelistReq, UpdateThreatWhitelistReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: DeleteThreatWhitelist(ada.DeleteThreatWhitelistReq) returns (ada.DeleteThreatWhitelistReply);
      */
     deleteThreatWhitelist(input: DeleteThreatWhitelistReq, options?: RpcOptions): UnaryCall<DeleteThreatWhitelistReq, DeleteThreatWhitelistReply> {
-        const method = this.methods[67], opt = this._transport.mergeOptions(options);
+        const method = this.methods[68], opt = this._transport.mergeOptions(options);
         return stackIntercept<DeleteThreatWhitelistReq, DeleteThreatWhitelistReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: ListThreatBlock(ada.ListThreatBlockReq) returns (ada.ListThreatBlockReply);
      */
     listThreatBlock(input: ListThreatBlockReq, options?: RpcOptions): UnaryCall<ListThreatBlockReq, ListThreatBlockReply> {
-        const method = this.methods[68], opt = this._transport.mergeOptions(options);
+        const method = this.methods[69], opt = this._transport.mergeOptions(options);
         return stackIntercept<ListThreatBlockReq, ListThreatBlockReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: AddThreatBlock(ada.AddThreatBlockReq) returns (ada.AddThreatBlockReply);
      */
     addThreatBlock(input: AddThreatBlockReq, options?: RpcOptions): UnaryCall<AddThreatBlockReq, AddThreatBlockReply> {
-        const method = this.methods[69], opt = this._transport.mergeOptions(options);
+        const method = this.methods[70], opt = this._transport.mergeOptions(options);
         return stackIntercept<AddThreatBlockReq, AddThreatBlockReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: UpdateThreatBlock(ada.UpdateThreatBlockReq) returns (ada.UpdateThreatBlockReply);
      */
     updateThreatBlock(input: UpdateThreatBlockReq, options?: RpcOptions): UnaryCall<UpdateThreatBlockReq, UpdateThreatBlockReply> {
-        const method = this.methods[70], opt = this._transport.mergeOptions(options);
+        const method = this.methods[71], opt = this._transport.mergeOptions(options);
         return stackIntercept<UpdateThreatBlockReq, UpdateThreatBlockReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: DeleteThreatBlock(ada.DeleteThreatBlockReq) returns (ada.DeleteThreatBlockReply);
      */
     deleteThreatBlock(input: DeleteThreatBlockReq, options?: RpcOptions): UnaryCall<DeleteThreatBlockReq, DeleteThreatBlockReply> {
-        const method = this.methods[71], opt = this._transport.mergeOptions(options);
+        const method = this.methods[72], opt = this._transport.mergeOptions(options);
         return stackIntercept<DeleteThreatBlockReq, DeleteThreatBlockReply>("unary", this._transport, method, opt, input);
     }
     /**
@@ -1192,7 +1205,7 @@ export class ADAClient implements IADAClient, ServiceInfo {
      * @generated from protobuf rpc: ScanRiskStats(ada.ScanRiskStatsReq) returns (ada.ScanRiskStatsReply);
      */
     scanRiskStats(input: ScanRiskStatsReq, options?: RpcOptions): UnaryCall<ScanRiskStatsReq, ScanRiskStatsReply> {
-        const method = this.methods[72], opt = this._transport.mergeOptions(options);
+        const method = this.methods[73], opt = this._transport.mergeOptions(options);
         return stackIntercept<ScanRiskStatsReq, ScanRiskStatsReply>("unary", this._transport, method, opt, input);
     }
     /**
@@ -1201,28 +1214,28 @@ export class ADAClient implements IADAClient, ServiceInfo {
      * @generated from protobuf rpc: ListBaseline(ada.ListBaselineReq) returns (ada.ListBaselineReply);
      */
     listBaseline(input: ListBaselineReq, options?: RpcOptions): UnaryCall<ListBaselineReq, ListBaselineReply> {
-        const method = this.methods[73], opt = this._transport.mergeOptions(options);
+        const method = this.methods[74], opt = this._transport.mergeOptions(options);
         return stackIntercept<ListBaselineReq, ListBaselineReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: GetBaseline(ada.GetBaselineReq) returns (ada.GetBaselineReply);
      */
     getBaseline(input: GetBaselineReq, options?: RpcOptions): UnaryCall<GetBaselineReq, GetBaselineReply> {
-        const method = this.methods[74], opt = this._transport.mergeOptions(options);
+        const method = this.methods[75], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetBaselineReq, GetBaselineReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: ListLeak(ada.ListLeakReq) returns (ada.ListLeakReply);
      */
     listLeak(input: ListLeakReq, options?: RpcOptions): UnaryCall<ListLeakReq, ListLeakReply> {
-        const method = this.methods[75], opt = this._transport.mergeOptions(options);
+        const method = this.methods[76], opt = this._transport.mergeOptions(options);
         return stackIntercept<ListLeakReq, ListLeakReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: ListWeakPwd(ada.ListWeakPwdReq) returns (ada.ListWeakPwdReply);
      */
     listWeakPwd(input: ListWeakPwdReq, options?: RpcOptions): UnaryCall<ListWeakPwdReq, ListWeakPwdReply> {
-        const method = this.methods[76], opt = this._transport.mergeOptions(options);
+        const method = this.methods[77], opt = this._transport.mergeOptions(options);
         return stackIntercept<ListWeakPwdReq, ListWeakPwdReply>("unary", this._transport, method, opt, input);
     }
     /**
@@ -1231,35 +1244,35 @@ export class ADAClient implements IADAClient, ServiceInfo {
      * @generated from protobuf rpc: ListScanTask(ada.ListScanTaskReq) returns (ada.ListScanTaskReply);
      */
     listScanTask(input: ListScanTaskReq, options?: RpcOptions): UnaryCall<ListScanTaskReq, ListScanTaskReply> {
-        const method = this.methods[77], opt = this._transport.mergeOptions(options);
+        const method = this.methods[78], opt = this._transport.mergeOptions(options);
         return stackIntercept<ListScanTaskReq, ListScanTaskReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: GetScanTask(ada.GetScanTaskReq) returns (ada.GetScanTaskReply);
      */
     getScanTask(input: GetScanTaskReq, options?: RpcOptions): UnaryCall<GetScanTaskReq, GetScanTaskReply> {
-        const method = this.methods[78], opt = this._transport.mergeOptions(options);
+        const method = this.methods[79], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetScanTaskReq, GetScanTaskReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: AddScanTask(ada.AddScanTaskReq) returns (ada.AddScanTaskReply);
      */
     addScanTask(input: AddScanTaskReq, options?: RpcOptions): UnaryCall<AddScanTaskReq, AddScanTaskReply> {
-        const method = this.methods[79], opt = this._transport.mergeOptions(options);
+        const method = this.methods[80], opt = this._transport.mergeOptions(options);
         return stackIntercept<AddScanTaskReq, AddScanTaskReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: RecheckScanTask(ada.RecheckScanTaskReq) returns (ada.RecheckScanTaskReply);
      */
     recheckScanTask(input: RecheckScanTaskReq, options?: RpcOptions): UnaryCall<RecheckScanTaskReq, RecheckScanTaskReply> {
-        const method = this.methods[80], opt = this._transport.mergeOptions(options);
+        const method = this.methods[81], opt = this._transport.mergeOptions(options);
         return stackIntercept<RecheckScanTaskReq, RecheckScanTaskReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: DeleteScanTask(ada.DeleteScanTaskReq) returns (ada.DeleteScanTaskReply);
      */
     deleteScanTask(input: DeleteScanTaskReq, options?: RpcOptions): UnaryCall<DeleteScanTaskReq, DeleteScanTaskReply> {
-        const method = this.methods[81], opt = this._transport.mergeOptions(options);
+        const method = this.methods[82], opt = this._transport.mergeOptions(options);
         return stackIntercept<DeleteScanTaskReq, DeleteScanTaskReply>("unary", this._transport, method, opt, input);
     }
     /**
@@ -1268,35 +1281,35 @@ export class ADAClient implements IADAClient, ServiceInfo {
      * @generated from protobuf rpc: ListScanConf(ada.ListScanConfReq) returns (ada.ListScanConfReply);
      */
     listScanConf(input: ListScanConfReq, options?: RpcOptions): UnaryCall<ListScanConfReq, ListScanConfReply> {
-        const method = this.methods[82], opt = this._transport.mergeOptions(options);
+        const method = this.methods[83], opt = this._transport.mergeOptions(options);
         return stackIntercept<ListScanConfReq, ListScanConfReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: SetScanConf(ada.SetScanConfReq) returns (ada.SetScanConfReply);
      */
     setScanConf(input: SetScanConfReq, options?: RpcOptions): UnaryCall<SetScanConfReq, SetScanConfReply> {
-        const method = this.methods[83], opt = this._transport.mergeOptions(options);
+        const method = this.methods[84], opt = this._transport.mergeOptions(options);
         return stackIntercept<SetScanConfReq, SetScanConfReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: GetScanConf(ada.GetScanConfReq) returns (ada.GetScanConfReply);
      */
     getScanConf(input: GetScanConfReq, options?: RpcOptions): UnaryCall<GetScanConfReq, GetScanConfReply> {
-        const method = this.methods[84], opt = this._transport.mergeOptions(options);
+        const method = this.methods[85], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetScanConfReq, GetScanConfReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: GetScanTmplNames(ada.GetScanTmplNamesReq) returns (ada.GetScanTmplNamesReply);
      */
     getScanTmplNames(input: GetScanTmplNamesReq, options?: RpcOptions): UnaryCall<GetScanTmplNamesReq, GetScanTmplNamesReply> {
-        const method = this.methods[85], opt = this._transport.mergeOptions(options);
+        const method = this.methods[86], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetScanTmplNamesReq, GetScanTmplNamesReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: UpdateScanConf(ada.UpdateScanConfReq) returns (ada.UpdateScanConfReply);
      */
     updateScanConf(input: UpdateScanConfReq, options?: RpcOptions): UnaryCall<UpdateScanConfReq, UpdateScanConfReply> {
-        const method = this.methods[86], opt = this._transport.mergeOptions(options);
+        const method = this.methods[87], opt = this._transport.mergeOptions(options);
         return stackIntercept<UpdateScanConfReq, UpdateScanConfReply>("unary", this._transport, method, opt, input);
     }
     /**
@@ -1305,42 +1318,42 @@ export class ADAClient implements IADAClient, ServiceInfo {
      * @generated from protobuf rpc: ListScanTmpl(ada.ListScanTmplReq) returns (ada.ListScanTmplReply);
      */
     listScanTmpl(input: ListScanTmplReq, options?: RpcOptions): UnaryCall<ListScanTmplReq, ListScanTmplReply> {
-        const method = this.methods[87], opt = this._transport.mergeOptions(options);
+        const method = this.methods[88], opt = this._transport.mergeOptions(options);
         return stackIntercept<ListScanTmplReq, ListScanTmplReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: GetScanTmpl(ada.GetScanTmplReq) returns (ada.GetScanTmplReply);
      */
     getScanTmpl(input: GetScanTmplReq, options?: RpcOptions): UnaryCall<GetScanTmplReq, GetScanTmplReply> {
-        const method = this.methods[88], opt = this._transport.mergeOptions(options);
+        const method = this.methods[89], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetScanTmplReq, GetScanTmplReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: UpdateScanTmpl(ada.UpdateScanTmplReq) returns (ada.UpdateScanTmplReply);
      */
     updateScanTmpl(input: UpdateScanTmplReq, options?: RpcOptions): UnaryCall<UpdateScanTmplReq, UpdateScanTmplReply> {
-        const method = this.methods[89], opt = this._transport.mergeOptions(options);
+        const method = this.methods[90], opt = this._transport.mergeOptions(options);
         return stackIntercept<UpdateScanTmplReq, UpdateScanTmplReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: DeleteScanTmpl(ada.DeleteScanTmplReq) returns (ada.DeleteScanTmplReply);
      */
     deleteScanTmpl(input: DeleteScanTmplReq, options?: RpcOptions): UnaryCall<DeleteScanTmplReq, DeleteScanTmplReply> {
-        const method = this.methods[90], opt = this._transport.mergeOptions(options);
+        const method = this.methods[91], opt = this._transport.mergeOptions(options);
         return stackIntercept<DeleteScanTmplReq, DeleteScanTmplReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: AddScanTmpl(ada.AddScanTmplReq) returns (ada.AddScanTmplReply);
      */
     addScanTmpl(input: AddScanTmplReq, options?: RpcOptions): UnaryCall<AddScanTmplReq, AddScanTmplReply> {
-        const method = this.methods[91], opt = this._transport.mergeOptions(options);
+        const method = this.methods[92], opt = this._transport.mergeOptions(options);
         return stackIntercept<AddScanTmplReq, AddScanTmplReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: ListScanPlugin(ada.ListScanPluginReq) returns (ada.ListScanPluginReply);
      */
     listScanPlugin(input: ListScanPluginReq, options?: RpcOptions): UnaryCall<ListScanPluginReq, ListScanPluginReply> {
-        const method = this.methods[92], opt = this._transport.mergeOptions(options);
+        const method = this.methods[93], opt = this._transport.mergeOptions(options);
         return stackIntercept<ListScanPluginReq, ListScanPluginReply>("unary", this._transport, method, opt, input);
     }
     /**
@@ -1349,21 +1362,21 @@ export class ADAClient implements IADAClient, ServiceInfo {
      * @generated from protobuf rpc: DashboardStats(ada.DashboardStatsReq) returns (ada.DashboardStatsReply);
      */
     dashboardStats(input: DashboardStatsReq, options?: RpcOptions): UnaryCall<DashboardStatsReq, DashboardStatsReply> {
-        const method = this.methods[93], opt = this._transport.mergeOptions(options);
+        const method = this.methods[94], opt = this._transport.mergeOptions(options);
         return stackIntercept<DashboardStatsReq, DashboardStatsReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: DashboardTrends(ada.DashboardTrendsReq) returns (ada.DashboardTrendsReply);
      */
     dashboardTrends(input: DashboardTrendsReq, options?: RpcOptions): UnaryCall<DashboardTrendsReq, DashboardTrendsReply> {
-        const method = this.methods[94], opt = this._transport.mergeOptions(options);
+        const method = this.methods[95], opt = this._transport.mergeOptions(options);
         return stackIntercept<DashboardTrendsReq, DashboardTrendsReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: DashboardLogStats(ada.DashboardLogStatsReq) returns (ada.DashboardLogStatsReply);
      */
     dashboardLogStats(input: DashboardLogStatsReq, options?: RpcOptions): UnaryCall<DashboardLogStatsReq, DashboardLogStatsReply> {
-        const method = this.methods[95], opt = this._transport.mergeOptions(options);
+        const method = this.methods[96], opt = this._transport.mergeOptions(options);
         return stackIntercept<DashboardLogStatsReq, DashboardLogStatsReply>("unary", this._transport, method, opt, input);
     }
 }

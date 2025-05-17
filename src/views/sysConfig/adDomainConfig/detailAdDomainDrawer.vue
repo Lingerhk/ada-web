@@ -21,11 +21,6 @@
                         <el-button size="default" type="primary" @click="testDomain">{{ $t('message.adDomain.exec')
                             }}</el-button>
                     </el-descriptions-item>
-                    <el-descriptions-item :label="$t('message.adDomain.updateDomainData') + ':'">
-                        <el-button size="default" type="primary" @click="updateDomainData">{{
-                            $t('message.adDomain.exec')
-                            }}</el-button>
-                    </el-descriptions-item>
                 </el-descriptions>
 
                 <!-- DC List Table -->
@@ -56,25 +51,29 @@
                                 </el-tag>
                             </template>
                         </el-table-column>
-                        <el-table-column prop="hasSensor" :label="$t('message.adDomain.hasSensor')" min-width="100" align="center">
+                        <el-table-column prop="hasSensor" :label="$t('message.adDomain.hasSensor')" min-width="150" align="center">
                             <template #default="scope">
                                 <el-icon v-if="scope.row.hasSensor" color="#67C23A"><Check /></el-icon>
-                                <el-icon v-else color="#F56C6C"><Close /></el-icon>
+                                <el-button v-else type="primary" link size="small" @click="handleDeploySensor(scope.row)">
+                                    {{ $t('message.adDomain.automaticInstall') }}
+                                </el-button>
                             </template>
                         </el-table-column>
-                        <el-table-column prop="isMaster" :label="$t('message.adDomain.isMaster')" min-width="100" align="center">
-                            <template #default="scope">
-                                <el-icon v-if="scope.row.isMaster" color="#67C23A"><Check /></el-icon>
-                                <el-icon v-else color="#F56C6C"><Close /></el-icon>
-                            </template>
-                        </el-table-column>
-                        <el-table-column prop="fsmoRole" :label="$t('message.adDomain.fsmoRole')" min-width="180"></el-table-column>
+                        <el-table-column prop="fsmoRole" :label="$t('message.adDomain.fsmoRole')" min-width="100"></el-table-column>
+                        <el-table-column prop="version" :label="$t('message.adDomain.version')" min-width="120"></el-table-column>
                         <el-table-column prop="lastOnlineTm" :label="$t('message.adDomain.lastOnlineTm')" min-width="180">
                             <template #default="scope">
                                 {{ formatApiTime(scope.row.lastOnlineTm) }}
                             </template>
                         </el-table-column>
                     </el-table>
+                </div>
+                <!-- WinRM Notes -->
+                <div style="margin-top: 20px; padding: 10px; border: 1px solid #e4e7ed; border-radius: 4px;">
+                    <h4>{{ $t('message.adDomain.winRmNotesTitle') }}</h4>
+                    <p style="font-size: 12px; color: #606266; margin-top: 5px;">
+                        {{ $t('message.adDomain.winRmNotesBody') }}
+                    </p>
                 </div>
             </div>
         </template>
@@ -91,7 +90,7 @@
 
 import { reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { ListDomainReply_Details, TestDomainReply, TestDomainReq, UpdateDomainDataReply, UpdateDomainDataReq } from '/@/api/grpc/ada';
+import { ListDomainReply_Details, TestDomainReply, TestDomainReq, DeploySensorReq, DeploySensorReply } from '/@/api/grpc/ada';
 import api from '/@/api/grpc';
 import { alertApiError } from '/@/utils/error';
 import { formatApiTime } from '/@/utils/formatTime';
@@ -129,25 +128,6 @@ const getStatusType = (status: string): 'success' | 'warning' | 'danger' => {
         default:
             return 'danger';
     }
-};
-
-const updateDomainData = () => {
-    const req: UpdateDomainDataReq = {
-        domainID: state.data.iD
-    };
-
-    console.log('updateDomainData', req);
-
-    api.updateDomainData(req)
-    .then(resp => resp.response)
-    .then((data: UpdateDomainDataReply) => {
-        if (data.result === 'success') {
-            ElMessage.success(t('message.adDomain.updateDataSucc'));
-        } else {
-            ElMessage.warning(t('message.adDomain.updateDataFail'))
-        }
-    })
-    .catch(err => alertApiError(err));
 };
 
 const testDomain = () => {
@@ -196,6 +176,43 @@ const open = (row: ListDomainReply_Details, onClose: OnCloseFunc | null) => {
 
     state.dcHostNum = row.dCs?.length || 0;
 }
+
+const handleDeploySensor = (dcDetails: any) => {
+    if (!state.data || !state.data.iD) return;
+
+    ElMessageBox.confirm(
+        t('message.adDomain.confirmDeploySensor', [dcDetails.hostname]),
+        t('message.dialog.prompt'),
+        {
+            confirmButtonText: t('message.dialog.confirm'),
+            cancelButtonText: t('message.dialog.cancel'),
+            type: 'warning',
+        }
+    ).then(() => {
+        const req: DeploySensorReq = {
+            domainID: state.data.iD,
+            dcHostname: dcDetails.hostname,
+        };
+        console.log('DeploySensor request:', req);
+        api.deploySensor(req)
+            .then(resp => resp.response)
+            .then((data: DeploySensorReply) => {
+                if (data.result === 'success') {
+                    ElMessage.success(t('message.adDomain.deploySensorSucc', [dcDetails.hostname]));
+                    // Optionally, update the local state or trigger a refresh if needed
+                    // For now, we just show a message. The table will reflect the change upon next full data load.
+                } else {
+                    ElMessage.error(t('message.adDomain.deploySensorFail', [dcDetails.hostname, data.result]));
+                }
+            })
+            .catch(err => {
+                alertApiError(err);
+                ElMessage.error(t('message.adDomain.deploySensorFail', [dcDetails.hostname, err.message || 'Unknown error']));
+            });
+    }).catch(() => {
+        ElMessage.info(t('message.adDomain.deploySensorCancelled'));
+    });
+};
 
 defineExpose({
     open,

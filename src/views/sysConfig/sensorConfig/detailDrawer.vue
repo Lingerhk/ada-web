@@ -49,7 +49,7 @@
                 <el-descriptions-item :label="$t('message.sysConfig.sensorConfig.curVersion') + ':'">
                     {{ state.data?.version }}
                     <span v-if="state.data?.version && state.data?.newVersion">
-                        <span v-if="state.data.version === state.data.newVersion" style="font-size: 12px; color: #67c23a; margin-left: 8px;">
+                        <span v-if="compareVersions(state.data.version, state.data.newVersion) >= 0" style="font-size: 12px; color: #67c23a; margin-left: 8px;">
                             ({{ $t('message.sysConfig.sensorConfig.latestVersion') }})
                         </span>
                         <span v-else style="font-size: 12px; color: #e6a23c; margin-left: 8px;">
@@ -111,9 +111,24 @@ const state = reactive({
     onUpdate: null as OnUpdateFunc | null,
 });
 
+const compareVersions = (v1: string, v2: string): number => {
+    const parts1 = v1.split('.').map(Number);
+    const parts2 = v2.split('.').map(Number);
+    const len = Math.max(parts1.length, parts2.length);
+
+    for (let i = 0; i < len; i++) {
+        const p1 = parts1[i] || 0;
+        const p2 = parts2[i] || 0;
+        if (p1 < p2) return -1; // v1 < v2
+        if (p1 > p2) return 1;  // v1 > v2
+    }
+    return 0; // v1 === v2
+};
+
 const canUpdate = computed(() => {
-    if (!state.data) return false;
-    return state.data.version !== state.data.newVersion && state.data.newVersion !== '';
+    if (!state.data || !state.data.version || !state.data.newVersion) return false;
+    // Can update if newVersion is greater than current version
+    return compareVersions(state.data.version, state.data.newVersion) < 0;
 });
 
 const updateVersion = () => {

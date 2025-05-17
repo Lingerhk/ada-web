@@ -627,35 +627,39 @@ export interface ListDomainReply_dcList {
      */
     platform: string;
     /**
-     * @generated from protobuf field: string ips = 3;
+     * @generated from protobuf field: string version = 3;
+     */
+    version: string;
+    /**
+     * @generated from protobuf field: string ips = 4;
      */
     ips: string;
     /**
-     * @generated from protobuf field: string timeout = 4;
+     * @generated from protobuf field: string timeout = 5;
      */
     timeout: string;
     /**
-     * @generated from protobuf field: string status = 5;
+     * @generated from protobuf field: string status = 6;
      */
     status: string;
     /**
-     * @generated from protobuf field: bool hasSensor = 6;
+     * @generated from protobuf field: bool hasSensor = 7;
      */
     hasSensor: boolean;
     /**
-     * @generated from protobuf field: bool isMaster = 7;
+     * @generated from protobuf field: bool isMaster = 8;
      */
     isMaster: boolean;
     /**
-     * @generated from protobuf field: string fsmoRole = 8;
+     * @generated from protobuf field: string fsmoRole = 9;
      */
     fsmoRole: string;
     /**
-     * @generated from protobuf field: string errMsg = 9;
+     * @generated from protobuf field: string errMsg = 10;
      */
     errMsg: string;
     /**
-     * @generated from protobuf field: string lastOnlineTm = 10;
+     * @generated from protobuf field: string lastOnlineTm = 11;
      */
     lastOnlineTm: string;
 }
@@ -835,6 +839,28 @@ export interface UpdateDomainDataReply {
      * @generated from protobuf field: string result = 1;
      */
     result: string; //  success failed
+}
+/**
+ * @generated from protobuf message ada.DeploySensorReq
+ */
+export interface DeploySensorReq {
+    /**
+     * @generated from protobuf field: string domainID = 1;
+     */
+    domainID: string; // 域的ID
+    /**
+     * @generated from protobuf field: string dcHostname = 2;
+     */
+    dcHostname: string; // DC Hostname 
+}
+/**
+ * @generated from protobuf message ada.DeploySensorReply
+ */
+export interface DeploySensorReply {
+    /**
+     * @generated from protobuf field: string result = 1;
+     */
+    result: string; //  success | failed
 }
 /**
  * @generated from protobuf message ada.ListSensorReq
@@ -6548,20 +6574,22 @@ class ListDomainReply_dcList$Type extends MessageType<ListDomainReply_dcList> {
         super("ada.ListDomainReply.dcList", [
             { no: 1, name: "hostname", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "platform", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 3, name: "ips", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 4, name: "timeout", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 5, name: "status", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 6, name: "hasSensor", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
-            { no: 7, name: "isMaster", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
-            { no: 8, name: "fsmoRole", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 9, name: "errMsg", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 10, name: "lastOnlineTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 3, name: "version", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "ips", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 5, name: "timeout", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 6, name: "status", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 7, name: "hasSensor", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 8, name: "isMaster", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 9, name: "fsmoRole", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 10, name: "errMsg", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 11, name: "lastOnlineTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<ListDomainReply_dcList>): ListDomainReply_dcList {
         const message = globalThis.Object.create((this.messagePrototype!));
         message.hostname = "";
         message.platform = "";
+        message.version = "";
         message.ips = "";
         message.timeout = "";
         message.status = "";
@@ -6585,28 +6613,31 @@ class ListDomainReply_dcList$Type extends MessageType<ListDomainReply_dcList> {
                 case /* string platform */ 2:
                     message.platform = reader.string();
                     break;
-                case /* string ips */ 3:
+                case /* string version */ 3:
+                    message.version = reader.string();
+                    break;
+                case /* string ips */ 4:
                     message.ips = reader.string();
                     break;
-                case /* string timeout */ 4:
+                case /* string timeout */ 5:
                     message.timeout = reader.string();
                     break;
-                case /* string status */ 5:
+                case /* string status */ 6:
                     message.status = reader.string();
                     break;
-                case /* bool hasSensor */ 6:
+                case /* bool hasSensor */ 7:
                     message.hasSensor = reader.bool();
                     break;
-                case /* bool isMaster */ 7:
+                case /* bool isMaster */ 8:
                     message.isMaster = reader.bool();
                     break;
-                case /* string fsmoRole */ 8:
+                case /* string fsmoRole */ 9:
                     message.fsmoRole = reader.string();
                     break;
-                case /* string errMsg */ 9:
+                case /* string errMsg */ 10:
                     message.errMsg = reader.string();
                     break;
-                case /* string lastOnlineTm */ 10:
+                case /* string lastOnlineTm */ 11:
                     message.lastOnlineTm = reader.string();
                     break;
                 default:
@@ -6627,30 +6658,33 @@ class ListDomainReply_dcList$Type extends MessageType<ListDomainReply_dcList> {
         /* string platform = 2; */
         if (message.platform !== "")
             writer.tag(2, WireType.LengthDelimited).string(message.platform);
-        /* string ips = 3; */
+        /* string version = 3; */
+        if (message.version !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.version);
+        /* string ips = 4; */
         if (message.ips !== "")
-            writer.tag(3, WireType.LengthDelimited).string(message.ips);
-        /* string timeout = 4; */
+            writer.tag(4, WireType.LengthDelimited).string(message.ips);
+        /* string timeout = 5; */
         if (message.timeout !== "")
-            writer.tag(4, WireType.LengthDelimited).string(message.timeout);
-        /* string status = 5; */
+            writer.tag(5, WireType.LengthDelimited).string(message.timeout);
+        /* string status = 6; */
         if (message.status !== "")
-            writer.tag(5, WireType.LengthDelimited).string(message.status);
-        /* bool hasSensor = 6; */
+            writer.tag(6, WireType.LengthDelimited).string(message.status);
+        /* bool hasSensor = 7; */
         if (message.hasSensor !== false)
-            writer.tag(6, WireType.Varint).bool(message.hasSensor);
-        /* bool isMaster = 7; */
+            writer.tag(7, WireType.Varint).bool(message.hasSensor);
+        /* bool isMaster = 8; */
         if (message.isMaster !== false)
-            writer.tag(7, WireType.Varint).bool(message.isMaster);
-        /* string fsmoRole = 8; */
+            writer.tag(8, WireType.Varint).bool(message.isMaster);
+        /* string fsmoRole = 9; */
         if (message.fsmoRole !== "")
-            writer.tag(8, WireType.LengthDelimited).string(message.fsmoRole);
-        /* string errMsg = 9; */
+            writer.tag(9, WireType.LengthDelimited).string(message.fsmoRole);
+        /* string errMsg = 10; */
         if (message.errMsg !== "")
-            writer.tag(9, WireType.LengthDelimited).string(message.errMsg);
-        /* string lastOnlineTm = 10; */
+            writer.tag(10, WireType.LengthDelimited).string(message.errMsg);
+        /* string lastOnlineTm = 11; */
         if (message.lastOnlineTm !== "")
-            writer.tag(10, WireType.LengthDelimited).string(message.lastOnlineTm);
+            writer.tag(11, WireType.LengthDelimited).string(message.lastOnlineTm);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -7346,6 +7380,108 @@ class UpdateDomainDataReply$Type extends MessageType<UpdateDomainDataReply> {
  * @generated MessageType for protobuf message ada.UpdateDomainDataReply
  */
 export const UpdateDomainDataReply = new UpdateDomainDataReply$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class DeploySensorReq$Type extends MessageType<DeploySensorReq> {
+    constructor() {
+        super("ada.DeploySensorReq", [
+            { no: 1, name: "domainID", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "dcHostname", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<DeploySensorReq>): DeploySensorReq {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.domainID = "";
+        message.dcHostname = "";
+        if (value !== undefined)
+            reflectionMergePartial<DeploySensorReq>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: DeploySensorReq): DeploySensorReq {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string domainID */ 1:
+                    message.domainID = reader.string();
+                    break;
+                case /* string dcHostname */ 2:
+                    message.dcHostname = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: DeploySensorReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string domainID = 1; */
+        if (message.domainID !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.domainID);
+        /* string dcHostname = 2; */
+        if (message.dcHostname !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.dcHostname);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.DeploySensorReq
+ */
+export const DeploySensorReq = new DeploySensorReq$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class DeploySensorReply$Type extends MessageType<DeploySensorReply> {
+    constructor() {
+        super("ada.DeploySensorReply", [
+            { no: 1, name: "result", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<DeploySensorReply>): DeploySensorReply {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.result = "";
+        if (value !== undefined)
+            reflectionMergePartial<DeploySensorReply>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: DeploySensorReply): DeploySensorReply {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string result */ 1:
+                    message.result = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: DeploySensorReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string result = 1; */
+        if (message.result !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.result);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.DeploySensorReply
+ */
+export const DeploySensorReply = new DeploySensorReply$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class ListSensorReq$Type extends MessageType<ListSensorReq> {
     constructor() {
@@ -20312,6 +20448,7 @@ export const ADA = new ServiceType("ada.ADA", [
     { name: "UpdateDomain", options: {}, I: UpdateDomainReq, O: UpdateDomainReply },
     { name: "DeleteDomain", options: {}, I: DeleteDomainReq, O: DeleteDomainReply },
     { name: "UpdateDomainData", options: {}, I: UpdateDomainDataReq, O: UpdateDomainDataReply },
+    { name: "DeploySensor", options: {}, I: DeploySensorReq, O: DeploySensorReply },
     { name: "ListSensor", options: {}, I: ListSensorReq, O: ListSensorReply },
     { name: "UpdateSensor", options: {}, I: UpdateSensorReq, O: UpdateSensorReply },
     { name: "DownloadSensor", options: {}, I: DownloadSensorReq, O: DownloadSensorReply },

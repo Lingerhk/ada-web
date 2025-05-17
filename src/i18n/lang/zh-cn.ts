@@ -568,7 +568,7 @@ export default {
 		version: '系统版本',
 		fsmoRole: 'FSMO角色',
 		automaticInstall: '自动安装',
-		confirmDeploySensor: '您确定要在 {0} 上自动安装传感器吗？',
+		confirmDeploySensor: '您确定要在 {0} 上自动安装传感器吗？默认安装位置为C:\\Program Files\\Adaegis',
 		deploySensorSucc: '传感器已成功为 {0} 发起部署。状态将在下次数据同步后更新。',
 		deploySensorFail: '为 {0} 部署传感器失败。错误：{1}',
 		deploySensorCancelled: '传感器部署已取消。',

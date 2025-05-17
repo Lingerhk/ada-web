@@ -568,7 +568,7 @@ export default {
 		version: 'OS Version',
 		fsmoRole: 'FSMO Role',
 		automaticInstall: 'Automatic Install',
-		confirmDeploySensor: 'Are you sure you want to automatically install the sensor on {0}?',
+		confirmDeploySensor: 'Are you sure you want to automatically install the sensor on {0}? The default installation location is C:\\Program Files\\Adaegis',
 		deploySensorSucc: 'Sensor deployment initiated successfully for {0}. The status will update after the next data sync.',
 		deploySensorFail: 'Sensor deployment failed for {0}. Error: {1}',
 		deploySensorCancelled: 'Sensor deployment cancelled.',

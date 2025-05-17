@@ -20,26 +20,29 @@
             <!-- 下方显示列表 -->
             <el-row style="margin-top: 10px">
                 <el-table :data="state.reply.list" v-loading="state.loading" :border="true"
-                    @selection-change="(val) => state.selected = val" row-class-name="pointer-cursor"
-                    style="width: 100%">
-                    <el-table-column type="expand">
+                    @selection-change="(val: ListNotifyReply_Details[]) => state.selected = val" row-class-name="pointer-cursor"
+                    style="width: 100%"
+                    row-key="iD"
+                    :expand-row-keys="state.expandedRowKeys"
+                    @sort-change="handleSortChange"
+                    >
+                    <el-table-column type="expand" width="30">
                         <template #default="props">
-                            {{ props.row.desc }}
+                            <div style="padding: 10px 20px;">
+                                <p style="margin-bottom: 8px;"><strong>{{ $t('message.threat.detail.description') }}:</strong> {{ props.row.desc }}</p>
+                                <JsonViewer :value="props.row.params" copyable sort></JsonViewer>
+                            </div>
                         </template>
                     </el-table-column>
                     <el-table-column type="selection" width="55" />
                     <el-table-column type="index" width="70" :label="$t('message.tableCommon.index')" />
-                    <el-table-column prop="title" width="600" :label="$t('message.system.message.title')">
-                        <template #default="prop">
-                            <span :style="prop.row.status === 0 ? 'color:rgb(64, 158, 255);' : ''">
-                                <Bell v-if="prop.row.status === 0" style="width:12px;"/>
-                                {{ prop.row.title }}
+                    <el-table-column prop="title" width="500" :label="$t('message.system.message.title')">
+                        <template #default="scope">
+                            <span @click="toggleRowExpansion(scope.row)" 
+                                  :style="scope.row.status === 0 ? 'color:rgb(64, 158, 255); cursor: pointer;' : 'cursor: pointer;'">
+                                <Bell v-if="scope.row.status === 0" style="width:12px; margin-right: 4px;"/>
+                                {{ scope.row.title }}
                             </span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="createTm" :label="$t('message.system.message.createTm')">
-                        <template #default="prop">
-                            {{ formatApiTime(prop.row.createTm) }}
                         </template>
                     </el-table-column>
                     <el-table-column prop="msgType" :label="$t('message.system.message.msgType')">
@@ -52,9 +55,9 @@
                             {{ prop.row.eventType }}
                         </template>
                     </el-table-column>
-                    <el-table-column type="expand" class-name="col-expand" width="1">
-                        <template #default="props">
-                            <JsonViewer :value="props.row.params" copyable sort></JsonViewer>
+                    <el-table-column prop="createTm" :label="$t('message.system.message.createTm')" sortable="custom" width="180" header-align="center" align="center">
+                        <template #default="prop">
+                            {{ formatApiTime(prop.row.createTm) }}
                         </template>
                     </el-table-column>
                 </el-table>
@@ -68,7 +71,7 @@
                         $t('message.system.message.markAllReaded') }}</el-button>
                 </div>
                 <el-pagination v-model:current-page="state.req.pageIdx" v-model:page-size="state.req.pageSize"
-                    :page-sizes="[10, 20, 30, 40, 50]" layout="sizes, prev, pager, next, jumper"
+                    :page-sizes="[10, 30, 60, 100]" layout="sizes, prev, pager, next, jumper"
                     :total="state.reply.page?.total" />
             </el-row>
         </el-card>
@@ -95,6 +98,7 @@ const MsgTypeOptions = getMessageTypeOptions(t);
 const StatusOptions = getMessageStatusOptions(t);
 
 const timeRange = ref([] as string[]);
+const expandedRowKeys = ref<string[]>([]);
 
 const state = reactive({
     req: {
@@ -112,7 +116,17 @@ const state = reactive({
     } as ListNotifyReply,
     selected: [] as ListNotifyReply_Details[],
     loading: false,
+    expandedRowKeys: [] as string[],
 });
+
+const toggleRowExpansion = (row: ListNotifyReply_Details) => {
+    const index = state.expandedRowKeys.indexOf(row.iD);
+    if (index > -1) {
+        state.expandedRowKeys.splice(index, 1);
+    } else {
+        state.expandedRowKeys.push(row.iD);
+    }
+};
 
 const markReaded = () => {
     if (!state.selected) {
@@ -160,14 +174,46 @@ const refresh = () => {
     .finally(() => state.loading = false);
 };
 
+const handleSortChange = ({ column, prop, order }: { column: any, prop: string, order: 'ascending' | 'descending' | null }) => {
+  if (prop === 'createTm') {
+    if (order === 'ascending') {
+      state.req.orderCreateTm = 1;
+    } else if (order === 'descending') {
+      state.req.orderCreateTm = -1;
+    } else {
+      state.req.orderCreateTm = -1; // Default to descending as per proto or clear sort
+    }
+  } else {
+    // If sorting on other columns in the future, clear createTm sort
+    state.req.orderCreateTm = -1;
+  }
+  refresh();
+};
+
 watch(timeRange, (val) => {
     if (val && val.length === 2) {
         state.req.startTm = formatApiTime(val[0]);
         state.req.endTm = formatApiTime(val[1]);
+    } else {
+        state.req.startTm = '';
+        state.req.endTm = '';
     }
+    refresh(); // Explicitly call refresh
 });
 
-watch(state.req, () => refresh(), { deep: true });
+// Remove old generic watcher for state.req
+// watch(state.req, () => refresh(), { deep: true });
+
+// Add specific watchers for status and msgType arrays
+watch(() => [...state.req.status], (newStatus, oldStatus) => {
+    console.log('Status changed, refreshing. New:', newStatus, 'Old:', oldStatus);
+    refresh();
+}, { deep: false }); // deep: false as we are watching a shallow copy
+
+watch(() => [...state.req.msgType], (newMsgType, oldMsgType) => {
+    console.log('MsgType changed, refreshing. New:', newMsgType, 'Old:', oldMsgType);
+    refresh();
+}, { deep: false }); // deep: false as we are watching a shallow copy
 
 onMounted(() => {
     refresh();

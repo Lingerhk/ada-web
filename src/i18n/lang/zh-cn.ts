@@ -78,7 +78,7 @@ export default {
 		sycConfigIndex: '系统',
 		sycSettingIndex: '域控配置',
 		adDomainConfigIndex: '域账户配置',
-		sensorConfigIndex: 'Sensor配置',
+		sensorConfigIndex: '传感器配置',
 		accountIndex: '平台用户',
 		accountPersonIndex: '用户中心',
 		accountManagementIndex: '用户列表',

@@ -14,7 +14,9 @@
                         <template #label>
                             <h4>{{ $t('message.system.basicInfo.companyWebsite') }}:</h4>
                         </template>
-                        {{ state.data.companyWebsite }}
+                        <a :href="state.data.companyWebsite" target="_blank" rel="noopener noreferrer">
+                            {{ state.data.companyWebsite }}
+                        </a>
                     </el-form-item>
                     <el-form-item>
                         <template #label>
@@ -38,8 +40,12 @@
                             :before-upload="beforeUpload"
                             :http-request="handleUpload">
                             <template #trigger>
-                                <div class="logo">
-                                    <img class="el-upload-list__item-thumbnail logo" :src="state.icon" alt="" />
+                                <div class="logo-container">
+                                    <img class="logo-img" :src="state.icon" alt="Logo" />
+                                    <div class="logo-overlay">
+                                        <el-icon size="24"><Edit /></el-icon>
+                                        <span>{{ $t('message.tableCommon.edit') }}</span>
+                                    </div>
                                 </div>
                             </template>
                         </el-upload>
@@ -57,6 +63,7 @@ import { GetSystemInfoReply } from '/@/api/grpc/ada';
 import api from '/@/api/grpc';
 import { alertApiError, alertResult } from '/@/utils/error';
 import { useI18n } from 'vue-i18n';
+import { Edit } from '@element-plus/icons-vue';
 
 const { t } = useI18n();
 
@@ -148,5 +155,48 @@ onMounted(() => {
 .logo {
     width: 178px;
     height: 178px;
+}
+
+.logo-container {
+    position: relative;
+    width: 100px; /* Adjust size as needed */
+    height: 100px; /* Adjust size as needed */
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid #eee; /* Optional: adds a border */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image covers the circle without distortion */
+}
+
+.logo-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.logo-container:hover .logo-overlay {
+    opacity: 1;
+}
+
+.logo-overlay .el-icon {
+    margin-bottom: 5px;
 }
 </style>

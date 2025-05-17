@@ -21,38 +21,36 @@
                 </el-form>
             </div>
             <el-table :data="state.data" v-loading="state.loading" style="width: 100%">
-                <el-table-column type="index" :label="$t('message.tableCommon.index')" width="40px" />
+                <el-table-column type="index" :label="$t('message.tableCommon.index')" width="60px" />
                 <el-table-column prop="iP" :label="$t('message.sysConfig.sensorConfig.iP')"></el-table-column>
                 <el-table-column prop="domain" :label="$t('message.advancedSearch.domain')"></el-table-column>
                 <el-table-column prop="hostname" :label="$t('message.tableCommon.dcHostname')"></el-table-column>
-                <el-table-column prop="status" :label="$t('message.advancedSearch.status')">
+                <el-table-column prop="status" :label="$t('message.advancedSearch.status')" min-width="60">
                     <template #default="scope">
                         <span :class="scope.row.status === 'Running' ? 'success-color' : 'failed-color'">{{
                             $t(`message.sysConfig.sensorConfig.status_${scope.row.status}`) }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="logStatus" :label="$t('message.sysConfig.sensorConfig.logSwitch')">
+                <el-table-column prop="logStatus" :label="$t('message.sysConfig.sensorConfig.logSwitch')" min-width="60">
                     <template #default="scope">
                         <el-switch v-model="scope.row.logPluginSwitch" active-value="true" class="ml-2" size="small"
                             style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
                             :before-change="() => handleConfirm(scope.row.logPluginSwitch === 'true' ? $t('message.sysConfig.sensorConfig.disableLogStatus') : $t('message.sysConfig.sensorConfig.enableLogStatus'), scope.row, changeLogStatus)" />
                     </template>
                 </el-table-column>
-                <el-table-column prop="pktStatus" :label="$t('message.sysConfig.sensorConfig.pktSwitch')">
+                <el-table-column prop="pktStatus" :label="$t('message.sysConfig.sensorConfig.pktSwitch')" min-width="60">
                     <template #default="scope">
                         <el-switch v-model="scope.row.pktPluginSwitch" active-value="true" class="ml-2" size="small"
                             style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
                             :before-change="() => handleConfirm(scope.row.pktPluginSwitch === 'true' ? $t('message.sysConfig.sensorConfig.disablePktStatus') : $t('message.sysConfig.sensorConfig.enablePktStatus'), scope.row, changePktStatus)" />
                     </template>
                 </el-table-column>
-                
-                <el-table-column prop="bindNetIface" :label="$t('message.sysConfig.sensorConfig.bindNetIface')" :formatter="(row: ListSensorReply_Details, _: any, value: string[], __: any) => value.map((idx: string) => row.netIface[idx]).join(', ')"/>
-                <el-table-column prop="lastOnlineTm" :label="$t('message.time.lastOnlineTm')">
+                <el-table-column prop="version" :label="$t('message.tableCommon.version')"></el-table-column>
+                <el-table-column prop="lastOnlineTm" :label="$t('message.time.lastOnlineTm')" min-width="120">
                     <template #default="scope">
                         {{ formatApiTime(scope.row.lastOnlineTm) }}
                     </template>
                 </el-table-column>
-                <el-table-column prop="version" :label="$t('message.tableCommon.version')"></el-table-column>
                 <el-table-column :label="$t('message.tableCommon.operation')">
                     <template #default="scope">
                         <el-button size="large" text type="primary" @click="onEdit(scope.row)">{{
@@ -64,6 +62,13 @@
                     </template>
                 </el-table-column>
             </el-table>
+            <!-- Pagination -->
+            <el-row style="margin-top: 10px" justify="space-between">
+                <div></div>
+                <el-pagination v-model:current-page="state.req.pageIdx" v-model:page-size="state.req.pageSize"
+                    :page-sizes="[10, 20, 30, 40, 50]" layout='sizes, prev, pager, next, jumper' :total="state.total"
+                    @size-change="handleSizeChange" @current-change="handleCurrentChange" />
+            </el-row>
         </el-card>
         <DetailDrawer ref="detailDrawerRef" />
         <EditDrawer ref="editDrawerRef" />
@@ -105,6 +110,7 @@ const state = reactive({
     data: [] as ListSensorReply_Details[],
     loading: false,
     exhausted: false,
+    total: 0, // Add total for pagination
     domainOptions: [] as OptionType[],
 });
 
@@ -122,6 +128,7 @@ const refresh = () => {
         console.log(data);
         state.data = data.list;
         state.exhausted = data.exhausted;
+        state.total = data.page?.total ?? data.list.length; // Update total from API response
     })
     .catch(err => alertApiError(err))
     .finally(() => state.loading = false);
@@ -217,6 +224,17 @@ const onDelete = (row: ListSensorReply_Details) => {
         console.log('Delete cancelled');
     });
 }
+
+// Pagination handlers
+const handleSizeChange = (val: number) => {
+    state.req.pageSize = val;
+    refresh();
+};
+
+const handleCurrentChange = (val: number) => {
+	state.req.pageIdx = val;
+    refresh();
+};
 
 onMounted(() => {
     refresh();

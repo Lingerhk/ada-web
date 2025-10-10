@@ -129,7 +129,7 @@
                         <span style="margin-left: 5px;">{{ T('verifyDesc') }}</span>
                     </el-row>
                     <el-row>
-                        <span style="margin-left: 25px;">{{ state.data?.verifyDesc }}</span>
+                        <span style="margin-left: 25px;">{{ state.data?.reference }}</span>
                     </el-row>
                     <!-- 修复建议 -->
                     <el-row>
@@ -222,7 +222,9 @@ const refreshActivity = () => {
         orderCreateTm: -1,
         level: [],
         startTm: '',
-        endTm: ''
+        endTm: '',
+        dcHostname: [],
+        title: [],
     };
 
     console.log('listActiviy', req);
@@ -237,7 +239,7 @@ const refreshActivity = () => {
 };
 
 const getImage = (type: string) => {
-    const m  = {
+    const m: Record<string, any> = {
         'dc': DcImage,
         'ip': IpImage,
         'user': UserImage,
@@ -296,11 +298,11 @@ watch(() => state.data, () => {
 
 const formattedTmpl = computed(() => {
     // 使用正则表达式匹配并处理文本
-    if (!state.data) {
+    if (!state.data || !state.data.attackFlow?.desc) {
         return '';
     }
 
-    const parts = state.data?.eventTmpl.split(/(\[[^\]]+\])/);
+    const parts = state.data.attackFlow.desc.split(/(\[[^\]]+\])/);
     return parts.map(part => {
         if (part.startsWith('[') && part.endsWith(']')) {
             return `<span style="color: green;">${part}</span>`;

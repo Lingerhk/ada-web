@@ -110,9 +110,9 @@
                                         </el-col>
                                         <el-col :span="6">
                                             <el-row>
-                                                <el-tooltip :content="item.eventTmpl" placement="top">
-                                                    <!-- <span class="eventTmpl-container">{{ item.eventTmpl }}</span> -->
-                                                    <div v-html="formatTemplate(item.eventTmpl)"
+                                                <el-tooltip :content="item.attackFlow?.desc" placement="top">
+                                                    <!-- <span class="eventTmpl-container">{{ item.attackFlow?.desc }}</span> -->
+                                                    <div v-html="formatTemplate(item.attackFlow?.desc || '')"
                                                         class="eventTmpl-container" />
                                                 </el-tooltip>
                                             </el-row>
@@ -223,7 +223,7 @@ const shortDcName = (name: string) => {
     return name.split('.')[0];
 }
 
-const iconTag = (item: Object) => {
+const iconTag = (item: any) => {
     const name = item.obj;
     const value = item.value;
 
@@ -351,7 +351,7 @@ const handleCurrentChange = (val: number) => {
   refreshThreatTable();
 }
 
-let intervalId: NodeJS.Timer | null = null;
+let intervalId: ReturnType<typeof setInterval> | null = null;
 
 const enableAutoRefresh = () => {
     if (!intervalId) {
@@ -369,7 +369,7 @@ const disalbeAutoRefresh = () => {
     }
 };
 
-const onAutoRefresh = (val) => {
+const onAutoRefresh = (val: boolean) => {
     if (val) {
         enableAutoRefresh();
     } else {

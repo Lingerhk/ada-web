@@ -6,31 +6,20 @@
                 <el-form label-position="left" label-width="120px">
                     <el-form-item>
                         <template #label>
-                            <h4>{{ $t('message.system.basicInfo.companyName') }}:</h4>
+                            <h4>{{ $t('message.system.basicInfo.systemName') }}:</h4>
                         </template>
-                        {{ state.data.companyName }}
-                    </el-form-item>
-                    <el-form-item>
-                        <template #label>
-                            <h4>{{ $t('message.system.basicInfo.companyWebsite') }}:</h4>
-                        </template>
-                        <a :href="state.data.companyWebsite" target="_blank" rel="noopener noreferrer">
-                            {{ state.data.companyWebsite }}
-                        </a>
+                        {{ state.data.systemName }}
                     </el-form-item>
                     <el-form-item>
                         <template #label>
                             <h4>{{ $t('message.system.basicInfo.ip') }}:</h4>
                         </template>
-                        {{ state.data.ip }}
-                    </el-form-item>
-                    <el-form-item>
-                        <template #label>
-                            <h4>{{ $t('message.system.basicInfo.systemName') }}:</h4>
-                        </template>
-                        {{ state.data.systemName }}
+                        {{ state.data.systemIP }}
+                        <el-button type="primary" :icon="Edit" circle @click="showUpdateIPDialog" style="margin-left: 10px;"/>
                     </el-form-item>
                 </el-form>
+
+                
                 <el-form class="logo-form" label-position="left" label-width="120px">
                     <el-form-item>
                         <template #label>
@@ -58,8 +47,8 @@
 
 <script setup lang="ts">
 import { onMounted, reactive } from 'vue';
-import { ElMessage, type UploadProps } from 'element-plus'
-import { GetSystemInfoReply } from '/@/api/grpc/ada';
+import { ElMessage, type UploadProps, ElMessageBox } from 'element-plus'
+import { GetSystemInfoReply, UpdateSystemIPReq } from '/@/api/grpc/ada';
 import api from '/@/api/grpc';
 import { alertApiError, alertResult } from '/@/utils/error';
 import { useI18n } from 'vue-i18n';
@@ -73,17 +62,47 @@ const state = reactive({
     iconUpload: '',
 });
 
+const showUpdateIPDialog = () => {
+    ElMessageBox.prompt(t('message.system.basicInfo.enterNewIP'), t('message.system.basicInfo.updateIPTitle'), {
+        confirmButtonText: t('message.tableCommon.submit'),
+        cancelButtonText: t('message.tableCommon.cancel'),
+        inputPattern: /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/,
+        inputErrorMessage: t('message.system.basicInfo.invalidIPFormat'),
+    })
+    .then(({ value }) => {
+        handleUpdateIP(value);
+    })
+    .catch(() => {
+        // Action cancelled
+    });
+};
+
+const handleUpdateIP = (newIP: string) => {
+    const req: UpdateSystemIPReq = {
+        systemIP: newIP,
+    };
+    api.updateSystemIP(req)
+    .then(resp => resp.response)
+    .then(data => {
+        alertResult(data.result, t('message.system.basicInfo.updateIPSucc'), t('message.system.basicInfo.updateIPFail'));
+        if (data.result === 'SUCCESS') {
+            refreshInfo();
+        }
+    })
+    .catch(err => alertApiError(err));
+};
+
 const handleUpload = (options: any) => {
     if (state.iconUpload === '') {
         return;
     }
 
-    api.updateProductIcon({
+    api.updateSystemIcon({
         file: state.iconUpload
     })
     .then(resp => resp.response)
     .then(data => {
-        alertResult(data.result, t('message.system.basicInfo.updateProductIconSucc'), t('message.system.basicInfo.updateProductIconFail'))
+        alertResult(data.result, t('message.system.basicInfo.updateSystemIconSucc'), t('message.system.basicInfo.updateSystemIconFail'))
     })
     .catch(err => alertApiError(err))
     .finally(() => refreshIcon());
@@ -125,7 +144,7 @@ const refreshInfo = () => {
 };
 
 const refreshIcon = () => {
-    api.getProductIcon({})
+    api.getSystemIcon({})
     .then(resp => resp.response)
     .then(data => {
         if (!state.icon.startsWith('data:image/png;base64,')) {

@@ -57,7 +57,7 @@
                     <el-table-column :label="$t('message.tableCommon.operation')">
                         <template #default="scope">
                             <el-button size="large" text type="primary" @click="handleDetail(scope.row)">{{
-                                $t('message.tableCommon.detailShort') }}</el-button>
+                                $t('message.tableCommon.detail') }}</el-button>
                             <el-button size="large" text type="primary" @click="handleScan(scope.row)">{{
                                 $t('message.tableCommon.scanNow') }}</el-button>
                         </template>

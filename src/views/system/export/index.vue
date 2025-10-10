@@ -24,11 +24,11 @@
             <el-row style="margin-top: 10px">
                 <el-table :data="state.reply.list" v-loading="state.loading" :border="true"
                     row-class-name="pointer-cursor" style="width: 100%">
-                    <el-table-column type="index" width="70" :label="transExport('index')" />
-                    <el-table-column min-width="250" prop="name" :label="transExport('name')" />
+                    <el-table-column type="index" width="60" :label="transExport('index')" />
+                    <el-table-column min-width="240" prop="name" :label="transExport('name')" />
                     <el-table-column min-width="100" prop="type" :label="transExport('type')"
                         :formatter="(_, __, value, ___) => transExport(`type_${value}`)" />
-                    <el-table-column min-width="100" prop="status" :label="transExport('status')">
+                    <el-table-column min-width="80" prop="status" :label="transExport('status')">
                         <template #default="prop">
                             <span :class="`status-${prop.row.status}`">{{ transExport(`status_${prop.row.status}`)
                                 }}</span>
@@ -39,10 +39,10 @@
                             </el-tooltip>
                         </template>
                     </el-table-column>
-                    <el-table-column min-width="100" prop="fileType" :label="transExport('fileType')" />
-                    <el-table-column min-width="250" prop="createTm" :label="transExport('createTm')"
+                    <el-table-column min-width="80" prop="fileType" :label="transExport('fileType')" />
+                    <el-table-column min-width="120" prop="createTm" :label="transExport('createTm')"
                         :formatter="(_, __, value, ___) => formatApiTime(value)" />
-                    <el-table-column min-width="250" prop="updateTm" :label="transExport('updateTm')"
+                    <el-table-column min-width="120" prop="updateTm" :label="transExport('updateTm')"
                         :formatter="(_, __, value, ___) => formatApiTime(value)" />
                     <el-table-column :label="transExport('operation')">
                         <template #default="prop">

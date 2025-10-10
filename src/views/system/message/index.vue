@@ -70,9 +70,11 @@
                     <el-button type="primary" size="default" @click="markAllReaded">{{
                         $t('message.system.message.markAllReaded') }}</el-button>
                 </div>
-                <el-pagination v-model:current-page="state.req.pageIdx" v-model:page-size="state.req.pageSize"
+                <el-pagination :current-page="state.req.pageIdx" :page-size="state.req.pageSize"
                     :page-sizes="[10, 30, 60, 100]" layout="sizes, prev, pager, next, jumper"
-                    :total="state.reply.page?.total" />
+                    :total="state.reply.page?.total"
+                    @size-change="handlePageSizeChange" 
+                    @current-change="handleCurrentPageChange" />
             </el-row>
         </el-card>
     </div>
@@ -172,6 +174,16 @@ const refresh = () => {
     })
     .catch(err => alertApiError(err))
     .finally(() => state.loading = false);
+};
+
+const handlePageSizeChange = (newPageSize: number) => {
+    state.req.pageSize = newPageSize;
+    refresh();
+};
+
+const handleCurrentPageChange = (newPage: number) => {
+    state.req.pageIdx = newPage;
+    refresh();
 };
 
 const handleSortChange = ({ column, prop, order }: { column: any, prop: string, order: 'ascending' | 'descending' | null }) => {

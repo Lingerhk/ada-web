@@ -38,7 +38,7 @@
                                 :disabled="scope.row.tmplType !== 2">{{
                                     $t('message.tableCommon.edit') }}</el-button>
                             <el-button size="large" text type="primary" @click="handleDetail(scope.row)">{{
-                                $t('message.tableCommon.detailShort') }}</el-button>
+                                $t('message.tableCommon.detail') }}</el-button>
                             <el-button size="large" text type="danger" @click="handleDelete(scope.row)"
                                 :disabled="scope.row.tmplType !== 2">{{
                                     $t('message.tableCommon.delete') }}</el-button>

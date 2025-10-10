@@ -77,7 +77,7 @@
                         <template #default="prop">
                             <el-space size="small" spacer="|">
                                 <el-button size="small" type="primary" text @click="handleDetail(prop.row)">
-                                    {{ $t('message.tableCommon.detailShort') }}
+                                    {{ $t('message.tableCommon.detail') }}
                                 </el-button>
                                 <el-button size="small" type="danger" text @click="handleDelete(prop.row)">
                                     {{ $t('message.tableCommon.delete') }}

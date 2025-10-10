@@ -77,15 +77,16 @@
 
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, reactive, ref, watch } from 'vue';
-import { CmdSensorReq, ListSensorReply_Details, ListSensorReq, UpdateSensorReq, UpdateSensorVersionReq } from '/@/api/grpc/ada';
+import { CmdSensorReq, ListSensorReply_Details, ListSensorReq, UpdateSensorReq } from '/@/api/grpc/ada';
 import { Search } from '@element-plus/icons-vue';
-import { ElMessageBox, valueEquals } from 'element-plus';
+import { ElMessageBox, ElCheckbox, type CheckboxValueType } from 'element-plus';
 import api from '/@/api/grpc';
 import { alertApiError, alertResult } from '/@/utils/error';
 import { useI18n } from 'vue-i18n';
 import { OptionType, getSensorStatusOptions } from '/@/utils/constant';
 import { listDomainOptions } from '/@/api/grpc/method';
 import { formatApiTime } from '/@/utils/formatTime';
+import { h } from 'vue';
 
 const MultiSelector = defineAsyncComponent(() => import('/@/components/form/multiSelector.vue'));
 const DetailDrawer = defineAsyncComponent(() => import('./detailDrawer.vue'));
@@ -199,28 +200,38 @@ const onEdit = (row: ListSensorReply_Details) => {
 }
 
 const onDelete = (row: ListSensorReply_Details) => {
-    ElMessageBox.confirm(
-        t('message.dialog.singleSensitive'), // Using a generic sensitive delete message for now
-        t('message.dialog.prompt'),
-        {
-            confirmButtonText: t('message.dialog.confirm'),
-            cancelButtonText: t('message.dialog.cancel'),
-            type: 'warning',
-        }
-    ).then(() => {
+    let uninstallOnServer = false; // Regular variable instead of ref
+
+    ElMessageBox({
+        title: t('message.dialog.prompt'),
+        message: h('div', null, [
+            h('p', null, t('message.dialog.singleSensitive')),
+            h(ElCheckbox, {
+                checked: uninstallOnServer, // Use checked prop
+                onChange: (val: CheckboxValueType) => {
+                    uninstallOnServer = !!val;
+                    console.log('Checkbox(uninstallOnServer) changed to:', uninstallOnServer);
+                },
+                label: t('message.sysConfig.sensorConfig.deleteSensorOnADServer'),
+            }),
+        ]),
+        showCancelButton: true,
+        confirmButtonText: t('message.dialog.confirm'),
+        cancelButtonText: t('message.dialog.cancel'),
+        type: 'warning',
+    }).then(() => {
         const req: CmdSensorReq = {
             iD: row.iD,
-            cmd: 'delete',
+            cmd: uninstallOnServer ? 'uninstall' : 'delete',
         };
 
-        console.log('cmdSensor', req)
+        console.log('cmdSensor request:', req);
         api.cmdSensor(req)
             .then(resp => resp.response)
             .then(data => alertResult(data.result, t('message.sysConfig.sensorConfig.deleteSucc'), t('message.sysConfig.sensorConfig.deleteFail')))
             .catch(err => alertApiError(err))
             .finally(() => refresh());
     }).catch(() => {
-        // User clicked cancel or closed the dialog
         console.log('Delete cancelled');
     });
 }

@@ -41,7 +41,7 @@
                         </el-table-column>
                         <el-table-column prop="ips" :label="$t('message.adDomain.ip')" min-width="120"></el-table-column>
                         <el-table-column prop="timeout" :label="$t('message.adDomain.timeout')" min-width="90"></el-table-column>
-                        <el-table-column prop="status" :label="$t('message.adDomain.status')" min-width="100">
+                        <el-table-column prop="status" :label="$t('message.adDomain.status')" min-width="80">
                             <template #default="scope">
                                 <el-tag :type="getStatusType(scope.row.status)">
                                     {{ $t('message.adDomain.state.' + scope.row.status) }}
@@ -51,7 +51,7 @@
                                 </el-tag>
                             </template>
                         </el-table-column>
-                        <el-table-column prop="hasSensor" :label="$t('message.adDomain.hasSensor')" min-width="150" align="center">
+                        <el-table-column prop="hasSensor" :label="$t('message.adDomain.hasSensor')" min-width="100" align="center">
                             <template #default="scope">
                                 <el-icon v-if="scope.row.hasSensor" color="#67C23A"><Check /></el-icon>
                                 <el-button v-else type="primary" link size="small" @click="handleDeploySensor(scope.row)">
@@ -94,7 +94,7 @@ import { ListDomainReply_Details, TestDomainReply, TestDomainReq, DeploySensorRe
 import api from '/@/api/grpc';
 import { alertApiError } from '/@/utils/error';
 import { formatApiTime } from '/@/utils/formatTime';
-import { ElMessage, ElMessageBox } from 'element-plus';
+import { ElMessage, ElMessageBox, ElLoading } from 'element-plus';
 import { QuestionFilled, Check, Close } from '@element-plus/icons-vue';
 
 const { t } = useI18n();
@@ -188,30 +188,41 @@ const handleDeploySensor = (dcDetails: any) => {
             cancelButtonText: t('message.dialog.cancel'),
             type: 'warning',
         }
-    ).then(() => {
-        const req: DeploySensorReq = {
-            domainID: state.data.iD,
-            dcHostname: dcDetails.hostname,
-        };
-        console.log('DeploySensor request:', req);
-        api.deploySensor(req)
-            .then(resp => resp.response)
-            .then((data: DeploySensorReply) => {
-                if (data.result === 'success') {
-                    ElMessage.success(t('message.adDomain.deploySensorSucc', [dcDetails.hostname]));
-                    // Optionally, update the local state or trigger a refresh if needed
-                    // For now, we just show a message. The table will reflect the change upon next full data load.
-                } else {
-                    ElMessage.error(t('message.adDomain.deploySensorFail', [dcDetails.hostname, data.result]));
-                }
-            })
-            .catch(err => {
-                alertApiError(err);
-                ElMessage.error(t('message.adDomain.deploySensorFail', [dcDetails.hostname, err.message || 'Unknown error']));
+    )
+        .then(() => {
+            const loadingInstance = ElLoading.service({
+                lock: true,
+                text: t('message.adDomain.deployInProgress'),
+                background: 'rgba(0, 0, 0, 0.7)',
             });
-    }).catch(() => {
-        ElMessage.info(t('message.adDomain.deploySensorCancelled'));
-    });
+
+            const req: DeploySensorReq = {
+                domainID: state.data.iD,
+                dcHostname: dcDetails.hostname,
+            };
+            console.log('DeploySensor request:', req);
+            api.deploySensor(req)
+                .then(resp => resp.response)
+                .then((data: DeploySensorReply) => {
+                    console.log('DeploySensor response:', data);
+                    if (data.result === 'success') {
+                        ElMessage.success(t('message.adDomain.deploySensorSucc', [dcDetails.hostname]));
+                        // Optionally, update the local state or trigger a refresh if needed
+                        // For now, we just show a message. The table will reflect the change upon next full data load.
+                    } else {
+                        ElMessage.error(t('message.adDomain.deploySensorFail', [dcDetails.hostname, data.result]));
+                    }
+                })
+                .catch(err => {
+                    ElMessage.error(t('message.adDomain.deploySensorFail', [dcDetails.hostname, err.message || 'Unknown error']));
+                })
+                .finally(() => {
+                    loadingInstance.close();
+                });
+        })
+        .catch(() => {
+            ElMessage.info(t('message.adDomain.deploySensorCancelled'));
+        });
 };
 
 defineExpose({

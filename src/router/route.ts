@@ -214,7 +214,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 					isAffix: false,
 					isIframe: false,
 					roles: ['admin', 'common'],
-					icon: 'fa fa-bug',
+					icon: 'ele-Warning',
 				},
 				children: [
 					{
@@ -244,7 +244,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 							isAffix: false,
 							isIframe: false,
 							roles: ['admin', 'common'],
-							icon: 'fa fa-shield',
+							icon: 'ele-Lock',
 						},
 					},
 					{
@@ -259,7 +259,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 							isAffix: false,
 							isIframe: false,
 							roles: ['admin', 'common'],
-							icon: 'fa fa-stethoscope',
+							icon: 'ele-MagicStick',
 						},
 					},
 					{
@@ -354,6 +354,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 									isAffix: false,
 									isIframe: false,
 									roles: ['admin', 'common'],
+									icon: 'iconfont icon-serverjiqun',
 								},
 							},
 							{
@@ -368,6 +369,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 									isAffix: false,
 									isIframe: false,
 									roles: ['admin', 'common'],
+									icon: 'iconfont icon-bianzu',
 								},
 							},
 
@@ -400,6 +402,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 									isAffix: false,
 									isIframe: false,
 									roles: ['admin', 'common'],
+									icon: 'ele-User',
 								},
 							},
 							{
@@ -414,6 +417,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 									isAffix: false,
 									isIframe: false,
 									roles: ['admin', 'common'],
+									icon: 'ele-UserFilled',
 								},
 							},
 						],
@@ -446,6 +450,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 									isAffix: false,
 									isIframe: false,
 									roles: ['admin', 'common'],
+									icon: 'ele-InfoFilled',
 								}
 							},
 							{
@@ -460,6 +465,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 									isAffix: false,
 									isIframe: false,
 									roles: ['admin', 'common'],
+									icon: 'ele-Clock',
 								}
 							},
 							{
@@ -474,6 +480,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 									isAffix: false,
 									isIframe: false,
 									roles: ['admin', 'common'],
+									icon: 'ele-Key',
 								}
 							},
 							{
@@ -488,6 +495,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 									isAffix: false,
 									isIframe: false,
 									roles: ['admin', 'common'],
+									icon: 'ele-Monitor',
 								}
 							},
 							{
@@ -516,6 +524,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 									isAffix: false,
 									isIframe: false,
 									roles: ['admin', 'common'],
+									icon: 'ele-FirstAidKit',
 								}
 							},
 						],

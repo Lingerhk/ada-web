@@ -1,6 +1,6 @@
 import { ElMessage } from "element-plus";
 import api from "."
-import { AddScanTaskReply, AddScanTaskReq, GetActivityNamesReq, GetScanTaskReq, GetScanTmplReply, GetScanTmplReq, GetSystemInfoReply, GetSystemInfoReq, ListAuditLogReq, ListDomainReply, ListDomainReq, ListNotifyReq, ListScanTmplReply, ListScanTmplReply_Details, ListScanTmplReq, ListThreatRuleReq, scanRiskStatsReply, scanRiskStatsReq, UpdateNotifyReq, UpdateSystemLanguageReq } from "./ada"
+import { AddScanTaskReply, AddScanTaskReq, GetActivityNamesReq, GetScanTaskReq, GetScanTmplReply, GetScanTmplReq, GetSystemInfoReply, GetSystemInfoReq, ListAuditLogReq, ListDomainReply, ListDomainReq, ListNotifyReq, ListScanTmplReply, ListScanTmplReply_Details, ListScanTmplReq, ListThreatRuleReq, scanRiskStatsReply, scanRiskStatsReq, UpdateNotifyReq, UpdateSystemLanguageReq, ListAlertRuleReq, ListAlertRuleReply, AddAlertRuleReq, UpdateAlertRuleReq, DeleteAlertRuleReq, ListActivityRuleReq, ListActivityRuleReply, GetActivityRuleReq, AddActivityRuleReq, UpdateActivityRuleReq, DeleteActivityRuleReq } from "./ada"
 import { alertApiError } from "/@/utils/error";
 import { OptionType } from "/@/utils/constant";
 import { formatApiTime, getPrev7Days } from "/@/utils/formatTime";
@@ -240,4 +240,47 @@ export const listThreatRuleOptions = async (): Promise<OptionType[]> => {
         console.error(err);
         return [];
     }
+};
+
+// =============== Alert Rule (Flow Rules) Methods ===============
+export const listAlertRules = async (req: ListAlertRuleReq): Promise<ListAlertRuleReply> => {
+    return api.listAlertRule(req).then(resp => resp.response);
+};
+
+export const addAlertRule = async (req: AddAlertRuleReq) => {
+    return api.addAlertRule(req).then(resp => resp.response);
+};
+
+export const updateAlertRule = async (req: UpdateAlertRuleReq) => {
+    return api.updateAlertRule(req).then(resp => resp.response);
+};
+
+export const deleteAlertRule = async (req: DeleteAlertRuleReq) => {
+    return api.deleteAlertRule(req).then(resp => resp.response);
+};
+
+// =============== Activity Rule (Sigma Rules) Methods ===============
+export const listActivityRules = async (req: ListActivityRuleReq): Promise<ListActivityRuleReply> => {
+    return api.listActivityRule(req).then(resp => resp.response);
+};
+
+export const getActivityRule = async (req: GetActivityRuleReq) => {
+    return api.getActivityRule(req).then(resp => resp.response);
+};
+
+export const addActivityRule = async (req: AddActivityRuleReq) => {
+    return api.addActivityRule(req).then(resp => resp.response);
+};
+
+export const updateActivityRule = async (req: UpdateActivityRuleReq) => {
+    return api.updateActivityRule(req).then(resp => resp.response);
+};
+
+export const deleteActivityRule = async (req: DeleteActivityRuleReq) => {
+    return api.deleteActivityRule(req).then(resp => resp.response);
+};
+
+// =============== Get Alert Types ===============
+export const getAlertTypes = async () => {
+    return api.getAlertTypes({}).then(resp => resp.response);
 };

@@ -59,6 +59,26 @@ import type { ListBaselineReply } from "./ada";
 import type { ListBaselineReq } from "./ada";
 import type { ScanRiskStatsReply } from "./ada";
 import type { ScanRiskStatsReq } from "./ada";
+import type { DeleteActivityRuleReply } from "./ada";
+import type { DeleteActivityRuleReq } from "./ada";
+import type { UpdateActivityRuleReply } from "./ada";
+import type { UpdateActivityRuleReq } from "./ada";
+import type { AddActivityRuleReply } from "./ada";
+import type { AddActivityRuleReq } from "./ada";
+import type { GetActivityRuleReply } from "./ada";
+import type { GetActivityRuleReq } from "./ada";
+import type { ListActivityRuleReply } from "./ada";
+import type { ListActivityRuleReq } from "./ada";
+import type { GetAlertTypesReply } from "./ada";
+import type { GetAlertTypesReq } from "./ada";
+import type { DeleteAlertRuleReply } from "./ada";
+import type { DeleteAlertRuleReq } from "./ada";
+import type { UpdateAlertRuleReply } from "./ada";
+import type { UpdateAlertRuleReq } from "./ada";
+import type { AddAlertRuleReply } from "./ada";
+import type { AddAlertRuleReq } from "./ada";
+import type { ListAlertRuleReply } from "./ada";
+import type { ListAlertRuleReq } from "./ada";
 import type { DeleteThreatBlockReply } from "./ada";
 import type { DeleteThreatBlockReq } from "./ada";
 import type { UpdateThreatBlockReply } from "./ada";
@@ -542,6 +562,48 @@ export interface IADAClient {
      * @generated from protobuf rpc: DeleteThreatBlock(ada.DeleteThreatBlockReq) returns (ada.DeleteThreatBlockReply);
      */
     deleteThreatBlock(input: DeleteThreatBlockReq, options?: RpcOptions): UnaryCall<DeleteThreatBlockReq, DeleteThreatBlockReply>;
+    /**
+     * Rule Management (Alert Rules & Activity Rules)
+     *
+     * @generated from protobuf rpc: ListAlertRule(ada.ListAlertRuleReq) returns (ada.ListAlertRuleReply);
+     */
+    listAlertRule(input: ListAlertRuleReq, options?: RpcOptions): UnaryCall<ListAlertRuleReq, ListAlertRuleReply>;
+    /**
+     * @generated from protobuf rpc: AddAlertRule(ada.AddAlertRuleReq) returns (ada.AddAlertRuleReply);
+     */
+    addAlertRule(input: AddAlertRuleReq, options?: RpcOptions): UnaryCall<AddAlertRuleReq, AddAlertRuleReply>;
+    /**
+     * @generated from protobuf rpc: UpdateAlertRule(ada.UpdateAlertRuleReq) returns (ada.UpdateAlertRuleReply);
+     */
+    updateAlertRule(input: UpdateAlertRuleReq, options?: RpcOptions): UnaryCall<UpdateAlertRuleReq, UpdateAlertRuleReply>;
+    /**
+     * @generated from protobuf rpc: DeleteAlertRule(ada.DeleteAlertRuleReq) returns (ada.DeleteAlertRuleReply);
+     */
+    deleteAlertRule(input: DeleteAlertRuleReq, options?: RpcOptions): UnaryCall<DeleteAlertRuleReq, DeleteAlertRuleReply>;
+    /**
+     * @generated from protobuf rpc: GetAlertTypes(ada.GetAlertTypesReq) returns (ada.GetAlertTypesReply);
+     */
+    getAlertTypes(input: GetAlertTypesReq, options?: RpcOptions): UnaryCall<GetAlertTypesReq, GetAlertTypesReply>;
+    /**
+     * @generated from protobuf rpc: ListActivityRule(ada.ListActivityRuleReq) returns (ada.ListActivityRuleReply);
+     */
+    listActivityRule(input: ListActivityRuleReq, options?: RpcOptions): UnaryCall<ListActivityRuleReq, ListActivityRuleReply>;
+    /**
+     * @generated from protobuf rpc: GetActivityRule(ada.GetActivityRuleReq) returns (ada.GetActivityRuleReply);
+     */
+    getActivityRule(input: GetActivityRuleReq, options?: RpcOptions): UnaryCall<GetActivityRuleReq, GetActivityRuleReply>;
+    /**
+     * @generated from protobuf rpc: AddActivityRule(ada.AddActivityRuleReq) returns (ada.AddActivityRuleReply);
+     */
+    addActivityRule(input: AddActivityRuleReq, options?: RpcOptions): UnaryCall<AddActivityRuleReq, AddActivityRuleReply>;
+    /**
+     * @generated from protobuf rpc: UpdateActivityRule(ada.UpdateActivityRuleReq) returns (ada.UpdateActivityRuleReply);
+     */
+    updateActivityRule(input: UpdateActivityRuleReq, options?: RpcOptions): UnaryCall<UpdateActivityRuleReq, UpdateActivityRuleReply>;
+    /**
+     * @generated from protobuf rpc: DeleteActivityRule(ada.DeleteActivityRuleReq) returns (ada.DeleteActivityRuleReply);
+     */
+    deleteActivityRule(input: DeleteActivityRuleReq, options?: RpcOptions): UnaryCall<DeleteActivityRuleReq, DeleteActivityRuleReply>;
     /**
      * //////////////////////////////
      * scanrisk主动检测dashboard
@@ -1212,13 +1274,85 @@ export class ADAClient implements IADAClient, ServiceInfo {
         return stackIntercept<DeleteThreatBlockReq, DeleteThreatBlockReply>("unary", this._transport, method, opt, input);
     }
     /**
+     * Rule Management (Alert Rules & Activity Rules)
+     *
+     * @generated from protobuf rpc: ListAlertRule(ada.ListAlertRuleReq) returns (ada.ListAlertRuleReply);
+     */
+    listAlertRule(input: ListAlertRuleReq, options?: RpcOptions): UnaryCall<ListAlertRuleReq, ListAlertRuleReply> {
+        const method = this.methods[74], opt = this._transport.mergeOptions(options);
+        return stackIntercept<ListAlertRuleReq, ListAlertRuleReply>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: AddAlertRule(ada.AddAlertRuleReq) returns (ada.AddAlertRuleReply);
+     */
+    addAlertRule(input: AddAlertRuleReq, options?: RpcOptions): UnaryCall<AddAlertRuleReq, AddAlertRuleReply> {
+        const method = this.methods[75], opt = this._transport.mergeOptions(options);
+        return stackIntercept<AddAlertRuleReq, AddAlertRuleReply>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: UpdateAlertRule(ada.UpdateAlertRuleReq) returns (ada.UpdateAlertRuleReply);
+     */
+    updateAlertRule(input: UpdateAlertRuleReq, options?: RpcOptions): UnaryCall<UpdateAlertRuleReq, UpdateAlertRuleReply> {
+        const method = this.methods[76], opt = this._transport.mergeOptions(options);
+        return stackIntercept<UpdateAlertRuleReq, UpdateAlertRuleReply>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: DeleteAlertRule(ada.DeleteAlertRuleReq) returns (ada.DeleteAlertRuleReply);
+     */
+    deleteAlertRule(input: DeleteAlertRuleReq, options?: RpcOptions): UnaryCall<DeleteAlertRuleReq, DeleteAlertRuleReply> {
+        const method = this.methods[77], opt = this._transport.mergeOptions(options);
+        return stackIntercept<DeleteAlertRuleReq, DeleteAlertRuleReply>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: GetAlertTypes(ada.GetAlertTypesReq) returns (ada.GetAlertTypesReply);
+     */
+    getAlertTypes(input: GetAlertTypesReq, options?: RpcOptions): UnaryCall<GetAlertTypesReq, GetAlertTypesReply> {
+        const method = this.methods[78], opt = this._transport.mergeOptions(options);
+        return stackIntercept<GetAlertTypesReq, GetAlertTypesReply>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: ListActivityRule(ada.ListActivityRuleReq) returns (ada.ListActivityRuleReply);
+     */
+    listActivityRule(input: ListActivityRuleReq, options?: RpcOptions): UnaryCall<ListActivityRuleReq, ListActivityRuleReply> {
+        const method = this.methods[79], opt = this._transport.mergeOptions(options);
+        return stackIntercept<ListActivityRuleReq, ListActivityRuleReply>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: GetActivityRule(ada.GetActivityRuleReq) returns (ada.GetActivityRuleReply);
+     */
+    getActivityRule(input: GetActivityRuleReq, options?: RpcOptions): UnaryCall<GetActivityRuleReq, GetActivityRuleReply> {
+        const method = this.methods[80], opt = this._transport.mergeOptions(options);
+        return stackIntercept<GetActivityRuleReq, GetActivityRuleReply>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: AddActivityRule(ada.AddActivityRuleReq) returns (ada.AddActivityRuleReply);
+     */
+    addActivityRule(input: AddActivityRuleReq, options?: RpcOptions): UnaryCall<AddActivityRuleReq, AddActivityRuleReply> {
+        const method = this.methods[81], opt = this._transport.mergeOptions(options);
+        return stackIntercept<AddActivityRuleReq, AddActivityRuleReply>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: UpdateActivityRule(ada.UpdateActivityRuleReq) returns (ada.UpdateActivityRuleReply);
+     */
+    updateActivityRule(input: UpdateActivityRuleReq, options?: RpcOptions): UnaryCall<UpdateActivityRuleReq, UpdateActivityRuleReply> {
+        const method = this.methods[82], opt = this._transport.mergeOptions(options);
+        return stackIntercept<UpdateActivityRuleReq, UpdateActivityRuleReply>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: DeleteActivityRule(ada.DeleteActivityRuleReq) returns (ada.DeleteActivityRuleReply);
+     */
+    deleteActivityRule(input: DeleteActivityRuleReq, options?: RpcOptions): UnaryCall<DeleteActivityRuleReq, DeleteActivityRuleReply> {
+        const method = this.methods[83], opt = this._transport.mergeOptions(options);
+        return stackIntercept<DeleteActivityRuleReq, DeleteActivityRuleReply>("unary", this._transport, method, opt, input);
+    }
+    /**
      * //////////////////////////////
      * scanrisk主动检测dashboard
      *
      * @generated from protobuf rpc: ScanRiskStats(ada.ScanRiskStatsReq) returns (ada.ScanRiskStatsReply);
      */
     scanRiskStats(input: ScanRiskStatsReq, options?: RpcOptions): UnaryCall<ScanRiskStatsReq, ScanRiskStatsReply> {
-        const method = this.methods[74], opt = this._transport.mergeOptions(options);
+        const method = this.methods[84], opt = this._transport.mergeOptions(options);
         return stackIntercept<ScanRiskStatsReq, ScanRiskStatsReply>("unary", this._transport, method, opt, input);
     }
     /**
@@ -1227,28 +1361,28 @@ export class ADAClient implements IADAClient, ServiceInfo {
      * @generated from protobuf rpc: ListBaseline(ada.ListBaselineReq) returns (ada.ListBaselineReply);
      */
     listBaseline(input: ListBaselineReq, options?: RpcOptions): UnaryCall<ListBaselineReq, ListBaselineReply> {
-        const method = this.methods[75], opt = this._transport.mergeOptions(options);
+        const method = this.methods[85], opt = this._transport.mergeOptions(options);
         return stackIntercept<ListBaselineReq, ListBaselineReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: GetBaseline(ada.GetBaselineReq) returns (ada.GetBaselineReply);
      */
     getBaseline(input: GetBaselineReq, options?: RpcOptions): UnaryCall<GetBaselineReq, GetBaselineReply> {
-        const method = this.methods[76], opt = this._transport.mergeOptions(options);
+        const method = this.methods[86], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetBaselineReq, GetBaselineReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: ListLeak(ada.ListLeakReq) returns (ada.ListLeakReply);
      */
     listLeak(input: ListLeakReq, options?: RpcOptions): UnaryCall<ListLeakReq, ListLeakReply> {
-        const method = this.methods[77], opt = this._transport.mergeOptions(options);
+        const method = this.methods[87], opt = this._transport.mergeOptions(options);
         return stackIntercept<ListLeakReq, ListLeakReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: ListWeakPwd(ada.ListWeakPwdReq) returns (ada.ListWeakPwdReply);
      */
     listWeakPwd(input: ListWeakPwdReq, options?: RpcOptions): UnaryCall<ListWeakPwdReq, ListWeakPwdReply> {
-        const method = this.methods[78], opt = this._transport.mergeOptions(options);
+        const method = this.methods[88], opt = this._transport.mergeOptions(options);
         return stackIntercept<ListWeakPwdReq, ListWeakPwdReply>("unary", this._transport, method, opt, input);
     }
     /**
@@ -1257,35 +1391,35 @@ export class ADAClient implements IADAClient, ServiceInfo {
      * @generated from protobuf rpc: ListScanTask(ada.ListScanTaskReq) returns (ada.ListScanTaskReply);
      */
     listScanTask(input: ListScanTaskReq, options?: RpcOptions): UnaryCall<ListScanTaskReq, ListScanTaskReply> {
-        const method = this.methods[79], opt = this._transport.mergeOptions(options);
+        const method = this.methods[89], opt = this._transport.mergeOptions(options);
         return stackIntercept<ListScanTaskReq, ListScanTaskReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: GetScanTask(ada.GetScanTaskReq) returns (ada.GetScanTaskReply);
      */
     getScanTask(input: GetScanTaskReq, options?: RpcOptions): UnaryCall<GetScanTaskReq, GetScanTaskReply> {
-        const method = this.methods[80], opt = this._transport.mergeOptions(options);
+        const method = this.methods[90], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetScanTaskReq, GetScanTaskReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: AddScanTask(ada.AddScanTaskReq) returns (ada.AddScanTaskReply);
      */
     addScanTask(input: AddScanTaskReq, options?: RpcOptions): UnaryCall<AddScanTaskReq, AddScanTaskReply> {
-        const method = this.methods[81], opt = this._transport.mergeOptions(options);
+        const method = this.methods[91], opt = this._transport.mergeOptions(options);
         return stackIntercept<AddScanTaskReq, AddScanTaskReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: RecheckScanTask(ada.RecheckScanTaskReq) returns (ada.RecheckScanTaskReply);
      */
     recheckScanTask(input: RecheckScanTaskReq, options?: RpcOptions): UnaryCall<RecheckScanTaskReq, RecheckScanTaskReply> {
-        const method = this.methods[82], opt = this._transport.mergeOptions(options);
+        const method = this.methods[92], opt = this._transport.mergeOptions(options);
         return stackIntercept<RecheckScanTaskReq, RecheckScanTaskReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: DeleteScanTask(ada.DeleteScanTaskReq) returns (ada.DeleteScanTaskReply);
      */
     deleteScanTask(input: DeleteScanTaskReq, options?: RpcOptions): UnaryCall<DeleteScanTaskReq, DeleteScanTaskReply> {
-        const method = this.methods[83], opt = this._transport.mergeOptions(options);
+        const method = this.methods[93], opt = this._transport.mergeOptions(options);
         return stackIntercept<DeleteScanTaskReq, DeleteScanTaskReply>("unary", this._transport, method, opt, input);
     }
     /**
@@ -1294,35 +1428,35 @@ export class ADAClient implements IADAClient, ServiceInfo {
      * @generated from protobuf rpc: ListScanConf(ada.ListScanConfReq) returns (ada.ListScanConfReply);
      */
     listScanConf(input: ListScanConfReq, options?: RpcOptions): UnaryCall<ListScanConfReq, ListScanConfReply> {
-        const method = this.methods[84], opt = this._transport.mergeOptions(options);
+        const method = this.methods[94], opt = this._transport.mergeOptions(options);
         return stackIntercept<ListScanConfReq, ListScanConfReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: SetScanConf(ada.SetScanConfReq) returns (ada.SetScanConfReply);
      */
     setScanConf(input: SetScanConfReq, options?: RpcOptions): UnaryCall<SetScanConfReq, SetScanConfReply> {
-        const method = this.methods[85], opt = this._transport.mergeOptions(options);
+        const method = this.methods[95], opt = this._transport.mergeOptions(options);
         return stackIntercept<SetScanConfReq, SetScanConfReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: GetScanConf(ada.GetScanConfReq) returns (ada.GetScanConfReply);
      */
     getScanConf(input: GetScanConfReq, options?: RpcOptions): UnaryCall<GetScanConfReq, GetScanConfReply> {
-        const method = this.methods[86], opt = this._transport.mergeOptions(options);
+        const method = this.methods[96], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetScanConfReq, GetScanConfReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: GetScanTmplNames(ada.GetScanTmplNamesReq) returns (ada.GetScanTmplNamesReply);
      */
     getScanTmplNames(input: GetScanTmplNamesReq, options?: RpcOptions): UnaryCall<GetScanTmplNamesReq, GetScanTmplNamesReply> {
-        const method = this.methods[87], opt = this._transport.mergeOptions(options);
+        const method = this.methods[97], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetScanTmplNamesReq, GetScanTmplNamesReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: UpdateScanConf(ada.UpdateScanConfReq) returns (ada.UpdateScanConfReply);
      */
     updateScanConf(input: UpdateScanConfReq, options?: RpcOptions): UnaryCall<UpdateScanConfReq, UpdateScanConfReply> {
-        const method = this.methods[88], opt = this._transport.mergeOptions(options);
+        const method = this.methods[98], opt = this._transport.mergeOptions(options);
         return stackIntercept<UpdateScanConfReq, UpdateScanConfReply>("unary", this._transport, method, opt, input);
     }
     /**
@@ -1331,42 +1465,42 @@ export class ADAClient implements IADAClient, ServiceInfo {
      * @generated from protobuf rpc: ListScanTmpl(ada.ListScanTmplReq) returns (ada.ListScanTmplReply);
      */
     listScanTmpl(input: ListScanTmplReq, options?: RpcOptions): UnaryCall<ListScanTmplReq, ListScanTmplReply> {
-        const method = this.methods[89], opt = this._transport.mergeOptions(options);
+        const method = this.methods[99], opt = this._transport.mergeOptions(options);
         return stackIntercept<ListScanTmplReq, ListScanTmplReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: GetScanTmpl(ada.GetScanTmplReq) returns (ada.GetScanTmplReply);
      */
     getScanTmpl(input: GetScanTmplReq, options?: RpcOptions): UnaryCall<GetScanTmplReq, GetScanTmplReply> {
-        const method = this.methods[90], opt = this._transport.mergeOptions(options);
+        const method = this.methods[100], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetScanTmplReq, GetScanTmplReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: UpdateScanTmpl(ada.UpdateScanTmplReq) returns (ada.UpdateScanTmplReply);
      */
     updateScanTmpl(input: UpdateScanTmplReq, options?: RpcOptions): UnaryCall<UpdateScanTmplReq, UpdateScanTmplReply> {
-        const method = this.methods[91], opt = this._transport.mergeOptions(options);
+        const method = this.methods[101], opt = this._transport.mergeOptions(options);
         return stackIntercept<UpdateScanTmplReq, UpdateScanTmplReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: DeleteScanTmpl(ada.DeleteScanTmplReq) returns (ada.DeleteScanTmplReply);
      */
     deleteScanTmpl(input: DeleteScanTmplReq, options?: RpcOptions): UnaryCall<DeleteScanTmplReq, DeleteScanTmplReply> {
-        const method = this.methods[92], opt = this._transport.mergeOptions(options);
+        const method = this.methods[102], opt = this._transport.mergeOptions(options);
         return stackIntercept<DeleteScanTmplReq, DeleteScanTmplReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: AddScanTmpl(ada.AddScanTmplReq) returns (ada.AddScanTmplReply);
      */
     addScanTmpl(input: AddScanTmplReq, options?: RpcOptions): UnaryCall<AddScanTmplReq, AddScanTmplReply> {
-        const method = this.methods[93], opt = this._transport.mergeOptions(options);
+        const method = this.methods[103], opt = this._transport.mergeOptions(options);
         return stackIntercept<AddScanTmplReq, AddScanTmplReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: ListScanPlugin(ada.ListScanPluginReq) returns (ada.ListScanPluginReply);
      */
     listScanPlugin(input: ListScanPluginReq, options?: RpcOptions): UnaryCall<ListScanPluginReq, ListScanPluginReply> {
-        const method = this.methods[94], opt = this._transport.mergeOptions(options);
+        const method = this.methods[104], opt = this._transport.mergeOptions(options);
         return stackIntercept<ListScanPluginReq, ListScanPluginReply>("unary", this._transport, method, opt, input);
     }
     /**
@@ -1375,21 +1509,21 @@ export class ADAClient implements IADAClient, ServiceInfo {
      * @generated from protobuf rpc: DashboardStats(ada.DashboardStatsReq) returns (ada.DashboardStatsReply);
      */
     dashboardStats(input: DashboardStatsReq, options?: RpcOptions): UnaryCall<DashboardStatsReq, DashboardStatsReply> {
-        const method = this.methods[95], opt = this._transport.mergeOptions(options);
+        const method = this.methods[105], opt = this._transport.mergeOptions(options);
         return stackIntercept<DashboardStatsReq, DashboardStatsReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: DashboardTrends(ada.DashboardTrendsReq) returns (ada.DashboardTrendsReply);
      */
     dashboardTrends(input: DashboardTrendsReq, options?: RpcOptions): UnaryCall<DashboardTrendsReq, DashboardTrendsReply> {
-        const method = this.methods[96], opt = this._transport.mergeOptions(options);
+        const method = this.methods[106], opt = this._transport.mergeOptions(options);
         return stackIntercept<DashboardTrendsReq, DashboardTrendsReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: DashboardLogStats(ada.DashboardLogStatsReq) returns (ada.DashboardLogStatsReply);
      */
     dashboardLogStats(input: DashboardLogStatsReq, options?: RpcOptions): UnaryCall<DashboardLogStatsReq, DashboardLogStatsReply> {
-        const method = this.methods[97], opt = this._transport.mergeOptions(options);
+        const method = this.methods[107], opt = this._transport.mergeOptions(options);
         return stackIntercept<DashboardLogStatsReq, DashboardLogStatsReply>("unary", this._transport, method, opt, input);
     }
 }

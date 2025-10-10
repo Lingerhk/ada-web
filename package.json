@@ -8,7 +8,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint-fix": "eslint --fix --ext .js --ext .jsx --ext .vue src/",
-    "download-proto": "scp adadmin@192.168.6.139:~/github-ada/backend/apiserver/api/v2/ada.proto proto/ada.proto",
+    "download-proto": "cp /home/adadmin/adaegis/ada/backend/apiserver/api/v2/ada.proto proto/ada.proto",
     "format-proto": "bash ./proto/format-proto.sh",
     "build-proto": "grpc_tools_node_protoc --ts_out=./src/api/grpc --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts -I ./proto ./proto/*.proto",
     "upload-dist": "rsync -avz -e 'ssh -c aes128-ctr' --progress dist/ 192.168.6.4:~/ada_web"

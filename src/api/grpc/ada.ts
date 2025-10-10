@@ -2091,6 +2091,10 @@ export interface AttackFlowReply {
      * @generated from protobuf field: repeated string relates = 2;
      */
     relates: string[];
+    /**
+     * @generated from protobuf field: string desc = 3;
+     */
+    desc: string;
 }
 /**
  * @generated from protobuf message ada.AttackFlowReply.Field
@@ -2242,10 +2246,6 @@ export interface ListThreatReply_Details {
      * @generated from protobuf field: int32 duration = 14;
      */
     duration: number; // 持续时间，单位s
-    /**
-     * @generated from protobuf field: string eventTmpl = 15;
-     */
-    eventTmpl: string; // 告警模板说明
     /**
      * @generated from protobuf field: string startTm = 16;
      */
@@ -2452,19 +2452,15 @@ export interface GetThreatReply {
      */
     activities: ActivityDetails[]; // activity list
     /**
-     * @generated from protobuf field: string eventTmpl = 21;
-     */
-    eventTmpl: string; // 告警模板说明
-    /**
-     * @generated from protobuf field: string suggestion = 22;
+     * @generated from protobuf field: string suggestion = 21;
      */
     suggestion: string; // 修复建议
     /**
-     * @generated from protobuf field: string verifyDesc = 23;
+     * @generated from protobuf field: string reference = 22;
      */
-    verifyDesc: string; // 误报排查
+    reference: string; // 误报排查
     /**
-     * @generated from protobuf field: string remark = 24;
+     * @generated from protobuf field: string remark = 23;
      */
     remark: string; // 添加备注说明
 }
@@ -4471,6 +4467,646 @@ export interface DashboardLogStatsReply_logStatsList {
      * @generated from protobuf field: int32 pktlogCounts = 3;
      */
     pktlogCounts: number;
+}
+/**
+ * Alert Rule (Flow Rules) Messages
+ *
+ * @generated from protobuf message ada.ListAlertRuleReq
+ */
+export interface ListAlertRuleReq {
+    /**
+     * @generated from protobuf field: int32 pageIdx = 1;
+     */
+    pageIdx: number; // [(validator.field) = {int_gt: 0}];
+    /**
+     * @generated from protobuf field: int32 pageSize = 2;
+     */
+    pageSize: number;
+    /**
+     * @generated from protobuf field: repeated int32 level = 3;
+     */
+    level: number[]; // 规则等级: 5:critical, 4:high, 3:medium, 2:low, 1:info
+    /**
+     * @generated from protobuf field: repeated string status = 4;
+     */
+    status: string[]; // 规则状态: test|experimental|stable|deprecated
+    /**
+     * @generated from protobuf field: bool enable = 5;
+     */
+    enable: boolean; // 启用状态
+    /**
+     * @generated from protobuf field: string keyword = 6;
+     */
+    keyword: string; // 关键词搜索(标题/描述)
+    /**
+     * @generated from protobuf field: repeated string tags = 7;
+     */
+    tags: string[]; // 标签过滤
+    /**
+     * @generated from protobuf field: int32 sortTm = 8;
+     */
+    sortTm: number; // 时间排序: 1升序, -1降序
+}
+/**
+ * @generated from protobuf message ada.AlertRuleInfo
+ */
+export interface AlertRuleInfo {
+    /**
+     * @generated from protobuf field: string ID = 1 [json_name = "ID"];
+     */
+    iD: string;
+    /**
+     * @generated from protobuf field: string title = 2;
+     */
+    title: string; // 规则标题
+    /**
+     * @generated from protobuf field: string description = 3;
+     */
+    description: string; // 规则描述
+    /**
+     * @generated from protobuf field: bool enable = 4;
+     */
+    enable: boolean; // 启用状态
+    /**
+     * @generated from protobuf field: int32 level = 5;
+     */
+    level: number; // 威胁等级
+    /**
+     * @generated from protobuf field: string status = 6;
+     */
+    status: string; // 规则状态
+    /**
+     * @generated from protobuf field: repeated string tags = 7;
+     */
+    tags: string[]; // 标签
+    /**
+     * @generated from protobuf field: string logsource = 8;
+     */
+    logsource: string; // 日志来源
+    /**
+     * @generated from protobuf field: string type = 9;
+     */
+    type: string; // 规则分类
+    /**
+     * @generated from protobuf field: string author = 10;
+     */
+    author: string; // 作者
+    /**
+     * @generated from protobuf field: string reference = 11;
+     */
+    reference: string; // 参考信息
+    /**
+     * @generated from protobuf field: string suggestion = 12;
+     */
+    suggestion: string; // 处置建议
+    /**
+     * @generated from protobuf field: bool autoBlock = 13;
+     */
+    autoBlock: boolean; // 自动阻断
+    /**
+     * @generated from protobuf field: string createTm = 14;
+     */
+    createTm: string;
+    /**
+     * @generated from protobuf field: string updateTm = 15;
+     */
+    updateTm: string;
+}
+/**
+ * @generated from protobuf message ada.ListAlertRuleReply
+ */
+export interface ListAlertRuleReply {
+    /**
+     * @generated from protobuf field: ada.ModelPage page = 1;
+     */
+    page?: ModelPage;
+    /**
+     * @generated from protobuf field: repeated ada.AlertRuleInfo rules = 2;
+     */
+    rules: AlertRuleInfo[];
+}
+/**
+ * @generated from protobuf message ada.AddAlertRuleReq
+ */
+export interface AddAlertRuleReq {
+    /**
+     * @generated from protobuf field: string title = 1;
+     */
+    title: string; // [(validator.field) = {string_not_empty: true}];
+    /**
+     * @generated from protobuf field: string description = 2;
+     */
+    description: string;
+    /**
+     * @generated from protobuf field: bool enable = 3;
+     */
+    enable: boolean;
+    /**
+     * @generated from protobuf field: int32 level = 4;
+     */
+    level: number; // [(validator.field) = {int_gt: 0, int_lt: 6}]; // 1-5
+    /**
+     * @generated from protobuf field: string status = 5;
+     */
+    status: string;
+    /**
+     * @generated from protobuf field: repeated string tags = 6;
+     */
+    tags: string[];
+    /**
+     * @generated from protobuf field: string logsource = 7;
+     */
+    logsource: string;
+    /**
+     * @generated from protobuf field: string detection = 8;
+     */
+    detection: string; // [(validator.field) = {string_not_empty: true}]; // JSON string
+    /**
+     * @generated from protobuf field: string type = 9;
+     */
+    type: string;
+    /**
+     * @generated from protobuf field: string reference = 10;
+     */
+    reference: string;
+    /**
+     * @generated from protobuf field: string suggestion = 11;
+     */
+    suggestion: string;
+    /**
+     * @generated from protobuf field: string author = 12;
+     */
+    author: string;
+    /**
+     * @generated from protobuf field: bool autoBlock = 13;
+     */
+    autoBlock: boolean;
+}
+/**
+ * @generated from protobuf message ada.AddAlertRuleReply
+ */
+export interface AddAlertRuleReply {
+    /**
+     * @generated from protobuf field: string ID = 1 [json_name = "ID"];
+     */
+    iD: string;
+    /**
+     * @generated from protobuf field: string result = 2;
+     */
+    result: string;
+}
+/**
+ * @generated from protobuf message ada.UpdateAlertRuleReq
+ */
+export interface UpdateAlertRuleReq {
+    /**
+     * @generated from protobuf field: string ID = 1 [json_name = "ID"];
+     */
+    iD: string; // [(validator.field) = {string_not_empty: true}];
+    /**
+     * @generated from protobuf field: string title = 2;
+     */
+    title: string;
+    /**
+     * @generated from protobuf field: string description = 3;
+     */
+    description: string;
+    /**
+     * @generated from protobuf field: bool enable = 4;
+     */
+    enable: boolean;
+    /**
+     * @generated from protobuf field: int32 level = 5;
+     */
+    level: number;
+    /**
+     * @generated from protobuf field: string status = 6;
+     */
+    status: string;
+    /**
+     * @generated from protobuf field: repeated string tags = 7;
+     */
+    tags: string[];
+    /**
+     * @generated from protobuf field: string logsource = 8;
+     */
+    logsource: string;
+    /**
+     * @generated from protobuf field: string detection = 9;
+     */
+    detection: string; // JSON string
+    /**
+     * @generated from protobuf field: string type = 10;
+     */
+    type: string;
+    /**
+     * @generated from protobuf field: string reference = 11;
+     */
+    reference: string;
+    /**
+     * @generated from protobuf field: string suggestion = 12;
+     */
+    suggestion: string;
+    /**
+     * @generated from protobuf field: string author = 13;
+     */
+    author: string;
+    /**
+     * @generated from protobuf field: bool autoBlock = 14;
+     */
+    autoBlock: boolean;
+}
+/**
+ * @generated from protobuf message ada.UpdateAlertRuleReply
+ */
+export interface UpdateAlertRuleReply {
+    /**
+     * @generated from protobuf field: string result = 1;
+     */
+    result: string;
+}
+/**
+ * @generated from protobuf message ada.DeleteAlertRuleReq
+ */
+export interface DeleteAlertRuleReq {
+    /**
+     * @generated from protobuf field: string ID = 1 [json_name = "ID"];
+     */
+    iD: string; // [(validator.field) = {string_not_empty: true}];
+}
+/**
+ * @generated from protobuf message ada.DeleteAlertRuleReply
+ */
+export interface DeleteAlertRuleReply {
+    /**
+     * @generated from protobuf field: string result = 1;
+     */
+    result: string;
+}
+/**
+ * @generated from protobuf message ada.GetAlertTypesReq
+ */
+export interface GetAlertTypesReq {
+}
+/**
+ * @generated from protobuf message ada.GetAlertTypesReply
+ */
+export interface GetAlertTypesReply {
+    /**
+     * @generated from protobuf field: map<string, string> alertTypes = 1;
+     */
+    alertTypes: {
+        [key: string]: string;
+    };
+}
+/**
+ * Activity Rule (Sigma Rules) Messages
+ *
+ * @generated from protobuf message ada.ListActivityRuleReq
+ */
+export interface ListActivityRuleReq {
+    /**
+     * @generated from protobuf field: int32 pageIdx = 1;
+     */
+    pageIdx: number; // [(validator.field) = {int_gt: 0}];
+    /**
+     * @generated from protobuf field: int32 pageSize = 2;
+     */
+    pageSize: number;
+    /**
+     * @generated from protobuf field: repeated string IDs = 3 [json_name = "IDs"];
+     */
+    iDs: string[]; // 规则ID列表
+    /**
+     * @generated from protobuf field: repeated int32 level = 4;
+     */
+    level: number[]; // 规则等级: 5:critical, 4:high, 3:medium, 2:low, 1:info
+    /**
+     * @generated from protobuf field: repeated string status = 5;
+     */
+    status: string[]; // 规则状态: test|experimental|stable|deprecated
+    /**
+     * @generated from protobuf field: string keyword = 6;
+     */
+    keyword: string; // 关键词搜索(标题/描述)
+    /**
+     * @generated from protobuf field: repeated string tags = 7;
+     */
+    tags: string[]; // 标签过滤 (MITRE ATT&CK)
+    /**
+     * @generated from protobuf field: string logsource = 8;
+     */
+    logsource: string; // 日志来源: windows/linux/pktlog
+    /**
+     * @generated from protobuf field: string ruleType = 9;
+     */
+    ruleType: string; // 规则类型: winlog/pktlog/flow
+    /**
+     * @generated from protobuf field: int32 sortTm = 10;
+     */
+    sortTm: number; // 时间排序: 1升序, -1降序
+}
+/**
+ * @generated from protobuf message ada.ActivityRuleInfo
+ */
+export interface ActivityRuleInfo {
+    /**
+     * @generated from protobuf field: string ID = 1 [json_name = "ID"];
+     */
+    iD: string;
+    /**
+     * @generated from protobuf field: string title = 2;
+     */
+    title: string; // 规则标题
+    /**
+     * @generated from protobuf field: string description = 3;
+     */
+    description: string; // 规则描述
+    /**
+     * @generated from protobuf field: int32 level = 4;
+     */
+    level: number; // 风险等级
+    /**
+     * @generated from protobuf field: string status = 5;
+     */
+    status: string; // 规则状态
+    /**
+     * @generated from protobuf field: repeated string tags = 6;
+     */
+    tags: string[]; // 标签
+    /**
+     * @generated from protobuf field: string logsource = 7;
+     */
+    logsource: string; // 日志来源
+    /**
+     * @generated from protobuf field: string reference = 8;
+     */
+    reference: string; // 参考链接
+    /**
+     * @generated from protobuf field: string rdxKey = 9;
+     */
+    rdxKey: string; // Redis缓存key
+    /**
+     * @generated from protobuf field: repeated string fields = 10;
+     */
+    fields: string[]; // 提取字段
+    /**
+     * @generated from protobuf field: repeated string uniqueFields = 11;
+     */
+    uniqueFields: string[]; // 唯一字段
+    /**
+     * @generated from protobuf field: string author = 12;
+     */
+    author: string; // 作者
+    /**
+     * @generated from protobuf field: string createTm = 13;
+     */
+    createTm: string;
+    /**
+     * @generated from protobuf field: string updateTm = 14;
+     */
+    updateTm: string;
+}
+/**
+ * @generated from protobuf message ada.ListActivityRuleReply
+ */
+export interface ListActivityRuleReply {
+    /**
+     * @generated from protobuf field: ada.ModelPage page = 1;
+     */
+    page?: ModelPage;
+    /**
+     * @generated from protobuf field: repeated ada.ActivityRuleInfo rules = 2;
+     */
+    rules: ActivityRuleInfo[];
+}
+/**
+ * @generated from protobuf message ada.GetActivityRuleReq
+ */
+export interface GetActivityRuleReq {
+    /**
+     * @generated from protobuf field: string ID = 1 [json_name = "ID"];
+     */
+    iD: string; // [(validator.field) = {string_not_empty: true}];
+}
+/**
+ * @generated from protobuf message ada.GetActivityRuleReply
+ */
+export interface GetActivityRuleReply {
+    /**
+     * @generated from protobuf field: string ID = 1 [json_name = "ID"];
+     */
+    iD: string;
+    /**
+     * @generated from protobuf field: string title = 2;
+     */
+    title: string;
+    /**
+     * @generated from protobuf field: string description = 3;
+     */
+    description: string;
+    /**
+     * @generated from protobuf field: int32 level = 4;
+     */
+    level: number;
+    /**
+     * @generated from protobuf field: string status = 5;
+     */
+    status: string;
+    /**
+     * @generated from protobuf field: repeated string tags = 6;
+     */
+    tags: string[];
+    /**
+     * @generated from protobuf field: string logsource = 7;
+     */
+    logsource: string;
+    /**
+     * @generated from protobuf field: string reference = 8;
+     */
+    reference: string;
+    /**
+     * @generated from protobuf field: string detection = 9;
+     */
+    detection: string; // JSON string of dynamic detection
+    /**
+     * @generated from protobuf field: string rdxKey = 10;
+     */
+    rdxKey: string;
+    /**
+     * @generated from protobuf field: repeated string fields = 11;
+     */
+    fields: string[];
+    /**
+     * @generated from protobuf field: repeated string uniqueFields = 12;
+     */
+    uniqueFields: string[];
+    /**
+     * @generated from protobuf field: string author = 13;
+     */
+    author: string;
+    /**
+     * @generated from protobuf field: string createTm = 14;
+     */
+    createTm: string;
+    /**
+     * @generated from protobuf field: string updateTm = 15;
+     */
+    updateTm: string;
+}
+/**
+ * @generated from protobuf message ada.AddActivityRuleReq
+ */
+export interface AddActivityRuleReq {
+    /**
+     * @generated from protobuf field: string ID = 1 [json_name = "ID"];
+     */
+    iD: string; // [(validator.field) = {string_not_empty: true}]; // Sigma rule ID (e.g. winlog-0000-0001)
+    /**
+     * @generated from protobuf field: string title = 2;
+     */
+    title: string; // [(validator.field) = {string_not_empty: true}];
+    /**
+     * @generated from protobuf field: string description = 3;
+     */
+    description: string;
+    /**
+     * @generated from protobuf field: int32 level = 4;
+     */
+    level: number; // [(validator.field) = {int_gt: 0, int_lt: 6}]; // 1-5
+    /**
+     * @generated from protobuf field: string status = 5;
+     */
+    status: string;
+    /**
+     * @generated from protobuf field: repeated string tags = 6;
+     */
+    tags: string[];
+    /**
+     * @generated from protobuf field: string logsource = 7;
+     */
+    logsource: string;
+    /**
+     * @generated from protobuf field: string reference = 8;
+     */
+    reference: string;
+    /**
+     * @generated from protobuf field: string detection = 9;
+     */
+    detection: string; // [(validator.field) = {string_not_empty: true}]; // JSON string
+    /**
+     * @generated from protobuf field: string rdxKey = 10;
+     */
+    rdxKey: string;
+    /**
+     * @generated from protobuf field: repeated string fields = 11;
+     */
+    fields: string[];
+    /**
+     * @generated from protobuf field: repeated string uniqueFields = 12;
+     */
+    uniqueFields: string[];
+    /**
+     * @generated from protobuf field: string author = 13;
+     */
+    author: string;
+}
+/**
+ * @generated from protobuf message ada.AddActivityRuleReply
+ */
+export interface AddActivityRuleReply {
+    /**
+     * @generated from protobuf field: string ID = 1 [json_name = "ID"];
+     */
+    iD: string;
+    /**
+     * @generated from protobuf field: string result = 2;
+     */
+    result: string;
+}
+/**
+ * @generated from protobuf message ada.UpdateActivityRuleReq
+ */
+export interface UpdateActivityRuleReq {
+    /**
+     * @generated from protobuf field: string ID = 1 [json_name = "ID"];
+     */
+    iD: string; // [(validator.field) = {string_not_empty: true}];
+    /**
+     * @generated from protobuf field: string title = 2;
+     */
+    title: string;
+    /**
+     * @generated from protobuf field: string description = 3;
+     */
+    description: string;
+    /**
+     * @generated from protobuf field: int32 level = 4;
+     */
+    level: number;
+    /**
+     * @generated from protobuf field: string status = 5;
+     */
+    status: string;
+    /**
+     * @generated from protobuf field: repeated string tags = 6;
+     */
+    tags: string[];
+    /**
+     * @generated from protobuf field: string logsource = 7;
+     */
+    logsource: string;
+    /**
+     * @generated from protobuf field: string reference = 8;
+     */
+    reference: string;
+    /**
+     * @generated from protobuf field: string detection = 9;
+     */
+    detection: string; // JSON string
+    /**
+     * @generated from protobuf field: string rdxKey = 10;
+     */
+    rdxKey: string;
+    /**
+     * @generated from protobuf field: repeated string fields = 11;
+     */
+    fields: string[];
+    /**
+     * @generated from protobuf field: repeated string uniqueFields = 12;
+     */
+    uniqueFields: string[];
+    /**
+     * @generated from protobuf field: string author = 13;
+     */
+    author: string;
+}
+/**
+ * @generated from protobuf message ada.UpdateActivityRuleReply
+ */
+export interface UpdateActivityRuleReply {
+    /**
+     * @generated from protobuf field: string result = 1;
+     */
+    result: string;
+}
+/**
+ * @generated from protobuf message ada.DeleteActivityRuleReq
+ */
+export interface DeleteActivityRuleReq {
+    /**
+     * @generated from protobuf field: string ID = 1 [json_name = "ID"];
+     */
+    iD: string; // [(validator.field) = {string_not_empty: true}];
+}
+/**
+ * @generated from protobuf message ada.DeleteActivityRuleReply
+ */
+export interface DeleteActivityRuleReply {
+    /**
+     * @generated from protobuf field: string result = 1;
+     */
+    result: string;
 }
 // @generated message type with reflection information, may provide speed optimized methods
 class ModelPage$Type extends MessageType<ModelPage> {
@@ -11943,13 +12579,15 @@ class AttackFlowReply$Type extends MessageType<AttackFlowReply> {
     constructor() {
         super("ada.AttackFlowReply", [
             { no: 1, name: "fields", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => AttackFlowReply_Field },
-            { no: 2, name: "relates", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
+            { no: 2, name: "relates", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "desc", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<AttackFlowReply>): AttackFlowReply {
         const message = globalThis.Object.create((this.messagePrototype!));
         message.fields = [];
         message.relates = [];
+        message.desc = "";
         if (value !== undefined)
             reflectionMergePartial<AttackFlowReply>(this, message, value);
         return message;
@@ -11964,6 +12602,9 @@ class AttackFlowReply$Type extends MessageType<AttackFlowReply> {
                     break;
                 case /* repeated string relates */ 2:
                     message.relates.push(reader.string());
+                    break;
+                case /* string desc */ 3:
+                    message.desc = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -11983,6 +12624,9 @@ class AttackFlowReply$Type extends MessageType<AttackFlowReply> {
         /* repeated string relates = 2; */
         for (let i = 0; i < message.relates.length; i++)
             writer.tag(2, WireType.LengthDelimited).string(message.relates[i]);
+        /* string desc = 3; */
+        if (message.desc !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.desc);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -12326,7 +12970,6 @@ class ListThreatReply_Details$Type extends MessageType<ListThreatReply_Details> 
             { no: 12, name: "tags", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 13, name: "attackFlow", kind: "message", T: () => AttackFlowReply },
             { no: 14, name: "duration", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
-            { no: 15, name: "eventTmpl", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 16, name: "startTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 17, name: "endTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
@@ -12346,7 +12989,6 @@ class ListThreatReply_Details$Type extends MessageType<ListThreatReply_Details> 
         message.remark = "";
         message.tags = [];
         message.duration = 0;
-        message.eventTmpl = "";
         message.startTm = "";
         message.endTm = "";
         if (value !== undefined)
@@ -12399,9 +13041,6 @@ class ListThreatReply_Details$Type extends MessageType<ListThreatReply_Details> 
                     break;
                 case /* int32 duration */ 14:
                     message.duration = reader.int32();
-                    break;
-                case /* string eventTmpl */ 15:
-                    message.eventTmpl = reader.string();
                     break;
                 case /* string startTm */ 16:
                     message.startTm = reader.string();
@@ -12463,9 +13102,6 @@ class ListThreatReply_Details$Type extends MessageType<ListThreatReply_Details> 
         /* int32 duration = 14; */
         if (message.duration !== 0)
             writer.tag(14, WireType.Varint).int32(message.duration);
-        /* string eventTmpl = 15; */
-        if (message.eventTmpl !== "")
-            writer.tag(15, WireType.LengthDelimited).string(message.eventTmpl);
         /* string startTm = 16; */
         if (message.startTm !== "")
             writer.tag(16, WireType.LengthDelimited).string(message.startTm);
@@ -12986,10 +13622,9 @@ class GetThreatReply$Type extends MessageType<GetThreatReply> {
             { no: 18, name: "fieldData", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 9 /*ScalarType.STRING*/ } },
             { no: 19, name: "attackFlow", kind: "message", T: () => AttackFlowReply },
             { no: 20, name: "activities", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => ActivityDetails },
-            { no: 21, name: "eventTmpl", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 22, name: "suggestion", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 23, name: "verifyDesc", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 24, name: "remark", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 21, name: "suggestion", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 22, name: "reference", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 23, name: "remark", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<GetThreatReply>): GetThreatReply {
@@ -13013,9 +13648,8 @@ class GetThreatReply$Type extends MessageType<GetThreatReply> {
         message.endTm = "";
         message.fieldData = {};
         message.activities = [];
-        message.eventTmpl = "";
         message.suggestion = "";
-        message.verifyDesc = "";
+        message.reference = "";
         message.remark = "";
         if (value !== undefined)
             reflectionMergePartial<GetThreatReply>(this, message, value);
@@ -13086,16 +13720,13 @@ class GetThreatReply$Type extends MessageType<GetThreatReply> {
                 case /* repeated ada.ActivityDetails activities */ 20:
                     message.activities.push(ActivityDetails.internalBinaryRead(reader, reader.uint32(), options));
                     break;
-                case /* string eventTmpl */ 21:
-                    message.eventTmpl = reader.string();
-                    break;
-                case /* string suggestion */ 22:
+                case /* string suggestion */ 21:
                     message.suggestion = reader.string();
                     break;
-                case /* string verifyDesc */ 23:
-                    message.verifyDesc = reader.string();
+                case /* string reference */ 22:
+                    message.reference = reader.string();
                     break;
-                case /* string remark */ 24:
+                case /* string remark */ 23:
                     message.remark = reader.string();
                     break;
                 default:
@@ -13186,18 +13817,15 @@ class GetThreatReply$Type extends MessageType<GetThreatReply> {
         /* repeated ada.ActivityDetails activities = 20; */
         for (let i = 0; i < message.activities.length; i++)
             ActivityDetails.internalBinaryWrite(message.activities[i], writer.tag(20, WireType.LengthDelimited).fork(), options).join();
-        /* string eventTmpl = 21; */
-        if (message.eventTmpl !== "")
-            writer.tag(21, WireType.LengthDelimited).string(message.eventTmpl);
-        /* string suggestion = 22; */
+        /* string suggestion = 21; */
         if (message.suggestion !== "")
-            writer.tag(22, WireType.LengthDelimited).string(message.suggestion);
-        /* string verifyDesc = 23; */
-        if (message.verifyDesc !== "")
-            writer.tag(23, WireType.LengthDelimited).string(message.verifyDesc);
-        /* string remark = 24; */
+            writer.tag(21, WireType.LengthDelimited).string(message.suggestion);
+        /* string reference = 22; */
+        if (message.reference !== "")
+            writer.tag(22, WireType.LengthDelimited).string(message.reference);
+        /* string remark = 23; */
         if (message.remark !== "")
-            writer.tag(24, WireType.LengthDelimited).string(message.remark);
+            writer.tag(23, WireType.LengthDelimited).string(message.remark);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -20476,6 +21104,1928 @@ class DashboardLogStatsReply_logStatsList$Type extends MessageType<DashboardLogS
  * @generated MessageType for protobuf message ada.DashboardLogStatsReply.logStatsList
  */
 export const DashboardLogStatsReply_logStatsList = new DashboardLogStatsReply_logStatsList$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class ListAlertRuleReq$Type extends MessageType<ListAlertRuleReq> {
+    constructor() {
+        super("ada.ListAlertRuleReq", [
+            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 2, name: "pageSize", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 3, name: "level", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ },
+            { no: 4, name: "status", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 5, name: "enable", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 6, name: "keyword", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 7, name: "tags", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 8, name: "sortTm", kind: "scalar", T: 5 /*ScalarType.INT32*/ }
+        ]);
+    }
+    create(value?: PartialMessage<ListAlertRuleReq>): ListAlertRuleReq {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.pageIdx = 0;
+        message.pageSize = 0;
+        message.level = [];
+        message.status = [];
+        message.enable = false;
+        message.keyword = "";
+        message.tags = [];
+        message.sortTm = 0;
+        if (value !== undefined)
+            reflectionMergePartial<ListAlertRuleReq>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ListAlertRuleReq): ListAlertRuleReq {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* int32 pageIdx */ 1:
+                    message.pageIdx = reader.int32();
+                    break;
+                case /* int32 pageSize */ 2:
+                    message.pageSize = reader.int32();
+                    break;
+                case /* repeated int32 level */ 3:
+                    if (wireType === WireType.LengthDelimited)
+                        for (let e = reader.int32() + reader.pos; reader.pos < e;)
+                            message.level.push(reader.int32());
+                    else
+                        message.level.push(reader.int32());
+                    break;
+                case /* repeated string status */ 4:
+                    message.status.push(reader.string());
+                    break;
+                case /* bool enable */ 5:
+                    message.enable = reader.bool();
+                    break;
+                case /* string keyword */ 6:
+                    message.keyword = reader.string();
+                    break;
+                case /* repeated string tags */ 7:
+                    message.tags.push(reader.string());
+                    break;
+                case /* int32 sortTm */ 8:
+                    message.sortTm = reader.int32();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: ListAlertRuleReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* int32 pageIdx = 1; */
+        if (message.pageIdx !== 0)
+            writer.tag(1, WireType.Varint).int32(message.pageIdx);
+        /* int32 pageSize = 2; */
+        if (message.pageSize !== 0)
+            writer.tag(2, WireType.Varint).int32(message.pageSize);
+        /* repeated int32 level = 3; */
+        if (message.level.length) {
+            writer.tag(3, WireType.LengthDelimited).fork();
+            for (let i = 0; i < message.level.length; i++)
+                writer.int32(message.level[i]);
+            writer.join();
+        }
+        /* repeated string status = 4; */
+        for (let i = 0; i < message.status.length; i++)
+            writer.tag(4, WireType.LengthDelimited).string(message.status[i]);
+        /* bool enable = 5; */
+        if (message.enable !== false)
+            writer.tag(5, WireType.Varint).bool(message.enable);
+        /* string keyword = 6; */
+        if (message.keyword !== "")
+            writer.tag(6, WireType.LengthDelimited).string(message.keyword);
+        /* repeated string tags = 7; */
+        for (let i = 0; i < message.tags.length; i++)
+            writer.tag(7, WireType.LengthDelimited).string(message.tags[i]);
+        /* int32 sortTm = 8; */
+        if (message.sortTm !== 0)
+            writer.tag(8, WireType.Varint).int32(message.sortTm);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.ListAlertRuleReq
+ */
+export const ListAlertRuleReq = new ListAlertRuleReq$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class AlertRuleInfo$Type extends MessageType<AlertRuleInfo> {
+    constructor() {
+        super("ada.AlertRuleInfo", [
+            { no: 1, name: "ID", kind: "scalar", jsonName: "ID", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "title", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "description", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "enable", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 5, name: "level", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 6, name: "status", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 7, name: "tags", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 8, name: "logsource", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 9, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 10, name: "author", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 11, name: "reference", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 12, name: "suggestion", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 13, name: "autoBlock", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 14, name: "createTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 15, name: "updateTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<AlertRuleInfo>): AlertRuleInfo {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.iD = "";
+        message.title = "";
+        message.description = "";
+        message.enable = false;
+        message.level = 0;
+        message.status = "";
+        message.tags = [];
+        message.logsource = "";
+        message.type = "";
+        message.author = "";
+        message.reference = "";
+        message.suggestion = "";
+        message.autoBlock = false;
+        message.createTm = "";
+        message.updateTm = "";
+        if (value !== undefined)
+            reflectionMergePartial<AlertRuleInfo>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: AlertRuleInfo): AlertRuleInfo {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string ID = 1 [json_name = "ID"];*/ 1:
+                    message.iD = reader.string();
+                    break;
+                case /* string title */ 2:
+                    message.title = reader.string();
+                    break;
+                case /* string description */ 3:
+                    message.description = reader.string();
+                    break;
+                case /* bool enable */ 4:
+                    message.enable = reader.bool();
+                    break;
+                case /* int32 level */ 5:
+                    message.level = reader.int32();
+                    break;
+                case /* string status */ 6:
+                    message.status = reader.string();
+                    break;
+                case /* repeated string tags */ 7:
+                    message.tags.push(reader.string());
+                    break;
+                case /* string logsource */ 8:
+                    message.logsource = reader.string();
+                    break;
+                case /* string type */ 9:
+                    message.type = reader.string();
+                    break;
+                case /* string author */ 10:
+                    message.author = reader.string();
+                    break;
+                case /* string reference */ 11:
+                    message.reference = reader.string();
+                    break;
+                case /* string suggestion */ 12:
+                    message.suggestion = reader.string();
+                    break;
+                case /* bool autoBlock */ 13:
+                    message.autoBlock = reader.bool();
+                    break;
+                case /* string createTm */ 14:
+                    message.createTm = reader.string();
+                    break;
+                case /* string updateTm */ 15:
+                    message.updateTm = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: AlertRuleInfo, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string ID = 1 [json_name = "ID"]; */
+        if (message.iD !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.iD);
+        /* string title = 2; */
+        if (message.title !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.title);
+        /* string description = 3; */
+        if (message.description !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.description);
+        /* bool enable = 4; */
+        if (message.enable !== false)
+            writer.tag(4, WireType.Varint).bool(message.enable);
+        /* int32 level = 5; */
+        if (message.level !== 0)
+            writer.tag(5, WireType.Varint).int32(message.level);
+        /* string status = 6; */
+        if (message.status !== "")
+            writer.tag(6, WireType.LengthDelimited).string(message.status);
+        /* repeated string tags = 7; */
+        for (let i = 0; i < message.tags.length; i++)
+            writer.tag(7, WireType.LengthDelimited).string(message.tags[i]);
+        /* string logsource = 8; */
+        if (message.logsource !== "")
+            writer.tag(8, WireType.LengthDelimited).string(message.logsource);
+        /* string type = 9; */
+        if (message.type !== "")
+            writer.tag(9, WireType.LengthDelimited).string(message.type);
+        /* string author = 10; */
+        if (message.author !== "")
+            writer.tag(10, WireType.LengthDelimited).string(message.author);
+        /* string reference = 11; */
+        if (message.reference !== "")
+            writer.tag(11, WireType.LengthDelimited).string(message.reference);
+        /* string suggestion = 12; */
+        if (message.suggestion !== "")
+            writer.tag(12, WireType.LengthDelimited).string(message.suggestion);
+        /* bool autoBlock = 13; */
+        if (message.autoBlock !== false)
+            writer.tag(13, WireType.Varint).bool(message.autoBlock);
+        /* string createTm = 14; */
+        if (message.createTm !== "")
+            writer.tag(14, WireType.LengthDelimited).string(message.createTm);
+        /* string updateTm = 15; */
+        if (message.updateTm !== "")
+            writer.tag(15, WireType.LengthDelimited).string(message.updateTm);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.AlertRuleInfo
+ */
+export const AlertRuleInfo = new AlertRuleInfo$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class ListAlertRuleReply$Type extends MessageType<ListAlertRuleReply> {
+    constructor() {
+        super("ada.ListAlertRuleReply", [
+            { no: 1, name: "page", kind: "message", T: () => ModelPage },
+            { no: 2, name: "rules", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => AlertRuleInfo }
+        ]);
+    }
+    create(value?: PartialMessage<ListAlertRuleReply>): ListAlertRuleReply {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.rules = [];
+        if (value !== undefined)
+            reflectionMergePartial<ListAlertRuleReply>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ListAlertRuleReply): ListAlertRuleReply {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* ada.ModelPage page */ 1:
+                    message.page = ModelPage.internalBinaryRead(reader, reader.uint32(), options, message.page);
+                    break;
+                case /* repeated ada.AlertRuleInfo rules */ 2:
+                    message.rules.push(AlertRuleInfo.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: ListAlertRuleReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* ada.ModelPage page = 1; */
+        if (message.page)
+            ModelPage.internalBinaryWrite(message.page, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* repeated ada.AlertRuleInfo rules = 2; */
+        for (let i = 0; i < message.rules.length; i++)
+            AlertRuleInfo.internalBinaryWrite(message.rules[i], writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.ListAlertRuleReply
+ */
+export const ListAlertRuleReply = new ListAlertRuleReply$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class AddAlertRuleReq$Type extends MessageType<AddAlertRuleReq> {
+    constructor() {
+        super("ada.AddAlertRuleReq", [
+            { no: 1, name: "title", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "description", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "enable", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 4, name: "level", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 5, name: "status", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 6, name: "tags", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 7, name: "logsource", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 8, name: "detection", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 9, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 10, name: "reference", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 11, name: "suggestion", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 12, name: "author", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 13, name: "autoBlock", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
+        ]);
+    }
+    create(value?: PartialMessage<AddAlertRuleReq>): AddAlertRuleReq {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.title = "";
+        message.description = "";
+        message.enable = false;
+        message.level = 0;
+        message.status = "";
+        message.tags = [];
+        message.logsource = "";
+        message.detection = "";
+        message.type = "";
+        message.reference = "";
+        message.suggestion = "";
+        message.author = "";
+        message.autoBlock = false;
+        if (value !== undefined)
+            reflectionMergePartial<AddAlertRuleReq>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: AddAlertRuleReq): AddAlertRuleReq {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string title */ 1:
+                    message.title = reader.string();
+                    break;
+                case /* string description */ 2:
+                    message.description = reader.string();
+                    break;
+                case /* bool enable */ 3:
+                    message.enable = reader.bool();
+                    break;
+                case /* int32 level */ 4:
+                    message.level = reader.int32();
+                    break;
+                case /* string status */ 5:
+                    message.status = reader.string();
+                    break;
+                case /* repeated string tags */ 6:
+                    message.tags.push(reader.string());
+                    break;
+                case /* string logsource */ 7:
+                    message.logsource = reader.string();
+                    break;
+                case /* string detection */ 8:
+                    message.detection = reader.string();
+                    break;
+                case /* string type */ 9:
+                    message.type = reader.string();
+                    break;
+                case /* string reference */ 10:
+                    message.reference = reader.string();
+                    break;
+                case /* string suggestion */ 11:
+                    message.suggestion = reader.string();
+                    break;
+                case /* string author */ 12:
+                    message.author = reader.string();
+                    break;
+                case /* bool autoBlock */ 13:
+                    message.autoBlock = reader.bool();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: AddAlertRuleReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string title = 1; */
+        if (message.title !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.title);
+        /* string description = 2; */
+        if (message.description !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.description);
+        /* bool enable = 3; */
+        if (message.enable !== false)
+            writer.tag(3, WireType.Varint).bool(message.enable);
+        /* int32 level = 4; */
+        if (message.level !== 0)
+            writer.tag(4, WireType.Varint).int32(message.level);
+        /* string status = 5; */
+        if (message.status !== "")
+            writer.tag(5, WireType.LengthDelimited).string(message.status);
+        /* repeated string tags = 6; */
+        for (let i = 0; i < message.tags.length; i++)
+            writer.tag(6, WireType.LengthDelimited).string(message.tags[i]);
+        /* string logsource = 7; */
+        if (message.logsource !== "")
+            writer.tag(7, WireType.LengthDelimited).string(message.logsource);
+        /* string detection = 8; */
+        if (message.detection !== "")
+            writer.tag(8, WireType.LengthDelimited).string(message.detection);
+        /* string type = 9; */
+        if (message.type !== "")
+            writer.tag(9, WireType.LengthDelimited).string(message.type);
+        /* string reference = 10; */
+        if (message.reference !== "")
+            writer.tag(10, WireType.LengthDelimited).string(message.reference);
+        /* string suggestion = 11; */
+        if (message.suggestion !== "")
+            writer.tag(11, WireType.LengthDelimited).string(message.suggestion);
+        /* string author = 12; */
+        if (message.author !== "")
+            writer.tag(12, WireType.LengthDelimited).string(message.author);
+        /* bool autoBlock = 13; */
+        if (message.autoBlock !== false)
+            writer.tag(13, WireType.Varint).bool(message.autoBlock);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.AddAlertRuleReq
+ */
+export const AddAlertRuleReq = new AddAlertRuleReq$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class AddAlertRuleReply$Type extends MessageType<AddAlertRuleReply> {
+    constructor() {
+        super("ada.AddAlertRuleReply", [
+            { no: 1, name: "ID", kind: "scalar", jsonName: "ID", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "result", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<AddAlertRuleReply>): AddAlertRuleReply {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.iD = "";
+        message.result = "";
+        if (value !== undefined)
+            reflectionMergePartial<AddAlertRuleReply>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: AddAlertRuleReply): AddAlertRuleReply {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string ID = 1 [json_name = "ID"];*/ 1:
+                    message.iD = reader.string();
+                    break;
+                case /* string result */ 2:
+                    message.result = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: AddAlertRuleReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string ID = 1 [json_name = "ID"]; */
+        if (message.iD !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.iD);
+        /* string result = 2; */
+        if (message.result !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.result);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.AddAlertRuleReply
+ */
+export const AddAlertRuleReply = new AddAlertRuleReply$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class UpdateAlertRuleReq$Type extends MessageType<UpdateAlertRuleReq> {
+    constructor() {
+        super("ada.UpdateAlertRuleReq", [
+            { no: 1, name: "ID", kind: "scalar", jsonName: "ID", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "title", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "description", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "enable", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 5, name: "level", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 6, name: "status", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 7, name: "tags", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 8, name: "logsource", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 9, name: "detection", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 10, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 11, name: "reference", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 12, name: "suggestion", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 13, name: "author", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 14, name: "autoBlock", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
+        ]);
+    }
+    create(value?: PartialMessage<UpdateAlertRuleReq>): UpdateAlertRuleReq {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.iD = "";
+        message.title = "";
+        message.description = "";
+        message.enable = false;
+        message.level = 0;
+        message.status = "";
+        message.tags = [];
+        message.logsource = "";
+        message.detection = "";
+        message.type = "";
+        message.reference = "";
+        message.suggestion = "";
+        message.author = "";
+        message.autoBlock = false;
+        if (value !== undefined)
+            reflectionMergePartial<UpdateAlertRuleReq>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: UpdateAlertRuleReq): UpdateAlertRuleReq {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string ID = 1 [json_name = "ID"];*/ 1:
+                    message.iD = reader.string();
+                    break;
+                case /* string title */ 2:
+                    message.title = reader.string();
+                    break;
+                case /* string description */ 3:
+                    message.description = reader.string();
+                    break;
+                case /* bool enable */ 4:
+                    message.enable = reader.bool();
+                    break;
+                case /* int32 level */ 5:
+                    message.level = reader.int32();
+                    break;
+                case /* string status */ 6:
+                    message.status = reader.string();
+                    break;
+                case /* repeated string tags */ 7:
+                    message.tags.push(reader.string());
+                    break;
+                case /* string logsource */ 8:
+                    message.logsource = reader.string();
+                    break;
+                case /* string detection */ 9:
+                    message.detection = reader.string();
+                    break;
+                case /* string type */ 10:
+                    message.type = reader.string();
+                    break;
+                case /* string reference */ 11:
+                    message.reference = reader.string();
+                    break;
+                case /* string suggestion */ 12:
+                    message.suggestion = reader.string();
+                    break;
+                case /* string author */ 13:
+                    message.author = reader.string();
+                    break;
+                case /* bool autoBlock */ 14:
+                    message.autoBlock = reader.bool();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: UpdateAlertRuleReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string ID = 1 [json_name = "ID"]; */
+        if (message.iD !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.iD);
+        /* string title = 2; */
+        if (message.title !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.title);
+        /* string description = 3; */
+        if (message.description !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.description);
+        /* bool enable = 4; */
+        if (message.enable !== false)
+            writer.tag(4, WireType.Varint).bool(message.enable);
+        /* int32 level = 5; */
+        if (message.level !== 0)
+            writer.tag(5, WireType.Varint).int32(message.level);
+        /* string status = 6; */
+        if (message.status !== "")
+            writer.tag(6, WireType.LengthDelimited).string(message.status);
+        /* repeated string tags = 7; */
+        for (let i = 0; i < message.tags.length; i++)
+            writer.tag(7, WireType.LengthDelimited).string(message.tags[i]);
+        /* string logsource = 8; */
+        if (message.logsource !== "")
+            writer.tag(8, WireType.LengthDelimited).string(message.logsource);
+        /* string detection = 9; */
+        if (message.detection !== "")
+            writer.tag(9, WireType.LengthDelimited).string(message.detection);
+        /* string type = 10; */
+        if (message.type !== "")
+            writer.tag(10, WireType.LengthDelimited).string(message.type);
+        /* string reference = 11; */
+        if (message.reference !== "")
+            writer.tag(11, WireType.LengthDelimited).string(message.reference);
+        /* string suggestion = 12; */
+        if (message.suggestion !== "")
+            writer.tag(12, WireType.LengthDelimited).string(message.suggestion);
+        /* string author = 13; */
+        if (message.author !== "")
+            writer.tag(13, WireType.LengthDelimited).string(message.author);
+        /* bool autoBlock = 14; */
+        if (message.autoBlock !== false)
+            writer.tag(14, WireType.Varint).bool(message.autoBlock);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.UpdateAlertRuleReq
+ */
+export const UpdateAlertRuleReq = new UpdateAlertRuleReq$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class UpdateAlertRuleReply$Type extends MessageType<UpdateAlertRuleReply> {
+    constructor() {
+        super("ada.UpdateAlertRuleReply", [
+            { no: 1, name: "result", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<UpdateAlertRuleReply>): UpdateAlertRuleReply {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.result = "";
+        if (value !== undefined)
+            reflectionMergePartial<UpdateAlertRuleReply>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: UpdateAlertRuleReply): UpdateAlertRuleReply {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string result */ 1:
+                    message.result = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: UpdateAlertRuleReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string result = 1; */
+        if (message.result !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.result);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.UpdateAlertRuleReply
+ */
+export const UpdateAlertRuleReply = new UpdateAlertRuleReply$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class DeleteAlertRuleReq$Type extends MessageType<DeleteAlertRuleReq> {
+    constructor() {
+        super("ada.DeleteAlertRuleReq", [
+            { no: 1, name: "ID", kind: "scalar", jsonName: "ID", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<DeleteAlertRuleReq>): DeleteAlertRuleReq {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.iD = "";
+        if (value !== undefined)
+            reflectionMergePartial<DeleteAlertRuleReq>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: DeleteAlertRuleReq): DeleteAlertRuleReq {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string ID = 1 [json_name = "ID"];*/ 1:
+                    message.iD = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: DeleteAlertRuleReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string ID = 1 [json_name = "ID"]; */
+        if (message.iD !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.iD);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.DeleteAlertRuleReq
+ */
+export const DeleteAlertRuleReq = new DeleteAlertRuleReq$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class DeleteAlertRuleReply$Type extends MessageType<DeleteAlertRuleReply> {
+    constructor() {
+        super("ada.DeleteAlertRuleReply", [
+            { no: 1, name: "result", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<DeleteAlertRuleReply>): DeleteAlertRuleReply {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.result = "";
+        if (value !== undefined)
+            reflectionMergePartial<DeleteAlertRuleReply>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: DeleteAlertRuleReply): DeleteAlertRuleReply {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string result */ 1:
+                    message.result = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: DeleteAlertRuleReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string result = 1; */
+        if (message.result !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.result);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.DeleteAlertRuleReply
+ */
+export const DeleteAlertRuleReply = new DeleteAlertRuleReply$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetAlertTypesReq$Type extends MessageType<GetAlertTypesReq> {
+    constructor() {
+        super("ada.GetAlertTypesReq", []);
+    }
+    create(value?: PartialMessage<GetAlertTypesReq>): GetAlertTypesReq {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        if (value !== undefined)
+            reflectionMergePartial<GetAlertTypesReq>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetAlertTypesReq): GetAlertTypesReq {
+        return target ?? this.create();
+    }
+    internalBinaryWrite(message: GetAlertTypesReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.GetAlertTypesReq
+ */
+export const GetAlertTypesReq = new GetAlertTypesReq$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetAlertTypesReply$Type extends MessageType<GetAlertTypesReply> {
+    constructor() {
+        super("ada.GetAlertTypesReply", [
+            { no: 1, name: "alertTypes", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 9 /*ScalarType.STRING*/ } }
+        ]);
+    }
+    create(value?: PartialMessage<GetAlertTypesReply>): GetAlertTypesReply {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.alertTypes = {};
+        if (value !== undefined)
+            reflectionMergePartial<GetAlertTypesReply>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetAlertTypesReply): GetAlertTypesReply {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* map<string, string> alertTypes */ 1:
+                    this.binaryReadMap1(message.alertTypes, reader, options);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    private binaryReadMap1(map: GetAlertTypesReply["alertTypes"], reader: IBinaryReader, options: BinaryReadOptions): void {
+        let len = reader.uint32(), end = reader.pos + len, key: keyof GetAlertTypesReply["alertTypes"] | undefined, val: GetAlertTypesReply["alertTypes"][any] | undefined;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case 1:
+                    key = reader.string();
+                    break;
+                case 2:
+                    val = reader.string();
+                    break;
+                default: throw new globalThis.Error("unknown map entry field for field ada.GetAlertTypesReply.alertTypes");
+            }
+        }
+        map[key ?? ""] = val ?? "";
+    }
+    internalBinaryWrite(message: GetAlertTypesReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* map<string, string> alertTypes = 1; */
+        for (let k of globalThis.Object.keys(message.alertTypes))
+            writer.tag(1, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k).tag(2, WireType.LengthDelimited).string(message.alertTypes[k]).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.GetAlertTypesReply
+ */
+export const GetAlertTypesReply = new GetAlertTypesReply$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class ListActivityRuleReq$Type extends MessageType<ListActivityRuleReq> {
+    constructor() {
+        super("ada.ListActivityRuleReq", [
+            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 2, name: "pageSize", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 3, name: "IDs", kind: "scalar", jsonName: "IDs", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "level", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ },
+            { no: 5, name: "status", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 6, name: "keyword", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 7, name: "tags", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 8, name: "logsource", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 9, name: "ruleType", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 10, name: "sortTm", kind: "scalar", T: 5 /*ScalarType.INT32*/ }
+        ]);
+    }
+    create(value?: PartialMessage<ListActivityRuleReq>): ListActivityRuleReq {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.pageIdx = 0;
+        message.pageSize = 0;
+        message.iDs = [];
+        message.level = [];
+        message.status = [];
+        message.keyword = "";
+        message.tags = [];
+        message.logsource = "";
+        message.ruleType = "";
+        message.sortTm = 0;
+        if (value !== undefined)
+            reflectionMergePartial<ListActivityRuleReq>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ListActivityRuleReq): ListActivityRuleReq {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* int32 pageIdx */ 1:
+                    message.pageIdx = reader.int32();
+                    break;
+                case /* int32 pageSize */ 2:
+                    message.pageSize = reader.int32();
+                    break;
+                case /* repeated string IDs = 3 [json_name = "IDs"];*/ 3:
+                    message.iDs.push(reader.string());
+                    break;
+                case /* repeated int32 level */ 4:
+                    if (wireType === WireType.LengthDelimited)
+                        for (let e = reader.int32() + reader.pos; reader.pos < e;)
+                            message.level.push(reader.int32());
+                    else
+                        message.level.push(reader.int32());
+                    break;
+                case /* repeated string status */ 5:
+                    message.status.push(reader.string());
+                    break;
+                case /* string keyword */ 6:
+                    message.keyword = reader.string();
+                    break;
+                case /* repeated string tags */ 7:
+                    message.tags.push(reader.string());
+                    break;
+                case /* string logsource */ 8:
+                    message.logsource = reader.string();
+                    break;
+                case /* string ruleType */ 9:
+                    message.ruleType = reader.string();
+                    break;
+                case /* int32 sortTm */ 10:
+                    message.sortTm = reader.int32();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: ListActivityRuleReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* int32 pageIdx = 1; */
+        if (message.pageIdx !== 0)
+            writer.tag(1, WireType.Varint).int32(message.pageIdx);
+        /* int32 pageSize = 2; */
+        if (message.pageSize !== 0)
+            writer.tag(2, WireType.Varint).int32(message.pageSize);
+        /* repeated string IDs = 3 [json_name = "IDs"]; */
+        for (let i = 0; i < message.iDs.length; i++)
+            writer.tag(3, WireType.LengthDelimited).string(message.iDs[i]);
+        /* repeated int32 level = 4; */
+        if (message.level.length) {
+            writer.tag(4, WireType.LengthDelimited).fork();
+            for (let i = 0; i < message.level.length; i++)
+                writer.int32(message.level[i]);
+            writer.join();
+        }
+        /* repeated string status = 5; */
+        for (let i = 0; i < message.status.length; i++)
+            writer.tag(5, WireType.LengthDelimited).string(message.status[i]);
+        /* string keyword = 6; */
+        if (message.keyword !== "")
+            writer.tag(6, WireType.LengthDelimited).string(message.keyword);
+        /* repeated string tags = 7; */
+        for (let i = 0; i < message.tags.length; i++)
+            writer.tag(7, WireType.LengthDelimited).string(message.tags[i]);
+        /* string logsource = 8; */
+        if (message.logsource !== "")
+            writer.tag(8, WireType.LengthDelimited).string(message.logsource);
+        /* string ruleType = 9; */
+        if (message.ruleType !== "")
+            writer.tag(9, WireType.LengthDelimited).string(message.ruleType);
+        /* int32 sortTm = 10; */
+        if (message.sortTm !== 0)
+            writer.tag(10, WireType.Varint).int32(message.sortTm);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.ListActivityRuleReq
+ */
+export const ListActivityRuleReq = new ListActivityRuleReq$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class ActivityRuleInfo$Type extends MessageType<ActivityRuleInfo> {
+    constructor() {
+        super("ada.ActivityRuleInfo", [
+            { no: 1, name: "ID", kind: "scalar", jsonName: "ID", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "title", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "description", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "level", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 5, name: "status", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 6, name: "tags", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 7, name: "logsource", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 8, name: "reference", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 9, name: "rdxKey", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 10, name: "fields", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 11, name: "uniqueFields", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 12, name: "author", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 13, name: "createTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 14, name: "updateTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<ActivityRuleInfo>): ActivityRuleInfo {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.iD = "";
+        message.title = "";
+        message.description = "";
+        message.level = 0;
+        message.status = "";
+        message.tags = [];
+        message.logsource = "";
+        message.reference = "";
+        message.rdxKey = "";
+        message.fields = [];
+        message.uniqueFields = [];
+        message.author = "";
+        message.createTm = "";
+        message.updateTm = "";
+        if (value !== undefined)
+            reflectionMergePartial<ActivityRuleInfo>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ActivityRuleInfo): ActivityRuleInfo {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string ID = 1 [json_name = "ID"];*/ 1:
+                    message.iD = reader.string();
+                    break;
+                case /* string title */ 2:
+                    message.title = reader.string();
+                    break;
+                case /* string description */ 3:
+                    message.description = reader.string();
+                    break;
+                case /* int32 level */ 4:
+                    message.level = reader.int32();
+                    break;
+                case /* string status */ 5:
+                    message.status = reader.string();
+                    break;
+                case /* repeated string tags */ 6:
+                    message.tags.push(reader.string());
+                    break;
+                case /* string logsource */ 7:
+                    message.logsource = reader.string();
+                    break;
+                case /* string reference */ 8:
+                    message.reference = reader.string();
+                    break;
+                case /* string rdxKey */ 9:
+                    message.rdxKey = reader.string();
+                    break;
+                case /* repeated string fields */ 10:
+                    message.fields.push(reader.string());
+                    break;
+                case /* repeated string uniqueFields */ 11:
+                    message.uniqueFields.push(reader.string());
+                    break;
+                case /* string author */ 12:
+                    message.author = reader.string();
+                    break;
+                case /* string createTm */ 13:
+                    message.createTm = reader.string();
+                    break;
+                case /* string updateTm */ 14:
+                    message.updateTm = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: ActivityRuleInfo, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string ID = 1 [json_name = "ID"]; */
+        if (message.iD !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.iD);
+        /* string title = 2; */
+        if (message.title !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.title);
+        /* string description = 3; */
+        if (message.description !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.description);
+        /* int32 level = 4; */
+        if (message.level !== 0)
+            writer.tag(4, WireType.Varint).int32(message.level);
+        /* string status = 5; */
+        if (message.status !== "")
+            writer.tag(5, WireType.LengthDelimited).string(message.status);
+        /* repeated string tags = 6; */
+        for (let i = 0; i < message.tags.length; i++)
+            writer.tag(6, WireType.LengthDelimited).string(message.tags[i]);
+        /* string logsource = 7; */
+        if (message.logsource !== "")
+            writer.tag(7, WireType.LengthDelimited).string(message.logsource);
+        /* string reference = 8; */
+        if (message.reference !== "")
+            writer.tag(8, WireType.LengthDelimited).string(message.reference);
+        /* string rdxKey = 9; */
+        if (message.rdxKey !== "")
+            writer.tag(9, WireType.LengthDelimited).string(message.rdxKey);
+        /* repeated string fields = 10; */
+        for (let i = 0; i < message.fields.length; i++)
+            writer.tag(10, WireType.LengthDelimited).string(message.fields[i]);
+        /* repeated string uniqueFields = 11; */
+        for (let i = 0; i < message.uniqueFields.length; i++)
+            writer.tag(11, WireType.LengthDelimited).string(message.uniqueFields[i]);
+        /* string author = 12; */
+        if (message.author !== "")
+            writer.tag(12, WireType.LengthDelimited).string(message.author);
+        /* string createTm = 13; */
+        if (message.createTm !== "")
+            writer.tag(13, WireType.LengthDelimited).string(message.createTm);
+        /* string updateTm = 14; */
+        if (message.updateTm !== "")
+            writer.tag(14, WireType.LengthDelimited).string(message.updateTm);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.ActivityRuleInfo
+ */
+export const ActivityRuleInfo = new ActivityRuleInfo$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class ListActivityRuleReply$Type extends MessageType<ListActivityRuleReply> {
+    constructor() {
+        super("ada.ListActivityRuleReply", [
+            { no: 1, name: "page", kind: "message", T: () => ModelPage },
+            { no: 2, name: "rules", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => ActivityRuleInfo }
+        ]);
+    }
+    create(value?: PartialMessage<ListActivityRuleReply>): ListActivityRuleReply {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.rules = [];
+        if (value !== undefined)
+            reflectionMergePartial<ListActivityRuleReply>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ListActivityRuleReply): ListActivityRuleReply {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* ada.ModelPage page */ 1:
+                    message.page = ModelPage.internalBinaryRead(reader, reader.uint32(), options, message.page);
+                    break;
+                case /* repeated ada.ActivityRuleInfo rules */ 2:
+                    message.rules.push(ActivityRuleInfo.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: ListActivityRuleReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* ada.ModelPage page = 1; */
+        if (message.page)
+            ModelPage.internalBinaryWrite(message.page, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* repeated ada.ActivityRuleInfo rules = 2; */
+        for (let i = 0; i < message.rules.length; i++)
+            ActivityRuleInfo.internalBinaryWrite(message.rules[i], writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.ListActivityRuleReply
+ */
+export const ListActivityRuleReply = new ListActivityRuleReply$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetActivityRuleReq$Type extends MessageType<GetActivityRuleReq> {
+    constructor() {
+        super("ada.GetActivityRuleReq", [
+            { no: 1, name: "ID", kind: "scalar", jsonName: "ID", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GetActivityRuleReq>): GetActivityRuleReq {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.iD = "";
+        if (value !== undefined)
+            reflectionMergePartial<GetActivityRuleReq>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetActivityRuleReq): GetActivityRuleReq {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string ID = 1 [json_name = "ID"];*/ 1:
+                    message.iD = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetActivityRuleReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string ID = 1 [json_name = "ID"]; */
+        if (message.iD !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.iD);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.GetActivityRuleReq
+ */
+export const GetActivityRuleReq = new GetActivityRuleReq$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetActivityRuleReply$Type extends MessageType<GetActivityRuleReply> {
+    constructor() {
+        super("ada.GetActivityRuleReply", [
+            { no: 1, name: "ID", kind: "scalar", jsonName: "ID", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "title", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "description", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "level", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 5, name: "status", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 6, name: "tags", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 7, name: "logsource", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 8, name: "reference", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 9, name: "detection", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 10, name: "rdxKey", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 11, name: "fields", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 12, name: "uniqueFields", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 13, name: "author", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 14, name: "createTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 15, name: "updateTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GetActivityRuleReply>): GetActivityRuleReply {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.iD = "";
+        message.title = "";
+        message.description = "";
+        message.level = 0;
+        message.status = "";
+        message.tags = [];
+        message.logsource = "";
+        message.reference = "";
+        message.detection = "";
+        message.rdxKey = "";
+        message.fields = [];
+        message.uniqueFields = [];
+        message.author = "";
+        message.createTm = "";
+        message.updateTm = "";
+        if (value !== undefined)
+            reflectionMergePartial<GetActivityRuleReply>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetActivityRuleReply): GetActivityRuleReply {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string ID = 1 [json_name = "ID"];*/ 1:
+                    message.iD = reader.string();
+                    break;
+                case /* string title */ 2:
+                    message.title = reader.string();
+                    break;
+                case /* string description */ 3:
+                    message.description = reader.string();
+                    break;
+                case /* int32 level */ 4:
+                    message.level = reader.int32();
+                    break;
+                case /* string status */ 5:
+                    message.status = reader.string();
+                    break;
+                case /* repeated string tags */ 6:
+                    message.tags.push(reader.string());
+                    break;
+                case /* string logsource */ 7:
+                    message.logsource = reader.string();
+                    break;
+                case /* string reference */ 8:
+                    message.reference = reader.string();
+                    break;
+                case /* string detection */ 9:
+                    message.detection = reader.string();
+                    break;
+                case /* string rdxKey */ 10:
+                    message.rdxKey = reader.string();
+                    break;
+                case /* repeated string fields */ 11:
+                    message.fields.push(reader.string());
+                    break;
+                case /* repeated string uniqueFields */ 12:
+                    message.uniqueFields.push(reader.string());
+                    break;
+                case /* string author */ 13:
+                    message.author = reader.string();
+                    break;
+                case /* string createTm */ 14:
+                    message.createTm = reader.string();
+                    break;
+                case /* string updateTm */ 15:
+                    message.updateTm = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetActivityRuleReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string ID = 1 [json_name = "ID"]; */
+        if (message.iD !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.iD);
+        /* string title = 2; */
+        if (message.title !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.title);
+        /* string description = 3; */
+        if (message.description !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.description);
+        /* int32 level = 4; */
+        if (message.level !== 0)
+            writer.tag(4, WireType.Varint).int32(message.level);
+        /* string status = 5; */
+        if (message.status !== "")
+            writer.tag(5, WireType.LengthDelimited).string(message.status);
+        /* repeated string tags = 6; */
+        for (let i = 0; i < message.tags.length; i++)
+            writer.tag(6, WireType.LengthDelimited).string(message.tags[i]);
+        /* string logsource = 7; */
+        if (message.logsource !== "")
+            writer.tag(7, WireType.LengthDelimited).string(message.logsource);
+        /* string reference = 8; */
+        if (message.reference !== "")
+            writer.tag(8, WireType.LengthDelimited).string(message.reference);
+        /* string detection = 9; */
+        if (message.detection !== "")
+            writer.tag(9, WireType.LengthDelimited).string(message.detection);
+        /* string rdxKey = 10; */
+        if (message.rdxKey !== "")
+            writer.tag(10, WireType.LengthDelimited).string(message.rdxKey);
+        /* repeated string fields = 11; */
+        for (let i = 0; i < message.fields.length; i++)
+            writer.tag(11, WireType.LengthDelimited).string(message.fields[i]);
+        /* repeated string uniqueFields = 12; */
+        for (let i = 0; i < message.uniqueFields.length; i++)
+            writer.tag(12, WireType.LengthDelimited).string(message.uniqueFields[i]);
+        /* string author = 13; */
+        if (message.author !== "")
+            writer.tag(13, WireType.LengthDelimited).string(message.author);
+        /* string createTm = 14; */
+        if (message.createTm !== "")
+            writer.tag(14, WireType.LengthDelimited).string(message.createTm);
+        /* string updateTm = 15; */
+        if (message.updateTm !== "")
+            writer.tag(15, WireType.LengthDelimited).string(message.updateTm);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.GetActivityRuleReply
+ */
+export const GetActivityRuleReply = new GetActivityRuleReply$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class AddActivityRuleReq$Type extends MessageType<AddActivityRuleReq> {
+    constructor() {
+        super("ada.AddActivityRuleReq", [
+            { no: 1, name: "ID", kind: "scalar", jsonName: "ID", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "title", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "description", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "level", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 5, name: "status", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 6, name: "tags", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 7, name: "logsource", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 8, name: "reference", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 9, name: "detection", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 10, name: "rdxKey", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 11, name: "fields", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 12, name: "uniqueFields", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 13, name: "author", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<AddActivityRuleReq>): AddActivityRuleReq {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.iD = "";
+        message.title = "";
+        message.description = "";
+        message.level = 0;
+        message.status = "";
+        message.tags = [];
+        message.logsource = "";
+        message.reference = "";
+        message.detection = "";
+        message.rdxKey = "";
+        message.fields = [];
+        message.uniqueFields = [];
+        message.author = "";
+        if (value !== undefined)
+            reflectionMergePartial<AddActivityRuleReq>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: AddActivityRuleReq): AddActivityRuleReq {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string ID = 1 [json_name = "ID"];*/ 1:
+                    message.iD = reader.string();
+                    break;
+                case /* string title */ 2:
+                    message.title = reader.string();
+                    break;
+                case /* string description */ 3:
+                    message.description = reader.string();
+                    break;
+                case /* int32 level */ 4:
+                    message.level = reader.int32();
+                    break;
+                case /* string status */ 5:
+                    message.status = reader.string();
+                    break;
+                case /* repeated string tags */ 6:
+                    message.tags.push(reader.string());
+                    break;
+                case /* string logsource */ 7:
+                    message.logsource = reader.string();
+                    break;
+                case /* string reference */ 8:
+                    message.reference = reader.string();
+                    break;
+                case /* string detection */ 9:
+                    message.detection = reader.string();
+                    break;
+                case /* string rdxKey */ 10:
+                    message.rdxKey = reader.string();
+                    break;
+                case /* repeated string fields */ 11:
+                    message.fields.push(reader.string());
+                    break;
+                case /* repeated string uniqueFields */ 12:
+                    message.uniqueFields.push(reader.string());
+                    break;
+                case /* string author */ 13:
+                    message.author = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: AddActivityRuleReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string ID = 1 [json_name = "ID"]; */
+        if (message.iD !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.iD);
+        /* string title = 2; */
+        if (message.title !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.title);
+        /* string description = 3; */
+        if (message.description !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.description);
+        /* int32 level = 4; */
+        if (message.level !== 0)
+            writer.tag(4, WireType.Varint).int32(message.level);
+        /* string status = 5; */
+        if (message.status !== "")
+            writer.tag(5, WireType.LengthDelimited).string(message.status);
+        /* repeated string tags = 6; */
+        for (let i = 0; i < message.tags.length; i++)
+            writer.tag(6, WireType.LengthDelimited).string(message.tags[i]);
+        /* string logsource = 7; */
+        if (message.logsource !== "")
+            writer.tag(7, WireType.LengthDelimited).string(message.logsource);
+        /* string reference = 8; */
+        if (message.reference !== "")
+            writer.tag(8, WireType.LengthDelimited).string(message.reference);
+        /* string detection = 9; */
+        if (message.detection !== "")
+            writer.tag(9, WireType.LengthDelimited).string(message.detection);
+        /* string rdxKey = 10; */
+        if (message.rdxKey !== "")
+            writer.tag(10, WireType.LengthDelimited).string(message.rdxKey);
+        /* repeated string fields = 11; */
+        for (let i = 0; i < message.fields.length; i++)
+            writer.tag(11, WireType.LengthDelimited).string(message.fields[i]);
+        /* repeated string uniqueFields = 12; */
+        for (let i = 0; i < message.uniqueFields.length; i++)
+            writer.tag(12, WireType.LengthDelimited).string(message.uniqueFields[i]);
+        /* string author = 13; */
+        if (message.author !== "")
+            writer.tag(13, WireType.LengthDelimited).string(message.author);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.AddActivityRuleReq
+ */
+export const AddActivityRuleReq = new AddActivityRuleReq$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class AddActivityRuleReply$Type extends MessageType<AddActivityRuleReply> {
+    constructor() {
+        super("ada.AddActivityRuleReply", [
+            { no: 1, name: "ID", kind: "scalar", jsonName: "ID", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "result", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<AddActivityRuleReply>): AddActivityRuleReply {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.iD = "";
+        message.result = "";
+        if (value !== undefined)
+            reflectionMergePartial<AddActivityRuleReply>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: AddActivityRuleReply): AddActivityRuleReply {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string ID = 1 [json_name = "ID"];*/ 1:
+                    message.iD = reader.string();
+                    break;
+                case /* string result */ 2:
+                    message.result = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: AddActivityRuleReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string ID = 1 [json_name = "ID"]; */
+        if (message.iD !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.iD);
+        /* string result = 2; */
+        if (message.result !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.result);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.AddActivityRuleReply
+ */
+export const AddActivityRuleReply = new AddActivityRuleReply$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class UpdateActivityRuleReq$Type extends MessageType<UpdateActivityRuleReq> {
+    constructor() {
+        super("ada.UpdateActivityRuleReq", [
+            { no: 1, name: "ID", kind: "scalar", jsonName: "ID", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "title", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "description", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "level", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 5, name: "status", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 6, name: "tags", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 7, name: "logsource", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 8, name: "reference", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 9, name: "detection", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 10, name: "rdxKey", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 11, name: "fields", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 12, name: "uniqueFields", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 13, name: "author", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<UpdateActivityRuleReq>): UpdateActivityRuleReq {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.iD = "";
+        message.title = "";
+        message.description = "";
+        message.level = 0;
+        message.status = "";
+        message.tags = [];
+        message.logsource = "";
+        message.reference = "";
+        message.detection = "";
+        message.rdxKey = "";
+        message.fields = [];
+        message.uniqueFields = [];
+        message.author = "";
+        if (value !== undefined)
+            reflectionMergePartial<UpdateActivityRuleReq>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: UpdateActivityRuleReq): UpdateActivityRuleReq {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string ID = 1 [json_name = "ID"];*/ 1:
+                    message.iD = reader.string();
+                    break;
+                case /* string title */ 2:
+                    message.title = reader.string();
+                    break;
+                case /* string description */ 3:
+                    message.description = reader.string();
+                    break;
+                case /* int32 level */ 4:
+                    message.level = reader.int32();
+                    break;
+                case /* string status */ 5:
+                    message.status = reader.string();
+                    break;
+                case /* repeated string tags */ 6:
+                    message.tags.push(reader.string());
+                    break;
+                case /* string logsource */ 7:
+                    message.logsource = reader.string();
+                    break;
+                case /* string reference */ 8:
+                    message.reference = reader.string();
+                    break;
+                case /* string detection */ 9:
+                    message.detection = reader.string();
+                    break;
+                case /* string rdxKey */ 10:
+                    message.rdxKey = reader.string();
+                    break;
+                case /* repeated string fields */ 11:
+                    message.fields.push(reader.string());
+                    break;
+                case /* repeated string uniqueFields */ 12:
+                    message.uniqueFields.push(reader.string());
+                    break;
+                case /* string author */ 13:
+                    message.author = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: UpdateActivityRuleReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string ID = 1 [json_name = "ID"]; */
+        if (message.iD !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.iD);
+        /* string title = 2; */
+        if (message.title !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.title);
+        /* string description = 3; */
+        if (message.description !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.description);
+        /* int32 level = 4; */
+        if (message.level !== 0)
+            writer.tag(4, WireType.Varint).int32(message.level);
+        /* string status = 5; */
+        if (message.status !== "")
+            writer.tag(5, WireType.LengthDelimited).string(message.status);
+        /* repeated string tags = 6; */
+        for (let i = 0; i < message.tags.length; i++)
+            writer.tag(6, WireType.LengthDelimited).string(message.tags[i]);
+        /* string logsource = 7; */
+        if (message.logsource !== "")
+            writer.tag(7, WireType.LengthDelimited).string(message.logsource);
+        /* string reference = 8; */
+        if (message.reference !== "")
+            writer.tag(8, WireType.LengthDelimited).string(message.reference);
+        /* string detection = 9; */
+        if (message.detection !== "")
+            writer.tag(9, WireType.LengthDelimited).string(message.detection);
+        /* string rdxKey = 10; */
+        if (message.rdxKey !== "")
+            writer.tag(10, WireType.LengthDelimited).string(message.rdxKey);
+        /* repeated string fields = 11; */
+        for (let i = 0; i < message.fields.length; i++)
+            writer.tag(11, WireType.LengthDelimited).string(message.fields[i]);
+        /* repeated string uniqueFields = 12; */
+        for (let i = 0; i < message.uniqueFields.length; i++)
+            writer.tag(12, WireType.LengthDelimited).string(message.uniqueFields[i]);
+        /* string author = 13; */
+        if (message.author !== "")
+            writer.tag(13, WireType.LengthDelimited).string(message.author);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.UpdateActivityRuleReq
+ */
+export const UpdateActivityRuleReq = new UpdateActivityRuleReq$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class UpdateActivityRuleReply$Type extends MessageType<UpdateActivityRuleReply> {
+    constructor() {
+        super("ada.UpdateActivityRuleReply", [
+            { no: 1, name: "result", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<UpdateActivityRuleReply>): UpdateActivityRuleReply {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.result = "";
+        if (value !== undefined)
+            reflectionMergePartial<UpdateActivityRuleReply>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: UpdateActivityRuleReply): UpdateActivityRuleReply {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string result */ 1:
+                    message.result = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: UpdateActivityRuleReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string result = 1; */
+        if (message.result !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.result);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.UpdateActivityRuleReply
+ */
+export const UpdateActivityRuleReply = new UpdateActivityRuleReply$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class DeleteActivityRuleReq$Type extends MessageType<DeleteActivityRuleReq> {
+    constructor() {
+        super("ada.DeleteActivityRuleReq", [
+            { no: 1, name: "ID", kind: "scalar", jsonName: "ID", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<DeleteActivityRuleReq>): DeleteActivityRuleReq {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.iD = "";
+        if (value !== undefined)
+            reflectionMergePartial<DeleteActivityRuleReq>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: DeleteActivityRuleReq): DeleteActivityRuleReq {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string ID = 1 [json_name = "ID"];*/ 1:
+                    message.iD = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: DeleteActivityRuleReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string ID = 1 [json_name = "ID"]; */
+        if (message.iD !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.iD);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.DeleteActivityRuleReq
+ */
+export const DeleteActivityRuleReq = new DeleteActivityRuleReq$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class DeleteActivityRuleReply$Type extends MessageType<DeleteActivityRuleReply> {
+    constructor() {
+        super("ada.DeleteActivityRuleReply", [
+            { no: 1, name: "result", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<DeleteActivityRuleReply>): DeleteActivityRuleReply {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.result = "";
+        if (value !== undefined)
+            reflectionMergePartial<DeleteActivityRuleReply>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: DeleteActivityRuleReply): DeleteActivityRuleReply {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string result */ 1:
+                    message.result = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: DeleteActivityRuleReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string result = 1; */
+        if (message.result !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.result);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.DeleteActivityRuleReply
+ */
+export const DeleteActivityRuleReply = new DeleteActivityRuleReply$Type();
 /**
  * @generated ServiceType for protobuf service ada.ADA
  */
@@ -20554,6 +23104,16 @@ export const ADA = new ServiceType("ada.ADA", [
     { name: "AddThreatBlock", options: {}, I: AddThreatBlockReq, O: AddThreatBlockReply },
     { name: "UpdateThreatBlock", options: {}, I: UpdateThreatBlockReq, O: UpdateThreatBlockReply },
     { name: "DeleteThreatBlock", options: {}, I: DeleteThreatBlockReq, O: DeleteThreatBlockReply },
+    { name: "ListAlertRule", options: {}, I: ListAlertRuleReq, O: ListAlertRuleReply },
+    { name: "AddAlertRule", options: {}, I: AddAlertRuleReq, O: AddAlertRuleReply },
+    { name: "UpdateAlertRule", options: {}, I: UpdateAlertRuleReq, O: UpdateAlertRuleReply },
+    { name: "DeleteAlertRule", options: {}, I: DeleteAlertRuleReq, O: DeleteAlertRuleReply },
+    { name: "GetAlertTypes", options: {}, I: GetAlertTypesReq, O: GetAlertTypesReply },
+    { name: "ListActivityRule", options: {}, I: ListActivityRuleReq, O: ListActivityRuleReply },
+    { name: "GetActivityRule", options: {}, I: GetActivityRuleReq, O: GetActivityRuleReply },
+    { name: "AddActivityRule", options: {}, I: AddActivityRuleReq, O: AddActivityRuleReply },
+    { name: "UpdateActivityRule", options: {}, I: UpdateActivityRuleReq, O: UpdateActivityRuleReply },
+    { name: "DeleteActivityRule", options: {}, I: DeleteActivityRuleReq, O: DeleteActivityRuleReply },
     { name: "ScanRiskStats", options: {}, I: ScanRiskStatsReq, O: ScanRiskStatsReply },
     { name: "ListBaseline", options: {}, I: ListBaselineReq, O: ListBaselineReply },
     { name: "GetBaseline", options: {}, I: GetBaselineReq, O: GetBaselineReply },

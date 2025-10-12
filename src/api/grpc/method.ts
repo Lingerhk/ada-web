@@ -284,3 +284,15 @@ export const deleteActivityRule = async (req: DeleteActivityRuleReq) => {
 export const getAlertTypes = async () => {
     return api.getAlertTypes({}).then(resp => resp.response);
 };
+
+export const getAlertRuleTags = async () => {
+    return api.getAlertRuleTags({}).then(resp => resp.response);
+};
+
+export const getActivityRuleFields = async () => {
+    return api.getActivityRuleFields({}).then(resp => resp.response);
+};
+
+export const getActivityRuleUniqueFields = async () => {
+    return api.getActivityRuleUniqueFields({}).then(resp => resp.response);
+};

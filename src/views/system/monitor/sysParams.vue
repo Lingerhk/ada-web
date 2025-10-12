@@ -63,9 +63,7 @@ const getIcon = (health: string) => {
 function formatDuration(seconds: number): string {
     const units = [
         { label: T('uDay'), value: 86400 }, // 1 天 = 86400 秒
-        { label: T('uHour'), value: 3600 }, // 1 小时 = 3600 秒
-        { label: T('uMinute'), value: 60 },   // 1 分钟 = 60 秒
-        { label: T('uSecond'), value: 1 }        // 1 秒 = 1 秒
+        { label: T('uHour'), value: 3600 }  // 1 小时 = 3600 秒
     ];
 
     let result = '';
@@ -78,7 +76,7 @@ function formatDuration(seconds: number): string {
         }
     }
 
-    return result || '0' + T('uSecond'); // 如果输入的秒数为 0，则返回 '0秒'
+    return result || '0' + T('uHour'); // 如果输入的秒数为 0，则返回 '0小时'
 }
 
 const refresh = () => {

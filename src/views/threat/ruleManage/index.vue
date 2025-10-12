@@ -45,9 +45,7 @@
                             </el-form-item>
                             <el-form-item :label="$t('message.ruleManage.tags')">
                                 <el-select v-model="alertRules.filters.tags" multiple allow-create filterable :placeholder="$t('message.ruleManage.selectTags')" size="default" style="width: 200px" clearable>
-                                    <el-option label="ATT&CK" value="attack" />
-                                    <el-option label="Network" value="network" />
-                                    <el-option label="Malware" value="malware" />
+                                    <el-option v-for="tag in availableTags" :key="tag" :label="tag" :value="tag" />
                                 </el-select>
                             </el-form-item>
                         </el-form>
@@ -88,8 +86,9 @@
                                 {{ formatTime(row.updateTm) }}
                             </template>
                         </el-table-column>
-                        <el-table-column :label="$t('message.tableCommon.operate')" width="180" fixed="right" align="center">
+                        <el-table-column :label="$t('message.tableCommon.operate')" width="200" fixed="right" align="center">
                             <template #default="{ row }">
+                                <el-button size="small" @click="handleViewAlertRule(row)">{{ $t('message.tableCommon.view') }}</el-button>
                                 <el-button size="small" @click="handleEditAlertRule(row)">{{ $t('message.tableCommon.edit') }}</el-button>
                                 <el-button size="small" type="danger" @click="handleDeleteAlertRule(row)">{{ $t('message.tableCommon.delete') }}</el-button>
                             </template>
@@ -143,9 +142,7 @@
                             </el-form-item>
                             <el-form-item :label="$t('message.ruleManage.tags')">
                                 <el-select v-model="activityRules.filters.tags" multiple allow-create filterable :placeholder="$t('message.ruleManage.selectTags')" size="default" style="width: 200px" clearable>
-                                    <el-option label="ATT&CK" value="attack" />
-                                    <el-option label="Windows" value="windows" />
-                                    <el-option label="Linux" value="linux" />
+                                    <el-option v-for="tag in availableTags" :key="tag" :label="tag" :value="tag" />
                                 </el-select>
                             </el-form-item>
                         </el-form>
@@ -171,8 +168,9 @@
                                 {{ formatTime(row.updateTm) }}
                             </template>
                         </el-table-column>
-                        <el-table-column :label="$t('message.tableCommon.operate')" width="180" fixed="right" align="center">
+                        <el-table-column :label="$t('message.tableCommon.operate')" width="200" fixed="right" align="center">
                             <template #default="{ row }">
+                                <el-button size="small" @click="handleViewActivityRule(row)">{{ $t('message.tableCommon.view') }}</el-button>
                                 <el-button size="small" @click="handleEditActivityRule(row)">{{ $t('message.tableCommon.edit') }}</el-button>
                                 <el-button size="small" type="danger" @click="handleDeleteActivityRule(row)">{{ $t('message.tableCommon.delete') }}</el-button>
                             </template>
@@ -230,10 +228,8 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item :label="$t('message.ruleManage.tags')" prop="tags">
-                    <el-select v-model="alertRuleDialog.form.tags" multiple :placeholder="$t('message.ruleManage.selectTags')" style="width: 100%">
-                        <el-option label="ATT&CK" value="attack" />
-                        <el-option label="Network" value="network" />
-                        <el-option label="Malware" value="malware" />
+                    <el-select v-model="alertRuleDialog.form.tags" multiple allow-create filterable :placeholder="$t('message.ruleManage.selectTags')" style="width: 100%">
+                        <el-option v-for="tag in availableTags" :key="tag" :label="tag" :value="tag" />
                     </el-select>
                 </el-form-item>
                 <el-form-item :label="$t('message.ruleManage.type')" prop="type">
@@ -256,13 +252,19 @@
                     <el-input v-model="alertRuleDialog.form.detection" type="textarea" rows="8" :placeholder="$t('message.ruleManage.enterDetection')" />
                 </el-form-item>
                 <el-form-item :label="$t('message.ruleManage.reference')" prop="reference">
-                    <el-input v-model="alertRuleDialog.form.reference" :placeholder="$t('message.ruleManage.enterReference')" />
+                    <el-input v-model="alertRuleDialog.form.reference" type="textarea" rows="3" :placeholder="$t('message.ruleManage.enterReference')" />
                 </el-form-item>
                 <el-form-item :label="$t('message.ruleManage.suggestion')" prop="suggestion">
                     <el-input v-model="alertRuleDialog.form.suggestion" type="textarea" rows="3" :placeholder="$t('message.ruleManage.enterSuggestion')" />
                 </el-form-item>
                 <el-form-item :label="$t('message.ruleManage.author')" prop="author">
                     <el-input v-model="alertRuleDialog.form.author" :placeholder="$t('message.ruleManage.enterAuthor')" />
+                </el-form-item>
+                <el-form-item v-if="alertRuleDialog.isEdit" :label="$t('message.ruleManage.createTime')" prop="createTm">
+                    <el-input v-model="alertRuleDialog.form.createTmFormatted" disabled />
+                </el-form-item>
+                <el-form-item v-if="alertRuleDialog.isEdit" :label="$t('message.ruleManage.updateTime')" prop="updateTm">
+                    <el-input v-model="alertRuleDialog.form.updateTmFormatted" disabled />
                 </el-form-item>
             </el-form>
             <template #footer>
@@ -306,10 +308,8 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item :label="$t('message.ruleManage.tags')" prop="tags">
-                    <el-select v-model="activityRuleDialog.form.tags" multiple :placeholder="$t('message.ruleManage.selectTags')" style="width: 100%">
-                        <el-option label="ATT&CK" value="attack" />
-                        <el-option label="Windows" value="windows" />
-                        <el-option label="Linux" value="linux" />
+                    <el-select v-model="activityRuleDialog.form.tags" multiple allow-create filterable :placeholder="$t('message.ruleManage.selectTags')" style="width: 100%">
+                        <el-option v-for="tag in availableTags" :key="tag" :label="tag" :value="tag" />
                     </el-select>
                 </el-form-item>
                 <el-form-item :label="$t('message.ruleManage.logsource')" prop="logsource">
@@ -319,26 +319,62 @@
                     <el-input v-model="activityRuleDialog.form.detection" type="textarea" rows="8" :placeholder="$t('message.ruleManage.enterDetection')" />
                 </el-form-item>
                 <el-form-item :label="$t('message.ruleManage.reference')" prop="reference">
-                    <el-input v-model="activityRuleDialog.form.reference" :placeholder="$t('message.ruleManage.enterReference')" />
+                    <el-input v-model="activityRuleDialog.form.reference" type="textarea" rows="3" :placeholder="$t('message.ruleManage.enterReference')" />
                 </el-form-item>
                 <el-form-item label="Redis Key" prop="rdxKey">
                     <el-input v-model="activityRuleDialog.form.rdxKey" placeholder="Enter Redis Key" />
                 </el-form-item>
                 <el-form-item label="Fields" prop="fields">
                     <el-select v-model="activityRuleDialog.form.fields" multiple allow-create filterable placeholder="Enter Fields" style="width: 100%">
+                        <el-option v-for="field in availableFields" :key="field" :label="field" :value="field" />
                     </el-select>
                 </el-form-item>
                 <el-form-item label="Unique Fields" prop="uniqueFields">
                     <el-select v-model="activityRuleDialog.form.uniqueFields" multiple allow-create filterable placeholder="Enter Unique Fields" style="width: 100%">
+                        <el-option v-for="field in availableUniqueFields" :key="field" :label="field" :value="field" />
                     </el-select>
                 </el-form-item>
                 <el-form-item :label="$t('message.ruleManage.author')" prop="author">
                     <el-input v-model="activityRuleDialog.form.author" :placeholder="$t('message.ruleManage.enterAuthor')" />
                 </el-form-item>
+                <el-form-item v-if="activityRuleDialog.isEdit" :label="$t('message.ruleManage.createTime')" prop="createTm">
+                    <el-input v-model="activityRuleDialog.form.createTmFormatted" disabled />
+                </el-form-item>
+                <el-form-item v-if="activityRuleDialog.isEdit" :label="$t('message.ruleManage.updateTime')" prop="updateTm">
+                    <el-input v-model="activityRuleDialog.form.updateTmFormatted" disabled />
+                </el-form-item>
             </el-form>
             <template #footer>
                 <el-button @click="activityRuleDialog.visible = false">{{ $t('message.tableCommon.cancel') }}</el-button>
                 <el-button type="primary" @click="handleSaveActivityRule" :loading="activityRuleDialog.saving">{{ $t('message.ruleManage.save') }}</el-button>
+            </template>
+        </el-dialog>
+
+        <!-- Alert Rule View Dialog -->
+        <el-dialog
+            v-model="alertRuleViewDialog.visible"
+            :title="$t('message.ruleManage.viewAlertRule')"
+            width="700px"
+        >
+            <div class="yaml-viewer">
+                <pre><code class="language-yaml" v-html="alertRuleViewDialog.highlightedYaml"></code></pre>
+            </div>
+            <template #footer>
+                <el-button @click="alertRuleViewDialog.visible = false">{{ $t('message.tableCommon.close') }}</el-button>
+            </template>
+        </el-dialog>
+
+        <!-- Activity Rule View Dialog -->
+        <el-dialog
+            v-model="activityRuleViewDialog.visible"
+            :title="$t('message.ruleManage.viewActivityRule')"
+            width="700px"
+        >
+            <div class="yaml-viewer">
+                <pre><code class="language-yaml" v-html="activityRuleViewDialog.highlightedYaml"></code></pre>
+            </div>
+            <template #footer>
+                <el-button @click="activityRuleViewDialog.visible = false">{{ $t('message.tableCommon.close') }}</el-button>
             </template>
         </el-dialog>
     </div>
@@ -349,8 +385,15 @@ import { ref, reactive, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { Plus } from '@element-plus/icons-vue';
-import { listAlertRules, addAlertRule, updateAlertRule, deleteAlertRule, listActivityRules, addActivityRule, updateActivityRule, deleteActivityRule, getAlertTypes } from '/@/api/grpc/method';
+import { listAlertRules, addAlertRule, updateAlertRule, deleteAlertRule, listActivityRules, addActivityRule, updateActivityRule, deleteActivityRule, getAlertTypes, getAlertRuleTags, getActivityRuleFields, getActivityRuleUniqueFields } from '/@/api/grpc/method';
 import type { ListAlertRuleReq, AddAlertRuleReq, UpdateAlertRuleReq, ListActivityRuleReq, AddActivityRuleReq, UpdateActivityRuleReq, AlertRuleInfo, ActivityRuleInfo } from '/@/api/grpc/ada';
+import yaml from 'js-yaml';
+import hljs from 'highlight.js/lib/core';
+import yamlLang from 'highlight.js/lib/languages/yaml';
+import 'highlight.js/styles/github-dark.css';
+
+// Register YAML language
+hljs.registerLanguage('yaml', yamlLang);
 
 // Language detection
 const { locale } = useI18n();
@@ -361,6 +404,13 @@ const activityRuleFormRef = ref();
 
 // Alert types map from backend
 const alertTypesMap = ref<Record<string, string>>({});
+
+// All available tags from backend
+const availableTags = ref<string[]>([]);
+
+// All available fields and uniqueFields from backend
+const availableFields = ref<string[]>([]);
+const availableUniqueFields = ref<string[]>([]);
 
 // Alert Rules State
 const alertRules = reactive({
@@ -413,6 +463,8 @@ const alertRuleDialog = reactive({
         reference: '',
         suggestion: '',
         author: '',
+        createTmFormatted: '',
+        updateTmFormatted: '',
     },
 });
 
@@ -435,7 +487,23 @@ const activityRuleDialog = reactive({
         fields: [] as string[],
         uniqueFields: [] as string[],
         author: '',
+        createTmFormatted: '',
+        updateTmFormatted: '',
     },
+});
+
+// Alert Rule View Dialog State
+const alertRuleViewDialog = reactive({
+    visible: false,
+    yamlContent: '',
+    highlightedYaml: '',
+});
+
+// Activity Rule View Dialog State
+const activityRuleViewDialog = reactive({
+    visible: false,
+    yamlContent: '',
+    highlightedYaml: '',
 });
 
 // Fetch Alert Rules
@@ -520,7 +588,37 @@ const handleAddAlertRule = () => {
         reference: '',
         suggestion: '',
         author: '',
+        createTmFormatted: '',
+        updateTmFormatted: '',
     };
+};
+
+const handleViewAlertRule = (row: AlertRuleInfo) => {
+    const levelMap: Record<number, string> = { 1: 'info', 2: 'low', 3: 'medium', 4: 'high', 5: 'critical' };
+
+    const ruleObject = {
+        title: row.title,
+        description: row.description || '',
+        author: row.author || '',
+        level: levelMap[row.level] || 'medium',
+        status: row.status,
+        enable: row.enable,
+        tags: row.tags || [],
+        logsource: row.logsource || '',
+        type: row.type || '',
+        autoBlock: row.autoBlock,
+        reference: row.reference || '',
+        suggestion: row.suggestion || ''
+    };
+
+    alertRuleViewDialog.yamlContent = yaml.dump(ruleObject, {
+        indent: 2,
+        lineWidth: -1,
+        noRefs: true,
+        sortKeys: false
+    });
+    alertRuleViewDialog.highlightedYaml = hljs.highlight(alertRuleViewDialog.yamlContent, { language: 'yaml' }).value;
+    alertRuleViewDialog.visible = true;
 };
 
 const handleEditAlertRule = (row: AlertRuleInfo) => {
@@ -541,6 +639,8 @@ const handleEditAlertRule = (row: AlertRuleInfo) => {
         reference: row.reference,
         suggestion: row.suggestion,
         author: row.author,
+        createTmFormatted: formatTime(row.createTm),
+        updateTmFormatted: formatTime(row.updateTm),
     };
 };
 
@@ -667,7 +767,38 @@ const handleAddActivityRule = () => {
         fields: [],
         uniqueFields: [],
         author: '',
+        createTmFormatted: '',
+        updateTmFormatted: '',
     };
+};
+
+const handleViewActivityRule = (row: ActivityRuleInfo) => {
+    const levelMap: Record<number, string> = { 1: 'info', 2: 'low', 3: 'medium', 4: 'high', 5: 'critical' };
+
+    const ruleObject = {
+        id: row.iD,
+        title: row.title,
+        description: row.description || '',
+        author: row.author || '',
+        level: levelMap[row.level] || 'medium',
+        status: row.status,
+        tags: row.tags || [],
+        logsource: row.logsource || '',
+        detection: row.detection || '',
+        reference: row.reference || '',
+        rdxKey: row.rdxKey || '',
+        fields: row.fields || [],
+        uniqueFields: row.uniqueFields || []
+    };
+
+    activityRuleViewDialog.yamlContent = yaml.dump(ruleObject, {
+        indent: 2,
+        lineWidth: -1,
+        noRefs: true,
+        sortKeys: false
+    });
+    activityRuleViewDialog.highlightedYaml = hljs.highlight(activityRuleViewDialog.yamlContent, { language: 'yaml' }).value;
+    activityRuleViewDialog.visible = true;
 };
 
 const handleEditActivityRule = (row: ActivityRuleInfo) => {
@@ -687,6 +818,8 @@ const handleEditActivityRule = (row: ActivityRuleInfo) => {
         fields: [...row.fields],
         uniqueFields: [...row.uniqueFields],
         author: row.author,
+        createTmFormatted: formatTime(row.createTm),
+        updateTmFormatted: formatTime(row.updateTm),
     };
 };
 
@@ -828,6 +961,33 @@ const fetchAlertTypes = async () => {
     }
 };
 
+const fetchAlertRuleTags = async () => {
+    try {
+        const response = await getAlertRuleTags();
+        availableTags.value = response.tags || [];
+    } catch (error) {
+        console.error('Failed to fetch alert rule tags:', error);
+    }
+};
+
+const fetchActivityRuleFields = async () => {
+    try {
+        const response = await getActivityRuleFields();
+        availableFields.value = response.fields || [];
+    } catch (error) {
+        console.error('Failed to fetch activity rule fields:', error);
+    }
+};
+
+const fetchActivityRuleUniqueFields = async () => {
+    try {
+        const response = await getActivityRuleUniqueFields();
+        availableUniqueFields.value = response.uniqueFields || [];
+    } catch (error) {
+        console.error('Failed to fetch activity rule unique fields:', error);
+    }
+};
+
 // Watch for tab changes
 watch(activeTab, (newTab) => {
     if (newTab === 'activityRule' && activityRules.list.length === 0) {
@@ -850,6 +1010,9 @@ watch(() => activityRules.filters, () => {
 // Initialize
 onMounted(() => {
     fetchAlertTypes();
+    fetchAlertRuleTags();
+    fetchActivityRuleFields();
+    fetchActivityRuleUniqueFields();
     fetchAlertRules();
 });
 </script>

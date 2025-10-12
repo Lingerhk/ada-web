@@ -4405,19 +4405,19 @@ export interface DashboardStatsReply {
      */
     baseline: {
         [key: string]: number;
-    }; // 告警数: {"high": 2, "medium ": 3, "low": 1}
+    }; // 基线数: {"high": 2, "medium ": 3, "low": 1}
     /**
      * @generated from protobuf field: map<string, int32> leak = 4;
      */
     leak: {
         [key: string]: number;
-    }; // 告警数: {"high": 2, "medium ": 3, "low": 1}
+    }; // 漏洞数: {"high": 2, "medium ": 3, "low": 1}
     /**
      * @generated from protobuf field: map<string, int32> weakpwd = 5;
      */
     weakpwd: {
         [key: string]: number;
-    }; // 告警数: {"high": 2, "medium ": 3, "low": 1}
+    }; // 弱口令数: {"high": 2, "medium ": 3, "low": 1}
 }
 /**
  * @generated from protobuf message ada.DashboardTrendsReq
@@ -4758,6 +4758,48 @@ export interface GetAlertTypesReply {
     alertTypes: {
         [key: string]: string;
     };
+}
+/**
+ * @generated from protobuf message ada.GetAlertRuleTagsReq
+ */
+export interface GetAlertRuleTagsReq {
+}
+/**
+ * @generated from protobuf message ada.GetAlertRuleTagsReply
+ */
+export interface GetAlertRuleTagsReply {
+    /**
+     * @generated from protobuf field: repeated string tags = 1;
+     */
+    tags: string[]; // 所有规则标签列表
+}
+/**
+ * @generated from protobuf message ada.GetActivityRuleFieldsReq
+ */
+export interface GetActivityRuleFieldsReq {
+}
+/**
+ * @generated from protobuf message ada.GetActivityRuleFieldsReply
+ */
+export interface GetActivityRuleFieldsReply {
+    /**
+     * @generated from protobuf field: repeated string fields = 1;
+     */
+    fields: string[]; // 所有行为规则Fields列表
+}
+/**
+ * @generated from protobuf message ada.GetActivityRuleUniqueFieldsReq
+ */
+export interface GetActivityRuleUniqueFieldsReq {
+}
+/**
+ * @generated from protobuf message ada.GetActivityRuleUniqueFieldsReply
+ */
+export interface GetActivityRuleUniqueFieldsReply {
+    /**
+     * @generated from protobuf field: repeated string uniqueFields = 1;
+     */
+    uniqueFields: string[]; // 所有行为规则UniqueFields列表
 }
 /**
  * Activity Rule (Sigma Rules) Messages
@@ -22007,6 +22049,222 @@ class GetAlertTypesReply$Type extends MessageType<GetAlertTypesReply> {
  */
 export const GetAlertTypesReply = new GetAlertTypesReply$Type();
 // @generated message type with reflection information, may provide speed optimized methods
+class GetAlertRuleTagsReq$Type extends MessageType<GetAlertRuleTagsReq> {
+    constructor() {
+        super("ada.GetAlertRuleTagsReq", []);
+    }
+    create(value?: PartialMessage<GetAlertRuleTagsReq>): GetAlertRuleTagsReq {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        if (value !== undefined)
+            reflectionMergePartial<GetAlertRuleTagsReq>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetAlertRuleTagsReq): GetAlertRuleTagsReq {
+        return target ?? this.create();
+    }
+    internalBinaryWrite(message: GetAlertRuleTagsReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.GetAlertRuleTagsReq
+ */
+export const GetAlertRuleTagsReq = new GetAlertRuleTagsReq$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetAlertRuleTagsReply$Type extends MessageType<GetAlertRuleTagsReply> {
+    constructor() {
+        super("ada.GetAlertRuleTagsReply", [
+            { no: 1, name: "tags", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GetAlertRuleTagsReply>): GetAlertRuleTagsReply {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.tags = [];
+        if (value !== undefined)
+            reflectionMergePartial<GetAlertRuleTagsReply>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetAlertRuleTagsReply): GetAlertRuleTagsReply {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated string tags */ 1:
+                    message.tags.push(reader.string());
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetAlertRuleTagsReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated string tags = 1; */
+        for (let i = 0; i < message.tags.length; i++)
+            writer.tag(1, WireType.LengthDelimited).string(message.tags[i]);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.GetAlertRuleTagsReply
+ */
+export const GetAlertRuleTagsReply = new GetAlertRuleTagsReply$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetActivityRuleFieldsReq$Type extends MessageType<GetActivityRuleFieldsReq> {
+    constructor() {
+        super("ada.GetActivityRuleFieldsReq", []);
+    }
+    create(value?: PartialMessage<GetActivityRuleFieldsReq>): GetActivityRuleFieldsReq {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        if (value !== undefined)
+            reflectionMergePartial<GetActivityRuleFieldsReq>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetActivityRuleFieldsReq): GetActivityRuleFieldsReq {
+        return target ?? this.create();
+    }
+    internalBinaryWrite(message: GetActivityRuleFieldsReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.GetActivityRuleFieldsReq
+ */
+export const GetActivityRuleFieldsReq = new GetActivityRuleFieldsReq$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetActivityRuleFieldsReply$Type extends MessageType<GetActivityRuleFieldsReply> {
+    constructor() {
+        super("ada.GetActivityRuleFieldsReply", [
+            { no: 1, name: "fields", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GetActivityRuleFieldsReply>): GetActivityRuleFieldsReply {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.fields = [];
+        if (value !== undefined)
+            reflectionMergePartial<GetActivityRuleFieldsReply>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetActivityRuleFieldsReply): GetActivityRuleFieldsReply {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated string fields */ 1:
+                    message.fields.push(reader.string());
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetActivityRuleFieldsReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated string fields = 1; */
+        for (let i = 0; i < message.fields.length; i++)
+            writer.tag(1, WireType.LengthDelimited).string(message.fields[i]);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.GetActivityRuleFieldsReply
+ */
+export const GetActivityRuleFieldsReply = new GetActivityRuleFieldsReply$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetActivityRuleUniqueFieldsReq$Type extends MessageType<GetActivityRuleUniqueFieldsReq> {
+    constructor() {
+        super("ada.GetActivityRuleUniqueFieldsReq", []);
+    }
+    create(value?: PartialMessage<GetActivityRuleUniqueFieldsReq>): GetActivityRuleUniqueFieldsReq {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        if (value !== undefined)
+            reflectionMergePartial<GetActivityRuleUniqueFieldsReq>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetActivityRuleUniqueFieldsReq): GetActivityRuleUniqueFieldsReq {
+        return target ?? this.create();
+    }
+    internalBinaryWrite(message: GetActivityRuleUniqueFieldsReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.GetActivityRuleUniqueFieldsReq
+ */
+export const GetActivityRuleUniqueFieldsReq = new GetActivityRuleUniqueFieldsReq$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetActivityRuleUniqueFieldsReply$Type extends MessageType<GetActivityRuleUniqueFieldsReply> {
+    constructor() {
+        super("ada.GetActivityRuleUniqueFieldsReply", [
+            { no: 1, name: "uniqueFields", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GetActivityRuleUniqueFieldsReply>): GetActivityRuleUniqueFieldsReply {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.uniqueFields = [];
+        if (value !== undefined)
+            reflectionMergePartial<GetActivityRuleUniqueFieldsReply>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetActivityRuleUniqueFieldsReply): GetActivityRuleUniqueFieldsReply {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated string uniqueFields */ 1:
+                    message.uniqueFields.push(reader.string());
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetActivityRuleUniqueFieldsReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated string uniqueFields = 1; */
+        for (let i = 0; i < message.uniqueFields.length; i++)
+            writer.tag(1, WireType.LengthDelimited).string(message.uniqueFields[i]);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.GetActivityRuleUniqueFieldsReply
+ */
+export const GetActivityRuleUniqueFieldsReply = new GetActivityRuleUniqueFieldsReply$Type();
+// @generated message type with reflection information, may provide speed optimized methods
 class ListActivityRuleReq$Type extends MessageType<ListActivityRuleReq> {
     constructor() {
         super("ada.ListActivityRuleReq", [
@@ -23109,11 +23367,14 @@ export const ADA = new ServiceType("ada.ADA", [
     { name: "UpdateAlertRule", options: {}, I: UpdateAlertRuleReq, O: UpdateAlertRuleReply },
     { name: "DeleteAlertRule", options: {}, I: DeleteAlertRuleReq, O: DeleteAlertRuleReply },
     { name: "GetAlertTypes", options: {}, I: GetAlertTypesReq, O: GetAlertTypesReply },
+    { name: "GetAlertRuleTags", options: {}, I: GetAlertRuleTagsReq, O: GetAlertRuleTagsReply },
     { name: "ListActivityRule", options: {}, I: ListActivityRuleReq, O: ListActivityRuleReply },
     { name: "GetActivityRule", options: {}, I: GetActivityRuleReq, O: GetActivityRuleReply },
     { name: "AddActivityRule", options: {}, I: AddActivityRuleReq, O: AddActivityRuleReply },
     { name: "UpdateActivityRule", options: {}, I: UpdateActivityRuleReq, O: UpdateActivityRuleReply },
     { name: "DeleteActivityRule", options: {}, I: DeleteActivityRuleReq, O: DeleteActivityRuleReply },
+    { name: "GetActivityRuleFields", options: {}, I: GetActivityRuleFieldsReq, O: GetActivityRuleFieldsReply },
+    { name: "GetActivityRuleUniqueFields", options: {}, I: GetActivityRuleUniqueFieldsReq, O: GetActivityRuleUniqueFieldsReply },
     { name: "ScanRiskStats", options: {}, I: ScanRiskStatsReq, O: ScanRiskStatsReply },
     { name: "ListBaseline", options: {}, I: ListBaselineReq, O: ListBaselineReply },
     { name: "GetBaseline", options: {}, I: GetBaselineReq, O: GetBaselineReply },

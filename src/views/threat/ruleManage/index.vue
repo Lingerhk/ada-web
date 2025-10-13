@@ -5,7 +5,7 @@
                 <!-- Alert Rules (Flow Rules) Tab -->
                 <el-tab-pane :label="$t('message.ruleManage.alertRuleTab')" name="alertRule" key="alertRule">
                     <!-- Filter Row with Add Button -->
-                    <el-row style="margin-bottom: 15px;">
+                    <el-row style="margin-bottom: 1px;">
                         <el-form :inline="true" class="filter-form">
                             <el-form-item>
                                 <el-button @click="handleAddAlertRule" type="primary" size="default">
@@ -17,7 +17,7 @@
                                 <el-input v-model="alertRules.filters.title" :placeholder="$t('message.ruleManage.searchTitle')" size="default" style="width: 200px" clearable />
                             </el-form-item>
                             <el-form-item :label="$t('message.ruleManage.level')">
-                                <el-select v-model="alertRules.filters.level" multiple :placeholder="$t('message.ruleManage.selectLevel')" size="default" style="width: 180px" clearable>
+                                <el-select v-model="alertRules.filters.level" multiple :placeholder="$t('message.ruleManage.selectLevel')" size="default" style="width: 130px" clearable>
                                     <el-option label="Info" :value="1" />
                                     <el-option label="Low" :value="2" />
                                     <el-option label="Medium" :value="3" />
@@ -26,7 +26,7 @@
                                 </el-select>
                             </el-form-item>
                             <el-form-item :label="$t('message.ruleManage.type')">
-                                <el-select v-model="alertRules.filters.type" multiple :placeholder="$t('message.ruleManage.selectType')" size="default" style="width: 200px" clearable>
+                                <el-select v-model="alertRules.filters.type" multiple :placeholder="$t('message.ruleManage.selectType')" size="default" style="width: 150px" clearable>
                                     <el-option
                                         v-for="(value, key) in alertTypesMap"
                                         :key="key"
@@ -36,7 +36,7 @@
                                 </el-select>
                             </el-form-item>
                             <el-form-item :label="$t('message.ruleManage.status')">
-                                <el-select v-model="alertRules.filters.status" multiple :placeholder="$t('message.ruleManage.selectStatus')" size="default" style="width: 180px" clearable>
+                                <el-select v-model="alertRules.filters.status" multiple :placeholder="$t('message.ruleManage.selectStatus')" size="default" style="width: 130px" clearable>
                                     <el-option label="Test" value="test" />
                                     <el-option label="Experimental" value="experimental" />
                                     <el-option label="Stable" value="stable" />
@@ -52,15 +52,15 @@
                     </el-row>
 
                     <!-- Alert Rules Table -->
-                    <el-table :data="alertRules.list" border v-loading="alertRules.loading" style="width: 100%">
-                        <el-table-column prop="iD" label="ID" min-width="150" show-overflow-tooltip />
+                    <el-table :data="alertRules.list" border v-loading="alertRules.loading" style="width: 100%; margin-top: -8px">
+                        <el-table-column prop="iD" label="ID" min-width="100" show-overflow-tooltip />
                         <el-table-column prop="title" :label="$t('message.ruleManage.title')" min-width="250" show-overflow-tooltip />
                         <el-table-column prop="enable" :label="$t('message.ruleManage.enable')" width="80" align="center">
                             <template #default="{ row }">
                                 <el-switch v-model="row.enable" @change="handleToggleAlertRule(row)" />
                             </template>
                         </el-table-column>
-                        <el-table-column prop="level" :label="$t('message.ruleManage.level')" width="100" align="center">
+                        <el-table-column prop="level" :label="$t('message.ruleManage.level')" width="90" align="center">
                             <template #default="{ row }">
                                 <el-tag :type="getLevelType(row.level)">{{ getLevelText(row.level) }}</el-tag>
                             </template>
@@ -71,7 +71,7 @@
                                 <el-tag v-for="tag in row.tags" :key="tag" size="small" style="margin-right: 4px;">{{ tag }}</el-tag>
                             </template>
                         </el-table-column>
-                        <el-table-column prop="type" :label="$t('message.ruleManage.type')" min-width="180">
+                        <el-table-column prop="type" :label="$t('message.ruleManage.type')" min-width="150">
                             <template #default="{ row }">
                                 {{ getAlertTypeText(row.type) }}
                             </template>
@@ -81,12 +81,12 @@
                                 <el-tag :type="row.autoBlock ? 'danger' : 'info'" size="small">{{ row.autoBlock ? $t('message.ruleManage.yes') : $t('message.ruleManage.no') }}</el-tag>
                             </template>
                         </el-table-column>
-                        <el-table-column prop="updateTm" :label="$t('message.ruleManage.updateTime')" width="180">
+                        <el-table-column prop="updateTm" :label="$t('message.ruleManage.updateTime')" width="160">
                             <template #default="{ row }">
                                 {{ formatTime(row.updateTm) }}
                             </template>
                         </el-table-column>
-                        <el-table-column :label="$t('message.tableCommon.operate')" width="200" fixed="right" align="center">
+                        <el-table-column :label="$t('message.tableCommon.operate')" width="210" fixed="right" align="center">
                             <template #default="{ row }">
                                 <el-button size="small" @click="handleViewAlertRule(row)">{{ $t('message.tableCommon.view') }}</el-button>
                                 <el-button size="small" @click="handleEditAlertRule(row)">{{ $t('message.tableCommon.edit') }}</el-button>
@@ -112,7 +112,7 @@
                 <!-- Activity Rules (Sigma Rules) Tab -->
                 <el-tab-pane :label="$t('message.ruleManage.activityRuleTab')" name="activityRule" key="activityRule">
                     <!-- Filter Row with Add Button -->
-                    <el-row style="margin-bottom: 15px;">
+                    <el-row style="margin-bottom: 1px;">
                         <el-form :inline="true" class="filter-form">
                             <el-form-item>
                                 <el-button @click="handleAddActivityRule" type="primary" size="default">
@@ -149,15 +149,15 @@
                     </el-row>
 
                     <!-- Activity Rules Table -->
-                    <el-table :data="activityRules.list" border v-loading="activityRules.loading" style="width: 100%">
-                        <el-table-column prop="iD" label="ID" min-width="150" show-overflow-tooltip />
+                    <el-table :data="activityRules.list" border v-loading="activityRules.loading" style="width: 100%; margin-top: -8px">
+                        <el-table-column prop="iD" label="ID" min-width="130" show-overflow-tooltip />
                         <el-table-column prop="title" :label="$t('message.ruleManage.title')" min-width="300" show-overflow-tooltip />
-                        <el-table-column prop="level" :label="$t('message.ruleManage.level')" width="100" align="center">
+                        <el-table-column prop="level" :label="$t('message.ruleManage.level')" width="80" align="center">
                             <template #default="{ row }">
                                 <el-tag :type="getLevelType(row.level)">{{ getLevelText(row.level) }}</el-tag>
                             </template>
                         </el-table-column>
-                        <el-table-column prop="status" :label="$t('message.ruleManage.status')" width="120" />
+                        <el-table-column prop="status" :label="$t('message.ruleManage.status')" width="110" />
                         <el-table-column prop="tags" :label="$t('message.ruleManage.tags')" min-width="150">
                             <template #default="{ row }">
                                 <el-tag v-for="tag in row.tags" :key="tag" size="small" style="margin-right: 4px;">{{ tag }}</el-tag>
@@ -249,10 +249,25 @@
                     <el-input v-model="alertRuleDialog.form.logsource" :placeholder="$t('message.ruleManage.enterLogsource')" />
                 </el-form-item>
                 <el-form-item :label="$t('message.ruleManage.detection')" prop="detection" required>
-                    <el-input v-model="alertRuleDialog.form.detection" type="textarea" rows="8" :placeholder="$t('message.ruleManage.enterDetection')" />
+                    <Codemirror
+                        v-model:value="alertRuleDialog.form.detection"
+                        :options="{
+                            mode: 'yaml',
+                            theme: 'material',
+                            lineNumbers: true,
+                            lineWrapping: false
+                        }"
+                        height="200px"
+                        width="100%"
+                        :placeholder="$t('message.ruleManage.enterDetection')"
+                    />
                 </el-form-item>
-                <el-form-item :label="$t('message.ruleManage.reference')" prop="reference">
-                    <el-input v-model="alertRuleDialog.form.reference" type="textarea" rows="3" :placeholder="$t('message.ruleManage.enterReference')" />
+                <el-form-item :label="$t('message.ruleManage.reference')" prop="references">
+                    <div v-for="(ref, index) in alertRuleDialog.form.references" :key="index" style="display: flex; margin-bottom: 8px; align-items: center;">
+                        <el-input v-model="alertRuleDialog.form.references[index]" :placeholder="$t('message.ruleManage.enterReference')" style="flex: 1; margin-right: 8px;" />
+                        <el-button type="danger" :icon="Minus" circle @click="removeAlertReference(index)" />
+                    </div>
+                    <el-button type="primary" :icon="Plus" @click="addAlertReference">{{ $t('message.ruleManage.addReference') }}</el-button>
                 </el-form-item>
                 <el-form-item :label="$t('message.ruleManage.suggestion')" prop="suggestion">
                     <el-input v-model="alertRuleDialog.form.suggestion" type="textarea" rows="3" :placeholder="$t('message.ruleManage.enterSuggestion')" />
@@ -316,10 +331,25 @@
                     <el-input v-model="activityRuleDialog.form.logsource" :placeholder="$t('message.ruleManage.enterLogsource')" />
                 </el-form-item>
                 <el-form-item :label="$t('message.ruleManage.detection')" prop="detection" required>
-                    <el-input v-model="activityRuleDialog.form.detection" type="textarea" rows="8" :placeholder="$t('message.ruleManage.enterDetection')" />
+                    <Codemirror
+                        v-model:value="activityRuleDialog.form.detection"
+                        :options="{
+                            mode: 'yaml',
+                            theme: 'material',
+                            lineNumbers: true,
+                            lineWrapping: false
+                        }"
+                        height="200px"
+                        width="100%"
+                        :placeholder="$t('message.ruleManage.enterDetection')"
+                    />
                 </el-form-item>
-                <el-form-item :label="$t('message.ruleManage.reference')" prop="reference">
-                    <el-input v-model="activityRuleDialog.form.reference" type="textarea" rows="3" :placeholder="$t('message.ruleManage.enterReference')" />
+                <el-form-item :label="$t('message.ruleManage.reference')" prop="references">
+                    <div v-for="(ref, index) in activityRuleDialog.form.references" :key="index" style="display: flex; margin-bottom: 8px; align-items: center;">
+                        <el-input v-model="activityRuleDialog.form.references[index]" :placeholder="$t('message.ruleManage.enterReference')" style="flex: 1; margin-right: 8px;" />
+                        <el-button type="danger" :icon="Minus" circle @click="removeActivityReference(index)" />
+                    </div>
+                    <el-button type="primary" :icon="Plus" @click="addActivityReference">{{ $t('message.ruleManage.addReference') }}</el-button>
                 </el-form-item>
                 <el-form-item label="Redis Key" prop="rdxKey">
                     <el-input v-model="activityRuleDialog.form.rdxKey" placeholder="Enter Redis Key" />
@@ -384,19 +414,23 @@
 import { ref, reactive, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { Plus } from '@element-plus/icons-vue';
+import { Plus, Minus } from '@element-plus/icons-vue';
 import { listAlertRules, addAlertRule, updateAlertRule, deleteAlertRule, listActivityRules, addActivityRule, updateActivityRule, deleteActivityRule, getAlertTypes, getAlertRuleTags, getActivityRuleFields, getActivityRuleUniqueFields } from '/@/api/grpc/method';
 import type { ListAlertRuleReq, AddAlertRuleReq, UpdateAlertRuleReq, ListActivityRuleReq, AddActivityRuleReq, UpdateActivityRuleReq, AlertRuleInfo, ActivityRuleInfo } from '/@/api/grpc/ada';
 import yaml from 'js-yaml';
 import hljs from 'highlight.js/lib/core';
 import yamlLang from 'highlight.js/lib/languages/yaml';
 import 'highlight.js/styles/github-dark.css';
+import Codemirror from 'codemirror-editor-vue3';
+import 'codemirror/mode/yaml/yaml.js';
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/theme/material.css';
 
 // Register YAML language
 hljs.registerLanguage('yaml', yamlLang);
 
 // Language detection
-const { locale } = useI18n();
+const { locale, t } = useI18n();
 
 const activeTab = ref('alertRule');
 const alertRuleFormRef = ref();
@@ -460,7 +494,7 @@ const alertRuleDialog = reactive({
         type: '',
         autoBlock: false,
         detection: '',
-        reference: '',
+        references: [] as string[],
         suggestion: '',
         author: '',
         createTmFormatted: '',
@@ -482,7 +516,7 @@ const activityRuleDialog = reactive({
         tags: [] as string[],
         logsource: '',
         detection: '',
-        reference: '',
+        references: [] as string[],
         rdxKey: '',
         fields: [] as string[],
         uniqueFields: [] as string[],
@@ -535,7 +569,7 @@ const fetchAlertRules = async () => {
         alertRules.total = response.page?.total || 0;
     } catch (error) {
         console.error('Failed to fetch alert rules:', error);
-        ElMessage.error('加载告警规则失败');
+        ElMessage.error(t('message.ruleManage.loadAlertRulesFailed'));
     } finally {
         alertRules.loading = false;
     }
@@ -563,7 +597,7 @@ const fetchActivityRules = async () => {
         activityRules.total = response.page?.total || 0;
     } catch (error) {
         console.error('Failed to fetch activity rules:', error);
-        ElMessage.error('加载活动规则失败');
+        ElMessage.error(t('message.ruleManage.loadActivityRulesFailed'));
     } finally {
         activityRules.loading = false;
     }
@@ -585,7 +619,7 @@ const handleAddAlertRule = () => {
         type: '',
         autoBlock: false,
         detection: '',
-        reference: '',
+        references: [''],
         suggestion: '',
         author: '',
         createTmFormatted: '',
@@ -596,19 +630,28 @@ const handleAddAlertRule = () => {
 const handleViewAlertRule = (row: AlertRuleInfo) => {
     const levelMap: Record<number, string> = { 1: 'info', 2: 'low', 3: 'medium', 4: 'high', 5: 'critical' };
 
+    // Format date from "2006-01-02 15:04:05" to "2006/01/02"
+    const formatDate = (time: string): string => {
+        if (!time) return '';
+        return time.split(' ')[0].replace(/-/g, '/');
+    };
+
     const ruleObject = {
         title: row.title,
-        description: row.description || '',
-        author: row.author || '',
-        level: levelMap[row.level] || 'medium',
+        id: row.iD || '',
         status: row.status,
-        enable: row.enable,
+        description: row.description || '',
+        references: row.references || [],
+        author: row.author || '',
+        date: formatDate(row.createTm),
+        modified: formatDate(row.updateTm),
         tags: row.tags || [],
         logsource: row.logsource || '',
         type: row.type || '',
+        enable: row.enable,
         autoBlock: row.autoBlock,
-        reference: row.reference || '',
-        suggestion: row.suggestion || ''
+        suggestion: row.suggestion || '',
+        level: levelMap[row.level] || 'medium'
     };
 
     alertRuleViewDialog.yamlContent = yaml.dump(ruleObject, {
@@ -635,8 +678,8 @@ const handleEditAlertRule = (row: AlertRuleInfo) => {
         logsource: row.logsource,
         type: row.type,
         autoBlock: row.autoBlock,
-        detection: '',
-        reference: row.reference,
+        detection: row.detection || '',
+        references: row.references.length > 0 ? [...row.references] : [''],
         suggestion: row.suggestion,
         author: row.author,
         createTmFormatted: formatTime(row.createTm),
@@ -645,6 +688,14 @@ const handleEditAlertRule = (row: AlertRuleInfo) => {
 };
 
 const handleSaveAlertRule = async () => {
+    // Validate YAML syntax
+    try {
+        yaml.load(alertRuleDialog.form.detection);
+    } catch (error) {
+        ElMessage.error(t('message.ruleManage.invalidYamlFormat') + ': ' + (error as Error).message);
+        return;
+    }
+
     alertRuleDialog.saving = true;
     try {
         if (alertRuleDialog.isEdit) {
@@ -660,12 +711,12 @@ const handleSaveAlertRule = async () => {
                 type: alertRuleDialog.form.type,
                 autoBlock: alertRuleDialog.form.autoBlock,
                 detection: alertRuleDialog.form.detection,
-                reference: alertRuleDialog.form.reference,
+                references: alertRuleDialog.form.references.filter(ref => ref.trim() !== ''),
                 suggestion: alertRuleDialog.form.suggestion,
                 author: alertRuleDialog.form.author,
             };
             await updateAlertRule(req);
-            ElMessage.success('更新告警规则成功');
+            ElMessage.success(t('message.ruleManage.updateAlertRuleSuccess'));
         } else {
             const req: AddAlertRuleReq = {
                 title: alertRuleDialog.form.title,
@@ -678,18 +729,18 @@ const handleSaveAlertRule = async () => {
                 type: alertRuleDialog.form.type,
                 autoBlock: alertRuleDialog.form.autoBlock,
                 detection: alertRuleDialog.form.detection,
-                reference: alertRuleDialog.form.reference,
+                references: alertRuleDialog.form.references.filter(ref => ref.trim() !== ''),
                 suggestion: alertRuleDialog.form.suggestion,
                 author: alertRuleDialog.form.author,
             };
             await addAlertRule(req);
-            ElMessage.success('添加告警规则成功');
+            ElMessage.success(t('message.ruleManage.addAlertRuleSuccess'));
         }
         alertRuleDialog.visible = false;
         fetchAlertRules();
     } catch (error: any) {
         console.error('Failed to save alert rule:', error);
-        ElMessage.error(alertRuleDialog.isEdit ? '更新告警规则失败' : '添加告警规则失败');
+        ElMessage.error(alertRuleDialog.isEdit ? t('message.ruleManage.updateAlertRuleFailed') : t('message.ruleManage.addAlertRuleFailed'));
     } finally {
         alertRuleDialog.saving = false;
     }
@@ -697,21 +748,38 @@ const handleSaveAlertRule = async () => {
 
 const handleDeleteAlertRule = async (row: AlertRuleInfo) => {
     try {
-        await ElMessageBox.confirm(`确认删除规则 "${row.title}" ?`, '提示', {
+        await ElMessageBox.confirm(t('message.ruleManage.confirmDeleteRule', { title: row.title }), t('message.ruleManage.confirmTitle'), {
             confirmButtonText: '确认',
             cancelButtonText: '取消',
             type: 'warning',
         });
 
         await deleteAlertRule({ iD: row.iD });
-        ElMessage.success('删除成功');
+        ElMessage.success(t('message.ruleManage.deleteRuleSuccess'));
         fetchAlertRules();
     } catch (error: any) {
         if (error !== 'cancel') {
             console.error('Failed to delete alert rule:', error);
-            ElMessage.error('删除失败');
+            ElMessage.error(t('message.ruleManage.deleteRuleFailed'));
         }
     }
+};
+
+// Helper methods for managing references
+const addAlertReference = () => {
+    alertRuleDialog.form.references.push('');
+};
+
+const removeAlertReference = (index: number) => {
+    alertRuleDialog.form.references.splice(index, 1);
+};
+
+const addActivityReference = () => {
+    activityRuleDialog.form.references.push('');
+};
+
+const removeActivityReference = (index: number) => {
+    activityRuleDialog.form.references.splice(index, 1);
 };
 
 const handleToggleAlertRule = async (row: AlertRuleInfo) => {
@@ -728,15 +796,15 @@ const handleToggleAlertRule = async (row: AlertRuleInfo) => {
             type: row.type,
             autoBlock: row.autoBlock,
             detection: '',
-            reference: row.reference,
+            references: [...row.references],
             suggestion: row.suggestion,
             author: row.author,
         };
         await updateAlertRule(req);
-        ElMessage.success(`已${row.enable ? '启用' : '禁用'}规则`);
+        ElMessage.success(row.enable ? t('message.ruleManage.ruleEnabled') : t('message.ruleManage.ruleDisabled'));
     } catch (error) {
         console.error('Failed to toggle alert rule:', error);
-        ElMessage.error('更新规则状态失败');
+        ElMessage.error(t('message.ruleManage.updateRuleStatusFailed'));
         row.enable = !row.enable;
     }
 };
@@ -762,7 +830,7 @@ const handleAddActivityRule = () => {
         tags: [],
         logsource: '',
         detection: '',
-        reference: '',
+        references: [''],
         rdxKey: '',
         fields: [],
         uniqueFields: [],
@@ -775,20 +843,27 @@ const handleAddActivityRule = () => {
 const handleViewActivityRule = (row: ActivityRuleInfo) => {
     const levelMap: Record<number, string> = { 1: 'info', 2: 'low', 3: 'medium', 4: 'high', 5: 'critical' };
 
+    // Format date from "2006-01-02 15:04:05" to "2006/01/02"
+    const formatDate = (time: string): string => {
+        if (!time) return '';
+        return time.split(' ')[0].replace(/-/g, '/');
+    };
+
     const ruleObject = {
-        id: row.iD,
         title: row.title,
-        description: row.description || '',
-        author: row.author || '',
-        level: levelMap[row.level] || 'medium',
+        id: row.iD || '',
         status: row.status,
+        description: row.description || '',
+        references: row.references || [],
+        author: row.author || '',
+        date: formatDate(row.createTm),
+        modified: formatDate(row.updateTm),
         tags: row.tags || [],
         logsource: row.logsource || '',
         detection: row.detection || '',
-        reference: row.reference || '',
-        rdxKey: row.rdxKey || '',
         fields: row.fields || [],
-        uniqueFields: row.uniqueFields || []
+        unique_fields: row.uniqueFields || [],
+        level: levelMap[row.level] || 'medium'
     };
 
     activityRuleViewDialog.yamlContent = yaml.dump(ruleObject, {
@@ -812,8 +887,8 @@ const handleEditActivityRule = (row: ActivityRuleInfo) => {
         status: row.status,
         tags: [...row.tags],
         logsource: row.logsource,
-        detection: '',
-        reference: row.reference,
+        detection: row.detection || '',
+        references: row.references.length > 0 ? [...row.references] : [''],
         rdxKey: row.rdxKey,
         fields: [...row.fields],
         uniqueFields: [...row.uniqueFields],
@@ -824,6 +899,14 @@ const handleEditActivityRule = (row: ActivityRuleInfo) => {
 };
 
 const handleSaveActivityRule = async () => {
+    // Validate YAML syntax
+    try {
+        yaml.load(activityRuleDialog.form.detection);
+    } catch (error) {
+        ElMessage.error(t('message.ruleManage.invalidYamlFormat') + ': ' + (error as Error).message);
+        return;
+    }
+
     activityRuleDialog.saving = true;
     try {
         if (activityRuleDialog.isEdit) {
@@ -836,14 +919,14 @@ const handleSaveActivityRule = async () => {
                 tags: activityRuleDialog.form.tags,
                 logsource: activityRuleDialog.form.logsource,
                 detection: activityRuleDialog.form.detection,
-                reference: activityRuleDialog.form.reference,
+                references: activityRuleDialog.form.references.filter(ref => ref.trim() !== ''),
                 rdxKey: activityRuleDialog.form.rdxKey,
                 fields: activityRuleDialog.form.fields,
                 uniqueFields: activityRuleDialog.form.uniqueFields,
                 author: activityRuleDialog.form.author,
             };
             await updateActivityRule(req);
-            ElMessage.success('更新活动规则成功');
+            ElMessage.success(t('message.ruleManage.updateActivityRuleSuccess'));
         } else {
             const req: AddActivityRuleReq = {
                 iD: activityRuleDialog.form.iD,
@@ -854,20 +937,20 @@ const handleSaveActivityRule = async () => {
                 tags: activityRuleDialog.form.tags,
                 logsource: activityRuleDialog.form.logsource,
                 detection: activityRuleDialog.form.detection,
-                reference: activityRuleDialog.form.reference,
+                references: activityRuleDialog.form.references.filter(ref => ref.trim() !== ''),
                 rdxKey: activityRuleDialog.form.rdxKey,
                 fields: activityRuleDialog.form.fields,
                 uniqueFields: activityRuleDialog.form.uniqueFields,
                 author: activityRuleDialog.form.author,
             };
             await addActivityRule(req);
-            ElMessage.success('添加活动规则成功');
+            ElMessage.success(t('message.ruleManage.addActivityRuleSuccess'));
         }
         activityRuleDialog.visible = false;
         fetchActivityRules();
     } catch (error: any) {
         console.error('Failed to save activity rule:', error);
-        ElMessage.error(activityRuleDialog.isEdit ? '更新活动规则失败' : '添加活动规则失败');
+        ElMessage.error(activityRuleDialog.isEdit ? t('message.ruleManage.updateActivityRuleFailed') : t('message.ruleManage.addActivityRuleFailed'));
     } finally {
         activityRuleDialog.saving = false;
     }
@@ -875,19 +958,19 @@ const handleSaveActivityRule = async () => {
 
 const handleDeleteActivityRule = async (row: ActivityRuleInfo) => {
     try {
-        await ElMessageBox.confirm(`确认删除规则 "${row.title}" ?`, '提示', {
+        await ElMessageBox.confirm(t('message.ruleManage.confirmDeleteRule', { title: row.title }), t('message.ruleManage.confirmTitle'), {
             confirmButtonText: '确认',
             cancelButtonText: '取消',
             type: 'warning',
         });
 
         await deleteActivityRule({ iD: row.iD });
-        ElMessage.success('删除成功');
+        ElMessage.success(t('message.ruleManage.deleteRuleSuccess'));
         fetchActivityRules();
     } catch (error: any) {
         if (error !== 'cancel') {
             console.error('Failed to delete activity rule:', error);
-            ElMessage.error('删除失败');
+            ElMessage.error(t('message.ruleManage.deleteRuleFailed'));
         }
     }
 };
@@ -1020,5 +1103,25 @@ onMounted(() => {
 <style scoped lang="scss">
 .filter-form {
     margin-bottom: 20px;
+
+    :deep(.el-form-item) {
+        margin-right: 12px;
+    }
+}
+
+.yaml-viewer {
+    pre {
+        margin: 0;
+        padding: 16px;
+        background-color: #0d1117;
+        border-radius: 6px;
+        overflow-x: auto;
+
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+    }
 }
 </style>

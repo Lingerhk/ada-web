@@ -2,9 +2,9 @@
     <div class="layout-pd">
         <el-card shadow="hover">
             <!-- serching -->
-            <el-row justify="space-between">
+            <el-row justify="space-between" style="margin-bottom: 15px;">
                 <el-form :inline="true" class="filter-form">
-                    <el-form-item><el-button type="primary" @click="handleNew">{{ T('new') }}</el-button></el-form-item>
+                    <el-form-item><el-button type="primary" @click="handleNew">{{ $t('message.tableCommon.new') }}</el-button></el-form-item>
                     <el-form-item :label="T('domain')">
                         <MultiSelector v-model:selected="state.req.domain" :options="state.domainOptions" />
                     </el-form-item>
@@ -22,11 +22,12 @@
                             :range-separator="$t('message.time.to')" :start-placeholder="$t('message.time.start')"
                             :end-placeholder="$t('message.time.end')" :shortcuts="shortcuts" />
                     </el-form-item>
+
+                    <el-form-item style="width: 260px;">
+                        <el-input size="default" v-model="state.req.search" :placeholder="T('searchPlaceholder')" />
+                    </el-form-item>
                 </el-form>
-                <el-form :inline="true">
-                    <el-input size="default" v-model="state.req.search" :placeholder="T('searchPlaceholder')"
-                        style="width: 250px;" />
-                </el-form>
+
             </el-row>
             <!-- table -->
             <el-row style="margin-top: 10px">
@@ -254,5 +255,10 @@ watch(() => dstate.open, (newValue) => {
 
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.filter-form {
+    :deep(.el-form-item) {
+        margin-right: 12px;
+    }
+}
 </style>

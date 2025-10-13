@@ -2456,9 +2456,9 @@ export interface GetThreatReply {
      */
     suggestion: string; // 修复建议
     /**
-     * @generated from protobuf field: string reference = 22;
+     * @generated from protobuf field: repeated string references = 22;
      */
-    reference: string; // 误报排查
+    references: string[]; // 误报排查
     /**
      * @generated from protobuf field: string remark = 23;
      */
@@ -4544,31 +4544,35 @@ export interface AlertRuleInfo {
      */
     logsource: string; // 日志来源
     /**
-     * @generated from protobuf field: string type = 9;
+     * @generated from protobuf field: string detection = 9;
+     */
+    detection: string; // Yaml string
+    /**
+     * @generated from protobuf field: string type = 10;
      */
     type: string; // 规则分类
     /**
-     * @generated from protobuf field: string author = 10;
+     * @generated from protobuf field: string author = 11;
      */
     author: string; // 作者
     /**
-     * @generated from protobuf field: string reference = 11;
+     * @generated from protobuf field: repeated string references = 12;
      */
-    reference: string; // 参考信息
+    references: string[]; // 参考信息
     /**
-     * @generated from protobuf field: string suggestion = 12;
+     * @generated from protobuf field: string suggestion = 13;
      */
     suggestion: string; // 处置建议
     /**
-     * @generated from protobuf field: bool autoBlock = 13;
+     * @generated from protobuf field: bool autoBlock = 14;
      */
     autoBlock: boolean; // 自动阻断
     /**
-     * @generated from protobuf field: string createTm = 14;
+     * @generated from protobuf field: string createTm = 15;
      */
     createTm: string;
     /**
-     * @generated from protobuf field: string updateTm = 15;
+     * @generated from protobuf field: string updateTm = 16;
      */
     updateTm: string;
 }
@@ -4620,15 +4624,15 @@ export interface AddAlertRuleReq {
     /**
      * @generated from protobuf field: string detection = 8;
      */
-    detection: string; // [(validator.field) = {string_not_empty: true}]; // JSON string
+    detection: string; // [(validator.field) = {string_not_empty: true}]; // Yaml string
     /**
      * @generated from protobuf field: string type = 9;
      */
     type: string;
     /**
-     * @generated from protobuf field: string reference = 10;
+     * @generated from protobuf field: repeated string references = 10;
      */
-    reference: string;
+    references: string[];
     /**
      * @generated from protobuf field: string suggestion = 11;
      */
@@ -4694,15 +4698,15 @@ export interface UpdateAlertRuleReq {
     /**
      * @generated from protobuf field: string detection = 9;
      */
-    detection: string; // JSON string
+    detection: string; // Yaml string
     /**
      * @generated from protobuf field: string type = 10;
      */
     type: string;
     /**
-     * @generated from protobuf field: string reference = 11;
+     * @generated from protobuf field: repeated string references = 11;
      */
-    reference: string;
+    references: string[];
     /**
      * @generated from protobuf field: string suggestion = 12;
      */
@@ -4881,31 +4885,35 @@ export interface ActivityRuleInfo {
      */
     logsource: string; // 日志来源
     /**
-     * @generated from protobuf field: string reference = 8;
+     * @generated from protobuf field: repeated string references = 8;
      */
-    reference: string; // 参考链接
+    references: string[]; // 参考链接
     /**
-     * @generated from protobuf field: string rdxKey = 9;
+     * @generated from protobuf field: string detection = 9;
+     */
+    detection: string; // JSON string of dynamic detection
+    /**
+     * @generated from protobuf field: string rdxKey = 10;
      */
     rdxKey: string; // Redis缓存key
     /**
-     * @generated from protobuf field: repeated string fields = 10;
+     * @generated from protobuf field: repeated string fields = 11;
      */
     fields: string[]; // 提取字段
     /**
-     * @generated from protobuf field: repeated string uniqueFields = 11;
+     * @generated from protobuf field: repeated string uniqueFields = 12;
      */
     uniqueFields: string[]; // 唯一字段
     /**
-     * @generated from protobuf field: string author = 12;
+     * @generated from protobuf field: string author = 13;
      */
     author: string; // 作者
     /**
-     * @generated from protobuf field: string createTm = 13;
+     * @generated from protobuf field: string createTm = 14;
      */
     createTm: string;
     /**
-     * @generated from protobuf field: string updateTm = 14;
+     * @generated from protobuf field: string updateTm = 15;
      */
     updateTm: string;
 }
@@ -4964,9 +4972,9 @@ export interface GetActivityRuleReply {
      */
     logsource: string;
     /**
-     * @generated from protobuf field: string reference = 8;
+     * @generated from protobuf field: repeated string references = 8;
      */
-    reference: string;
+    references: string[];
     /**
      * @generated from protobuf field: string detection = 9;
      */
@@ -5029,9 +5037,9 @@ export interface AddActivityRuleReq {
      */
     logsource: string;
     /**
-     * @generated from protobuf field: string reference = 8;
+     * @generated from protobuf field: repeated string references = 8;
      */
-    reference: string;
+    references: string[];
     /**
      * @generated from protobuf field: string detection = 9;
      */
@@ -5099,9 +5107,9 @@ export interface UpdateActivityRuleReq {
      */
     logsource: string;
     /**
-     * @generated from protobuf field: string reference = 8;
+     * @generated from protobuf field: repeated string references = 8;
      */
-    reference: string;
+    references: string[];
     /**
      * @generated from protobuf field: string detection = 9;
      */
@@ -13665,7 +13673,7 @@ class GetThreatReply$Type extends MessageType<GetThreatReply> {
             { no: 19, name: "attackFlow", kind: "message", T: () => AttackFlowReply },
             { no: 20, name: "activities", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => ActivityDetails },
             { no: 21, name: "suggestion", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 22, name: "reference", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 22, name: "references", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 23, name: "remark", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
@@ -13691,7 +13699,7 @@ class GetThreatReply$Type extends MessageType<GetThreatReply> {
         message.fieldData = {};
         message.activities = [];
         message.suggestion = "";
-        message.reference = "";
+        message.references = [];
         message.remark = "";
         if (value !== undefined)
             reflectionMergePartial<GetThreatReply>(this, message, value);
@@ -13765,8 +13773,8 @@ class GetThreatReply$Type extends MessageType<GetThreatReply> {
                 case /* string suggestion */ 21:
                     message.suggestion = reader.string();
                     break;
-                case /* string reference */ 22:
-                    message.reference = reader.string();
+                case /* repeated string references */ 22:
+                    message.references.push(reader.string());
                     break;
                 case /* string remark */ 23:
                     message.remark = reader.string();
@@ -13862,9 +13870,9 @@ class GetThreatReply$Type extends MessageType<GetThreatReply> {
         /* string suggestion = 21; */
         if (message.suggestion !== "")
             writer.tag(21, WireType.LengthDelimited).string(message.suggestion);
-        /* string reference = 22; */
-        if (message.reference !== "")
-            writer.tag(22, WireType.LengthDelimited).string(message.reference);
+        /* repeated string references = 22; */
+        for (let i = 0; i < message.references.length; i++)
+            writer.tag(22, WireType.LengthDelimited).string(message.references[i]);
         /* string remark = 23; */
         if (message.remark !== "")
             writer.tag(23, WireType.LengthDelimited).string(message.remark);
@@ -21269,13 +21277,14 @@ class AlertRuleInfo$Type extends MessageType<AlertRuleInfo> {
             { no: 6, name: "status", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 7, name: "tags", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 8, name: "logsource", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 9, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 10, name: "author", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 11, name: "reference", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 12, name: "suggestion", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 13, name: "autoBlock", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
-            { no: 14, name: "createTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 15, name: "updateTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 9, name: "detection", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 10, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 11, name: "author", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 12, name: "references", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 13, name: "suggestion", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 14, name: "autoBlock", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 15, name: "createTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 16, name: "updateTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<AlertRuleInfo>): AlertRuleInfo {
@@ -21288,9 +21297,10 @@ class AlertRuleInfo$Type extends MessageType<AlertRuleInfo> {
         message.status = "";
         message.tags = [];
         message.logsource = "";
+        message.detection = "";
         message.type = "";
         message.author = "";
-        message.reference = "";
+        message.references = [];
         message.suggestion = "";
         message.autoBlock = false;
         message.createTm = "";
@@ -21328,25 +21338,28 @@ class AlertRuleInfo$Type extends MessageType<AlertRuleInfo> {
                 case /* string logsource */ 8:
                     message.logsource = reader.string();
                     break;
-                case /* string type */ 9:
+                case /* string detection */ 9:
+                    message.detection = reader.string();
+                    break;
+                case /* string type */ 10:
                     message.type = reader.string();
                     break;
-                case /* string author */ 10:
+                case /* string author */ 11:
                     message.author = reader.string();
                     break;
-                case /* string reference */ 11:
-                    message.reference = reader.string();
+                case /* repeated string references */ 12:
+                    message.references.push(reader.string());
                     break;
-                case /* string suggestion */ 12:
+                case /* string suggestion */ 13:
                     message.suggestion = reader.string();
                     break;
-                case /* bool autoBlock */ 13:
+                case /* bool autoBlock */ 14:
                     message.autoBlock = reader.bool();
                     break;
-                case /* string createTm */ 14:
+                case /* string createTm */ 15:
                     message.createTm = reader.string();
                     break;
-                case /* string updateTm */ 15:
+                case /* string updateTm */ 16:
                     message.updateTm = reader.string();
                     break;
                 default:
@@ -21385,27 +21398,30 @@ class AlertRuleInfo$Type extends MessageType<AlertRuleInfo> {
         /* string logsource = 8; */
         if (message.logsource !== "")
             writer.tag(8, WireType.LengthDelimited).string(message.logsource);
-        /* string type = 9; */
+        /* string detection = 9; */
+        if (message.detection !== "")
+            writer.tag(9, WireType.LengthDelimited).string(message.detection);
+        /* string type = 10; */
         if (message.type !== "")
-            writer.tag(9, WireType.LengthDelimited).string(message.type);
-        /* string author = 10; */
+            writer.tag(10, WireType.LengthDelimited).string(message.type);
+        /* string author = 11; */
         if (message.author !== "")
-            writer.tag(10, WireType.LengthDelimited).string(message.author);
-        /* string reference = 11; */
-        if (message.reference !== "")
-            writer.tag(11, WireType.LengthDelimited).string(message.reference);
-        /* string suggestion = 12; */
+            writer.tag(11, WireType.LengthDelimited).string(message.author);
+        /* repeated string references = 12; */
+        for (let i = 0; i < message.references.length; i++)
+            writer.tag(12, WireType.LengthDelimited).string(message.references[i]);
+        /* string suggestion = 13; */
         if (message.suggestion !== "")
-            writer.tag(12, WireType.LengthDelimited).string(message.suggestion);
-        /* bool autoBlock = 13; */
+            writer.tag(13, WireType.LengthDelimited).string(message.suggestion);
+        /* bool autoBlock = 14; */
         if (message.autoBlock !== false)
-            writer.tag(13, WireType.Varint).bool(message.autoBlock);
-        /* string createTm = 14; */
+            writer.tag(14, WireType.Varint).bool(message.autoBlock);
+        /* string createTm = 15; */
         if (message.createTm !== "")
-            writer.tag(14, WireType.LengthDelimited).string(message.createTm);
-        /* string updateTm = 15; */
+            writer.tag(15, WireType.LengthDelimited).string(message.createTm);
+        /* string updateTm = 16; */
         if (message.updateTm !== "")
-            writer.tag(15, WireType.LengthDelimited).string(message.updateTm);
+            writer.tag(16, WireType.LengthDelimited).string(message.updateTm);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -21483,7 +21499,7 @@ class AddAlertRuleReq$Type extends MessageType<AddAlertRuleReq> {
             { no: 7, name: "logsource", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 8, name: "detection", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 9, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 10, name: "reference", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 10, name: "references", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 11, name: "suggestion", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 12, name: "author", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 13, name: "autoBlock", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
@@ -21500,7 +21516,7 @@ class AddAlertRuleReq$Type extends MessageType<AddAlertRuleReq> {
         message.logsource = "";
         message.detection = "";
         message.type = "";
-        message.reference = "";
+        message.references = [];
         message.suggestion = "";
         message.author = "";
         message.autoBlock = false;
@@ -21540,8 +21556,8 @@ class AddAlertRuleReq$Type extends MessageType<AddAlertRuleReq> {
                 case /* string type */ 9:
                     message.type = reader.string();
                     break;
-                case /* string reference */ 10:
-                    message.reference = reader.string();
+                case /* repeated string references */ 10:
+                    message.references.push(reader.string());
                     break;
                 case /* string suggestion */ 11:
                     message.suggestion = reader.string();
@@ -21591,9 +21607,9 @@ class AddAlertRuleReq$Type extends MessageType<AddAlertRuleReq> {
         /* string type = 9; */
         if (message.type !== "")
             writer.tag(9, WireType.LengthDelimited).string(message.type);
-        /* string reference = 10; */
-        if (message.reference !== "")
-            writer.tag(10, WireType.LengthDelimited).string(message.reference);
+        /* repeated string references = 10; */
+        for (let i = 0; i < message.references.length; i++)
+            writer.tag(10, WireType.LengthDelimited).string(message.references[i]);
         /* string suggestion = 11; */
         if (message.suggestion !== "")
             writer.tag(11, WireType.LengthDelimited).string(message.suggestion);
@@ -21682,7 +21698,7 @@ class UpdateAlertRuleReq$Type extends MessageType<UpdateAlertRuleReq> {
             { no: 8, name: "logsource", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 9, name: "detection", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 10, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 11, name: "reference", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 11, name: "references", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 12, name: "suggestion", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 13, name: "author", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 14, name: "autoBlock", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
@@ -21700,7 +21716,7 @@ class UpdateAlertRuleReq$Type extends MessageType<UpdateAlertRuleReq> {
         message.logsource = "";
         message.detection = "";
         message.type = "";
-        message.reference = "";
+        message.references = [];
         message.suggestion = "";
         message.author = "";
         message.autoBlock = false;
@@ -21743,8 +21759,8 @@ class UpdateAlertRuleReq$Type extends MessageType<UpdateAlertRuleReq> {
                 case /* string type */ 10:
                     message.type = reader.string();
                     break;
-                case /* string reference */ 11:
-                    message.reference = reader.string();
+                case /* repeated string references */ 11:
+                    message.references.push(reader.string());
                     break;
                 case /* string suggestion */ 12:
                     message.suggestion = reader.string();
@@ -21797,9 +21813,9 @@ class UpdateAlertRuleReq$Type extends MessageType<UpdateAlertRuleReq> {
         /* string type = 10; */
         if (message.type !== "")
             writer.tag(10, WireType.LengthDelimited).string(message.type);
-        /* string reference = 11; */
-        if (message.reference !== "")
-            writer.tag(11, WireType.LengthDelimited).string(message.reference);
+        /* repeated string references = 11; */
+        for (let i = 0; i < message.references.length; i++)
+            writer.tag(11, WireType.LengthDelimited).string(message.references[i]);
         /* string suggestion = 12; */
         if (message.suggestion !== "")
             writer.tag(12, WireType.LengthDelimited).string(message.suggestion);
@@ -22402,13 +22418,14 @@ class ActivityRuleInfo$Type extends MessageType<ActivityRuleInfo> {
             { no: 5, name: "status", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 6, name: "tags", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 7, name: "logsource", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 8, name: "reference", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 9, name: "rdxKey", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 10, name: "fields", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
-            { no: 11, name: "uniqueFields", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
-            { no: 12, name: "author", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 13, name: "createTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 14, name: "updateTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 8, name: "references", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 9, name: "detection", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 10, name: "rdxKey", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 11, name: "fields", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 12, name: "uniqueFields", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 13, name: "author", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 14, name: "createTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 15, name: "updateTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<ActivityRuleInfo>): ActivityRuleInfo {
@@ -22420,7 +22437,8 @@ class ActivityRuleInfo$Type extends MessageType<ActivityRuleInfo> {
         message.status = "";
         message.tags = [];
         message.logsource = "";
-        message.reference = "";
+        message.references = [];
+        message.detection = "";
         message.rdxKey = "";
         message.fields = [];
         message.uniqueFields = [];
@@ -22457,25 +22475,28 @@ class ActivityRuleInfo$Type extends MessageType<ActivityRuleInfo> {
                 case /* string logsource */ 7:
                     message.logsource = reader.string();
                     break;
-                case /* string reference */ 8:
-                    message.reference = reader.string();
+                case /* repeated string references */ 8:
+                    message.references.push(reader.string());
                     break;
-                case /* string rdxKey */ 9:
+                case /* string detection */ 9:
+                    message.detection = reader.string();
+                    break;
+                case /* string rdxKey */ 10:
                     message.rdxKey = reader.string();
                     break;
-                case /* repeated string fields */ 10:
+                case /* repeated string fields */ 11:
                     message.fields.push(reader.string());
                     break;
-                case /* repeated string uniqueFields */ 11:
+                case /* repeated string uniqueFields */ 12:
                     message.uniqueFields.push(reader.string());
                     break;
-                case /* string author */ 12:
+                case /* string author */ 13:
                     message.author = reader.string();
                     break;
-                case /* string createTm */ 13:
+                case /* string createTm */ 14:
                     message.createTm = reader.string();
                     break;
-                case /* string updateTm */ 14:
+                case /* string updateTm */ 15:
                     message.updateTm = reader.string();
                     break;
                 default:
@@ -22511,27 +22532,30 @@ class ActivityRuleInfo$Type extends MessageType<ActivityRuleInfo> {
         /* string logsource = 7; */
         if (message.logsource !== "")
             writer.tag(7, WireType.LengthDelimited).string(message.logsource);
-        /* string reference = 8; */
-        if (message.reference !== "")
-            writer.tag(8, WireType.LengthDelimited).string(message.reference);
-        /* string rdxKey = 9; */
+        /* repeated string references = 8; */
+        for (let i = 0; i < message.references.length; i++)
+            writer.tag(8, WireType.LengthDelimited).string(message.references[i]);
+        /* string detection = 9; */
+        if (message.detection !== "")
+            writer.tag(9, WireType.LengthDelimited).string(message.detection);
+        /* string rdxKey = 10; */
         if (message.rdxKey !== "")
-            writer.tag(9, WireType.LengthDelimited).string(message.rdxKey);
-        /* repeated string fields = 10; */
+            writer.tag(10, WireType.LengthDelimited).string(message.rdxKey);
+        /* repeated string fields = 11; */
         for (let i = 0; i < message.fields.length; i++)
-            writer.tag(10, WireType.LengthDelimited).string(message.fields[i]);
-        /* repeated string uniqueFields = 11; */
+            writer.tag(11, WireType.LengthDelimited).string(message.fields[i]);
+        /* repeated string uniqueFields = 12; */
         for (let i = 0; i < message.uniqueFields.length; i++)
-            writer.tag(11, WireType.LengthDelimited).string(message.uniqueFields[i]);
-        /* string author = 12; */
+            writer.tag(12, WireType.LengthDelimited).string(message.uniqueFields[i]);
+        /* string author = 13; */
         if (message.author !== "")
-            writer.tag(12, WireType.LengthDelimited).string(message.author);
-        /* string createTm = 13; */
+            writer.tag(13, WireType.LengthDelimited).string(message.author);
+        /* string createTm = 14; */
         if (message.createTm !== "")
-            writer.tag(13, WireType.LengthDelimited).string(message.createTm);
-        /* string updateTm = 14; */
+            writer.tag(14, WireType.LengthDelimited).string(message.createTm);
+        /* string updateTm = 15; */
         if (message.updateTm !== "")
-            writer.tag(14, WireType.LengthDelimited).string(message.updateTm);
+            writer.tag(15, WireType.LengthDelimited).string(message.updateTm);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -22654,7 +22678,7 @@ class GetActivityRuleReply$Type extends MessageType<GetActivityRuleReply> {
             { no: 5, name: "status", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 6, name: "tags", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 7, name: "logsource", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 8, name: "reference", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 8, name: "references", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 9, name: "detection", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 10, name: "rdxKey", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 11, name: "fields", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
@@ -22673,7 +22697,7 @@ class GetActivityRuleReply$Type extends MessageType<GetActivityRuleReply> {
         message.status = "";
         message.tags = [];
         message.logsource = "";
-        message.reference = "";
+        message.references = [];
         message.detection = "";
         message.rdxKey = "";
         message.fields = [];
@@ -22711,8 +22735,8 @@ class GetActivityRuleReply$Type extends MessageType<GetActivityRuleReply> {
                 case /* string logsource */ 7:
                     message.logsource = reader.string();
                     break;
-                case /* string reference */ 8:
-                    message.reference = reader.string();
+                case /* repeated string references */ 8:
+                    message.references.push(reader.string());
                     break;
                 case /* string detection */ 9:
                     message.detection = reader.string();
@@ -22768,9 +22792,9 @@ class GetActivityRuleReply$Type extends MessageType<GetActivityRuleReply> {
         /* string logsource = 7; */
         if (message.logsource !== "")
             writer.tag(7, WireType.LengthDelimited).string(message.logsource);
-        /* string reference = 8; */
-        if (message.reference !== "")
-            writer.tag(8, WireType.LengthDelimited).string(message.reference);
+        /* repeated string references = 8; */
+        for (let i = 0; i < message.references.length; i++)
+            writer.tag(8, WireType.LengthDelimited).string(message.references[i]);
         /* string detection = 9; */
         if (message.detection !== "")
             writer.tag(9, WireType.LengthDelimited).string(message.detection);
@@ -22813,7 +22837,7 @@ class AddActivityRuleReq$Type extends MessageType<AddActivityRuleReq> {
             { no: 5, name: "status", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 6, name: "tags", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 7, name: "logsource", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 8, name: "reference", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 8, name: "references", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 9, name: "detection", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 10, name: "rdxKey", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 11, name: "fields", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
@@ -22830,7 +22854,7 @@ class AddActivityRuleReq$Type extends MessageType<AddActivityRuleReq> {
         message.status = "";
         message.tags = [];
         message.logsource = "";
-        message.reference = "";
+        message.references = [];
         message.detection = "";
         message.rdxKey = "";
         message.fields = [];
@@ -22866,8 +22890,8 @@ class AddActivityRuleReq$Type extends MessageType<AddActivityRuleReq> {
                 case /* string logsource */ 7:
                     message.logsource = reader.string();
                     break;
-                case /* string reference */ 8:
-                    message.reference = reader.string();
+                case /* repeated string references */ 8:
+                    message.references.push(reader.string());
                     break;
                 case /* string detection */ 9:
                     message.detection = reader.string();
@@ -22917,9 +22941,9 @@ class AddActivityRuleReq$Type extends MessageType<AddActivityRuleReq> {
         /* string logsource = 7; */
         if (message.logsource !== "")
             writer.tag(7, WireType.LengthDelimited).string(message.logsource);
-        /* string reference = 8; */
-        if (message.reference !== "")
-            writer.tag(8, WireType.LengthDelimited).string(message.reference);
+        /* repeated string references = 8; */
+        for (let i = 0; i < message.references.length; i++)
+            writer.tag(8, WireType.LengthDelimited).string(message.references[i]);
         /* string detection = 9; */
         if (message.detection !== "")
             writer.tag(9, WireType.LengthDelimited).string(message.detection);
@@ -23011,7 +23035,7 @@ class UpdateActivityRuleReq$Type extends MessageType<UpdateActivityRuleReq> {
             { no: 5, name: "status", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 6, name: "tags", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 7, name: "logsource", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 8, name: "reference", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 8, name: "references", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 9, name: "detection", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 10, name: "rdxKey", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 11, name: "fields", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
@@ -23028,7 +23052,7 @@ class UpdateActivityRuleReq$Type extends MessageType<UpdateActivityRuleReq> {
         message.status = "";
         message.tags = [];
         message.logsource = "";
-        message.reference = "";
+        message.references = [];
         message.detection = "";
         message.rdxKey = "";
         message.fields = [];
@@ -23064,8 +23088,8 @@ class UpdateActivityRuleReq$Type extends MessageType<UpdateActivityRuleReq> {
                 case /* string logsource */ 7:
                     message.logsource = reader.string();
                     break;
-                case /* string reference */ 8:
-                    message.reference = reader.string();
+                case /* repeated string references */ 8:
+                    message.references.push(reader.string());
                     break;
                 case /* string detection */ 9:
                     message.detection = reader.string();
@@ -23115,9 +23139,9 @@ class UpdateActivityRuleReq$Type extends MessageType<UpdateActivityRuleReq> {
         /* string logsource = 7; */
         if (message.logsource !== "")
             writer.tag(7, WireType.LengthDelimited).string(message.logsource);
-        /* string reference = 8; */
-        if (message.reference !== "")
-            writer.tag(8, WireType.LengthDelimited).string(message.reference);
+        /* repeated string references = 8; */
+        for (let i = 0; i < message.references.length; i++)
+            writer.tag(8, WireType.LengthDelimited).string(message.references[i]);
         /* string detection = 9; */
         if (message.detection !== "")
             writer.tag(9, WireType.LengthDelimited).string(message.detection);

@@ -227,12 +227,12 @@
                         <el-option label="Deprecated" value="deprecated" />
                     </el-select>
                 </el-form-item>
-                <el-form-item :label="$t('message.ruleManage.tags')" prop="tags">
+                <el-form-item :label="$t('message.ruleManage.tags')" prop="tags" required>
                     <el-select v-model="alertRuleDialog.form.tags" multiple allow-create filterable :placeholder="$t('message.ruleManage.selectTags')" style="width: 100%">
                         <el-option v-for="tag in availableTags" :key="tag" :label="tag" :value="tag" />
                     </el-select>
                 </el-form-item>
-                <el-form-item :label="$t('message.ruleManage.type')" prop="type">
+                <el-form-item :label="$t('message.ruleManage.type')" prop="type" required>
                     <el-select v-model="alertRuleDialog.form.type" :placeholder="$t('message.ruleManage.selectType')" style="width: 100%">
                         <el-option
                             v-for="(value, key) in alertTypesMap"
@@ -298,7 +298,24 @@
         >
             <el-form :model="activityRuleDialog.form" label-width="120px" ref="activityRuleFormRef">
                 <el-form-item label="ID" prop="iD" required>
-                    <el-input v-model="activityRuleDialog.form.iD" placeholder="Enter Rule ID" :disabled="activityRuleDialog.isEdit" />
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <el-input
+                                v-model="activityRuleDialog.form.iD"
+                                placeholder="Enter Rule ID (e.g., winlog-0001-0001)"
+                                :disabled="activityRuleDialog.isEdit"
+                                style="flex: 0 0 300px;"
+                                @input="validateActivityRuleId"
+                                :class="{ 'is-error': activityRuleDialog.idValidationError }"
+                            />
+                            <el-tag v-if="activityRuleDialog.form.iD" :type="isInternalRule(activityRuleDialog.form.iD) ? 'danger' : 'success'" size="small">
+                                {{ getRuleTypeText(activityRuleDialog.form.iD) }}
+                            </el-tag>
+                        </div>
+                        <div v-if="activityRuleDialog.idValidationError" style="color: #f56c6c; font-size: 12px; margin-left: 0;">
+                            {{ activityRuleDialog.idValidationError }}
+                        </div>
+                    </div>
                 </el-form-item>
                 <el-form-item :label="$t('message.ruleManage.title')" prop="title" required>
                     <el-input v-model="activityRuleDialog.form.title" :placeholder="$t('message.ruleManage.enterTitle')" />
@@ -323,7 +340,7 @@
                         <el-option label="Deprecated" value="deprecated" />
                     </el-select>
                 </el-form-item>
-                <el-form-item :label="$t('message.ruleManage.tags')" prop="tags">
+                <el-form-item :label="$t('message.ruleManage.tags')" prop="tags" required>
                     <el-select v-model="activityRuleDialog.form.tags" multiple allow-create filterable :placeholder="$t('message.ruleManage.selectTags')" style="width: 100%">
                         <el-option v-for="tag in availableTags" :key="tag" :label="tag" :value="tag" />
                     </el-select>
@@ -353,15 +370,25 @@
                         <el-button type="danger" :icon="Minus" circle size="small" style="width: 18px; height: 18px;" @click="removeActivityReference(index)" />
                     </div>
                 </el-form-item>
-                <el-form-item label="Redis Key" prop="rdxKey">
+                <el-form-item prop="rdxKey">
+                    <template #label>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span>CacheKey</span>
+                            <el-tooltip content="Set cache for Fields (Internal Rule only)" placement="top">
+                                <el-icon style="color: #909399; cursor: help; font-size: 14px;">
+                                    <QuestionFilled />
+                                </el-icon>
+                            </el-tooltip>
+                        </div>
+                    </template>
                     <el-input v-model="activityRuleDialog.form.rdxKey" placeholder="Enter Redis Key" />
                 </el-form-item>
-                <el-form-item label="Fields" prop="fields">
+                <el-form-item label="Fields" prop="fields" required>
                     <el-select v-model="activityRuleDialog.form.fields" multiple allow-create filterable placeholder="Enter Fields" style="width: 100%">
                         <el-option v-for="field in availableFields" :key="field" :label="field" :value="field" />
                     </el-select>
                 </el-form-item>
-                <el-form-item label="Unique Fields" prop="uniqueFields">
+                <el-form-item label="Unique Fields" prop="uniqueFields" required>
                     <el-select v-model="activityRuleDialog.form.uniqueFields" multiple allow-create filterable placeholder="Enter Unique Fields" style="width: 100%">
                         <el-option v-for="field in availableUniqueFields" :key="field" :label="field" :value="field" />
                     </el-select>
@@ -416,7 +443,7 @@
 import { ref, reactive, onMounted, watch, nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { Plus, Minus } from '@element-plus/icons-vue';
+import { Plus, Minus, QuestionFilled } from '@element-plus/icons-vue';
 import { listAlertRules, addAlertRule, updateAlertRule, deleteAlertRule, listActivityRules, addActivityRule, updateActivityRule, deleteActivityRule, getAlertTypes, getAlertRuleTags, getActivityRuleFields, getActivityRuleUniqueFields } from '/@/api/grpc/method';
 import type { ListAlertRuleReq, AddAlertRuleReq, UpdateAlertRuleReq, ListActivityRuleReq, AddActivityRuleReq, UpdateActivityRuleReq, AlertRuleInfo, ActivityRuleInfo } from '/@/api/grpc/ada';
 import yaml from 'js-yaml';
@@ -511,6 +538,7 @@ const activityRuleDialog = reactive({
     visible: false,
     isEdit: false,
     saving: false,
+    idValidationError: '',
     form: {
         iD: '',
         title: '',
@@ -790,6 +818,52 @@ const refreshCodeMirror = (codeMirrorRef: any) => {
     }
 };
 
+// Helper function to determine if a rule is internal
+const isInternalRule = (ruleId: string): boolean => {
+    return ruleId.startsWith('winlog-0000-') || ruleId.startsWith('pktlog-0000-');
+};
+
+// Helper function to get rule type text
+const getRuleTypeText = (ruleId: string): string => {
+    return isInternalRule(ruleId) ? 'Internal Rule' : 'Public Rule';
+};
+
+// Helper function to validate ID format
+const validateRuleIdFormat = (ruleId: string): { isValid: boolean; message: string } => {
+    if (!ruleId) {
+        return { isValid: true, message: '' };
+    }
+
+    // Regular expressions for the two valid formats
+    const winlogPattern = /^winlog-\d{4}-\d{4}$/;
+    const pktlogPattern = /^pktlog-\d{4}-\d{4}$/;
+
+    if (winlogPattern.test(ruleId)) {
+        return { isValid: true, message: '' };
+    }
+
+    if (pktlogPattern.test(ruleId)) {
+        return { isValid: true, message: '' };
+    }
+
+    return {
+        isValid: false,
+        message: 'ID format must be: winlog-dddd-dddd or pktlog-dddd-dddd'
+    };
+};
+
+// Validation function for activity rule ID
+const validateActivityRuleId = () => {
+    if (activityRuleDialog.isEdit) {
+        // Don't validate when editing existing rules
+        activityRuleDialog.idValidationError = '';
+        return;
+    }
+
+    const validation = validateRuleIdFormat(activityRuleDialog.form.iD);
+    activityRuleDialog.idValidationError = validation.message;
+};
+
 const addActivityReference = () => {
     activityRuleDialog.form.references.push('');
 };
@@ -838,6 +912,7 @@ const handleAlertDialogClose = () => {
 const handleAddActivityRule = () => {
     activityRuleDialog.visible = true;
     activityRuleDialog.isEdit = false;
+    activityRuleDialog.idValidationError = '';
     activityRuleDialog.form = {
         iD: '',
         title: '',
@@ -896,6 +971,7 @@ const handleViewActivityRule = (row: ActivityRuleInfo) => {
 const handleEditActivityRule = (row: ActivityRuleInfo) => {
     activityRuleDialog.visible = true;
     activityRuleDialog.isEdit = true;
+    activityRuleDialog.idValidationError = '';
     activityRuleDialog.form = {
         iD: row.iD,
         title: row.title,
@@ -916,6 +992,15 @@ const handleEditActivityRule = (row: ActivityRuleInfo) => {
 };
 
 const handleSaveActivityRule = async () => {
+    // Validate ID format for new rules
+    if (!activityRuleDialog.isEdit) {
+        validateActivityRuleId();
+        if (activityRuleDialog.idValidationError) {
+            ElMessage.error('Please fix the ID format before saving');
+            return;
+        }
+    }
+
     // Validate YAML syntax
     try {
         yaml.load(activityRuleDialog.form.detection);
@@ -998,6 +1083,7 @@ const handleActivityRulePageChange = () => {
 
 const handleActivityDialogClose = () => {
     activityRuleFormRef.value?.resetFields();
+    activityRuleDialog.idValidationError = '';
 };
 
 // Utility functions

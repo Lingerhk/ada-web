@@ -250,6 +250,7 @@
                 </el-form-item>
                 <el-form-item :label="$t('message.ruleManage.detection')" prop="detection" required>
                     <Codemirror
+                        ref="alertCodeMirrorRef"
                         v-model:value="alertRuleDialog.form.detection"
                         :options="{
                             mode: 'yaml',
@@ -265,9 +266,9 @@
                 <el-form-item :label="$t('message.ruleManage.reference')" prop="references">
                     <div v-for="(ref, index) in alertRuleDialog.form.references" :key="index" style="display: flex; margin-bottom: 8px; align-items: center;">
                         <el-input v-model="alertRuleDialog.form.references[index]" :placeholder="$t('message.ruleManage.enterReference')" style="flex: 1; margin-right: 8px;" />
-                        <el-button type="danger" :icon="Minus" circle @click="removeAlertReference(index)" />
+                        <el-button type="primary" :icon="Plus" circle size="small" style="width: 18px; height: 18px;" @click="addAlertReference" />
+                        <el-button type="danger" :icon="Minus" circle size="small" style="width: 18px; height: 18px;" @click="removeAlertReference(index)" /> 
                     </div>
-                    <el-button type="primary" :icon="Plus" @click="addAlertReference">{{ $t('message.ruleManage.addReference') }}</el-button>
                 </el-form-item>
                 <el-form-item :label="$t('message.ruleManage.suggestion')" prop="suggestion">
                     <el-input v-model="alertRuleDialog.form.suggestion" type="textarea" rows="3" :placeholder="$t('message.ruleManage.enterSuggestion')" />
@@ -332,6 +333,7 @@
                 </el-form-item>
                 <el-form-item :label="$t('message.ruleManage.detection')" prop="detection" required>
                     <Codemirror
+                        ref="activityCodeMirrorRef"
                         v-model:value="activityRuleDialog.form.detection"
                         :options="{
                             mode: 'yaml',
@@ -347,9 +349,9 @@
                 <el-form-item :label="$t('message.ruleManage.reference')" prop="references">
                     <div v-for="(ref, index) in activityRuleDialog.form.references" :key="index" style="display: flex; margin-bottom: 8px; align-items: center;">
                         <el-input v-model="activityRuleDialog.form.references[index]" :placeholder="$t('message.ruleManage.enterReference')" style="flex: 1; margin-right: 8px;" />
-                        <el-button type="danger" :icon="Minus" circle @click="removeActivityReference(index)" />
+                        <el-button type="primary" :icon="Plus" circle size="small" style="width: 18px; height: 18px;" @click="addActivityReference" />
+                        <el-button type="danger" :icon="Minus" circle size="small" style="width: 18px; height: 18px;" @click="removeActivityReference(index)" />
                     </div>
-                    <el-button type="primary" :icon="Plus" @click="addActivityReference">{{ $t('message.ruleManage.addReference') }}</el-button>
                 </el-form-item>
                 <el-form-item label="Redis Key" prop="rdxKey">
                     <el-input v-model="activityRuleDialog.form.rdxKey" placeholder="Enter Redis Key" />
@@ -411,7 +413,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, watch } from 'vue';
+import { ref, reactive, onMounted, watch, nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { Plus, Minus } from '@element-plus/icons-vue';
@@ -435,6 +437,8 @@ const { locale, t } = useI18n();
 const activeTab = ref('alertRule');
 const alertRuleFormRef = ref();
 const activityRuleFormRef = ref();
+const alertCodeMirrorRef = ref();
+const activityCodeMirrorRef = ref();
 
 // Alert types map from backend
 const alertTypesMap = ref<Record<string, string>>({});
@@ -774,6 +778,18 @@ const removeAlertReference = (index: number) => {
     alertRuleDialog.form.references.splice(index, 1);
 };
 
+// Helper function to refresh CodeMirror to fix line numbers gutter width
+const refreshCodeMirror = (codeMirrorRef: any) => {
+    if (codeMirrorRef.value && codeMirrorRef.value.refresh) {
+        // Use nextTick to wait for DOM updates and setTimeout for dialog animation
+        nextTick(() => {
+            setTimeout(() => {
+                codeMirrorRef.value.refresh();
+            }, 300); // Increased delay for dialog animation
+        });
+    }
+};
+
 const addActivityReference = () => {
     activityRuleDialog.form.references.push('');
 };
@@ -781,6 +797,7 @@ const addActivityReference = () => {
 const removeActivityReference = (index: number) => {
     activityRuleDialog.form.references.splice(index, 1);
 };
+
 
 const handleToggleAlertRule = async (row: AlertRuleInfo) => {
     try {
@@ -1089,6 +1106,19 @@ watch(() => activityRules.filters, () => {
     activityRules.pageIdx = 1;
     fetchActivityRules();
 }, { deep: true });
+
+// Watch for dialog visibility changes to refresh CodeMirror
+watch(() => alertRuleDialog.visible, (newVal) => {
+    if (newVal) {
+        refreshCodeMirror(alertCodeMirrorRef);
+    }
+});
+
+watch(() => activityRuleDialog.visible, (newVal) => {
+    if (newVal) {
+        refreshCodeMirror(activityCodeMirrorRef);
+    }
+});
 
 // Initialize
 onMounted(() => {

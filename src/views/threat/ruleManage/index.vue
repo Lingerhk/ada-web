@@ -659,7 +659,7 @@ const handleAddAlertRule = () => {
     };
 };
 
-const handleViewAlertRule = (row: AlertRuleInfo) => {
+const handleViewAlertRule = async (row: AlertRuleInfo) => {
     const levelMap: Record<number, string> = { 1: 'info', 2: 'low', 3: 'medium', 4: 'high', 5: 'critical' };
 
     // Format date from "2006-01-02 15:04:05" to "2006/01/02"
@@ -677,13 +677,14 @@ const handleViewAlertRule = (row: AlertRuleInfo) => {
         author: row.author || '',
         date: formatDate(row.createTm),
         modified: formatDate(row.updateTm),
-        tags: row.tags || [],
+        tags: row.tags || '',
         logsource: row.logsource || '',
         type: row.type || '',
         enable: row.enable,
         autoBlock: row.autoBlock,
         suggestion: row.suggestion || '',
-        level: levelMap[row.level] || 'medium'
+        level: levelMap[row.level] || 'medium',
+        detection: row.detection || ''
     };
 
     alertRuleViewDialog.yamlContent = yaml.dump(ruleObject, {
@@ -692,6 +693,72 @@ const handleViewAlertRule = (row: AlertRuleInfo) => {
         noRefs: true,
         sortKeys: false
     });
+
+    // Parse detection field to get sigma rules
+    let sigmaRuleIds: string[] = [];
+    if (row.detection) {
+        try {
+            const detectionObj = yaml.load(row.detection) as any;
+            if (detectionObj && detectionObj.sigma_rules && Array.isArray(detectionObj.sigma_rules)) {
+                sigmaRuleIds = detectionObj.sigma_rules;
+            }
+        } catch (error) {
+            console.error('Failed to parse detection YAML:', error);
+        }
+    }
+
+    // Fetch and append sigma rules if they exist
+    if (sigmaRuleIds.length > 0) {
+        try {
+            const req: ListActivityRuleReq = {
+                pageIdx: 1,
+                pageSize: 100,
+                iDs: sigmaRuleIds,
+                level: [],
+                status: [],
+                keyword: '',
+                tags: [],
+                logsource: '',
+                ruleType: '',
+                sortTm: -1,
+            };
+
+            const response = await listActivityRules(req);
+            const activityRules = response.rules || [];
+
+            // Append each sigma rule's YAML content
+            for (const activityRule of activityRules) {
+                const activityRuleObject = {
+                    title: activityRule.title,
+                    id: activityRule.iD || '',
+                    status: activityRule.status,
+                    description: activityRule.description || '',
+                    references: activityRule.references || [],
+                    author: activityRule.author || '',
+                    date: formatDate(activityRule.createTm),
+                    modified: formatDate(activityRule.updateTm),
+                    tags: activityRule.tags || [],
+                    logsource: activityRule.logsource || '',
+                    detection: activityRule.detection || '',
+                    fields: activityRule.fields || [],
+                    unique_fields: activityRule.uniqueFields || [],
+                    level: levelMap[activityRule.level] || 'medium'
+                };
+
+                const sigmaYaml = yaml.dump(activityRuleObject, {
+                    indent: 2,
+                    lineWidth: -1,
+                    noRefs: true,
+                    sortKeys: false
+                });
+
+                alertRuleViewDialog.yamlContent += '\n---\n\n' + sigmaYaml;
+            }
+        } catch (error) {
+            console.error('Failed to fetch sigma rules:', error);
+        }
+    }
+
     alertRuleViewDialog.highlightedYaml = hljs.highlight(alertRuleViewDialog.yamlContent, { language: 'yaml' }).value;
     alertRuleViewDialog.visible = true;
 };

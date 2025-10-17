@@ -5,10 +5,24 @@
                 <!-- 搜索 -->
                 <el-form :inline="true">
                     <el-form-item :label="$t('message.system.message.msgType')">
-                        <MultiSelector v-model:selected="state.req.msgType" :options="MsgTypeOptions" />
+                        <el-select v-model="state.req.msgType" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.system.message.selectMsgType')" popper-class="custom-header">
+                            <template #header>
+                                <el-checkbox v-model="msgTypeCheckAll" :indeterminate="msgTypeIndeterminate" @change="handleMsgTypeCheckAll">
+                                    {{ $t('message.tableCommon.checkAll') }}
+                                </el-checkbox>
+                            </template>
+                            <el-option v-for="option in MsgTypeOptions" :key="option.value" :label="option.label" :value="option.value" />
+                        </el-select>
                     </el-form-item>
                     <el-form-item :label="$t('message.system.message.status')">
-                        <MultiSelector v-model:selected="state.req.status" :options="StatusOptions" />
+                        <el-select v-model="state.req.status" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 150px" :placeholder="$t('message.system.message.selectStatus')" popper-class="custom-header">
+                            <template #header>
+                                <el-checkbox v-model="statusCheckAll" :indeterminate="statusIndeterminate" @change="handleStatusCheckAll">
+                                    {{ $t('message.tableCommon.checkAll') }}
+                                </el-checkbox>
+                            </template>
+                            <el-option v-for="option in StatusOptions" :key="option.value" :label="option.label" :value="option.value" />
+                        </el-select>
                     </el-form-item>
                     <el-form-item :label="$t('message.system.message.timeRange')">
                         <el-date-picker size="default" v-model="timeRange" type="datetimerange"
@@ -25,6 +39,7 @@
                     row-key="iD"
                     :expand-row-keys="state.expandedRowKeys"
                     @sort-change="handleSortChange"
+                    @row-click="toggleRowExpansion"
                     >
                     <el-table-column type="expand" width="30">
                         <template #default="props">
@@ -35,29 +50,27 @@
                         </template>
                     </el-table-column>
                     <el-table-column type="selection" width="55" />
-                    <el-table-column type="index" width="70" :label="$t('message.tableCommon.index')" />
                     <el-table-column prop="title" width="500" :label="$t('message.system.message.title')">
                         <template #default="scope">
-                            <span @click="toggleRowExpansion(scope.row)" 
-                                  :style="scope.row.status === 0 ? 'color:rgb(64, 158, 255); cursor: pointer;' : 'cursor: pointer;'">
+                            <span :style="scope.row.status === 0 ? 'color:rgb(64, 158, 255);' : ''">
                                 <Bell v-if="scope.row.status === 0" style="width:12px; margin-right: 4px;"/>
                                 {{ scope.row.title }}
                             </span>
                         </template>
                     </el-table-column>
                     <el-table-column prop="msgType" :label="$t('message.system.message.msgType')">
-                        <template #default="prop">
-                            {{ $t(`message.system.message.msgType_${prop.row.msgType}`) }}
+                        <template #default="scope">
+                            {{ $t(`message.system.message.msgType_${scope.row.msgType}`) }}
                         </template>
                     </el-table-column>
                     <el-table-column prop="eventType" :label="$t('message.system.message.eventType')">
-                        <template #default="prop">
-                            {{ prop.row.eventType }}
+                        <template #default="scope">
+                            {{ scope.row.eventType || '-' }}
                         </template>
                     </el-table-column>
                     <el-table-column prop="createTm" :label="$t('message.system.message.createTm')" sortable="custom" width="180" header-align="center" align="center">
-                        <template #default="prop">
-                            {{ formatApiTime(prop.row.createTm) }}
+                        <template #default="scope">
+                            {{ formatApiTime(scope.row.createTm) }}
                         </template>
                     </el-table-column>
                 </el-table>
@@ -81,7 +94,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, onMounted, reactive, ref, watch } from 'vue';
+import { onMounted, reactive, ref, watch } from 'vue';
 import api from '/@/api/grpc';
 import { ListNotifyReply, ListNotifyReply_Details, ListNotifyReq, UpdateNotifyReq } from '/@/api/grpc/ada';
 import { alertApiError, alertResult } from '/@/utils/error';
@@ -94,19 +107,23 @@ import { Bell } from '@element-plus/icons-vue';
 
 const { t } = useI18n();
 
-const MultiSelector = defineAsyncComponent(() => import('/@/components/form/multiSelector.vue'));
-
 const MsgTypeOptions = getMessageTypeOptions(t);
 const StatusOptions = getMessageStatusOptions(t);
 
 const timeRange = ref([] as string[]);
 const expandedRowKeys = ref<string[]>([]);
 
+// Select All checkboxes state
+const msgTypeCheckAll = ref(true);
+const msgTypeIndeterminate = ref(false);
+const statusCheckAll = ref(false);
+const statusIndeterminate = ref(false);
+
 const state = reactive({
     req: {
         pageIdx: 1,
         pageSize: 10,
-        msgType: [], // 消息类型,Leak漏洞监测，Baseline主动检测，Alert告警事件,System系统告警
+        msgType: MsgTypeOptions.map(opt => opt.value), // Default: select all message types
         status: [0], // 消息状态: 0未读，1已读
         startTm: '', //  可选，开始时间
         endTm: '', //  可选，结束时间
@@ -202,6 +219,56 @@ const handleSortChange = ({ column, prop, order }: { column: any, prop: string, 
   refresh();
 };
 
+// Handle msgType Select All
+const handleMsgTypeCheckAll = (val: boolean) => {
+    msgTypeIndeterminate.value = false;
+    if (val) {
+        state.req.msgType = MsgTypeOptions.map(opt => opt.value);
+    } else {
+        state.req.msgType = [];
+    }
+};
+
+// Handle status Select All
+const handleStatusCheckAll = (val: boolean) => {
+    statusIndeterminate.value = false;
+    if (val) {
+        state.req.status = StatusOptions.map(opt => opt.value);
+    } else {
+        state.req.status = [];
+    }
+};
+
+// Watch msgType selection changes to update checkbox state
+watch(() => state.req.msgType, (val) => {
+    msgTypeIndeterminate.value = false;
+    if (val.length === 0) {
+        msgTypeCheckAll.value = false;
+    } else if (val.length === MsgTypeOptions.length) {
+        msgTypeCheckAll.value = true;
+    } else {
+        msgTypeIndeterminate.value = true;
+    }
+    console.log('MsgType changed, refreshing. New:', val);
+    state.req.pageIdx = 1;
+    refresh();
+}, { deep: true });
+
+// Watch status selection changes to update checkbox state
+watch(() => state.req.status, (val) => {
+    statusIndeterminate.value = false;
+    if (val.length === 0) {
+        statusCheckAll.value = false;
+    } else if (val.length === StatusOptions.length) {
+        statusCheckAll.value = true;
+    } else {
+        statusIndeterminate.value = true;
+    }
+    console.log('Status changed, refreshing. New:', val);
+    state.req.pageIdx = 1;
+    refresh();
+}, { deep: true });
+
 watch(timeRange, (val) => {
     if (val && val.length === 2) {
         state.req.startTm = formatApiTime(val[0]);
@@ -210,22 +277,8 @@ watch(timeRange, (val) => {
         state.req.startTm = '';
         state.req.endTm = '';
     }
-    refresh(); // Explicitly call refresh
+    refresh();
 });
-
-// Remove old generic watcher for state.req
-// watch(state.req, () => refresh(), { deep: true });
-
-// Add specific watchers for status and msgType arrays
-watch(() => [...state.req.status], (newStatus, oldStatus) => {
-    console.log('Status changed, refreshing. New:', newStatus, 'Old:', oldStatus);
-    refresh();
-}, { deep: false }); // deep: false as we are watching a shallow copy
-
-watch(() => [...state.req.msgType], (newMsgType, oldMsgType) => {
-    console.log('MsgType changed, refreshing. New:', newMsgType, 'Old:', oldMsgType);
-    refresh();
-}, { deep: false }); // deep: false as we are watching a shallow copy
 
 onMounted(() => {
     refresh();

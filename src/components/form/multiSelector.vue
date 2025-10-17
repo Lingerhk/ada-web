@@ -29,6 +29,8 @@ const props = defineProps({
 	},
 });
 
+const emit = defineEmits(['update:selected']);
+
 const checkAll = ref(props.selected.length !== 0 && props.selected.length === props.options.length);
 const indeterminate = ref(false);
 const selected = ref([...props.selected]);
@@ -36,7 +38,7 @@ const selected = ref([...props.selected]);
 watch(
 	() => props.selected,
 	(newValue) => {
-		selected.value = newValue;
+		selected.value = [...newValue];
 	},
 	{ deep: true }
 );
@@ -52,7 +54,9 @@ watch(
 		} else {
 			indeterminate.value = true;
 		}
+		emit('update:selected', val);
 	},
+	{ deep: true }
 );
 
 const handleCheckAll = (val: boolean) => {

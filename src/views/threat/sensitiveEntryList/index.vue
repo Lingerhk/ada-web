@@ -12,7 +12,14 @@
                                     $t('message.tableCommon.new') }}</el-button>
                             </el-form-item>
                             <el-form-item :label="$t('message.threat.sensitive.origin')">
-                                <MultiSelector v-model:selected="state.req.origin" :options="OriginOptions" />
+                                <el-select v-model="state.req.origin" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.threat.sensitiveEntryList.selectOrigin')" popper-class="custom-header">
+                                    <template #header>
+                                        <el-checkbox v-model="originCheckAll" :indeterminate="originIndeterminate" @change="handleOriginCheckAll">
+                                            {{ $t('message.tableCommon.checkAll') }}
+                                        </el-checkbox>
+                                    </template>
+                                    <el-option v-for="option in OriginOptions" :key="option.value" :label="option.label" :value="option.value" />
+                                </el-select>
                             </el-form-item>
                             <el-form-item :label="$t('message.time.createTm')">
                                 <el-date-picker size="default" v-model="timeRangeRef" type="datetimerange"
@@ -21,7 +28,14 @@
                                     :end-placeholder="$t('message.time.end')" :shortcuts="shortcuts" />
                             </el-form-item>
                             <el-form-item :label="$t('message.tableCommon.domain')">
-                                <MultiSelector v-model:selected="state.req.domain" :options="state.domainOptions" />
+                                <el-select v-model="state.req.domain" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.threat.sensitiveEntryList.selectDomain')" popper-class="custom-header">
+                                    <template #header>
+                                        <el-checkbox v-model="domainCheckAll" :indeterminate="domainIndeterminate" @change="handleDomainCheckAll">
+                                            {{ $t('message.tableCommon.checkAll') }}
+                                        </el-checkbox>
+                                    </template>
+                                    <el-option v-for="option in state.domainOptions" :key="option.value" :label="option.label" :value="option.value" />
+                                </el-select>
                             </el-form-item>
                         </el-form>
                         <!-- 右侧按钮 -->
@@ -110,7 +124,6 @@ import { listDomainOptions } from '/@/api/grpc/method';
 
 const { t } = useI18n();
 
-const MultiSelector = defineAsyncComponent(() => import('/@/components/form/multiSelector.vue'));
 const AddEntryDrawer = defineAsyncComponent(() => import('./addEntryDrawer.vue'));
 
 const OriginOptions = originOptions.map(o => ({ ...o, ['label']: t(o.label) }));
@@ -118,6 +131,12 @@ const OriginOptions = originOptions.map(o => ({ ...o, ['label']: t(o.label) }));
 const timeRangeRef = ref([]);
 const addEntryDrawerRef = ref();
 // const tableRowsSelected = ref<ListSensitiveEntryReply_Details[]>([]);
+
+// Checkbox states for "Check All"
+const originCheckAll = ref(false);
+const originIndeterminate = ref(false);
+const domainCheckAll = ref(false);
+const domainIndeterminate = ref(false);
 
 const state = reactive({
     req: {
@@ -206,6 +225,26 @@ const refreshList = () => {
     .finally(() => state.loading = false);
 };
 
+// Handle origin Select All
+const handleOriginCheckAll = (val: boolean) => {
+    originIndeterminate.value = false;
+    if (val) {
+        state.req.origin = OriginOptions.map(opt => opt.value);
+    } else {
+        state.req.origin = [];
+    }
+};
+
+// Handle domain Select All
+const handleDomainCheckAll = (val: boolean) => {
+    domainIndeterminate.value = false;
+    if (val) {
+        state.req.domain = state.domainOptions.map(opt => opt.value);
+    } else {
+        state.req.domain = [];
+    }
+};
+
 onMounted(() => {
     refreshList();
     listDomainOptions().then(opts => state.domainOptions = opts);
@@ -227,9 +266,41 @@ watch(timeRangeRef, (value) => {
     refreshList();
 });
 
-watch(state.req, () => {
+watch(() => state.req.origin, (val) => {
+    originIndeterminate.value = false;
+    if (val.length === 0) {
+        originCheckAll.value = false;
+    } else if (val.length === OriginOptions.length) {
+        originCheckAll.value = true;
+    } else {
+        originIndeterminate.value = true;
+    }
     refreshList();
-}, { deep: true });
+});
+
+watch(() => state.req.domain, (val) => {
+    domainIndeterminate.value = false;
+    if (val.length === 0) {
+        domainCheckAll.value = false;
+    } else if (val.length === state.domainOptions.length) {
+        domainCheckAll.value = true;
+    } else {
+        domainIndeterminate.value = true;
+    }
+    refreshList();
+});
+
+watch(() => state.req.type, () => {
+    refreshList();
+});
+
+watch(() => state.req.pageIdx, () => {
+    refreshList();
+});
+
+watch(() => state.req.pageSize, () => {
+    refreshList();
+});
 
 </script>
 

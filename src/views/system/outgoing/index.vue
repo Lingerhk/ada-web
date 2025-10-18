@@ -4,14 +4,35 @@
             <el-row justify="space-between">
                 <!-- 搜索 -->
                 <el-form :inline="true">
-                    <el-form-item :label="$t('message.system.outgoing.notifyType')">
-                        <MultiSelector v-model:selected="state.req.moduleName" :options="ModuleOptions" />
-                    </el-form-item>
                     <el-form-item :label="$t('message.system.outgoing.moduleName')">
-                        <MultiSelector v-model:selected="state.req.notifyType" :options="NotifyOptions" />
+                        <el-select v-model="state.req.moduleName" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.system.outgoing.selectModule')" popper-class="custom-header">
+                            <template #header>
+                                <el-checkbox v-model="moduleCheckAll" :indeterminate="moduleIndeterminate" @change="handleModuleCheckAll">
+                                    {{ $t('message.tableCommon.checkAll') }}
+                                </el-checkbox>
+                            </template>
+                            <el-option v-for="option in ModuleOptions" :key="option.value" :label="option.label" :value="option.value" />
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item :label="$t('message.system.outgoing.notifyType')">
+                        <el-select v-model="state.req.notifyType" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.system.outgoing.selectNotify')" popper-class="custom-header">
+                            <template #header>
+                                <el-checkbox v-model="notifyCheckAll" :indeterminate="notifyIndeterminate" @change="handleNotifyCheckAll">
+                                    {{ $t('message.tableCommon.checkAll') }}
+                                </el-checkbox>
+                            </template>
+                            <el-option v-for="option in NotifyOptions" :key="option.value" :label="option.label" :value="option.value" />
+                        </el-select>
                     </el-form-item>
                     <el-form-item :label="$t('message.system.outgoing.enable')">
-                        <MultiSelector v-model:selected="state.req.enable" :options="EnableOptions" />
+                        <el-select v-model="state.req.enable" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 150px" :placeholder="$t('message.system.outgoing.selectEnable')" popper-class="custom-header">
+                            <template #header>
+                                <el-checkbox v-model="enableCheckAll" :indeterminate="enableIndeterminate" @change="handleEnableCheckAll">
+                                    {{ $t('message.tableCommon.checkAll') }}
+                                </el-checkbox>
+                            </template>
+                            <el-option v-for="option in EnableOptions" :key="option.value" :label="option.label" :value="option.value" />
+                        </el-select>
                     </el-form-item>
                 </el-form>
             </el-row>
@@ -31,7 +52,7 @@
                         :show-overflow-tooltip="true" />
                     <el-table-column prop="enable" :label="$t('message.system.outgoing.enable')" :width="90">
                         <template #default="prop">
-                            <el-switch v-model="prop.row.enable" active-value="enable" inactive-value="disable" @change="(v) => switchNotification(prop.row, v)"
+                            <el-switch v-model="prop.row.enable" active-value="enable" inactive-value="disable" @change="(v: string) => switchNotification(prop.row, v)"
                                 size="default" />
                         </template>
                     </el-table-column>
@@ -59,12 +80,12 @@
                     @current-change="(val: number) => state.req.pageIdx = val" />
             </el-row>
         </el-card>
-        <Drawer v-model="dstate.open" :data="dstate.data" :ro="dstate.ro"/>
+        <Drawer :model-value="dstate.open" @update:model-value="(val: boolean) => dstate.open = val" :data="dstate.data" :ro="dstate.ro"/>
     </div>
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, onMounted, reactive, watch } from 'vue';
+import { onMounted, reactive, ref, watch } from 'vue';
 import { EnableNotifyConfReq, ListNotifyConfReply, ListNotifyConfReply_Details, ListNotifyConfReq } from '/@/api/grpc/ada';
 import api from '/@/api/grpc';
 import { alertApiError, alertResult } from '/@/utils/error';
@@ -77,11 +98,17 @@ import { formatNotifyType } from './constant';
 
 const { t } = useI18n();
 
-const MultiSelector = defineAsyncComponent(() => import('/@/components/form/multiSelector.vue'));
-
 const ModuleOptions = getOutgoingModuleOptions(t);
 const NotifyOptions = getOutgoingNotifyOptions(t);
 const EnableOptions = getOutgoingEnableOptions(t);
+
+// Checkbox states for "Check All"
+const moduleCheckAll = ref(false);
+const moduleIndeterminate = ref(false);
+const notifyCheckAll = ref(false);
+const notifyIndeterminate = ref(false);
+const enableCheckAll = ref(false);
+const enableIndeterminate = ref(false);
 
 const state = reactive({
     req: {
@@ -144,7 +171,84 @@ const refresh = () => {
     .finally(() => state.loading = false);
 };
 
-watch(state.req, () => refresh(), { deep: true });
+// Handle module Select All
+const handleModuleCheckAll = (val: boolean) => {
+    moduleIndeterminate.value = false;
+    if (val) {
+        state.req.moduleName = ModuleOptions.map(opt => opt.value);
+    } else {
+        state.req.moduleName = [];
+    }
+};
+
+// Handle notify Select All
+const handleNotifyCheckAll = (val: boolean) => {
+    notifyIndeterminate.value = false;
+    if (val) {
+        state.req.notifyType = NotifyOptions.map(opt => opt.value);
+    } else {
+        state.req.notifyType = [];
+    }
+};
+
+// Handle enable Select All
+const handleEnableCheckAll = (val: boolean) => {
+    enableIndeterminate.value = false;
+    if (val) {
+        state.req.enable = EnableOptions.map(opt => opt.value);
+    } else {
+        state.req.enable = [];
+    }
+};
+
+// Watch individual filter properties
+watch(() => state.req.moduleName, (val) => {
+    moduleIndeterminate.value = false;
+    if (val.length === 0) {
+        moduleCheckAll.value = false;
+    } else if (val.length === ModuleOptions.length) {
+        moduleCheckAll.value = true;
+    } else {
+        moduleIndeterminate.value = true;
+    }
+    state.req.pageIdx = 1;
+    refresh();
+});
+
+watch(() => state.req.notifyType, (val) => {
+    notifyIndeterminate.value = false;
+    if (val.length === 0) {
+        notifyCheckAll.value = false;
+    } else if (val.length === NotifyOptions.length) {
+        notifyCheckAll.value = true;
+    } else {
+        notifyIndeterminate.value = true;
+    }
+    state.req.pageIdx = 1;
+    refresh();
+});
+
+watch(() => state.req.enable, (val) => {
+    enableIndeterminate.value = false;
+    if (val.length === 0) {
+        enableCheckAll.value = false;
+    } else if (val.length === EnableOptions.length) {
+        enableCheckAll.value = true;
+    } else {
+        enableIndeterminate.value = true;
+    }
+    state.req.pageIdx = 1;
+    refresh();
+});
+
+watch(() => state.req.pageIdx, () => {
+    refresh();
+});
+
+watch(() => state.req.pageSize, () => {
+    refresh();
+});
+
 watch(() => dstate.open, (val) => {
     if (!val) {
         refresh();

@@ -6,10 +6,24 @@
                 <el-form :inline="true" class="filter-form">
                     <el-form-item><el-button type="primary" @click="handleNew">{{ $t('message.tableCommon.new') }}</el-button></el-form-item>
                     <el-form-item :label="T('domain')">
-                        <MultiSelector v-model:selected="state.req.domain" :options="state.domainOptions" />
+                        <el-select v-model="state.req.domain" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="T('selectDomain')" popper-class="custom-header">
+                            <template #header>
+                                <el-checkbox v-model="domainCheckAll" :indeterminate="domainIndeterminate" @change="handleDomainCheckAll">
+                                    {{ $t('message.tableCommon.checkAll') }}
+                                </el-checkbox>
+                            </template>
+                            <el-option v-for="option in state.domainOptions" :key="option.value" :label="option.label" :value="option.value" />
+                        </el-select>
                     </el-form-item>
                     <el-form-item :label="T('origin')">
-                        <MultiSelector v-model:selected="state.req.origin" :options="originOptions" />
+                        <el-select v-model="state.req.origin" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="T('selectOrigin')" popper-class="custom-header">
+                            <template #header>
+                                <el-checkbox v-model="originCheckAll" :indeterminate="originIndeterminate" @change="handleOriginCheckAll">
+                                    {{ $t('message.tableCommon.checkAll') }}
+                                </el-checkbox>
+                            </template>
+                            <el-option v-for="option in originOptions" :key="option.value" :label="option.label" :value="option.value" />
+                        </el-select>
                     </el-form-item>
                     <el-form-item :label="T('ruleId')">
                         <el-select v-model="state.req.ruleId" style="width: 240px">
@@ -32,7 +46,7 @@
             <!-- table -->
             <el-row style="margin-top: 10px">
                 <el-table :data="state.reply.list" v-loading="state.loading" :border="true"
-                    @selection-change="(val) => state.tableRowsSelected = val" row-class-name="pointer-cursor">
+                    @selection-change="(val: ListThreatWhitelistReply_Details[]) => state.tableRowsSelected = val" row-class-name="pointer-cursor">
                     <el-table-column type="selection" :width="55" />
                     <el-table-column type="index" :width="55" :label="$t('message.tableCommon.index')" />
                     <el-table-column :min-width="250" :label="T('ruleName')" prop="ruleName" />
@@ -69,8 +83,8 @@
                 </div>
                 <el-pagination v-model:current-page="state.req.pageIdx" v-model:page-size="state.req.pageSize"
                     :page-sizes="[10, 20, 30, 40, 50]" layout="sizes, prev, pager, next, jumper"
-                    :total="state.reply.page?.total" @size-change="val => state.req.pageSize = val"
-                    @current-change="val => state.req.pageIdx = val" />
+                    :total="state.reply.page?.total" @size-change="(val: number) => state.req.pageSize = val"
+                    @current-change="(val: number) => state.req.pageIdx = val" />
             </el-row>
         </el-card>
         <UpdateWhiteDialog v-model="update.open" :rules="update.rules" :flow-id="update.flowId" :remark="update.remark"
@@ -87,7 +101,6 @@ import { alertApiError, alertResult } from '/@/utils/error';
 import { listDomainOptions, listThreatRuleOptions } from '/@/api/grpc/method';
 import { getWhiteListOriginOptions, OptionType } from '/@/utils/constant';
 import { transWhiteList as T } from '/@/utils/translator';
-import MultiSelector from '/@/components/form/multiSelector.vue';
 import { formatApiTime, getPrev7Days, shortcuts } from '/@/utils/formatTime';
 import UpdateWhiteDialog from './UpdateWhiteDialog.vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
@@ -95,6 +108,12 @@ import { useI18n } from 'vue-i18n';
 import AddGlobalWhiteDialog from './AddGlobalWhiteDialog.vue';
 
 const { t } = useI18n();
+
+// Checkbox states for "Check All"
+const domainCheckAll = ref(false);
+const domainIndeterminate = ref(false);
+const originCheckAll = ref(false);
+const originIndeterminate = ref(false);
 
 const state = reactive({
     req: {
@@ -214,10 +233,30 @@ const handleCloseBulk = () => {
         })
         .finally(() => refresh());
     })
-    .catch(err => { 
+    .catch(err => {
         console.error(err);
         refresh();
     });
+};
+
+// Handle domain Select All
+const handleDomainCheckAll = (val: boolean) => {
+    domainIndeterminate.value = false;
+    if (val) {
+        state.req.domain = state.domainOptions.map(opt => opt.value);
+    } else {
+        state.req.domain = [];
+    }
+};
+
+// Handle origin Select All
+const handleOriginCheckAll = (val: boolean) => {
+    originIndeterminate.value = false;
+    if (val) {
+        state.req.origin = originOptions.map(opt => opt.value);
+    } else {
+        state.req.origin = [];
+    }
 };
 
 onMounted(() => {
@@ -227,18 +266,55 @@ onMounted(() => {
     listThreatRuleOptions().then(options => state.ruleOptions = [{ label: T('ruleAll'), value: '', }, ...options]);
 });
 
-watch(() => state.req, () => {
+watch(() => state.req.domain, (val) => {
+    domainIndeterminate.value = false;
+    if (val.length === 0) {
+        domainCheckAll.value = false;
+    } else if (val.length === state.domainOptions.length) {
+        domainCheckAll.value = true;
+    } else {
+        domainIndeterminate.value = true;
+    }
     refresh();
-}, { deep: true });
+});
+
+watch(() => state.req.origin, (val) => {
+    originIndeterminate.value = false;
+    if (val.length === 0) {
+        originCheckAll.value = false;
+    } else if (val.length === originOptions.length) {
+        originCheckAll.value = true;
+    } else {
+        originIndeterminate.value = true;
+    }
+    refresh();
+});
+
+watch(() => state.req.ruleId, () => {
+    refresh();
+});
+
+watch(() => state.req.search, () => {
+    refresh();
+});
+
+watch(() => state.req.pageIdx, () => {
+    refresh();
+});
+
+watch(() => state.req.pageSize, () => {
+    refresh();
+});
 
 watch(() => lastOccurenceTime, () => {
     if (lastOccurenceTime.value.length !== 2) {
         state.req.startTm = '';
         state.req.endTm = '';
     } else {
-        state.req.startTm = formatApiTime(lastOccurenceTime.value[0]);
-        state.req.endTm = formatApiTime(lastOccurenceTime.value[1]);
+        state.req.startTm = formatApiTime(lastOccurenceTime.value[0].toString());
+        state.req.endTm = formatApiTime(lastOccurenceTime.value[1].toString());
     }
+    refresh();
 });
 
 watch(() => update.open, (newValue) => {

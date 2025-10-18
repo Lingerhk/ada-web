@@ -6,10 +6,24 @@
                 <el-form :inline="true" class="filter-form">
                     <el-form-item><el-button type="primary" @click="handleNew">{{ T('new') }}</el-button></el-form-item>
                     <el-form-item :label="T('domain')">
-                        <MultiSelector v-model:selected="state.req.domain" :options="state.domainOptions" />
+                        <el-select v-model="state.req.domain" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="T('selectDomain')" popper-class="custom-header">
+                            <template #header>
+                                <el-checkbox v-model="domainCheckAll" :indeterminate="domainIndeterminate" @change="handleDomainCheckAll">
+                                    {{ $t('message.tableCommon.checkAll') }}
+                                </el-checkbox>
+                            </template>
+                            <el-option v-for="option in state.domainOptions" :key="option.value" :label="option.label" :value="option.value" />
+                        </el-select>
                     </el-form-item>
                     <el-form-item :label="T('origin')">
-                        <MultiSelector v-model:selected="state.req.origin" :options="originOptions" />
+                        <el-select v-model="state.req.origin" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="T('selectOrigin')" popper-class="custom-header">
+                            <template #header>
+                                <el-checkbox v-model="originCheckAll" :indeterminate="originIndeterminate" @change="handleOriginCheckAll">
+                                    {{ $t('message.tableCommon.checkAll') }}
+                                </el-checkbox>
+                            </template>
+                            <el-option v-for="option in originOptions" :key="option.value" :label="option.label" :value="option.value" />
+                        </el-select>
                     </el-form-item>
                     <el-form-item :label="$t('message.threat.lastOccurenceTime')">
                         <el-date-picker size="default" v-model="lastOccurenceTime" type="datetimerange"
@@ -33,9 +47,9 @@
                     <el-table-column prop="userList" :label="T('userList')" min-width="200" show-overflow-tooltip />
                     <el-table-column prop="ipList" :label="T('ipList')" min-width="200" show-overflow-tooltip />
                     <el-table-column prop="updateTm" :label="T('updateTm')" min-width="200" show-overflow-tooltip
-                        :formatter="(_, __, value, ___) => formatApiTime(value)" />
+                        :formatter="(_: any, __: any, value: string, ___: any) => formatApiTime(value)" />
                     <el-table-column prop="origin" :label="T('origin')"
-                        :formatter="(_, __, value, ___) => T(`origin_${value}`)" />
+                        :formatter="(_: any, __: any, value: string, ___: any) => T(`origin_${value}`)" />
                     <el-table-column :label="T('operation')">
                         <template #default="scope">
                             <el-space size="small" spacer="|">
@@ -56,8 +70,8 @@
                 </div>
                 <el-pagination v-model:current-page="state.req.pageIdx" v-model:page-size="state.req.pageSize"
                     :page-sizes="[10, 20, 30, 40, 50]" layout="sizes, prev, pager, next, jumper"
-                    :total="state.reply.page?.total ?? 0" @size-change="(s) => state.req.pageSize = s"
-                    @current-change="(idx) => state.req.pageIdx = idx" />
+                    :total="state.reply.page?.total ?? 0" @size-change="(s: number) => state.req.pageSize = s"
+                    @current-change="(idx: number) => state.req.pageIdx = idx" />
             </el-row>
         </el-card>
         <AddModDrawer ref="drawerRef" />
@@ -74,7 +88,6 @@ import { transThreatBlock as T } from '/@/utils/translator';
 import { getThreatBlockOriginOptions, OptionType } from '/@/utils/constant';
 import { listDomainOptions } from '/@/api/grpc/method';
 import { formatApiTime, shortcuts } from '/@/utils/formatTime';
-import MultiSelector from '/@/components/form/multiSelector.vue';
 import AddModDrawer from './addModDrawer.vue';
 import DetailModDrawer from './detailDrawer.vue';
 import { ElMessageBox } from 'element-plus';
@@ -86,6 +99,12 @@ const detailRef = ref();
 const originOptions = getThreatBlockOriginOptions();
 
 const lastOccurenceTime = ref(['', '']);
+
+// Checkbox states for "Check All"
+const domainCheckAll = ref(false);
+const domainIndeterminate = ref(false);
+const originCheckAll = ref(false);
+const originIndeterminate = ref(false);
 
 const state = reactive({
     req: {
@@ -152,15 +171,67 @@ const handleDelete = (detail: ListThreatBlockReply_Details) => {
         .catch(() => { });
 };
 
+// Handle domain Select All
+const handleDomainCheckAll = (val: boolean) => {
+    domainIndeterminate.value = false;
+    if (val) {
+        state.req.domain = state.domainOptions.map(opt => opt.value);
+    } else {
+        state.req.domain = [];
+    }
+};
+
+// Handle origin Select All
+const handleOriginCheckAll = (val: boolean) => {
+    originIndeterminate.value = false;
+    if (val) {
+        state.req.origin = originOptions.map(opt => opt.value);
+    } else {
+        state.req.origin = [];
+    }
+};
+
 onMounted(() => {
     refresh();
 
     listDomainOptions().then(options => state.domainOptions = options);
 });
 
-watch(() => state.req, () => {
+watch(() => state.req.domain, (val) => {
+    domainIndeterminate.value = false;
+    if (val.length === 0) {
+        domainCheckAll.value = false;
+    } else if (val.length === state.domainOptions.length) {
+        domainCheckAll.value = true;
+    } else {
+        domainIndeterminate.value = true;
+    }
     refresh();
-}, { deep: true });
+});
+
+watch(() => state.req.origin, (val) => {
+    originIndeterminate.value = false;
+    if (val.length === 0) {
+        originCheckAll.value = false;
+    } else if (val.length === originOptions.length) {
+        originCheckAll.value = true;
+    } else {
+        originIndeterminate.value = true;
+    }
+    refresh();
+});
+
+watch(() => state.req.search, () => {
+    refresh();
+});
+
+watch(() => state.req.pageIdx, () => {
+    refresh();
+});
+
+watch(() => state.req.pageSize, () => {
+    refresh();
+});
 
 watch(() => lastOccurenceTime, () => {
     if (lastOccurenceTime.value.length !== 2) {
@@ -170,6 +241,7 @@ watch(() => lastOccurenceTime, () => {
         state.req.startTm = formatApiTime(lastOccurenceTime.value[0]);
         state.req.endTm = formatApiTime(lastOccurenceTime.value[1]);
     }
+    refresh();
 });
 </script>
 

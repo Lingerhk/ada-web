@@ -8,10 +8,24 @@
                         <LevelCheckbox v-model="threatLevel" />
                     </el-form-item>
                     <el-form-item :label="$t('message.tableCommon.dcHostname')">
-                        <MultiSelector v-model:selected="dchostSelected" :options="dchostOptions" />
+                        <el-select v-model="dchostSelected" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.threat.activityList.selectDcHostname')" popper-class="custom-header">
+                            <template #header>
+                                <el-checkbox v-model="dchostCheckAll" :indeterminate="dchostIndeterminate" @change="handleDchostCheckAll">
+                                    {{ $t('message.tableCommon.checkAll') }}
+                                </el-checkbox>
+                            </template>
+                            <el-option v-for="option in dchostOptions" :key="option.value" :label="option.label" :value="option.value" />
+                        </el-select>
                     </el-form-item>
                     <el-form-item :label="$t('message.tableCommon.activityTitle')">
-                        <MultiSelector v-model:selected="titleSelected" :options="titleOptions" />
+                        <el-select v-model="titleSelected" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.threat.activityList.selectTitle')" popper-class="custom-header">
+                            <template #header>
+                                <el-checkbox v-model="titleCheckAll" :indeterminate="titleIndeterminate" @change="handleTitleCheckAll">
+                                    {{ $t('message.tableCommon.checkAll') }}
+                                </el-checkbox>
+                            </template>
+                            <el-option v-for="option in titleOptions" :key="option.value" :label="option.label" :value="option.value" />
+                        </el-select>
                     </el-form-item>
                     <el-form-item :label="$t('message.threat.lastOccurenceTime')">
                         <el-date-picker size="default" v-model="lastOccurenceTime" type="datetimerange"
@@ -97,24 +111,29 @@ import { Search } from '@element-plus/icons-vue';
 import LevelCheckbox from '/@/components/level/checkbox.vue';
 import LevelImage from '/@/components/level/image.vue';
 import { listActivityOptions, listDchostOptions } from '/@/api/grpc/method';
-import MultiSelector from '/@/components/form/multiSelector.vue';
 
 const pageIdx = ref(1);
 const pageSize = ref(10);
 const total = ref(0);
 const exhausted = ref(false);
-const threatLevel = ref([]);
-const lastOccurenceTime = ref([]);
+const threatLevel = ref<number[]>([]);
+const lastOccurenceTime = ref<string[]>([]);
 const idInput = ref('');
 
-const dchostSelected = ref([]);
-const dchostOptions = ref([]);
+const dchostSelected = ref<string[]>([]);
+const dchostOptions = ref<any[]>([]);
 
-const titleSelected = ref([]);
-const titleOptions = ref([]);
+const titleSelected = ref<string[]>([]);
+const titleOptions = ref<any[]>([]);
 
 const loading = ref(false);
 const data = ref([] as ActivityDetails[]);
+
+// Checkbox states for "Check All"
+const dchostCheckAll = ref(false);
+const dchostIndeterminate = ref(false);
+const titleCheckAll = ref(false);
+const titleIndeterminate = ref(false);
 
 const filterFieldDataKey = (fieldData: Object) => {
     return Object.keys(fieldData).filter(key => key.toLowerCase() !== 'hostname');
@@ -164,6 +183,26 @@ const handleCurrentChange = (val: number) => {
     refreshActivity();
 };
 
+// Handle dchost Select All
+const handleDchostCheckAll = (val: boolean) => {
+    dchostIndeterminate.value = false;
+    if (val) {
+        dchostSelected.value = dchostOptions.value.map(opt => opt.value);
+    } else {
+        dchostSelected.value = [];
+    }
+};
+
+// Handle title Select All
+const handleTitleCheckAll = (val: boolean) => {
+    titleIndeterminate.value = false;
+    if (val) {
+        titleSelected.value = titleOptions.value.map(opt => opt.value);
+    } else {
+        titleSelected.value = [];
+    }
+};
+
 onMounted(() => {
     refreshActivity();
 
@@ -171,7 +210,31 @@ onMounted(() => {
     listActivityOptions().then(res => titleOptions.value = res);
 });
 
-watch(() => [threatLevel.value, lastOccurenceTime.value, idInput.value, pageIdx.value, pageSize.value, dchostSelected.value, titleSelected.value], refreshActivity);
+watch(dchostSelected, (val) => {
+    dchostIndeterminate.value = false;
+    if (val.length === 0) {
+        dchostCheckAll.value = false;
+    } else if (val.length === dchostOptions.value.length) {
+        dchostCheckAll.value = true;
+    } else {
+        dchostIndeterminate.value = true;
+    }
+    refreshActivity();
+});
+
+watch(titleSelected, (val) => {
+    titleIndeterminate.value = false;
+    if (val.length === 0) {
+        titleCheckAll.value = false;
+    } else if (val.length === titleOptions.value.length) {
+        titleCheckAll.value = true;
+    } else {
+        titleIndeterminate.value = true;
+    }
+    refreshActivity();
+});
+
+watch(() => [threatLevel.value, lastOccurenceTime.value, idInput.value, pageIdx.value, pageSize.value], refreshActivity);
 
 </script>
 

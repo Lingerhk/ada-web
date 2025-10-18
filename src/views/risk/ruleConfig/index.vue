@@ -9,8 +9,8 @@
                             }}</el-button>
                     </el-form-item>
                     <el-form-item :label="$t('message.risk.ruleConfig.templateType')">
-                        <el-select size="default" v-model="state.req.type" collapse-tags popper-class="custom-header"
-                            :max-collapse-tags="1" style="width: 240px">
+                        <el-select size="default" v-model="state.req.type" clearable
+                            style="width: 240px" :placeholder="$t('message.risk.ruleConfig.selectType')">
                             <el-option v-for="option in RiskTypeOptions" :key="option.value" :label="option.label"
                                 :value="option.value"></el-option>
                         </el-select>
@@ -129,9 +129,19 @@ const refresh = () => {
         .finally(() => state.loading = false);
 };
 
-watch(state.req, () => {
+// Watch type filter
+watch(() => state.req.type, () => {
+    state.req.pageIdx = 1;
     refresh();
-}, { deep: true });
+});
+
+watch(() => state.req.pageIdx, () => {
+    refresh();
+});
+
+watch(() => state.req.pageSize, () => {
+    refresh();
+});
 
 onMounted(() => {
     refresh();

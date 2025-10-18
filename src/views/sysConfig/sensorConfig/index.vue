@@ -5,13 +5,25 @@
                 <el-form label-width="auto" :inline="true">
                     <el-form-item>
                         <template #label>{{ $t('message.advancedSearch.domain') }}</template>
-                        <MultiSelector v-model:selected="state.req.domain" :options="state.domainOptions">
-                        </MultiSelector>
+                        <el-select v-model="state.req.domain" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.advancedSearch.selectDomain')" popper-class="custom-header">
+                            <template #header>
+                                <el-checkbox v-model="domainCheckAll" :indeterminate="domainIndeterminate" @change="handleDomainCheckAll">
+                                    {{ $t('message.tableCommon.checkAll') }}
+                                </el-checkbox>
+                            </template>
+                            <el-option v-for="option in state.domainOptions" :key="option.value" :label="option.label" :value="option.value" />
+                        </el-select>
                     </el-form-item>
                     <el-form-item>
                         <template #label>{{ $t('message.advancedSearch.status') }}</template>
-                        <MultiSelector v-model:selected="state.req.status" :options="StatusOptions">
-                        </MultiSelector>
+                        <el-select v-model="state.req.status" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.advancedSearch.selectStatus')" popper-class="custom-header">
+                            <template #header>
+                                <el-checkbox v-model="statusCheckAll" :indeterminate="statusIndeterminate" @change="handleStatusCheckAll">
+                                    {{ $t('message.tableCommon.checkAll') }}
+                                </el-checkbox>
+                            </template>
+                            <el-option v-for="option in StatusOptions" :key="option.value" :label="option.label" :value="option.value" />
+                        </el-select>
                     </el-form-item>
                     <el-form-item>
                         <el-input v-model="state.req.keyword" size="default" style="width: 350px"
@@ -88,7 +100,6 @@ import { listDomainOptions } from '/@/api/grpc/method';
 import { formatApiTime } from '/@/utils/formatTime';
 import { h } from 'vue';
 
-const MultiSelector = defineAsyncComponent(() => import('/@/components/form/multiSelector.vue'));
 const DetailDrawer = defineAsyncComponent(() => import('./detailDrawer.vue'));
 const EditDrawer = defineAsyncComponent(() => import('./editDrawer.vue'));
 
@@ -98,6 +109,12 @@ const editDrawerRef = ref();
 const { t } = useI18n();
 
 const StatusOptions = getSensorStatusOptions(t);
+
+// Checkbox states for "Check All"
+const domainCheckAll = ref(false);
+const domainIndeterminate = ref(false);
+const statusCheckAll = ref(false);
+const statusIndeterminate = ref(false);
 
 const state = reactive({
     req: {
@@ -115,9 +132,65 @@ const state = reactive({
     domainOptions: [] as OptionType[],
 });
 
-watch(() => state.req, (val) => {
+// Handle domain Select All
+const handleDomainCheckAll = (val: CheckboxValueType) => {
+    domainIndeterminate.value = false;
+    if (val) {
+        state.req.domain = state.domainOptions.map(opt => opt.value);
+    } else {
+        state.req.domain = [];
+    }
+};
+
+// Handle status Select All
+const handleStatusCheckAll = (val: CheckboxValueType) => {
+    statusIndeterminate.value = false;
+    if (val) {
+        state.req.status = StatusOptions.map(opt => opt.value);
+    } else {
+        state.req.status = [];
+    }
+};
+
+// Watch individual filter properties
+watch(() => state.req.domain, (val) => {
+    domainIndeterminate.value = false;
+    if (val.length === 0) {
+        domainCheckAll.value = false;
+    } else if (val.length === state.domainOptions.length) {
+        domainCheckAll.value = true;
+    } else {
+        domainIndeterminate.value = true;
+    }
+    state.req.pageIdx = 1;
     refresh();
-}, { deep: true });
+});
+
+watch(() => state.req.status, (val) => {
+    statusIndeterminate.value = false;
+    if (val.length === 0) {
+        statusCheckAll.value = false;
+    } else if (val.length === StatusOptions.length) {
+        statusCheckAll.value = true;
+    } else {
+        statusIndeterminate.value = true;
+    }
+    state.req.pageIdx = 1;
+    refresh();
+});
+
+watch(() => state.req.keyword, () => {
+    state.req.pageIdx = 1;
+    refresh();
+});
+
+watch(() => state.req.pageIdx, () => {
+    refresh();
+});
+
+watch(() => state.req.pageSize, () => {
+    refresh();
+});
 
 // 刷新列表
 const refresh = () => {

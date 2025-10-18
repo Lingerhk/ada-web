@@ -101,16 +101,22 @@ const model = defineModel({
     default: false
 });
 
-const props = defineProps({
-    ro: Boolean,
-    data: ListNotifyConfReply_Details,
-});
+const props = defineProps<{
+    ro: boolean;
+    data: ListNotifyConfReply_Details;
+}>();
 
 const state = reactive({
     active: 0,
 });
 
-const form = ref<UpdateNotifyConfReq>({});
+const form = ref<UpdateNotifyConfReq>({
+    id: '',
+    enable: '',
+    endpoint: '',
+    level: [],
+    metadata: {},
+});
 const editorRef = ref();
 
 const testLoading = ref(false);

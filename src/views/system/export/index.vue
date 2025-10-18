@@ -5,10 +5,24 @@
                 <!-- 搜索 -->
                 <el-form :inline="true">
                     <el-form-item :label="transExport('type')">
-                        <MultiSelector v-model:selected="state.req.type" :options="typeOptions" />
+                        <el-select v-model="state.req.type" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="transExport('selectType')" popper-class="custom-header">
+                            <template #header>
+                                <el-checkbox v-model="typeCheckAll" :indeterminate="typeIndeterminate" @change="handleTypeCheckAll">
+                                    {{ $t('message.tableCommon.checkAll') }}
+                                </el-checkbox>
+                            </template>
+                            <el-option v-for="option in typeOptions" :key="option.value" :label="option.label" :value="option.value" />
+                        </el-select>
                     </el-form-item>
                     <el-form-item :label="transExport('status')">
-                        <MultiSelector v-model:selected="state.req.status" :options="statusOpitons" />
+                        <el-select v-model="state.req.status" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="transExport('selectStatus')" popper-class="custom-header">
+                            <template #header>
+                                <el-checkbox v-model="statusCheckAll" :indeterminate="statusIndeterminate" @change="handleStatusCheckAll">
+                                    {{ $t('message.tableCommon.checkAll') }}
+                                </el-checkbox>
+                            </template>
+                            <el-option v-for="option in statusOpitons" :key="option.value" :label="option.label" :value="option.value" />
+                        </el-select>
                     </el-form-item>
                     <el-form-item :label="transExport('createTm')">
                         <el-date-picker size="default" v-model="timeRangeRef" type="datetimerange"
@@ -73,15 +87,13 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive, ref, watch } from 'vue';
 import api from '/@/api/grpc';
 import { DeleteExportTaskReq, ListExportTaskReply, ListExportTaskReply_Details, ListExportTaskReq } from '/@/api/grpc/ada';
 import { alertApiError, alertError, alertResult } from '/@/utils/error';
 import { getExportTaskStatusOpitions, getExportTaskTypeOptions } from '/@/utils/constant';
 import { transExport } from '/@/utils/translator';
-import MultiSelector from '/@/components/form/multiSelector.vue';
 import { formatApiTime, shortcuts } from '/@/utils/formatTime';
-import { watch } from 'vue';
 import { ElMessageBox } from 'element-plus';
 import { useI18n } from 'vue-i18n';
 import { QuestionFilled } from '@element-plus/icons-vue';
@@ -93,6 +105,12 @@ const typeOptions = getExportTaskTypeOptions();
 const statusOpitons = getExportTaskStatusOpitions();
 const timeRangeRef = ref([]);
 const downloadingTask = ref([] as string[]);
+
+// Checkbox states for "Check All"
+const typeCheckAll = ref(false);
+const typeIndeterminate = ref(false);
+const statusCheckAll = ref(false);
+const statusIndeterminate = ref(false);
 
 const state = reactive({
     req: {
@@ -136,6 +154,61 @@ watch(timeRangeRef, (value) => {
     refresh();
 });
 
+// Handle type Select All
+const handleTypeCheckAll = (val: boolean) => {
+    typeIndeterminate.value = false;
+    if (val) {
+        state.req.type = typeOptions.map(opt => opt.value);
+    } else {
+        state.req.type = [];
+    }
+};
+
+// Handle status Select All
+const handleStatusCheckAll = (val: boolean) => {
+    statusIndeterminate.value = false;
+    if (val) {
+        state.req.status = statusOpitons.map(opt => opt.value);
+    } else {
+        state.req.status = [];
+    }
+};
+
+// Watch individual filter properties
+watch(() => state.req.type, (val) => {
+    typeIndeterminate.value = false;
+    if (val.length === 0) {
+        typeCheckAll.value = false;
+    } else if (val.length === typeOptions.length) {
+        typeCheckAll.value = true;
+    } else {
+        typeIndeterminate.value = true;
+    }
+    state.req.pageIdx = 1;
+    refresh();
+});
+
+watch(() => state.req.status, (val) => {
+    statusIndeterminate.value = false;
+    if (val.length === 0) {
+        statusCheckAll.value = false;
+    } else if (val.length === statusOpitons.length) {
+        statusCheckAll.value = true;
+    } else {
+        statusIndeterminate.value = true;
+    }
+    state.req.pageIdx = 1;
+    refresh();
+});
+
+watch(() => state.req.pageIdx, () => {
+    refresh();
+});
+
+watch(() => state.req.pageSize, () => {
+    refresh();
+});
+
 const handleDownload = (data: ListExportTaskReply_Details) => {
     if (data.status !== 'finish') {
         return;
@@ -175,10 +248,6 @@ const handleDelete = (data: ListExportTaskReply_Details) => {
     })
     .catch(() => {});
 };
-
-watch(() => state.req, () => {
-    refresh();
-}, { deep: true });
 
 onMounted(() => {
     refresh();

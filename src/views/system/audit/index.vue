@@ -5,7 +5,14 @@
                 <!-- 搜索 -->
                 <el-form :inline="true">
                     <el-form-item :label="$t('message.system.audit.event')">
-                        <MultiSelector v-model:selected="state.req.filterEvent" :options="EventOptions" />
+                        <el-select v-model="state.req.filterEvent" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 250px" :placeholder="$t('message.system.audit.selectEvent')" popper-class="custom-header">
+                            <template #header>
+                                <el-checkbox v-model="eventCheckAll" :indeterminate="eventIndeterminate" @change="handleEventCheckAll">
+                                    {{ $t('message.tableCommon.checkAll') }}
+                                </el-checkbox>
+                            </template>
+                            <el-option v-for="option in EventOptions" :key="option.value" :label="option.label" :value="option.value" />
+                        </el-select>
                     </el-form-item>
                     <el-form-item :label="$t('message.system.audit.timeRange')">
                         <el-date-picker size="default" v-model="timeRange" type="datetimerange"
@@ -57,7 +64,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, onMounted, reactive, ref, watch } from 'vue';
+import { onMounted, reactive, ref, watch } from 'vue';
 import api from '/@/api/grpc';
 import * as proto from '/@/api/grpc/ada';
 import { alertApiError, alertResult } from '/@/utils/error';
@@ -70,11 +77,13 @@ import ExportButton from '/@/views/system/export/exportButton.vue';
 
 const { t } = useI18n();
 
-const MultiSelector = defineAsyncComponent(() => import('/@/components/form/multiSelector.vue'));
-
 const EventOptions = getAuditEventOptions(t);
 
 const timeRange = ref([] as string[]);
+
+// Checkbox states for "Check All"
+const eventCheckAll = ref(false);
+const eventIndeterminate = ref(false);
 
 const onKeywordChanged = (val: string) => {
     state.req.keyword = val;
@@ -119,9 +128,45 @@ watch(timeRange, (val) => {
         state.req.startTm = '';
         state.req.endTm = '';
     }
+    refresh();
 });
 
-watch(state.req, () => refresh(), { deep: true });
+// Handle event Select All
+const handleEventCheckAll = (val: boolean) => {
+    eventIndeterminate.value = false;
+    if (val) {
+        state.req.filterEvent = EventOptions.map(opt => opt.value);
+    } else {
+        state.req.filterEvent = [];
+    }
+};
+
+// Watch individual filter properties
+watch(() => state.req.filterEvent, (val) => {
+    eventIndeterminate.value = false;
+    if (val.length === 0) {
+        eventCheckAll.value = false;
+    } else if (val.length === EventOptions.length) {
+        eventCheckAll.value = true;
+    } else {
+        eventIndeterminate.value = true;
+    }
+    state.req.pageIdx = 1;
+    refresh();
+});
+
+watch(() => state.req.keyword, () => {
+    state.req.pageIdx = 1;
+    refresh();
+});
+
+watch(() => state.req.pageIdx, () => {
+    refresh();
+});
+
+watch(() => state.req.pageSize, () => {
+    refresh();
+});
 
 onMounted(() => {
     refresh();

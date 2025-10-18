@@ -9,10 +9,24 @@
                             }}</el-button>
                     </el-form-item>
                     <el-form-item :label="$t('message.tableCommon.domain')">
-                        <MultiSelector v-model:selected="state.req.domain" :options="state.domainOptions" />
+                        <el-select v-model="state.req.domain" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.risk.weakpwd.selectDomain')" popper-class="custom-header">
+                            <template #header>
+                                <el-checkbox v-model="domainCheckAll" :indeterminate="domainIndeterminate" @change="handleDomainCheckAll">
+                                    {{ $t('message.tableCommon.checkAll') }}
+                                </el-checkbox>
+                            </template>
+                            <el-option v-for="option in state.domainOptions" :key="option.value" :label="option.label" :value="option.value" />
+                        </el-select>
                     </el-form-item>
                     <el-form-item :label="$t('message.risk.weakpwd.locked')">
-                        <MultiSelector v-model:selected="state.req.locked" :options="LockedOptions" />
+                        <el-select v-model="state.req.locked" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.risk.weakpwd.selectLocked')" popper-class="custom-header">
+                            <template #header>
+                                <el-checkbox v-model="lockedCheckAll" :indeterminate="lockedIndeterminate" @change="handleLockedCheckAll">
+                                    {{ $t('message.tableCommon.checkAll') }}
+                                </el-checkbox>
+                            </template>
+                            <el-option v-for="option in LockedOptions" :key="option.value" :label="option.label" :value="option.value" />
+                        </el-select>
                     </el-form-item>
                 </el-form>
                 <!-- 右侧按钮 -->
@@ -83,13 +97,18 @@ import { getWeakpwdLockedOptions } from '/@/utils/constant';
 import { formatApiTime } from '/@/utils/formatTime';
 import ExportButton from '/@/views/system/export/exportButton.vue';
 
-const MultiSelector = defineAsyncComponent(() => import('/@/components/form/multiSelector.vue'));
 const AddDrawer = defineAsyncComponent(() => import('./addDrawer.vue'));
 const AddDrawerRef = ref();
 
 const { t } = useI18n();
 
 const LockedOptions = getWeakpwdLockedOptions(t);
+
+// Checkbox states for "Check All"
+const domainCheckAll = ref(false);
+const domainIndeterminate = ref(false);
+const lockedCheckAll = ref(false);
+const lockedIndeterminate = ref(false);
 
 const state = reactive({
     loading: false,
@@ -133,9 +152,70 @@ const refresh = () => {
     .finally(() => state.loading = false);
 };
 
-watch(() => state.req, () => {
+// Handle domain Select All
+const handleDomainCheckAll = (val: boolean) => {
+    domainIndeterminate.value = false;
+    if (val) {
+        state.req.domain = state.domainOptions.map(opt => opt.value);
+    } else {
+        state.req.domain = [];
+    }
+};
+
+// Handle locked Select All
+const handleLockedCheckAll = (val: boolean) => {
+    lockedIndeterminate.value = false;
+    if (val) {
+        state.req.locked = LockedOptions.map(opt => opt.value);
+    } else {
+        state.req.locked = [];
+    }
+};
+
+// Watch individual filter properties
+watch(() => state.req.domain, (val) => {
+    domainIndeterminate.value = false;
+    if (val.length === 0) {
+        domainCheckAll.value = false;
+    } else if (val.length === state.domainOptions.length) {
+        domainCheckAll.value = true;
+    } else {
+        domainIndeterminate.value = true;
+    }
+    state.req.pageIdx = 1;
     refresh();
-}, { deep: true });
+});
+
+watch(() => state.req.locked, (val) => {
+    lockedIndeterminate.value = false;
+    if (val.length === 0) {
+        lockedCheckAll.value = false;
+    } else if (val.length === LockedOptions.length) {
+        lockedCheckAll.value = true;
+    } else {
+        lockedIndeterminate.value = true;
+    }
+    state.req.pageIdx = 1;
+    refresh();
+});
+
+watch(() => state.req.isPlain, () => {
+    state.req.pageIdx = 1;
+    refresh();
+});
+
+watch(() => state.req.search, () => {
+    state.req.pageIdx = 1;
+    refresh();
+});
+
+watch(() => state.req.pageIdx, () => {
+    refresh();
+});
+
+watch(() => state.req.pageSize, () => {
+    refresh();
+});
 
 onMounted(() => {
     refresh();

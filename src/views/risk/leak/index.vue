@@ -9,13 +9,34 @@
                             }}</el-button>
                     </el-form-item>
                     <el-form-item :label="$t('message.tableCommon.domain')">
-                        <MultiSelector v-model:selected="state.req.domain" :options="state.domainOptions" />
+                        <el-select v-model="state.req.domain" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.risk.leak.selectDomain')" popper-class="custom-header">
+                            <template #header>
+                                <el-checkbox v-model="domainCheckAll" :indeterminate="domainIndeterminate" @change="handleDomainCheckAll">
+                                    {{ $t('message.tableCommon.checkAll') }}
+                                </el-checkbox>
+                            </template>
+                            <el-option v-for="option in state.domainOptions" :key="option.value" :label="option.label" :value="option.value" />
+                        </el-select>
                     </el-form-item>
                     <el-form-item :label="$t('message.risk.leak.subType')">
-                        <MultiSelector v-model:selected="state.req.subType" :options="SubTypeOptions" />
+                        <el-select v-model="state.req.subType" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.risk.leak.selectSubType')" popper-class="custom-header">
+                            <template #header>
+                                <el-checkbox v-model="subTypeCheckAll" :indeterminate="subTypeIndeterminate" @change="handleSubTypeCheckAll">
+                                    {{ $t('message.tableCommon.checkAll') }}
+                                </el-checkbox>
+                            </template>
+                            <el-option v-for="option in SubTypeOptions" :key="option.value" :label="option.label" :value="option.value" />
+                        </el-select>
                     </el-form-item>
                     <el-form-item :label="$t('message.tableCommon.level.name')">
-                        <MultiSelector v-model:selected="state.req.level" :options="LevelOptions" />
+                        <el-select v-model="state.req.level" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.risk.leak.selectLevel')" popper-class="custom-header">
+                            <template #header>
+                                <el-checkbox v-model="levelCheckAll" :indeterminate="levelIndeterminate" @change="handleLevelCheckAll">
+                                    {{ $t('message.tableCommon.checkAll') }}
+                                </el-checkbox>
+                            </template>
+                            <el-option v-for="option in LevelOptions" :key="option.value" :label="option.label" :value="option.value" />
+                        </el-select>
                     </el-form-item>
                     <el-form-item :label="$t('message.risk.updateTm')">
                         <el-date-picker size="default" v-model="timeRange" type="datetimerange"
@@ -23,7 +44,14 @@
                             :end-placeholder="$t('message.time.end')" :shortcuts="shortcuts" />
                     </el-form-item>
                     <el-form-item :label="$t('message.risk.result')">
-                        <MultiSelector v-model:selected="state.req.result" :options="ResultOptions" />
+                        <el-select v-model="state.req.result" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.risk.leak.selectResult')" popper-class="custom-header">
+                            <template #header>
+                                <el-checkbox v-model="resultCheckAll" :indeterminate="resultIndeterminate" @change="handleResultCheckAll">
+                                    {{ $t('message.tableCommon.checkAll') }}
+                                </el-checkbox>
+                            </template>
+                            <el-option v-for="option in ResultOptions" :key="option.value" :label="option.label" :value="option.value" />
+                        </el-select>
                     </el-form-item>
                 </el-form>
                 <!-- 右侧按钮 -->
@@ -103,7 +131,6 @@ import { getLeakTypeOptions } from '../constant';
 import { ElMessageBox } from 'element-plus';
 import ExportButton from '/@/views/system/export/exportButton.vue';
 
-const MultiSelector = defineAsyncComponent(() => import('/@/components/form/multiSelector.vue'));
 const DetailDrawer = defineAsyncComponent(() => import('./detailDrawer.vue'));
 const DetailDrawerRef = ref();
 
@@ -117,6 +144,16 @@ const LevelOptions = getLevelOptions(t);
 const ResultOptions = getRiskResultOptions(t);
 
 const timeRange = ref([] as string[]);
+
+// Checkbox states for "Check All"
+const domainCheckAll = ref(false);
+const domainIndeterminate = ref(false);
+const subTypeCheckAll = ref(false);
+const subTypeIndeterminate = ref(false);
+const levelCheckAll = ref(false);
+const levelIndeterminate = ref(false);
+const resultCheckAll = ref(false);
+const resultIndeterminate = ref(false);
 
 const state = reactive({
     loading: false,
@@ -172,15 +209,119 @@ const refresh = () => {
     .finally(() => state.loading = false);
 };
 
-watch(() => state.req, () => {
+// Handle domain Select All
+const handleDomainCheckAll = (val: boolean) => {
+    domainIndeterminate.value = false;
+    if (val) {
+        state.req.domain = state.domainOptions.map(opt => opt.value);
+    } else {
+        state.req.domain = [];
+    }
+};
+
+// Handle subType Select All
+const handleSubTypeCheckAll = (val: boolean) => {
+    subTypeIndeterminate.value = false;
+    if (val) {
+        state.req.subType = SubTypeOptions.map(opt => opt.value);
+    } else {
+        state.req.subType = [];
+    }
+};
+
+// Handle level Select All
+const handleLevelCheckAll = (val: boolean) => {
+    levelIndeterminate.value = false;
+    if (val) {
+        state.req.level = LevelOptions.map(opt => opt.value);
+    } else {
+        state.req.level = [];
+    }
+};
+
+// Handle result Select All
+const handleResultCheckAll = (val: boolean) => {
+    resultIndeterminate.value = false;
+    if (val) {
+        state.req.result = ResultOptions.map(opt => opt.value);
+    } else {
+        state.req.result = [];
+    }
+};
+
+// Watch individual filter properties
+watch(() => state.req.domain, (val) => {
+    domainIndeterminate.value = false;
+    if (val.length === 0) {
+        domainCheckAll.value = false;
+    } else if (val.length === state.domainOptions.length) {
+        domainCheckAll.value = true;
+    } else {
+        domainIndeterminate.value = true;
+    }
+    state.req.pageIdx = 1;
     refresh();
-}, { deep: true });
+});
+
+watch(() => state.req.subType, (val) => {
+    subTypeIndeterminate.value = false;
+    if (val.length === 0) {
+        subTypeCheckAll.value = false;
+    } else if (val.length === SubTypeOptions.length) {
+        subTypeCheckAll.value = true;
+    } else {
+        subTypeIndeterminate.value = true;
+    }
+    state.req.pageIdx = 1;
+    refresh();
+});
+
+watch(() => state.req.level, (val) => {
+    levelIndeterminate.value = false;
+    if (val.length === 0) {
+        levelCheckAll.value = false;
+    } else if (val.length === LevelOptions.length) {
+        levelCheckAll.value = true;
+    } else {
+        levelIndeterminate.value = true;
+    }
+    state.req.pageIdx = 1;
+    refresh();
+});
+
+watch(() => state.req.result, (val) => {
+    resultIndeterminate.value = false;
+    if (val.length === 0) {
+        resultCheckAll.value = false;
+    } else if (val.length === ResultOptions.length) {
+        resultCheckAll.value = true;
+    } else {
+        resultIndeterminate.value = true;
+    }
+    state.req.pageIdx = 1;
+    refresh();
+});
+
+watch(() => state.req.search, () => {
+    state.req.pageIdx = 1;
+    refresh();
+});
+
+watch(() => state.req.pageIdx, () => {
+    refresh();
+});
+
+watch(() => state.req.pageSize, () => {
+    refresh();
+});
 
 watch(timeRange, (val) => {
     if (val && val.length === 2) {
         state.req.startTm = formatApiTime(val[0]);
         state.req.endTm = formatApiTime(val[1]);
     }
+    state.req.pageIdx = 1;
+    refresh();
 });
 
 onMounted(() => {

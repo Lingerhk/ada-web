@@ -6,14 +6,34 @@
                     <el-button type="primary" size="default" @click="onAddAccount">新建</el-button>
                 </el-form-item>
                 <el-form-item :label="T('role')">
-                    <MultiSelector v-model:selected="state.filter.role" :options="option.role"></MultiSelector>
+                    <el-select v-model="state.filter.role" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="T('selectRole')" popper-class="custom-header">
+                        <template #header>
+                            <el-checkbox v-model="roleCheckAll" :indeterminate="roleIndeterminate" @change="handleRoleCheckAll">
+                                {{ $t('message.tableCommon.checkAll') }}
+                            </el-checkbox>
+                        </template>
+                        <el-option v-for="option in option.role" :key="option.value" :label="option.label" :value="option.value" />
+                    </el-select>
                 </el-form-item>
                 <el-form-item :label="T('mfa')">
-                    <MultiSelector v-model:selected="state.filter.mfa" :options="option.mfa"></MultiSelector>
+                    <el-select v-model="state.filter.mfa" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="T('selectMfa')" popper-class="custom-header">
+                        <template #header>
+                            <el-checkbox v-model="mfaCheckAll" :indeterminate="mfaIndeterminate" @change="handleMfaCheckAll">
+                                {{ $t('message.tableCommon.checkAll') }}
+                            </el-checkbox>
+                        </template>
+                        <el-option v-for="opt in option.mfa" :key="opt.value" :label="opt.label" :value="opt.value" />
+                    </el-select>
                 </el-form-item>
                 <el-form-item :label="T('passwordStrength')">
-                    <MultiSelector v-model:selected="state.filter.passwordStrength" :options="option.passwordStrength">
-                    </MultiSelector>
+                    <el-select v-model="state.filter.passwordStrength" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="T('selectPasswordStrength')" popper-class="custom-header">
+                        <template #header>
+                            <el-checkbox v-model="passwordStrengthCheckAll" :indeterminate="passwordStrengthIndeterminate" @change="handlePasswordStrengthCheckAll">
+                                {{ $t('message.tableCommon.checkAll') }}
+                            </el-checkbox>
+                        </template>
+                        <el-option v-for="opt in option.passwordStrength" :key="opt.value" :label="opt.label" :value="opt.value" />
+                    </el-select>
                 </el-form-item>
                 <el-form-item :label="T('createTm')">
                     <el-date-picker size="default" v-model="createTimeRange" type="datetimerange"
@@ -100,11 +120,18 @@ import { Local } from '/@/utils/storage';
 const { t } = useI18n();
 const { toClipboard } = useClipboard();
 
-const MultiSelector = defineAsyncComponent(() => import('/@/components/form/multiSelector.vue'));
 const AddAccountDrawer = defineAsyncComponent(() => import('./addAccountDrawer.vue'));
 const addAccountDrawerRef = ref();
 const EditAccountDrawer = defineAsyncComponent(() => import('./editAccountDrawer.vue'));
 const editAccountDrawerRef = ref();
+
+// Checkbox states for "Check All"
+const roleCheckAll = ref(false);
+const roleIndeterminate = ref(false);
+const mfaCheckAll = ref(false);
+const mfaIndeterminate = ref(false);
+const passwordStrengthCheckAll = ref(false);
+const passwordStrengthIndeterminate = ref(false);
 
 const option = {
     role: ['mgr', 'dev', 'ops', 'sec'].map(r => ({ label: T(`role_${r}`), value: r })),
@@ -243,10 +270,83 @@ const refreshUser = () => {
     .finally(() => state.table.loading = false);
 };
 
-watch(() => state.filter, () => {
-    console.log(state.filter);
+// Handle role Select All
+const handleRoleCheckAll = (val: boolean) => {
+    roleIndeterminate.value = false;
+    if (val) {
+        state.filter.role = option.role.map(opt => opt.value);
+    } else {
+        state.filter.role = [];
+    }
+};
+
+// Handle mfa Select All
+const handleMfaCheckAll = (val: boolean) => {
+    mfaIndeterminate.value = false;
+    if (val) {
+        state.filter.mfa = option.mfa.map(opt => opt.value);
+    } else {
+        state.filter.mfa = [];
+    }
+};
+
+// Handle passwordStrength Select All
+const handlePasswordStrengthCheckAll = (val: boolean) => {
+    passwordStrengthIndeterminate.value = false;
+    if (val) {
+        state.filter.passwordStrength = option.passwordStrength.map(opt => opt.value);
+    } else {
+        state.filter.passwordStrength = [];
+    }
+};
+
+// Watch individual filter properties
+watch(() => state.filter.role, (val) => {
+    roleIndeterminate.value = false;
+    if (val.length === 0) {
+        roleCheckAll.value = false;
+    } else if (val.length === option.role.length) {
+        roleCheckAll.value = true;
+    } else {
+        roleIndeterminate.value = true;
+    }
+    state.filter.pageIdx = 1;
     refreshUser();
-}, { deep: true });
+});
+
+watch(() => state.filter.mfa, (val) => {
+    mfaIndeterminate.value = false;
+    if (val.length === 0) {
+        mfaCheckAll.value = false;
+    } else if (val.length === option.mfa.length) {
+        mfaCheckAll.value = true;
+    } else {
+        mfaIndeterminate.value = true;
+    }
+    state.filter.pageIdx = 1;
+    refreshUser();
+});
+
+watch(() => state.filter.passwordStrength, (val) => {
+    passwordStrengthIndeterminate.value = false;
+    if (val.length === 0) {
+        passwordStrengthCheckAll.value = false;
+    } else if (val.length === option.passwordStrength.length) {
+        passwordStrengthCheckAll.value = true;
+    } else {
+        passwordStrengthIndeterminate.value = true;
+    }
+    state.filter.pageIdx = 1;
+    refreshUser();
+});
+
+watch(() => state.filter.pageIdx, () => {
+    refreshUser();
+});
+
+watch(() => state.filter.pageSize, () => {
+    refreshUser();
+});
 
 watch([createTimeRange, passTimeRange], () => {
     if (createTimeRange.value && createTimeRange.value.length === 2) {
@@ -260,6 +360,7 @@ watch([createTimeRange, passTimeRange], () => {
     } else {
         state.filter.passTm = [];
     }
+    refreshUser();
 });
 
 onMounted(() => {

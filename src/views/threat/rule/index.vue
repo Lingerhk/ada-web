@@ -7,7 +7,14 @@
                         <LevelCheckbox v-model="state.req.level" />
                     </el-form-item>
                     <el-form-item :label="T('enable')">
-                        <multiSelector :options="enableOptions" v-model:selected="state.req.enable" />
+                        <el-select v-model="state.req.enable" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="T('selectEnable')" popper-class="custom-header">
+                            <template #header>
+                                <el-checkbox v-model="enableCheckAll" :indeterminate="enableIndeterminate" @change="handleEnableCheckAll">
+                                    {{ $t('message.tableCommon.checkAll') }}
+                                </el-checkbox>
+                            </template>
+                            <el-option v-for="option in enableOptions" :key="option.value" :label="option.label" :value="option.value" />
+                        </el-select>
                     </el-form-item>
                 </el-form>
             </el-row>
@@ -85,7 +92,6 @@ import { ElMessageBox } from 'element-plus';
 import { useI18n } from 'vue-i18n';
 import LevelImage from '/@/components/level/image.vue';
 import LevelCheckbox from '/@/components/level/checkbox.vue';
-import multiSelector from '/@/components/form/multiSelector.vue';
 import { getThreatRuleEnableOptions } from '/@/utils/constant';
 
 interface AggregatedRule {
@@ -108,6 +114,10 @@ const state = reactive({
 const tableRef = ref();
 const { t } = useI18n();
 const enableOptions = getThreatRuleEnableOptions();
+
+// Checkbox states for "Check All"
+const enableCheckAll = ref(false);
+const enableIndeterminate = ref(false);
 
 const isExpanded = (data: any) => {
     return state.expandedKeys.includes(data.type);
@@ -195,14 +205,35 @@ const refresh = () => {
     .finally(() => state.loading = false);
 };
 
+// Handle enable Select All
+const handleEnableCheckAll = (val: boolean) => {
+    enableIndeterminate.value = false;
+    if (val) {
+        state.req.enable = enableOptions.map(opt => opt.value);
+    } else {
+        state.req.enable = [];
+    }
+};
+
 onMounted(() => {
     refresh();
 });
 
-watch(() => state.req, () => {
-    console.log(state.req);
+watch(() => state.req.enable, (val) => {
+    enableIndeterminate.value = false;
+    if (val.length === 0) {
+        enableCheckAll.value = false;
+    } else if (val.length === enableOptions.length) {
+        enableCheckAll.value = true;
+    } else {
+        enableIndeterminate.value = true;
+    }
     refresh();
-}, { deep: true });
+});
+
+watch(() => state.req.level, () => {
+    refresh();
+});
 
 </script>
 

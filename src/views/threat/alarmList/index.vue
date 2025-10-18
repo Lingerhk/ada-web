@@ -35,7 +35,14 @@
                 <el-form v-if="!isAdvanceSearch" :inline="true" class="filter-form">
                     <!-- 威胁类型 -->
                     <el-form-item :label="$t('message.threat.threatName')">
-                        <MultiSelector v-model:selected="threatIds" :options="threatIdOptions"></MultiSelector>
+                        <el-select v-model="threatIds" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.threat.alarmList.selectThreatName')" popper-class="custom-header">
+                            <template #header>
+                                <el-checkbox v-model="threatIdsCheckAll" :indeterminate="threatIdsIndeterminate" @change="handleThreatIdsCheckAll">
+                                    {{ $t('message.tableCommon.checkAll') }}
+                                </el-checkbox>
+                            </template>
+                            <el-option v-for="option in threatIdOptions" :key="option.value" :label="option.label" :value="option.value" />
+                        </el-select>
                     </el-form-item>
                     <!-- 威胁等级 -->
                     <el-form-item :label="$t('message.threat.levelName')">
@@ -185,7 +192,6 @@ import LevelImage from '/@/components/level/image.vue';
 
 const { t } = useI18n();
 
-const MultiSelector = defineAsyncComponent(() => import('/@/components/form/multiSelector.vue'));
 const DetailDrawer = defineAsyncComponent(() => import('./detailDrawer.vue'));
 const AdvancedSearch = defineAsyncComponent(() => import('/@/components/form/advancedSearch.vue'));
 
@@ -193,11 +199,15 @@ const detailDrawerRef = ref();
 const isAdvanceSearch = ref(false);
 const isAutoRefresh = ref(false);
 const lastOccurenceTime = ref(getPrev1Year());
-const threatIds = ref([]);
+const threatIds = ref<string[]>([]);
 const threatIdOptions = ref<OptionType[]>([]);
-const threatLevel = ref([]);
+const threatLevel = ref<number[]>([]);
 const eventStatus = ref<number>(0);
 const eventStatusOptions = [0, 1];
+
+// Checkbox states for "Check All"
+const threatIdsCheckAll = ref(false);
+const threatIdsIndeterminate = ref(false);
 
 const pageIdx = ref(1);
 const pageSize = ref(10);
@@ -377,6 +387,16 @@ const onAutoRefresh = (val: boolean) => {
     }
 };
 
+// Handle threatIds Select All
+const handleThreatIdsCheckAll = (val: boolean) => {
+    threatIdsIndeterminate.value = false;
+    if (val) {
+        threatIds.value = threatIdOptions.value.map(opt => opt.value);
+    } else {
+        threatIds.value = [];
+    }
+};
+
 onMounted(() => {
     refreshThreatTable();
 
@@ -406,7 +426,19 @@ watch(isAdvanceSearch, (value) => {
     }
 });
 
-watch([lastOccurenceTime, threatIds, threatLevel, eventStatus], () => {
+watch(threatIds, (val) => {
+    threatIdsIndeterminate.value = false;
+    if (val.length === 0) {
+        threatIdsCheckAll.value = false;
+    } else if (val.length === threatIdOptions.value.length) {
+        threatIdsCheckAll.value = true;
+    } else {
+        threatIdsIndeterminate.value = true;
+    }
+    refreshThreatTable();
+});
+
+watch([lastOccurenceTime, threatLevel, eventStatus], () => {
     refreshThreatTable();
 });
 

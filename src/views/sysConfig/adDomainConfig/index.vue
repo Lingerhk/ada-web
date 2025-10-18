@@ -10,11 +10,25 @@
 					</el-form-item>
 					<el-form-item>
 						<template #label>{{ $t('message.tableCommon.domain') }}</template>
-						<MultiSelector v-model:selected="domainSelected" :options="domainOptions"></MultiSelector>
+						<el-select v-model="domainSelected" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.adDomain.selectDomain')" popper-class="custom-header">
+							<template #header>
+								<el-checkbox v-model="domainCheckAll" :indeterminate="domainIndeterminate" @change="handleDomainCheckAll">
+									{{ $t('message.tableCommon.checkAll') }}
+								</el-checkbox>
+							</template>
+							<el-option v-for="option in domainOptions" :key="option.value" :label="option.label" :value="option.value" />
+						</el-select>
 					</el-form-item>
 					<el-form-item>
 						<template #label>{{ $t('message.adDomain.status') }}</template>
-						<MultiSelector v-model:selected="stateSelected" :options="stateOptions"></MultiSelector>
+						<el-select v-model="stateSelected" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.adDomain.selectStatus')" popper-class="custom-header">
+							<template #header>
+								<el-checkbox v-model="statusCheckAll" :indeterminate="statusIndeterminate" @change="handleStatusCheckAll">
+									{{ $t('message.tableCommon.checkAll') }}
+								</el-checkbox>
+							</template>
+							<el-option v-for="option in stateOptions" :key="option.value" :label="option.label" :value="option.value" />
+						</el-select>
 					</el-form-item>
 					<el-form-item>
 						<el-input v-model="kwInput" size="default" style="width: 350px"
@@ -82,7 +96,12 @@ const { t } = useI18n();
 // 引入组件
 const AddDrawer = defineAsyncComponent(() => import('./addAdDomainDrawer.vue'));
 const DetailDrawer = defineAsyncComponent(() => import('./detailAdDomainDrawer.vue'));
-const MultiSelector = defineAsyncComponent(() => import('/@/components/form/multiSelector.vue'));
+
+// Checkbox states for "Check All"
+const domainCheckAll = ref(false);
+const domainIndeterminate = ref(false);
+const statusCheckAll = ref(false);
+const statusIndeterminate = ref(false);
 
 // 定义变量内容
 const addDrawerRef = ref();
@@ -101,10 +120,10 @@ const state = reactive({
 	total: 0,
 });
 
-const domainSelected = ref([]);
+const domainSelected = ref<string[]>([]);
 const domainOptions = ref([] as { value: string, label: string }[]);
 
-const stateSelected = ref([]);
+const stateSelected = ref<string[]>([]);
 const stateOptions = ['run', 'error', 'init', 'remove'].map(value => ({ value, label: t('message.adDomain.state.' + value) }));
 
 const kwInput = ref('');
@@ -178,10 +197,36 @@ const handleCurrentChange = (val: number) => {
     getListDomain();
 };
 
-watch(domainSelected, (val) => {
-	if (val.length === 0) {
-		state.req.filterDomain = '';
+// Handle domain Select All
+const handleDomainCheckAll = (val: boolean) => {
+	domainIndeterminate.value = false;
+	if (val) {
+		domainSelected.value = domainOptions.value.map(opt => opt.value);
 	} else {
+		domainSelected.value = [];
+	}
+};
+
+// Handle status Select All
+const handleStatusCheckAll = (val: boolean) => {
+	statusIndeterminate.value = false;
+	if (val) {
+		stateSelected.value = stateOptions.map(opt => opt.value);
+	} else {
+		stateSelected.value = [];
+	}
+};
+
+watch(domainSelected, (val) => {
+	domainIndeterminate.value = false;
+	if (val.length === 0) {
+		domainCheckAll.value = false;
+		state.req.filterDomain = '';
+	} else if (val.length === domainOptions.value.length) {
+		domainCheckAll.value = true;
+		state.req.filterDomain = val.join(',');
+	} else {
+		domainIndeterminate.value = true;
 		state.req.filterDomain = val.join(',');
 	}
 
@@ -189,9 +234,15 @@ watch(domainSelected, (val) => {
 });
 
 watch(stateSelected, (val) => {
+	statusIndeterminate.value = false;
 	if (val.length === 0) {
+		statusCheckAll.value = false;
 		state.req.filterStatus = '';
+	} else if (val.length === stateOptions.length) {
+		statusCheckAll.value = true;
+		state.req.filterStatus = val.join(',');
 	} else {
+		statusIndeterminate.value = true;
 		state.req.filterStatus = val.join(',');
 	}
 

@@ -9,16 +9,37 @@
                             }}</el-button>
                     </el-form-item>
                     <el-form-item :label="$t('message.tableCommon.domain')">
-                        <MultiSelector v-model:selected="state.req.domain" :options="state.domains" />
+                        <el-select v-model="state.req.domain" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.risk.baseline.selectDomain')" popper-class="custom-header">
+                            <template #header>
+                                <el-checkbox v-model="domainCheckAll" :indeterminate="domainIndeterminate" @change="handleDomainCheckAll">
+                                    {{ $t('message.tableCommon.checkAll') }}
+                                </el-checkbox>
+                            </template>
+                            <el-option v-for="option in state.domains" :key="option.value" :label="option.label" :value="option.value" />
+                        </el-select>
                     </el-form-item>
                     <el-form-item :label="$t('message.risk.baseline.subType')">
-                        <MultiSelector v-model:selected="state.req.subType" :options="SubTypeOptions" />
+                        <el-select v-model="state.req.subType" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.risk.baseline.selectSubType')" popper-class="custom-header">
+                            <template #header>
+                                <el-checkbox v-model="subTypeCheckAll" :indeterminate="subTypeIndeterminate" @change="handleSubTypeCheckAll">
+                                    {{ $t('message.tableCommon.checkAll') }}
+                                </el-checkbox>
+                            </template>
+                            <el-option v-for="option in SubTypeOptions" :key="option.value" :label="option.label" :value="option.value" />
+                        </el-select>
                     </el-form-item>
                     <el-form-item :label="$t('message.threat.levelName')">
                         <LeveLCheckbox v-model="state.req.level" />
                     </el-form-item>
                     <el-form-item :label="$t('message.risk.baseline.result')">
-                        <MultiSelector v-model:selected="state.req.result" :options="ResultOpitions" />
+                        <el-select v-model="state.req.result" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.risk.baseline.selectResult')" popper-class="custom-header">
+                            <template #header>
+                                <el-checkbox v-model="resultCheckAll" :indeterminate="resultIndeterminate" @change="handleResultCheckAll">
+                                    {{ $t('message.tableCommon.checkAll') }}
+                                </el-checkbox>
+                            </template>
+                            <el-option v-for="option in ResultOpitions" :key="option.value" :label="option.label" :value="option.value" />
+                        </el-select>
                     </el-form-item>
                 </el-form>
                 <!-- 右侧按钮 -->
@@ -98,10 +119,17 @@ const detailDrawerRef = ref();
 const DetailDrawer = defineAsyncComponent(() => import('./detailDrawer.vue'));
 const AddDrawerRef = ref();
 const AddDrawer = defineAsyncComponent(() => import('./addDrawer.vue'));
-const MultiSelector = defineAsyncComponent(() => import('/@/components/form/multiSelector.vue'));
 
 const SubTypeOptions = getSubTypeOptions(t);
 const ResultOpitions = getResultOptions();
+
+// Checkbox states for "Check All"
+const domainCheckAll = ref(false);
+const domainIndeterminate = ref(false);
+const subTypeCheckAll = ref(false);
+const subTypeIndeterminate = ref(false);
+const resultCheckAll = ref(false);
+const resultIndeterminate = ref(false);
 
 const handleAdd = () => {
     AddDrawerRef.value.open()
@@ -156,9 +184,93 @@ const refresh = () => {
     .finally(() => state.loading = false);
 };
 
-watch(() => state.req, () => {
+// Handle domain Select All
+const handleDomainCheckAll = (val: boolean) => {
+    domainIndeterminate.value = false;
+    if (val) {
+        state.req.domain = state.domains.map(opt => opt.value);
+    } else {
+        state.req.domain = [];
+    }
+};
+
+// Handle subType Select All
+const handleSubTypeCheckAll = (val: boolean) => {
+    subTypeIndeterminate.value = false;
+    if (val) {
+        state.req.subType = SubTypeOptions.map(opt => opt.value);
+    } else {
+        state.req.subType = [];
+    }
+};
+
+// Handle result Select All
+const handleResultCheckAll = (val: boolean) => {
+    resultIndeterminate.value = false;
+    if (val) {
+        state.req.result = ResultOpitions.map(opt => opt.value);
+    } else {
+        state.req.result = [];
+    }
+};
+
+// Watch individual filter properties
+watch(() => state.req.domain, (val) => {
+    domainIndeterminate.value = false;
+    if (val.length === 0) {
+        domainCheckAll.value = false;
+    } else if (val.length === state.domains.length) {
+        domainCheckAll.value = true;
+    } else {
+        domainIndeterminate.value = true;
+    }
+    state.req.pageIdx = 1;
     refresh();
-}, { deep: true });
+});
+
+watch(() => state.req.subType, (val) => {
+    subTypeIndeterminate.value = false;
+    if (val.length === 0) {
+        subTypeCheckAll.value = false;
+    } else if (val.length === SubTypeOptions.length) {
+        subTypeCheckAll.value = true;
+    } else {
+        subTypeIndeterminate.value = true;
+    }
+    state.req.pageIdx = 1;
+    refresh();
+});
+
+watch(() => state.req.result, (val) => {
+    resultIndeterminate.value = false;
+    if (val.length === 0) {
+        resultCheckAll.value = false;
+    } else if (val.length === ResultOpitions.length) {
+        resultCheckAll.value = true;
+    } else {
+        resultIndeterminate.value = true;
+    }
+    state.req.pageIdx = 1;
+    refresh();
+});
+
+watch(() => state.req.level, () => {
+    state.req.pageIdx = 1;
+    refresh();
+});
+
+watch(() => state.req.search, () => {
+    state.req.pageIdx = 1;
+    refresh();
+});
+
+watch(() => state.req.pageIdx, () => {
+    refresh();
+});
+
+watch(() => state.req.pageSize, () => {
+    refresh();
+});
 
 onMounted(async () => {
     refresh();

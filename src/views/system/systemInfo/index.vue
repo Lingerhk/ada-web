@@ -325,7 +325,7 @@ const handleUpload = (options: any) => {
     }
 
     api.updateSystemIcon({
-        icon: basicInfoState.iconUpload
+        file: basicInfoState.iconUpload
     })
     .then(resp => resp.response)
     .then(data => {
@@ -465,6 +465,7 @@ const systemLogsState = reactive({
     } as ListSystemLogsReq,
     reply: {
         list: [],
+        exhausted: false,
     } as ListSystemLogsReply,
     loading: false,
     expandedRowKeys: [] as string[],

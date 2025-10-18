@@ -76,6 +76,8 @@ export default {
 		layoutIframeViewTwo: '内嵌 iframe2',
 		riskMarketIndex: '安全大盘',
 		sycConfigIndex: '系统管理',
+		sycSettingIndex: '域控配置',
+		domainConfigIndex: '域控配置',
 		adDomainConfigIndex: 'AD域配置',
 		sensorConfigIndex: '传感器配置',
 		accountIndex: '账号管理',

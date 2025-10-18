@@ -49,7 +49,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		},
 		children: [
 			{
-				path: '/riskMarket',
+				path: '/dashborad',
 				name: 'riskMarketIndex',
 				component: () => import('/@/views/riskMarket/index.vue'),
 				meta: {
@@ -328,7 +328,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 				path: '/sysConfig',
 				name: 'sycConfigIndex',
 				component: () => import('/@/layout/routerView/parent.vue'),
-				redirect: '/adDomainConfig',
+				redirect: '/domainConfig',
 				meta: {
 					title: 'message.router.sycConfigIndex',
 					isLink: '',
@@ -341,54 +341,19 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 				},
 				children: [
 					{
-
-						path: '/sysSetting',
-						name: 'sycSettingIndex',
-						component: () => import('/@/layout/routerView/parent.vue'),
-						redirect: '/adDomainConfig',
+						path: '/domainConfig',
+						name: 'domainConfigIndex',
+						component: () => import('/@/views/sysConfig/domainConfig/index.vue'),
 						meta: {
-							title: 'message.router.sycSettingIndex',
+							title: 'message.router.domainConfigIndex',
 							isLink: '',
 							isHide: false,
 							isKeepAlive: true,
 							isAffix: false,
 							isIframe: false,
 							roles: ['admin', 'common'],
-							icon: 'ele-SetUp',
+							icon: 'ele-Connection',
 						},
-						children: [
-							{
-								path: '/adDomainConfig',
-								name: 'adDomainConfigIndex',
-								component: () => import('/@/views/sysConfig/adDomainConfig/index.vue'),
-								meta: {
-									title: 'message.router.adDomainConfigIndex',
-									isLink: '',
-									isHide: false,
-									isKeepAlive: true,
-									isAffix: false,
-									isIframe: false,
-									roles: ['admin', 'common'],
-									icon: 'iconfont icon-serverjiqun',
-								},
-							},
-							{
-								path: '/sensorConfig',
-								name: 'sensorConfigIndex',
-								component: () => import('/@/views/sysConfig/sensorConfig/index.vue'),
-								meta: {
-									title: 'message.router.sensorConfigIndex',
-									isLink: '',
-									isHide: false,
-									isKeepAlive: true,
-									isAffix: false,
-									isIframe: false,
-									roles: ['admin', 'common'],
-									icon: 'iconfont icon-bianzu',
-								},
-							},
-
-						],
 					},
 					{
 						path: '/person',
@@ -406,7 +371,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 						},
 					},
 					{
-						path: '/management',
+						path: '/account',
 						name: 'accountManagementIndex',
 						component: () => import('/@/views/account/management/index.vue'),
 						meta: {

@@ -1491,6 +1491,89 @@ export interface ListAuditLogReply_Details {
     createTm: string;
 }
 /**
+ * @generated from protobuf message ada.ListSystemLogsReq
+ */
+export interface ListSystemLogsReq {
+    /**
+     * @generated from protobuf field: int32 pageIdx = 1;
+     */
+    pageIdx: number; // [(validator.field) = {int_gt: 0}];
+    /**
+     * @generated from protobuf field: int32 pageSize = 2;
+     */
+    pageSize: number;
+    /**
+     * @generated from protobuf field: repeated string level = 3;
+     */
+    level: string[]; // [(validator.field) = {regex: "error|warn"}]; // error, warn
+    /**
+     * @generated from protobuf field: repeated string module = 4;
+     */
+    module: string[]; // [(validator.field) = {regex: "apiserver|task_worker|task_server|scanner|engine"}]; // module filter
+    /**
+     * @generated from protobuf field: string search = 5;
+     */
+    search: string; // search in msg field
+    /**
+     * @generated from protobuf field: string startTm = 6;
+     */
+    startTm: string; // optional, start time
+    /**
+     * @generated from protobuf field: string endTm = 7;
+     */
+    endTm: string; // optional, end time
+    /**
+     * @generated from protobuf field: int32 sortTime = 8;
+     */
+    sortTime: number; // 1: ascending, -1: descending, default -1
+}
+/**
+ * @generated from protobuf message ada.ListSystemLogsReply
+ */
+export interface ListSystemLogsReply {
+    /**
+     * @generated from protobuf field: ada.ModelPage page = 1;
+     */
+    page?: ModelPage;
+    /**
+     * @generated from protobuf field: repeated ada.ListSystemLogsReply.Details list = 2;
+     */
+    list: ListSystemLogsReply_Details[];
+    /**
+     * @generated from protobuf field: bool exhausted = 3;
+     */
+    exhausted: boolean; // if this is last page
+}
+/**
+ * @generated from protobuf message ada.ListSystemLogsReply.Details
+ */
+export interface ListSystemLogsReply_Details {
+    /**
+     * @generated from protobuf field: string time = 1;
+     */
+    time: string; // log timestamp
+    /**
+     * @generated from protobuf field: string level = 2;
+     */
+    level: string; // error|warn
+    /**
+     * @generated from protobuf field: string module = 3;
+     */
+    module: string; // apiserver|task_worker|task_server|scanner|engine
+    /**
+     * @generated from protobuf field: string msg = 4;
+     */
+    msg: string; // log message
+    /**
+     * @generated from protobuf field: string func = 5;
+     */
+    func: string; // function name
+    /**
+     * @generated from protobuf field: string file = 6;
+     */
+    file: string; // file and line number
+}
+/**
  * @generated from protobuf message ada.GetLicenseReq
  */
 export interface GetLicenseReq {
@@ -10384,6 +10467,258 @@ class ListAuditLogReply_Details$Type extends MessageType<ListAuditLogReply_Detai
  * @generated MessageType for protobuf message ada.ListAuditLogReply.Details
  */
 export const ListAuditLogReply_Details = new ListAuditLogReply_Details$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class ListSystemLogsReq$Type extends MessageType<ListSystemLogsReq> {
+    constructor() {
+        super("ada.ListSystemLogsReq", [
+            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 2, name: "pageSize", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 3, name: "level", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "module", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 5, name: "search", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 6, name: "startTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 7, name: "endTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 8, name: "sortTime", kind: "scalar", T: 5 /*ScalarType.INT32*/ }
+        ]);
+    }
+    create(value?: PartialMessage<ListSystemLogsReq>): ListSystemLogsReq {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.pageIdx = 0;
+        message.pageSize = 0;
+        message.level = [];
+        message.module = [];
+        message.search = "";
+        message.startTm = "";
+        message.endTm = "";
+        message.sortTime = 0;
+        if (value !== undefined)
+            reflectionMergePartial<ListSystemLogsReq>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ListSystemLogsReq): ListSystemLogsReq {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* int32 pageIdx */ 1:
+                    message.pageIdx = reader.int32();
+                    break;
+                case /* int32 pageSize */ 2:
+                    message.pageSize = reader.int32();
+                    break;
+                case /* repeated string level */ 3:
+                    message.level.push(reader.string());
+                    break;
+                case /* repeated string module */ 4:
+                    message.module.push(reader.string());
+                    break;
+                case /* string search */ 5:
+                    message.search = reader.string();
+                    break;
+                case /* string startTm */ 6:
+                    message.startTm = reader.string();
+                    break;
+                case /* string endTm */ 7:
+                    message.endTm = reader.string();
+                    break;
+                case /* int32 sortTime */ 8:
+                    message.sortTime = reader.int32();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: ListSystemLogsReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* int32 pageIdx = 1; */
+        if (message.pageIdx !== 0)
+            writer.tag(1, WireType.Varint).int32(message.pageIdx);
+        /* int32 pageSize = 2; */
+        if (message.pageSize !== 0)
+            writer.tag(2, WireType.Varint).int32(message.pageSize);
+        /* repeated string level = 3; */
+        for (let i = 0; i < message.level.length; i++)
+            writer.tag(3, WireType.LengthDelimited).string(message.level[i]);
+        /* repeated string module = 4; */
+        for (let i = 0; i < message.module.length; i++)
+            writer.tag(4, WireType.LengthDelimited).string(message.module[i]);
+        /* string search = 5; */
+        if (message.search !== "")
+            writer.tag(5, WireType.LengthDelimited).string(message.search);
+        /* string startTm = 6; */
+        if (message.startTm !== "")
+            writer.tag(6, WireType.LengthDelimited).string(message.startTm);
+        /* string endTm = 7; */
+        if (message.endTm !== "")
+            writer.tag(7, WireType.LengthDelimited).string(message.endTm);
+        /* int32 sortTime = 8; */
+        if (message.sortTime !== 0)
+            writer.tag(8, WireType.Varint).int32(message.sortTime);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.ListSystemLogsReq
+ */
+export const ListSystemLogsReq = new ListSystemLogsReq$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class ListSystemLogsReply$Type extends MessageType<ListSystemLogsReply> {
+    constructor() {
+        super("ada.ListSystemLogsReply", [
+            { no: 1, name: "page", kind: "message", T: () => ModelPage },
+            { no: 2, name: "list", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => ListSystemLogsReply_Details },
+            { no: 3, name: "exhausted", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
+        ]);
+    }
+    create(value?: PartialMessage<ListSystemLogsReply>): ListSystemLogsReply {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.list = [];
+        message.exhausted = false;
+        if (value !== undefined)
+            reflectionMergePartial<ListSystemLogsReply>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ListSystemLogsReply): ListSystemLogsReply {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* ada.ModelPage page */ 1:
+                    message.page = ModelPage.internalBinaryRead(reader, reader.uint32(), options, message.page);
+                    break;
+                case /* repeated ada.ListSystemLogsReply.Details list */ 2:
+                    message.list.push(ListSystemLogsReply_Details.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                case /* bool exhausted */ 3:
+                    message.exhausted = reader.bool();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: ListSystemLogsReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* ada.ModelPage page = 1; */
+        if (message.page)
+            ModelPage.internalBinaryWrite(message.page, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* repeated ada.ListSystemLogsReply.Details list = 2; */
+        for (let i = 0; i < message.list.length; i++)
+            ListSystemLogsReply_Details.internalBinaryWrite(message.list[i], writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        /* bool exhausted = 3; */
+        if (message.exhausted !== false)
+            writer.tag(3, WireType.Varint).bool(message.exhausted);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.ListSystemLogsReply
+ */
+export const ListSystemLogsReply = new ListSystemLogsReply$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class ListSystemLogsReply_Details$Type extends MessageType<ListSystemLogsReply_Details> {
+    constructor() {
+        super("ada.ListSystemLogsReply.Details", [
+            { no: 1, name: "time", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "level", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "module", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "msg", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 5, name: "func", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 6, name: "file", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<ListSystemLogsReply_Details>): ListSystemLogsReply_Details {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.time = "";
+        message.level = "";
+        message.module = "";
+        message.msg = "";
+        message.func = "";
+        message.file = "";
+        if (value !== undefined)
+            reflectionMergePartial<ListSystemLogsReply_Details>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ListSystemLogsReply_Details): ListSystemLogsReply_Details {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string time */ 1:
+                    message.time = reader.string();
+                    break;
+                case /* string level */ 2:
+                    message.level = reader.string();
+                    break;
+                case /* string module */ 3:
+                    message.module = reader.string();
+                    break;
+                case /* string msg */ 4:
+                    message.msg = reader.string();
+                    break;
+                case /* string func */ 5:
+                    message.func = reader.string();
+                    break;
+                case /* string file */ 6:
+                    message.file = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: ListSystemLogsReply_Details, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string time = 1; */
+        if (message.time !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.time);
+        /* string level = 2; */
+        if (message.level !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.level);
+        /* string module = 3; */
+        if (message.module !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.module);
+        /* string msg = 4; */
+        if (message.msg !== "")
+            writer.tag(4, WireType.LengthDelimited).string(message.msg);
+        /* string func = 5; */
+        if (message.func !== "")
+            writer.tag(5, WireType.LengthDelimited).string(message.func);
+        /* string file = 6; */
+        if (message.file !== "")
+            writer.tag(6, WireType.LengthDelimited).string(message.file);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.ListSystemLogsReply.Details
+ */
+export const ListSystemLogsReply_Details = new ListSystemLogsReply_Details$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class GetLicenseReq$Type extends MessageType<GetLicenseReq> {
     constructor() {
@@ -23360,6 +23695,7 @@ export const ADA = new ServiceType("ada.ADA", [
     { name: "UpdateNotify", options: {}, I: UpdateNotifyReq, O: UpdateNotifyReply },
     { name: "StatsNotify", options: {}, I: StatsNotifyReq, O: StatsNotifyReply },
     { name: "ListAuditLog", options: {}, I: ListAuditLogReq, O: ListAuditLogReply },
+    { name: "ListSystemLogs", options: {}, I: ListSystemLogsReq, O: ListSystemLogsReply },
     { name: "ThreatTops", options: {}, I: ThreatTopsReq, O: ThreatTopsReply },
     { name: "ThreatTrends", options: {}, I: ThreatTrendsReq, O: ThreatTrendsReply },
     { name: "ListThreat", options: {}, I: ListThreatReq, O: ListThreatReply },

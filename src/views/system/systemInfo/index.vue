@@ -1,10 +1,9 @@
 <template>
     <div class="layout-pd">
         <el-card shadow="hover">
-            <el-tabs v-model="activeTab" type="border-card">
+            <el-tabs v-model="activeTab">
                 <!-- 基础信息 Tab -->
                 <el-tab-pane :label="$t('message.router.basicInfoIndex')" name="basicInfo">
-                    <div class="tab-content">
                         <h3>{{ $t('message.system.basicInfo.title') }}</h3>
                         <div class="basic-info-container">
                             <el-form label-position="left" label-width="120px">
@@ -44,12 +43,10 @@
                                 </el-form-item>
                             </el-form>
                         </div>
-                    </div>
                 </el-tab-pane>
 
                 <!-- 系统时间 Tab -->
                 <el-tab-pane :label="$t('message.router.sysTimeIndex')" name="sysTime">
-                    <div class="tab-content">
                         <h3>{{ $t('message.sysTime.sysTime') }}: {{ sysTimeState.time }}</h3>
                         <el-form style="margin-top: 30px;">
                             <el-form-item>
@@ -67,12 +64,10 @@
                                 <el-button type="primary" size="default" @click="updateNtp" :loading="sysTimeState.form.loading">{{ $t('message.sysTime.save') }}</el-button>
                             </el-form-item>
                         </el-form>
-                    </div>
                 </el-tab-pane>
 
                 <!-- 产品许可 Tab -->
                 <el-tab-pane :label="$t('message.router.licenseIndex')" name="license">
-                    <div class="tab-content">
                         <div class="basic-info-container">
                             <el-form label-position="left" label-width="120px">
                                 <el-form-item>
@@ -132,12 +127,10 @@
                                 </el-form-item>
                             </el-form>
                         </div>
-                    </div>
                 </el-tab-pane>
 
                 <!-- 网络诊断 Tab -->
                 <el-tab-pane :label="$t('message.router.diagnoseIndex')" name="diagnose">
-                    <div class="tab-content">
                         <el-form label-width="auto" :inline="true">
                             <el-form-item>
                                 <template #label>{{ $t('message.system.diagnose.type') }}</template>
@@ -157,7 +150,84 @@
                         <div>
                             <el-input v-loading="diagnoseState.loading" v-model="diagnoseState.result" style="width: 830px" :autosize="{ minRows: 10 }" type="textarea" readonly />
                         </div>
-                    </div>
+                </el-tab-pane>
+
+                <!-- 系统日志 Tab -->
+                <el-tab-pane :label="$t('message.router.systemLogsIndex')" name="systemLogs">
+                        <el-row justify="space-between" style="margin-bottom: 10px;">
+                            <el-col :span="24">
+                                <el-form :inline="true">
+                                    <el-form-item :label="$t('message.system.systemLogs.level')">
+                                        <el-select v-model="systemLogsState.req.level" multiple clearable collapse-tags collapse-tags-tooltip
+                                            :max-collapse-tags="1" size="default" style="width: 200px"
+                                            :placeholder="$t('message.system.systemLogs.selectLevel')" popper-class="custom-header">
+                                            <template #header>
+                                                <el-checkbox v-model="levelCheckAll" :indeterminate="levelIndeterminate" @change="handleLevelCheckAll">
+                                                    {{ $t('message.tableCommon.checkAll') }}
+                                                </el-checkbox>
+                                            </template>
+                                            <el-option v-for="option in LogLevelOptions" :key="option.value" :label="option.label" :value="option.value" />
+                                        </el-select>
+                                    </el-form-item>
+                                    <el-form-item :label="$t('message.system.systemLogs.module')">
+                                        <el-select v-model="systemLogsState.req.module" multiple clearable collapse-tags collapse-tags-tooltip
+                                            :max-collapse-tags="1" size="default" style="width: 250px"
+                                            :placeholder="$t('message.system.systemLogs.selectModule')" popper-class="custom-header">
+                                            <template #header>
+                                                <el-checkbox v-model="moduleCheckAll" :indeterminate="moduleIndeterminate" @change="handleModuleCheckAll">
+                                                    {{ $t('message.tableCommon.checkAll') }}
+                                                </el-checkbox>
+                                            </template>
+                                            <el-option v-for="option in LogModuleOptions" :key="option.value" :label="option.label" :value="option.value" />
+                                        </el-select>
+                                    </el-form-item>
+                                    <el-form-item :label="$t('message.system.systemLogs.search')">
+                                        <el-input v-model="systemLogsState.req.search" size="default" style="width: 200px"
+                                            :placeholder="$t('message.system.systemLogs.searchPlaceholder')" clearable />
+                                    </el-form-item>
+                                    <el-form-item :label="$t('message.system.systemLogs.timeRange')">
+                                        <el-date-picker size="default" v-model="systemLogsTimeRange" type="datetimerange"
+                                            :range-separator="$t('message.time.to')" :start-placeholder="$t('message.time.start')"
+                                            :end-placeholder="$t('message.time.end')" :shortcuts="shortcuts" />
+                                    </el-form-item>
+                                </el-form>
+                            </el-col>
+                        </el-row>
+                        <el-row style="margin-top: 10px">
+                            <el-table :data="systemLogsState.reply.list" v-loading="systemLogsState.loading" :border="true"
+                                style="width: 100%" row-key="time"
+                                :expand-row-keys="systemLogsState.expandedRowKeys"
+                                @sort-change="handleLogsortChange"
+                                @row-click="toggleLogsRowExpansion">
+                                <el-table-column type="expand" width="30">
+                                    <template #default="props">
+                                        <div style="padding: 10px 20px;">
+                                            <p style="margin-bottom: 8px;"><strong>{{ $t('message.system.systemLogs.func') }}:</strong> {{ props.row.func || '-' }}</p>
+                                            <p style="margin-bottom: 8px;"><strong>{{ $t('message.system.systemLogs.file') }}:</strong> {{ props.row.file || '-' }}</p>
+                                        </div>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column prop="time" :label="$t('message.system.systemLogs.time')" sortable="custom" width="180" header-align="center" align="center">
+                                    <template #default="scope">
+                                        {{ formatApiTime(scope.row.time) }}
+                                    </template>
+                                </el-table-column>
+                                <el-table-column prop="level" :label="$t('message.system.systemLogs.level')" width="100">
+                                    <template #default="scope">
+                                        <el-tag :type="scope.row.level === 'error' ? 'danger' : 'warning'">{{ scope.row.level }}</el-tag>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column prop="module" :label="$t('message.system.systemLogs.module')" width="150" />
+                                <el-table-column prop="msg" :label="$t('message.system.systemLogs.msg')" show-overflow-tooltip />
+                            </el-table>
+                        </el-row>
+                        <el-row style="margin-top: 10px" justify="end">
+                            <el-pagination v-model:current-page="systemLogsState.req.pageIdx" v-model:page-size="systemLogsState.req.pageSize"
+                                :page-sizes="[10, 30, 60, 100]" layout="sizes, prev, pager, next, jumper"
+                                :total="systemLogsState.reply.page?.total"
+                                @size-change="handleLogsPageSizeChange"
+                                @current-change="handleLogsCurrentPageChange" />
+                        </el-row>
                 </el-tab-pane>
             </el-tabs>
         </el-card>
@@ -165,15 +235,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, onUnmounted } from 'vue';
+import { ref, reactive, onMounted, onUnmounted, watch } from 'vue';
 import { ElMessage, ElMessageBox, type UploadProps } from 'element-plus';
 import { Edit } from '@element-plus/icons-vue';
 import { useI18n } from 'vue-i18n';
 import api from '/@/api/grpc';
-import { GetSystemInfoReply, GetLicenseReply, UpdateSystemIPReq, UpdateNtpAddressReq, NetworkDebugReq } from '/@/api/grpc/ada';
+import { GetSystemInfoReply, GetLicenseReply, UpdateSystemIPReq, UpdateNtpAddressReq, NetworkDebugReq, ListSystemLogsReq, ListSystemLogsReply } from '/@/api/grpc/ada';
 import { getSystemInfo } from '/@/api/grpc/method';
 import { alertApiError, alertResult } from '/@/utils/error';
-import { formatApiTime } from '/@/utils/formatTime';
+import { formatApiTime, shortcuts } from '/@/utils/formatTime';
 
 const { t } = useI18n();
 const activeTab = ref('basicInfo');
@@ -362,6 +432,167 @@ const handleDiagnoseSubmit = () => {
     });
 };
 
+// System Logs State
+const LogLevelOptions = [
+    { label: 'Error', value: 'error' },
+    { label: 'Warning', value: 'warn' }
+];
+
+const LogModuleOptions = [
+    { label: 'apiserver', value: 'apiserver' },
+    { label: 'task_worker', value: 'task_worker' },
+    { label: 'task_server', value: 'task_server' },
+    { label: 'scanner', value: 'scanner' },
+    { label: 'engine', value: 'engine' }
+];
+
+const systemLogsTimeRange = ref([] as string[]);
+const levelCheckAll = ref(true);
+const levelIndeterminate = ref(false);
+const moduleCheckAll = ref(true);
+const moduleIndeterminate = ref(false);
+
+const systemLogsState = reactive({
+    req: {
+        pageIdx: 1,
+        pageSize: 10,
+        level: LogLevelOptions.map(opt => opt.value), // Default: select all levels
+        module: LogModuleOptions.map(opt => opt.value), // Default: select all modules
+        search: '',
+        startTm: '',
+        endTm: '',
+        sortTime: -1, // Default: descending order
+    } as ListSystemLogsReq,
+    reply: {
+        list: [],
+    } as ListSystemLogsReply,
+    loading: false,
+    expandedRowKeys: [] as string[],
+});
+
+// System Logs Methods
+const toggleLogsRowExpansion = (row: any) => {
+    const index = systemLogsState.expandedRowKeys.indexOf(row.time);
+    if (index > -1) {
+        systemLogsState.expandedRowKeys.splice(index, 1);
+    } else {
+        systemLogsState.expandedRowKeys.push(row.time);
+    }
+};
+
+const handleLevelCheckAll = (val: boolean) => {
+    levelIndeterminate.value = false;
+    if (val) {
+        systemLogsState.req.level = LogLevelOptions.map(opt => opt.value);
+    } else {
+        systemLogsState.req.level = [];
+    }
+};
+
+const handleModuleCheckAll = (val: boolean) => {
+    moduleIndeterminate.value = false;
+    if (val) {
+        systemLogsState.req.module = LogModuleOptions.map(opt => opt.value);
+    } else {
+        systemLogsState.req.module = [];
+    }
+};
+
+const refreshSystemLogs = () => {
+    systemLogsState.loading = true;
+
+    console.log('listSystemLogs', systemLogsState.req);
+
+    api.listSystemLogs(systemLogsState.req)
+    .then(resp => resp.response)
+    .then(data => {
+        systemLogsState.reply = data;
+        console.log(data);
+    })
+    .catch(err => alertApiError(err))
+    .finally(() => systemLogsState.loading = false);
+};
+
+const handleLogsPageSizeChange = (newPageSize: number) => {
+    systemLogsState.req.pageSize = newPageSize;
+    refreshSystemLogs();
+};
+
+const handleLogsCurrentPageChange = (newPage: number) => {
+    systemLogsState.req.pageIdx = newPage;
+    refreshSystemLogs();
+};
+
+const handleLogsortChange = ({ column, prop, order }: { column: any, prop: string, order: 'ascending' | 'descending' | null }) => {
+    if (prop === 'time') {
+        if (order === 'ascending') {
+            systemLogsState.req.sortTime = 1;
+        } else if (order === 'descending') {
+            systemLogsState.req.sortTime = -1;
+        } else {
+            systemLogsState.req.sortTime = -1; // Default to descending
+        }
+    } else {
+        systemLogsState.req.sortTime = -1;
+    }
+    refreshSystemLogs();
+};
+
+// Watch level selection changes
+watch(() => systemLogsState.req.level, (val) => {
+    levelIndeterminate.value = false;
+    if (val.length === 0) {
+        levelCheckAll.value = false;
+    } else if (val.length === LogLevelOptions.length) {
+        levelCheckAll.value = true;
+    } else {
+        levelIndeterminate.value = true;
+    }
+    console.log('Level changed, refreshing. New:', val);
+    systemLogsState.req.pageIdx = 1;
+    refreshSystemLogs();
+}, { deep: true });
+
+// Watch module selection changes
+watch(() => systemLogsState.req.module, (val) => {
+    moduleIndeterminate.value = false;
+    if (val.length === 0) {
+        moduleCheckAll.value = false;
+    } else if (val.length === LogModuleOptions.length) {
+        moduleCheckAll.value = true;
+    } else {
+        moduleIndeterminate.value = true;
+    }
+    console.log('Module changed, refreshing. New:', val);
+    systemLogsState.req.pageIdx = 1;
+    refreshSystemLogs();
+}, { deep: true });
+
+// Watch search changes
+watch(() => systemLogsState.req.search, () => {
+    systemLogsState.req.pageIdx = 1;
+    refreshSystemLogs();
+});
+
+// Watch time range changes
+watch(systemLogsTimeRange, (val) => {
+    if (val && val.length === 2) {
+        systemLogsState.req.startTm = formatApiTime(val[0]);
+        systemLogsState.req.endTm = formatApiTime(val[1]);
+    } else {
+        systemLogsState.req.startTm = '';
+        systemLogsState.req.endTm = '';
+    }
+    refreshSystemLogs();
+});
+
+// Watch tab changes to load data when switching to SystemLogs tab
+watch(activeTab, (newTab) => {
+    if (newTab === 'systemLogs') {
+        refreshSystemLogs();
+    }
+});
+
 // Initialize
 onMounted(async () => {
     // Load Basic Info
@@ -390,10 +621,6 @@ onUnmounted(() => {
 </script>
 
 <style scoped lang="scss">
-.tab-content {
-    padding: 20px;
-}
-
 .basic-info-container {
     display: flex;
     flex-direction: row;

@@ -103,6 +103,7 @@ export default {
 		ruleConfigIndex: '扫描配置',
 		websshIndex: 'WebSSH',
 		diagnoseIndex: '网络诊断',
+		systemLogsIndex: '系统日志',
 		outgoingIndex: '外发管理',
 		messageIndex: '消息提示',
 		auditIndex: '平台日志',
@@ -590,7 +591,7 @@ export default {
 			error: '异常',
 			init: '初始化中',
 			remove: '数据清除中',
-			stop: '已停止'
+			stop: '已停止',
 		},
 		kwInput: '请输入关键词搜索域控制器名称或用户名',
 		dcHostname: '域控制器',
@@ -640,7 +641,8 @@ export default {
 		deploySensorFail: '为 {0} 部署传感器失败。错误：{1}',
 		deploySensorCancelled: '传感器部署已取消。',
 		winRmNotesTitle: '自动安装传感器说明',
-		winRmNotesBody: '自动安装传感器使用 Windows 远程管理 (WinRM) 协议连接到域控服务器。请确保目标域控服务器上的防火墙允许 TCP 端口 5985 (HTTP) 和/或 5986 (HTTPS) 上的连接。',
+		winRmNotesBody:
+			'自动安装传感器使用 Windows 远程管理 (WinRM) 协议连接到域控服务器。请确保目标域控服务器上的防火墙允许 TCP 端口 5985 (HTTP) 和/或 5986 (HTTPS) 上的连接。',
 	},
 	dialog: {
 		prompt: '提示',
@@ -1118,6 +1120,19 @@ export default {
 			uMinute: '分钟',
 			uHour: '小时',
 			uDay: '天',
+		},
+		systemLogs: {
+			time: '时间',
+			level: '日志级别',
+			module: '模块',
+			msg: '消息',
+			func: '函数',
+			file: '文件',
+			selectLevel: '请选择日志级别',
+			selectModule: '请选择模块',
+			search: '搜索',
+			searchPlaceholder: '在消息中搜索',
+			timeRange: '时间范围',
 		},
 	},
 	accountPerson: {

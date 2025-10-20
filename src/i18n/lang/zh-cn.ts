@@ -89,7 +89,7 @@ export default {
 		sysTimeIndex: '系统时间',
 		licenseIndex: '产品许可',
 		monitorIndex: '系统监控',
-		threatIndex: '入侵检测',
+		threatIndex: '威胁检测',
 		saftyOverviewIndex: '攻击态势',
 		alarmListIndex: '攻击事件',
 		activityListIndex: '行为分析',

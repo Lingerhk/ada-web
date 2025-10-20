@@ -580,6 +580,12 @@ export default {
 		updateRuleStatusFailed: '更新规则状态失败',
 		invalidYamlFormat: 'YAML格式无效',
 		addReference: '添加引用',
+		attackFlow: '攻击流',
+		attackFlowFields: '字段',
+		attackFlowFieldsObj: 'obj (ip/user/computer/dc)',
+		attackFlowFieldsKey: '字段键',
+		attackFlowRelates: '关联',
+		attackFlowDescription: '描述',
 	},
 	advancedSearch: {
 		level: '严重性',

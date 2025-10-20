@@ -43,7 +43,7 @@
                 <el-row>
                     <el-space wrap size="default">
                         <el-tag v-for="field in state.data?.attackFlow?.fields" size="small" :key="field">{{
-                            field.item.value
+                            field.item.key
                             }}</el-tag>
                     </el-space>
                 </el-row>
@@ -61,7 +61,7 @@
                                 <el-image style="width: 100px; height: 100px" :src="getImage(field.item.obj)"
                                     fit="fill" />
                             </el-row>
-                            <el-row>{{ field.item.value }}</el-row>
+                            <el-row>{{ field.item.key }}</el-row>
                         </el-col>
                     </el-space>
                 </el-row>

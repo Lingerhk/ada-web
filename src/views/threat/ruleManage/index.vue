@@ -264,10 +264,37 @@
                     />
                 </el-form-item>
                 <el-form-item :label="$t('message.ruleManage.reference')" prop="references">
-                    <div v-for="(ref, index) in alertRuleDialog.form.references" :key="index" style="display: flex; margin-bottom: 8px; align-items: center;">
-                        <el-input v-model="alertRuleDialog.form.references[index]" :placeholder="$t('message.ruleManage.enterReference')" style="flex: 1; margin-right: 8px;" />
-                        <el-button type="primary" :icon="Plus" circle size="small" style="width: 18px; height: 18px;" @click="addAlertReference" />
-                        <el-button type="danger" :icon="Minus" circle size="small" style="width: 18px; height: 18px;" @click="removeAlertReference(index)" /> 
+                    <div style="width: 100%;">
+                        <div v-for="(ref, index) in alertRuleDialog.form.references" :key="index" style="display: flex; margin-bottom: 8px; align-items: center;">
+                            <el-input v-model="alertRuleDialog.form.references[index]" :placeholder="$t('message.ruleManage.enterReference')" style="flex: 1; margin-right: 8px;" />
+                            <el-button type="primary" :icon="Plus" circle size="small" style="width: 18px; height: 18px;" @click="addAlertReference" />
+                            <el-button type="danger" :icon="Minus" circle size="small" style="width: 18px; height: 18px; margin-left: 8px;" @click="removeAlertReference(index)" />
+                        </div>
+                    </div>
+                </el-form-item>
+                <el-form-item :label="$t('message.ruleManage.attackFlow')" prop="attackFlow">
+                    <div style="width: 100%; border: 1px solid #dcdfe6; padding: 12px; border-radius: 4px; box-sizing: border-box;">
+                        <div style="margin-bottom: 16px;">
+                            <div style="font-size: 12px; color: #909399; margin-bottom: 4px; font-weight: 500;">{{ $t('message.ruleManage.attackFlowFields') }}:</div>
+                            <div v-for="(field, fieldIndex) in alertRuleDialog.form.attackFlow.fields" :key="fieldIndex" style="display: flex; margin-bottom: 8px; align-items: center; gap: 8px;">
+                                <el-input v-model="alertRuleDialog.form.attackFlow.fields[fieldIndex].obj" :placeholder="$t('message.ruleManage.attackFlowFieldsObj')" style="flex: 1;" size="small" />
+                                <el-input v-model="alertRuleDialog.form.attackFlow.fields[fieldIndex].key" :placeholder="$t('message.ruleManage.attackFlowFieldsKey')" style="flex: 1;" size="small" />
+                                <el-button type="primary" :icon="Plus" circle size="small" style="width: 18px; height: 18px;" @click="addAttackFlowField" />
+                                <el-button type="danger" :icon="Minus" circle size="small" style="width: 18px; height: 18px; margin-left: 1px;" @click="removeAttackFlowField(fieldIndex)" />
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 16px;">
+                            <div style="font-size: 12px; color: #909399; margin-bottom: 4px; font-weight: 500;">{{ $t('message.ruleManage.attackFlowRelates') }}:</div>
+                            <div v-for="(relate, relateIndex) in alertRuleDialog.form.attackFlow.relates" :key="relateIndex" style="display: flex; margin-bottom: 8px; align-items: center; gap: 8px;">
+                                <el-input v-model="alertRuleDialog.form.attackFlow.relates[relateIndex]" placeholder="the relation between fields" style="flex: 1;" size="small" />
+                                <el-button type="primary" :icon="Plus" circle size="small" style="width: 18px; height: 18px;" @click="addAttackFlowRelate" />
+                                <el-button type="danger" :icon="Minus" circle size="small" style="width: 18px; height: 18px; margin-left: 1px;" @click="removeAttackFlowRelate(relateIndex)" />
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 0;">
+                            <div style="font-size: 12px; color: #909399; margin-bottom: 4px; font-weight: 500;">{{ $t('message.ruleManage.attackFlowDescription') }}:</div>
+                            <el-input v-model="alertRuleDialog.form.attackFlow.desc" type="textarea" rows="2" placeholder="Enter description" style="font-size: 12px;" />
+                        </div>
                     </div>
                 </el-form-item>
                 <el-form-item :label="$t('message.ruleManage.suggestion')" prop="suggestion">
@@ -364,10 +391,12 @@
                     />
                 </el-form-item>
                 <el-form-item :label="$t('message.ruleManage.reference')" prop="references">
-                    <div v-for="(ref, index) in activityRuleDialog.form.references" :key="index" style="display: flex; margin-bottom: 8px; align-items: center;">
-                        <el-input v-model="activityRuleDialog.form.references[index]" :placeholder="$t('message.ruleManage.enterReference')" style="flex: 1; margin-right: 8px;" />
-                        <el-button type="primary" :icon="Plus" circle size="small" style="width: 18px; height: 18px;" @click="addActivityReference" />
-                        <el-button type="danger" :icon="Minus" circle size="small" style="width: 18px; height: 18px;" @click="removeActivityReference(index)" />
+                    <div style="width: 100%;">
+                        <div v-for="(ref, index) in activityRuleDialog.form.references" :key="index" style="display: flex; margin-bottom: 8px; align-items: center;">
+                            <el-input v-model="activityRuleDialog.form.references[index]" :placeholder="$t('message.ruleManage.enterReference')" style="flex: 1; margin-right: 8px;" />
+                            <el-button type="primary" :icon="Plus" circle size="small" style="width: 18px; height: 18px;" @click="addActivityReference" />
+                            <el-button type="danger" :icon="Minus" circle size="small" style="width: 18px; height: 18px; margin-left: 8px;" @click="removeActivityReference(index)" />
+                        </div>
                     </div>
                 </el-form-item>
                 <el-form-item prop="rdxKey">
@@ -508,6 +537,19 @@ const activityRules = reactive({
     },
 });
 
+// Attack Flow Type Definition
+interface AttackFlowField {
+    obj: string;
+    key: string;
+    value: string;
+}
+
+interface AttackFlowForm {
+    desc: string;
+    fields: AttackFlowField[];
+    relates: string[];
+}
+
 // Alert Rule Dialog State
 const alertRuleDialog = reactive({
     visible: false,
@@ -526,6 +568,11 @@ const alertRuleDialog = reactive({
         autoBlock: false,
         detection: '',
         references: [] as string[],
+        attackFlow: {
+            desc: '',
+            fields: [] as AttackFlowField[],
+            relatesStr: '',
+        } as AttackFlowForm,
         suggestion: '',
         author: '',
         createTmFormatted: '',
@@ -652,6 +699,11 @@ const handleAddAlertRule = () => {
         autoBlock: false,
         detection: '',
         references: [''],
+        attackFlow: {
+            desc: '',
+            fields: [],
+            relates: [''],
+        },
         suggestion: '',
         author: '',
         createTmFormatted: '',
@@ -766,6 +818,22 @@ const handleViewAlertRule = async (row: AlertRuleInfo) => {
 const handleEditAlertRule = (row: AlertRuleInfo) => {
     alertRuleDialog.visible = true;
     alertRuleDialog.isEdit = true;
+
+    // Convert attackFlow from proto format to form format
+    const attackFlowForm: AttackFlowForm = row.attackFlow ? {
+        desc: row.attackFlow.desc || '',
+        fields: (row.attackFlow.fields || []).map(field => ({
+            obj: field.obj || '',
+            key: field.key || '',
+            value: field.value || '',
+        })),
+        relates: (row.attackFlow.relates || []).length > 0 ? [...row.attackFlow.relates] : [''],
+    } : {
+        desc: '',
+        fields: [],
+        relates: [''],
+    };
+
     alertRuleDialog.form = {
         iD: row.iD,
         title: row.title,
@@ -779,6 +847,7 @@ const handleEditAlertRule = (row: AlertRuleInfo) => {
         autoBlock: row.autoBlock,
         detection: row.detection || '',
         references: row.references.length > 0 ? [...row.references] : [''],
+        attackFlow: attackFlowForm,
         suggestion: row.suggestion,
         author: row.author,
         createTmFormatted: formatTime(row.createTm),
@@ -794,6 +863,24 @@ const handleSaveAlertRule = async () => {
         ElMessage.error(t('message.ruleManage.invalidYamlFormat') + ': ' + (error as Error).message);
         return;
     }
+
+    // Validate Attack Flow
+    const attackFlowValidation = validateAttackFlow();
+    if (!attackFlowValidation.isValid) {
+        ElMessage.error(attackFlowValidation.message);
+        return;
+    }
+
+    // Convert attackFlow from form format to proto format
+    const attackFlowProto = {
+        desc: alertRuleDialog.form.attackFlow.desc,
+        fields: alertRuleDialog.form.attackFlow.fields.map(field => ({
+            obj: field.obj,
+            key: field.key,
+            value: field.value,
+        })),
+        relates: alertRuleDialog.form.attackFlow.relates.filter(r => r.trim() !== ''),
+    };
 
     alertRuleDialog.saving = true;
     try {
@@ -811,6 +898,7 @@ const handleSaveAlertRule = async () => {
                 autoBlock: alertRuleDialog.form.autoBlock,
                 detection: alertRuleDialog.form.detection,
                 references: alertRuleDialog.form.references.filter(ref => ref.trim() !== ''),
+                attackFlow: attackFlowProto,
                 suggestion: alertRuleDialog.form.suggestion,
                 author: alertRuleDialog.form.author,
             };
@@ -829,6 +917,7 @@ const handleSaveAlertRule = async () => {
                 autoBlock: alertRuleDialog.form.autoBlock,
                 detection: alertRuleDialog.form.detection,
                 references: alertRuleDialog.form.references.filter(ref => ref.trim() !== ''),
+                attackFlow: attackFlowProto,
                 suggestion: alertRuleDialog.form.suggestion,
                 author: alertRuleDialog.form.author,
             };
@@ -871,6 +960,24 @@ const addAlertReference = () => {
 
 const removeAlertReference = (index: number) => {
     alertRuleDialog.form.references.splice(index, 1);
+};
+
+// Helper methods for managing attack flow fields
+const addAttackFlowField = () => {
+    alertRuleDialog.form.attackFlow.fields.push({ obj: '', key: '', value: '' });
+};
+
+const removeAttackFlowField = (fieldIndex: number) => {
+    alertRuleDialog.form.attackFlow.fields.splice(fieldIndex, 1);
+};
+
+// Helper methods for managing attack flow relates
+const addAttackFlowRelate = () => {
+    alertRuleDialog.form.attackFlow.relates.push('');
+};
+
+const removeAttackFlowRelate = (relateIndex: number) => {
+    alertRuleDialog.form.attackFlow.relates.splice(relateIndex, 1);
 };
 
 // Helper function to refresh CodeMirror to fix line numbers gutter width
@@ -931,6 +1038,44 @@ const validateActivityRuleId = () => {
     activityRuleDialog.idValidationError = validation.message;
 };
 
+// Validation function for Attack Flow
+const validateAttackFlow = (): { isValid: boolean; message: string } => {
+    const attackFlow = alertRuleDialog.form.attackFlow;
+
+    // Filter out empty fields and relates
+    const fieldsCount = attackFlow.fields.filter(f => f.obj.trim() !== '' && f.key.trim() !== '').length;
+    const relatesCount = attackFlow.relates.filter(r => r.trim() !== '').length;
+
+    // Validate fields obj values
+    const validObjTypes = ['ip', 'user', 'computer', 'dc'];
+    for (const field of attackFlow.fields) {
+        if (field.obj.trim() !== '') {
+            if (!validObjTypes.includes(field.obj.toLowerCase())) {
+                return {
+                    isValid: false,
+                    message: `Field obj must be one of: ${validObjTypes.join('/')}, but got "${field.obj}"`
+                };
+            }
+            if (field.key.trim() === '') {
+                return {
+                    isValid: false,
+                    message: 'Fields must have both obj and key values'
+                };
+            }
+        }
+    }
+
+    // Validate count: fieldsCount must equal relatesCount + 1
+    if (fieldsCount !== relatesCount + 1) {
+        return {
+            isValid: false,
+            message: `Fields count (${fieldsCount}) must be one more than Relates count (${relatesCount}). Fields should equal Relates + 1`
+        };
+    }
+
+    return { isValid: true, message: '' };
+};
+
 const addActivityReference = () => {
     activityRuleDialog.form.references.push('');
 };
@@ -955,6 +1100,7 @@ const handleToggleAlertRule = async (row: AlertRuleInfo) => {
             autoBlock: row.autoBlock,
             detection: '',
             references: [...row.references],
+            attackFlow: row.attackFlow,
             suggestion: row.suggestion,
             author: row.author,
         };

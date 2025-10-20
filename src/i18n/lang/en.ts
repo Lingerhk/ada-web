@@ -582,6 +582,12 @@ export default {
 		updateRuleStatusFailed: 'Failed to update rule status',
 		invalidYamlFormat: 'Invalid YAML format',
 		addReference: 'Add Reference',
+		attackFlow: 'Attack Flow',
+		attackFlowFields: 'Fields',
+		attackFlowFieldsObj: 'obj (ip/user/computer/dc)',
+		attackFlowFieldsKey: 'key',
+		attackFlowRelates: 'Relates',
+		attackFlowDescription: 'Description',
 	},
 	advancedSearch: {
 		level: 'Level',

@@ -851,7 +851,7 @@ export interface DeploySensorReq {
     /**
      * @generated from protobuf field: string dcHostname = 2;
      */
-    dcHostname: string; // DC Hostname 
+    dcHostname: string; // DC Hostname
 }
 /**
  * @generated from protobuf message ada.DeploySensorReply
@@ -2159,36 +2159,6 @@ export interface ThreatTrendsReply_Item {
      * @generated from protobuf field: int32 total = 2;
      */
     total: number; // 数量
-}
-/**
- * 攻击流图定义
- *
- * @generated from protobuf message ada.AttackFlowReply
- */
-export interface AttackFlowReply {
-    /**
-     * @generated from protobuf field: repeated ada.AttackFlowReply.Field fields = 1;
-     */
-    fields: AttackFlowReply_Field[];
-    /**
-     * @generated from protobuf field: repeated string relates = 2;
-     */
-    relates: string[];
-    /**
-     * @generated from protobuf field: string desc = 3;
-     */
-    desc: string;
-}
-/**
- * @generated from protobuf message ada.AttackFlowReply.Field
- */
-export interface AttackFlowReply_Field {
-    /**
-     * @generated from protobuf field: map<string, string> item = 1;
-     */
-    item: {
-        [key: string]: string;
-    }; // obj(支持ip/user/computer/dc), key, value. eg: {"obj":"ip","key":"$1.TargetUsername","value":"192.168.2.3"}
 }
 /**
  * @generated from protobuf message ada.ListThreatReq
@@ -4591,6 +4561,40 @@ export interface ListAlertRuleReq {
     sortTm: number; // 时间排序: 1升序, -1降序
 }
 /**
+ * define AttackFlow
+ *
+ * 攻击流图定义
+ *
+ * @generated from protobuf message ada.AttackFlowReply
+ */
+export interface AttackFlowReply {
+    /**
+     * @generated from protobuf field: string desc = 1;
+     */
+    desc: string;
+    /**
+     * @generated from protobuf field: repeated ada.AttackFlowReply.Field fields = 2;
+     */
+    fields: AttackFlowReply_Field[];
+    /**
+     * @generated from protobuf field: repeated string relates = 3;
+     */
+    relates: string[];
+}
+/**
+ * @generated from protobuf message ada.AttackFlowReply.Field
+ */
+export interface AttackFlowReply_Field {
+    /**
+     * @generated from protobuf field: string obj = 1;
+     */
+    obj: string; // 支持:ip/user/computer/dc
+    /**
+     * @generated from protobuf field: string key = 2;
+     */
+    key: string; // 如: $1.TargetUsername
+}
+/**
  * @generated from protobuf message ada.AlertRuleInfo
  */
 export interface AlertRuleInfo {
@@ -4651,11 +4655,15 @@ export interface AlertRuleInfo {
      */
     autoBlock: boolean; // 自动阻断
     /**
-     * @generated from protobuf field: string createTm = 15;
+     * @generated from protobuf field: ada.AttackFlowReply attackFlow = 15;
+     */
+    attackFlow?: AttackFlowReply;
+    /**
+     * @generated from protobuf field: string createTm = 16;
      */
     createTm: string;
     /**
-     * @generated from protobuf field: string updateTm = 16;
+     * @generated from protobuf field: string updateTm = 17;
      */
     updateTm: string;
 }
@@ -4728,6 +4736,10 @@ export interface AddAlertRuleReq {
      * @generated from protobuf field: bool autoBlock = 13;
      */
     autoBlock: boolean;
+    /**
+     * @generated from protobuf field: ada.AttackFlowReply attackFlow = 14;
+     */
+    attackFlow?: AttackFlowReply;
 }
 /**
  * @generated from protobuf message ada.AddAlertRuleReply
@@ -4802,6 +4814,10 @@ export interface UpdateAlertRuleReq {
      * @generated from protobuf field: bool autoBlock = 14;
      */
     autoBlock: boolean;
+    /**
+     * @generated from protobuf field: ada.AttackFlowReply attackFlow = 15;
+     */
+    attackFlow?: AttackFlowReply;
 }
 /**
  * @generated from protobuf message ada.UpdateAlertRuleReply
@@ -12959,132 +12975,6 @@ class ThreatTrendsReply_Item$Type extends MessageType<ThreatTrendsReply_Item> {
  * @generated MessageType for protobuf message ada.ThreatTrendsReply.Item
  */
 export const ThreatTrendsReply_Item = new ThreatTrendsReply_Item$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class AttackFlowReply$Type extends MessageType<AttackFlowReply> {
-    constructor() {
-        super("ada.AttackFlowReply", [
-            { no: 1, name: "fields", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => AttackFlowReply_Field },
-            { no: 2, name: "relates", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
-            { no: 3, name: "desc", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
-        ]);
-    }
-    create(value?: PartialMessage<AttackFlowReply>): AttackFlowReply {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.fields = [];
-        message.relates = [];
-        message.desc = "";
-        if (value !== undefined)
-            reflectionMergePartial<AttackFlowReply>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: AttackFlowReply): AttackFlowReply {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* repeated ada.AttackFlowReply.Field fields */ 1:
-                    message.fields.push(AttackFlowReply_Field.internalBinaryRead(reader, reader.uint32(), options));
-                    break;
-                case /* repeated string relates */ 2:
-                    message.relates.push(reader.string());
-                    break;
-                case /* string desc */ 3:
-                    message.desc = reader.string();
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: AttackFlowReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* repeated ada.AttackFlowReply.Field fields = 1; */
-        for (let i = 0; i < message.fields.length; i++)
-            AttackFlowReply_Field.internalBinaryWrite(message.fields[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
-        /* repeated string relates = 2; */
-        for (let i = 0; i < message.relates.length; i++)
-            writer.tag(2, WireType.LengthDelimited).string(message.relates[i]);
-        /* string desc = 3; */
-        if (message.desc !== "")
-            writer.tag(3, WireType.LengthDelimited).string(message.desc);
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message ada.AttackFlowReply
- */
-export const AttackFlowReply = new AttackFlowReply$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class AttackFlowReply_Field$Type extends MessageType<AttackFlowReply_Field> {
-    constructor() {
-        super("ada.AttackFlowReply.Field", [
-            { no: 1, name: "item", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 9 /*ScalarType.STRING*/ } }
-        ]);
-    }
-    create(value?: PartialMessage<AttackFlowReply_Field>): AttackFlowReply_Field {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.item = {};
-        if (value !== undefined)
-            reflectionMergePartial<AttackFlowReply_Field>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: AttackFlowReply_Field): AttackFlowReply_Field {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* map<string, string> item */ 1:
-                    this.binaryReadMap1(message.item, reader, options);
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    private binaryReadMap1(map: AttackFlowReply_Field["item"], reader: IBinaryReader, options: BinaryReadOptions): void {
-        let len = reader.uint32(), end = reader.pos + len, key: keyof AttackFlowReply_Field["item"] | undefined, val: AttackFlowReply_Field["item"][any] | undefined;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case 1:
-                    key = reader.string();
-                    break;
-                case 2:
-                    val = reader.string();
-                    break;
-                default: throw new globalThis.Error("unknown map entry field for field ada.AttackFlowReply.Field.item");
-            }
-        }
-        map[key ?? ""] = val ?? "";
-    }
-    internalBinaryWrite(message: AttackFlowReply_Field, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* map<string, string> item = 1; */
-        for (let k of globalThis.Object.keys(message.item))
-            writer.tag(1, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k).tag(2, WireType.LengthDelimited).string(message.item[k]).join();
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message ada.AttackFlowReply.Field
- */
-export const AttackFlowReply_Field = new AttackFlowReply_Field$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class ListThreatReq$Type extends MessageType<ListThreatReq> {
     constructor() {
@@ -21601,6 +21491,124 @@ class ListAlertRuleReq$Type extends MessageType<ListAlertRuleReq> {
  */
 export const ListAlertRuleReq = new ListAlertRuleReq$Type();
 // @generated message type with reflection information, may provide speed optimized methods
+class AttackFlowReply$Type extends MessageType<AttackFlowReply> {
+    constructor() {
+        super("ada.AttackFlowReply", [
+            { no: 1, name: "desc", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "fields", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => AttackFlowReply_Field },
+            { no: 3, name: "relates", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<AttackFlowReply>): AttackFlowReply {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.desc = "";
+        message.fields = [];
+        message.relates = [];
+        if (value !== undefined)
+            reflectionMergePartial<AttackFlowReply>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: AttackFlowReply): AttackFlowReply {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string desc */ 1:
+                    message.desc = reader.string();
+                    break;
+                case /* repeated ada.AttackFlowReply.Field fields */ 2:
+                    message.fields.push(AttackFlowReply_Field.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                case /* repeated string relates */ 3:
+                    message.relates.push(reader.string());
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: AttackFlowReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string desc = 1; */
+        if (message.desc !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.desc);
+        /* repeated ada.AttackFlowReply.Field fields = 2; */
+        for (let i = 0; i < message.fields.length; i++)
+            AttackFlowReply_Field.internalBinaryWrite(message.fields[i], writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        /* repeated string relates = 3; */
+        for (let i = 0; i < message.relates.length; i++)
+            writer.tag(3, WireType.LengthDelimited).string(message.relates[i]);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.AttackFlowReply
+ */
+export const AttackFlowReply = new AttackFlowReply$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class AttackFlowReply_Field$Type extends MessageType<AttackFlowReply_Field> {
+    constructor() {
+        super("ada.AttackFlowReply.Field", [
+            { no: 1, name: "obj", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "key", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<AttackFlowReply_Field>): AttackFlowReply_Field {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.obj = "";
+        message.key = "";
+        if (value !== undefined)
+            reflectionMergePartial<AttackFlowReply_Field>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: AttackFlowReply_Field): AttackFlowReply_Field {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string obj */ 1:
+                    message.obj = reader.string();
+                    break;
+                case /* string key */ 2:
+                    message.key = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: AttackFlowReply_Field, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string obj = 1; */
+        if (message.obj !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.obj);
+        /* string key = 2; */
+        if (message.key !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.key);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.AttackFlowReply.Field
+ */
+export const AttackFlowReply_Field = new AttackFlowReply_Field$Type();
+// @generated message type with reflection information, may provide speed optimized methods
 class AlertRuleInfo$Type extends MessageType<AlertRuleInfo> {
     constructor() {
         super("ada.AlertRuleInfo", [
@@ -21618,8 +21626,9 @@ class AlertRuleInfo$Type extends MessageType<AlertRuleInfo> {
             { no: 12, name: "references", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 13, name: "suggestion", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 14, name: "autoBlock", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
-            { no: 15, name: "createTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 16, name: "updateTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 15, name: "attackFlow", kind: "message", T: () => AttackFlowReply },
+            { no: 16, name: "createTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 17, name: "updateTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<AlertRuleInfo>): AlertRuleInfo {
@@ -21691,10 +21700,13 @@ class AlertRuleInfo$Type extends MessageType<AlertRuleInfo> {
                 case /* bool autoBlock */ 14:
                     message.autoBlock = reader.bool();
                     break;
-                case /* string createTm */ 15:
+                case /* ada.AttackFlowReply attackFlow */ 15:
+                    message.attackFlow = AttackFlowReply.internalBinaryRead(reader, reader.uint32(), options, message.attackFlow);
+                    break;
+                case /* string createTm */ 16:
                     message.createTm = reader.string();
                     break;
-                case /* string updateTm */ 16:
+                case /* string updateTm */ 17:
                     message.updateTm = reader.string();
                     break;
                 default:
@@ -21751,12 +21763,15 @@ class AlertRuleInfo$Type extends MessageType<AlertRuleInfo> {
         /* bool autoBlock = 14; */
         if (message.autoBlock !== false)
             writer.tag(14, WireType.Varint).bool(message.autoBlock);
-        /* string createTm = 15; */
+        /* ada.AttackFlowReply attackFlow = 15; */
+        if (message.attackFlow)
+            AttackFlowReply.internalBinaryWrite(message.attackFlow, writer.tag(15, WireType.LengthDelimited).fork(), options).join();
+        /* string createTm = 16; */
         if (message.createTm !== "")
-            writer.tag(15, WireType.LengthDelimited).string(message.createTm);
-        /* string updateTm = 16; */
+            writer.tag(16, WireType.LengthDelimited).string(message.createTm);
+        /* string updateTm = 17; */
         if (message.updateTm !== "")
-            writer.tag(16, WireType.LengthDelimited).string(message.updateTm);
+            writer.tag(17, WireType.LengthDelimited).string(message.updateTm);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -21837,7 +21852,8 @@ class AddAlertRuleReq$Type extends MessageType<AddAlertRuleReq> {
             { no: 10, name: "references", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 11, name: "suggestion", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 12, name: "author", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 13, name: "autoBlock", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
+            { no: 13, name: "autoBlock", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 14, name: "attackFlow", kind: "message", T: () => AttackFlowReply }
         ]);
     }
     create(value?: PartialMessage<AddAlertRuleReq>): AddAlertRuleReq {
@@ -21903,6 +21919,9 @@ class AddAlertRuleReq$Type extends MessageType<AddAlertRuleReq> {
                 case /* bool autoBlock */ 13:
                     message.autoBlock = reader.bool();
                     break;
+                case /* ada.AttackFlowReply attackFlow */ 14:
+                    message.attackFlow = AttackFlowReply.internalBinaryRead(reader, reader.uint32(), options, message.attackFlow);
+                    break;
                 default:
                     let u = options.readUnknownField;
                     if (u === "throw")
@@ -21954,6 +21973,9 @@ class AddAlertRuleReq$Type extends MessageType<AddAlertRuleReq> {
         /* bool autoBlock = 13; */
         if (message.autoBlock !== false)
             writer.tag(13, WireType.Varint).bool(message.autoBlock);
+        /* ada.AttackFlowReply attackFlow = 14; */
+        if (message.attackFlow)
+            AttackFlowReply.internalBinaryWrite(message.attackFlow, writer.tag(14, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -22036,7 +22058,8 @@ class UpdateAlertRuleReq$Type extends MessageType<UpdateAlertRuleReq> {
             { no: 11, name: "references", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 12, name: "suggestion", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 13, name: "author", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 14, name: "autoBlock", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
+            { no: 14, name: "autoBlock", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 15, name: "attackFlow", kind: "message", T: () => AttackFlowReply }
         ]);
     }
     create(value?: PartialMessage<UpdateAlertRuleReq>): UpdateAlertRuleReq {
@@ -22106,6 +22129,9 @@ class UpdateAlertRuleReq$Type extends MessageType<UpdateAlertRuleReq> {
                 case /* bool autoBlock */ 14:
                     message.autoBlock = reader.bool();
                     break;
+                case /* ada.AttackFlowReply attackFlow */ 15:
+                    message.attackFlow = AttackFlowReply.internalBinaryRead(reader, reader.uint32(), options, message.attackFlow);
+                    break;
                 default:
                     let u = options.readUnknownField;
                     if (u === "throw")
@@ -22160,6 +22186,9 @@ class UpdateAlertRuleReq$Type extends MessageType<UpdateAlertRuleReq> {
         /* bool autoBlock = 14; */
         if (message.autoBlock !== false)
             writer.tag(14, WireType.Varint).bool(message.autoBlock);
+        /* ada.AttackFlowReply attackFlow = 15; */
+        if (message.attackFlow)
+            AttackFlowReply.internalBinaryWrite(message.attackFlow, writer.tag(15, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

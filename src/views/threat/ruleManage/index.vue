@@ -201,6 +201,21 @@
             @close="handleAlertDialogClose"
         >
             <el-form :model="alertRuleDialog.form" label-width="120px" ref="alertRuleFormRef">
+                <el-form-item label="ID" prop="iD">
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <el-input
+                                v-model="alertRuleDialog.form.iD"
+                                placeholder="Alert rule ID (optional, auto-generated if empty)"
+                                :disabled="alertRuleDialog.isEdit"
+                                style="flex: 0 0 300px;"
+                            />
+                            <el-tag v-if="!alertRuleDialog.isEdit && alertRuleDialog.form.iD" type="success" size="small">
+                                Custom ID
+                            </el-tag>
+                        </div>
+                    </div>
+                </el-form-item>
                 <el-form-item :label="$t('message.ruleManage.title')" prop="title" required>
                     <el-input v-model="alertRuleDialog.form.title" :placeholder="$t('message.ruleManage.enterTitle')" />
                 </el-form-item>
@@ -570,8 +585,8 @@ const alertRuleDialog = reactive({
         references: [] as string[],
         attackFlow: {
             desc: '',
-            fields: [] as AttackFlowField[],
-            relatesStr: '',
+            fields: [{ obj: '', key: '', value: '' }] as AttackFlowField[],
+            relates: [''] as string[],
         } as AttackFlowForm,
         suggestion: '',
         author: '',
@@ -701,7 +716,7 @@ const handleAddAlertRule = () => {
         references: [''],
         attackFlow: {
             desc: '',
-            fields: [],
+            fields: [{ obj: '', key: '', value: '' }],
             relates: [''],
         },
         suggestion: '',
@@ -906,6 +921,7 @@ const handleSaveAlertRule = async () => {
             ElMessage.success(t('message.ruleManage.updateAlertRuleSuccess'));
         } else {
             const req: AddAlertRuleReq = {
+                iD: alertRuleDialog.form.iD,
                 title: alertRuleDialog.form.title,
                 description: alertRuleDialog.form.description,
                 level: alertRuleDialog.form.level,
@@ -928,7 +944,9 @@ const handleSaveAlertRule = async () => {
         fetchAlertRules();
     } catch (error: any) {
         console.error('Failed to save alert rule:', error);
-        ElMessage.error(alertRuleDialog.isEdit ? t('message.ruleManage.updateAlertRuleFailed') : t('message.ruleManage.addAlertRuleFailed'));
+        // Show RPC error message if available, otherwise show default error message
+        const errorMessage = error?.message || (alertRuleDialog.isEdit ? t('message.ruleManage.updateAlertRuleFailed') : t('message.ruleManage.addAlertRuleFailed'));
+        ElMessage.error(errorMessage);
     } finally {
         alertRuleDialog.saving = false;
     }
@@ -948,7 +966,8 @@ const handleDeleteAlertRule = async (row: AlertRuleInfo) => {
     } catch (error: any) {
         if (error !== 'cancel') {
             console.error('Failed to delete alert rule:', error);
-            ElMessage.error(t('message.ruleManage.deleteRuleFailed'));
+            const errorMessage = error?.message || t('message.ruleManage.deleteRuleFailed');
+            ElMessage.error(errorMessage);
         }
     }
 };
@@ -1106,9 +1125,10 @@ const handleToggleAlertRule = async (row: AlertRuleInfo) => {
         };
         await updateAlertRule(req);
         ElMessage.success(row.enable ? t('message.ruleManage.ruleEnabled') : t('message.ruleManage.ruleDisabled'));
-    } catch (error) {
+    } catch (error: any) {
         console.error('Failed to toggle alert rule:', error);
-        ElMessage.error(t('message.ruleManage.updateRuleStatusFailed'));
+        const errorMessage = error?.message || t('message.ruleManage.updateRuleStatusFailed');
+        ElMessage.error(errorMessage);
         row.enable = !row.enable;
     }
 };
@@ -1265,7 +1285,8 @@ const handleSaveActivityRule = async () => {
         fetchActivityRules();
     } catch (error: any) {
         console.error('Failed to save activity rule:', error);
-        ElMessage.error(activityRuleDialog.isEdit ? t('message.ruleManage.updateActivityRuleFailed') : t('message.ruleManage.addActivityRuleFailed'));
+        const errorMessage = error?.message || (activityRuleDialog.isEdit ? t('message.ruleManage.updateActivityRuleFailed') : t('message.ruleManage.addActivityRuleFailed'));
+        ElMessage.error(errorMessage);
     } finally {
         activityRuleDialog.saving = false;
     }
@@ -1285,7 +1306,8 @@ const handleDeleteActivityRule = async (row: ActivityRuleInfo) => {
     } catch (error: any) {
         if (error !== 'cancel') {
             console.error('Failed to delete activity rule:', error);
-            ElMessage.error(t('message.ruleManage.deleteRuleFailed'));
+            const errorMessage = error?.message || t('message.ruleManage.deleteRuleFailed');
+            ElMessage.error(errorMessage);
         }
     }
 };

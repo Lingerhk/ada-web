@@ -583,7 +583,7 @@ export default {
 		attackFlow: '攻击流',
 		attackFlowFields: '字段',
 		attackFlowFieldsObj: 'obj (ip/user/computer/dc)',
-		attackFlowFieldsKey: '字段键',
+		attackFlowFieldsKey: '字段名称',
 		attackFlowRelates: '关联',
 		attackFlowDescription: '描述',
 	},

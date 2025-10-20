@@ -4593,6 +4593,10 @@ export interface AttackFlowReply_Field {
      * @generated from protobuf field: string key = 2;
      */
     key: string; // 如: $1.TargetUsername
+    /**
+     * @generated from protobuf field: string value = 3;
+     */
+    value: string; // only used at threat api
 }
 /**
  * @generated from protobuf message ada.AlertRuleInfo
@@ -4685,59 +4689,63 @@ export interface ListAlertRuleReply {
  */
 export interface AddAlertRuleReq {
     /**
-     * @generated from protobuf field: string title = 1;
+     * @generated from protobuf field: string iD = 1;
+     */
+    iD: string; // Alert rule ID, optional. If empty, will be auto-generated
+    /**
+     * @generated from protobuf field: string title = 2;
      */
     title: string; // [(validator.field) = {string_not_empty: true}];
     /**
-     * @generated from protobuf field: string description = 2;
+     * @generated from protobuf field: string description = 3;
      */
     description: string;
     /**
-     * @generated from protobuf field: bool enable = 3;
+     * @generated from protobuf field: bool enable = 4;
      */
     enable: boolean;
     /**
-     * @generated from protobuf field: int32 level = 4;
+     * @generated from protobuf field: int32 level = 5;
      */
     level: number; // [(validator.field) = {int_gt: 0, int_lt: 6}]; // 1-5
     /**
-     * @generated from protobuf field: string status = 5;
+     * @generated from protobuf field: string status = 6;
      */
     status: string;
     /**
-     * @generated from protobuf field: repeated string tags = 6;
+     * @generated from protobuf field: repeated string tags = 7;
      */
     tags: string[];
     /**
-     * @generated from protobuf field: string logsource = 7;
+     * @generated from protobuf field: string logsource = 8;
      */
     logsource: string;
     /**
-     * @generated from protobuf field: string detection = 8;
+     * @generated from protobuf field: string detection = 9;
      */
     detection: string; // [(validator.field) = {string_not_empty: true}]; // Yaml string
     /**
-     * @generated from protobuf field: string type = 9;
+     * @generated from protobuf field: string type = 10;
      */
     type: string;
     /**
-     * @generated from protobuf field: repeated string references = 10;
+     * @generated from protobuf field: repeated string references = 11;
      */
     references: string[];
     /**
-     * @generated from protobuf field: string suggestion = 11;
+     * @generated from protobuf field: string suggestion = 12;
      */
     suggestion: string;
     /**
-     * @generated from protobuf field: string author = 12;
+     * @generated from protobuf field: string author = 13;
      */
     author: string;
     /**
-     * @generated from protobuf field: bool autoBlock = 13;
+     * @generated from protobuf field: bool autoBlock = 14;
      */
     autoBlock: boolean;
     /**
-     * @generated from protobuf field: ada.AttackFlowReply attackFlow = 14;
+     * @generated from protobuf field: ada.AttackFlowReply attackFlow = 15;
      */
     attackFlow?: AttackFlowReply;
 }
@@ -21558,13 +21566,15 @@ class AttackFlowReply_Field$Type extends MessageType<AttackFlowReply_Field> {
     constructor() {
         super("ada.AttackFlowReply.Field", [
             { no: 1, name: "obj", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "key", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 2, name: "key", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "value", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<AttackFlowReply_Field>): AttackFlowReply_Field {
         const message = globalThis.Object.create((this.messagePrototype!));
         message.obj = "";
         message.key = "";
+        message.value = "";
         if (value !== undefined)
             reflectionMergePartial<AttackFlowReply_Field>(this, message, value);
         return message;
@@ -21579,6 +21589,9 @@ class AttackFlowReply_Field$Type extends MessageType<AttackFlowReply_Field> {
                     break;
                 case /* string key */ 2:
                     message.key = reader.string();
+                    break;
+                case /* string value */ 3:
+                    message.value = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -21598,6 +21611,9 @@ class AttackFlowReply_Field$Type extends MessageType<AttackFlowReply_Field> {
         /* string key = 2; */
         if (message.key !== "")
             writer.tag(2, WireType.LengthDelimited).string(message.key);
+        /* string value = 3; */
+        if (message.value !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.value);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -21840,24 +21856,26 @@ export const ListAlertRuleReply = new ListAlertRuleReply$Type();
 class AddAlertRuleReq$Type extends MessageType<AddAlertRuleReq> {
     constructor() {
         super("ada.AddAlertRuleReq", [
-            { no: 1, name: "title", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "description", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 3, name: "enable", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
-            { no: 4, name: "level", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
-            { no: 5, name: "status", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 6, name: "tags", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
-            { no: 7, name: "logsource", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 8, name: "detection", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 9, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 10, name: "references", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
-            { no: 11, name: "suggestion", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 12, name: "author", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 13, name: "autoBlock", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
-            { no: 14, name: "attackFlow", kind: "message", T: () => AttackFlowReply }
+            { no: 1, name: "iD", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "title", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "description", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "enable", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 5, name: "level", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 6, name: "status", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 7, name: "tags", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 8, name: "logsource", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 9, name: "detection", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 10, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 11, name: "references", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 12, name: "suggestion", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 13, name: "author", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 14, name: "autoBlock", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 15, name: "attackFlow", kind: "message", T: () => AttackFlowReply }
         ]);
     }
     create(value?: PartialMessage<AddAlertRuleReq>): AddAlertRuleReq {
         const message = globalThis.Object.create((this.messagePrototype!));
+        message.iD = "";
         message.title = "";
         message.description = "";
         message.enable = false;
@@ -21880,46 +21898,49 @@ class AddAlertRuleReq$Type extends MessageType<AddAlertRuleReq> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* string title */ 1:
+                case /* string iD */ 1:
+                    message.iD = reader.string();
+                    break;
+                case /* string title */ 2:
                     message.title = reader.string();
                     break;
-                case /* string description */ 2:
+                case /* string description */ 3:
                     message.description = reader.string();
                     break;
-                case /* bool enable */ 3:
+                case /* bool enable */ 4:
                     message.enable = reader.bool();
                     break;
-                case /* int32 level */ 4:
+                case /* int32 level */ 5:
                     message.level = reader.int32();
                     break;
-                case /* string status */ 5:
+                case /* string status */ 6:
                     message.status = reader.string();
                     break;
-                case /* repeated string tags */ 6:
+                case /* repeated string tags */ 7:
                     message.tags.push(reader.string());
                     break;
-                case /* string logsource */ 7:
+                case /* string logsource */ 8:
                     message.logsource = reader.string();
                     break;
-                case /* string detection */ 8:
+                case /* string detection */ 9:
                     message.detection = reader.string();
                     break;
-                case /* string type */ 9:
+                case /* string type */ 10:
                     message.type = reader.string();
                     break;
-                case /* repeated string references */ 10:
+                case /* repeated string references */ 11:
                     message.references.push(reader.string());
                     break;
-                case /* string suggestion */ 11:
+                case /* string suggestion */ 12:
                     message.suggestion = reader.string();
                     break;
-                case /* string author */ 12:
+                case /* string author */ 13:
                     message.author = reader.string();
                     break;
-                case /* bool autoBlock */ 13:
+                case /* bool autoBlock */ 14:
                     message.autoBlock = reader.bool();
                     break;
-                case /* ada.AttackFlowReply attackFlow */ 14:
+                case /* ada.AttackFlowReply attackFlow */ 15:
                     message.attackFlow = AttackFlowReply.internalBinaryRead(reader, reader.uint32(), options, message.attackFlow);
                     break;
                 default:
@@ -21934,48 +21955,51 @@ class AddAlertRuleReq$Type extends MessageType<AddAlertRuleReq> {
         return message;
     }
     internalBinaryWrite(message: AddAlertRuleReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string title = 1; */
+        /* string iD = 1; */
+        if (message.iD !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.iD);
+        /* string title = 2; */
         if (message.title !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.title);
-        /* string description = 2; */
+            writer.tag(2, WireType.LengthDelimited).string(message.title);
+        /* string description = 3; */
         if (message.description !== "")
-            writer.tag(2, WireType.LengthDelimited).string(message.description);
-        /* bool enable = 3; */
+            writer.tag(3, WireType.LengthDelimited).string(message.description);
+        /* bool enable = 4; */
         if (message.enable !== false)
-            writer.tag(3, WireType.Varint).bool(message.enable);
-        /* int32 level = 4; */
+            writer.tag(4, WireType.Varint).bool(message.enable);
+        /* int32 level = 5; */
         if (message.level !== 0)
-            writer.tag(4, WireType.Varint).int32(message.level);
-        /* string status = 5; */
+            writer.tag(5, WireType.Varint).int32(message.level);
+        /* string status = 6; */
         if (message.status !== "")
-            writer.tag(5, WireType.LengthDelimited).string(message.status);
-        /* repeated string tags = 6; */
+            writer.tag(6, WireType.LengthDelimited).string(message.status);
+        /* repeated string tags = 7; */
         for (let i = 0; i < message.tags.length; i++)
-            writer.tag(6, WireType.LengthDelimited).string(message.tags[i]);
-        /* string logsource = 7; */
+            writer.tag(7, WireType.LengthDelimited).string(message.tags[i]);
+        /* string logsource = 8; */
         if (message.logsource !== "")
-            writer.tag(7, WireType.LengthDelimited).string(message.logsource);
-        /* string detection = 8; */
+            writer.tag(8, WireType.LengthDelimited).string(message.logsource);
+        /* string detection = 9; */
         if (message.detection !== "")
-            writer.tag(8, WireType.LengthDelimited).string(message.detection);
-        /* string type = 9; */
+            writer.tag(9, WireType.LengthDelimited).string(message.detection);
+        /* string type = 10; */
         if (message.type !== "")
-            writer.tag(9, WireType.LengthDelimited).string(message.type);
-        /* repeated string references = 10; */
+            writer.tag(10, WireType.LengthDelimited).string(message.type);
+        /* repeated string references = 11; */
         for (let i = 0; i < message.references.length; i++)
-            writer.tag(10, WireType.LengthDelimited).string(message.references[i]);
-        /* string suggestion = 11; */
+            writer.tag(11, WireType.LengthDelimited).string(message.references[i]);
+        /* string suggestion = 12; */
         if (message.suggestion !== "")
-            writer.tag(11, WireType.LengthDelimited).string(message.suggestion);
-        /* string author = 12; */
+            writer.tag(12, WireType.LengthDelimited).string(message.suggestion);
+        /* string author = 13; */
         if (message.author !== "")
-            writer.tag(12, WireType.LengthDelimited).string(message.author);
-        /* bool autoBlock = 13; */
+            writer.tag(13, WireType.LengthDelimited).string(message.author);
+        /* bool autoBlock = 14; */
         if (message.autoBlock !== false)
-            writer.tag(13, WireType.Varint).bool(message.autoBlock);
-        /* ada.AttackFlowReply attackFlow = 14; */
+            writer.tag(14, WireType.Varint).bool(message.autoBlock);
+        /* ada.AttackFlowReply attackFlow = 15; */
         if (message.attackFlow)
-            AttackFlowReply.internalBinaryWrite(message.attackFlow, writer.tag(14, WireType.LengthDelimited).fork(), options).join();
+            AttackFlowReply.internalBinaryWrite(message.attackFlow, writer.tag(15, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

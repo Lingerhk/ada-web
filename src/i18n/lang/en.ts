@@ -108,7 +108,6 @@ export default {
 		outgoingIndex: 'outgoingIndex',
 		messageIndex: 'System Message',
 		auditIndex: 'Audit Log',
-		threatRuleIndex: 'threatRuleIndex',
 		whiteListIndex: 'WhiteList',
 		ruleManageIndex: 'Rule Management',
 		exportIndex: 'Export Report',

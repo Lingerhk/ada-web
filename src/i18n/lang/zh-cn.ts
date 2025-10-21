@@ -108,7 +108,6 @@ export default {
 		outgoingIndex: '外发管理',
 		messageIndex: '消息提示',
 		auditIndex: '平台日志',
-		threatRuleIndex: '规则配置',
 		whiteListIndex: '白名单配置',
 		ruleManageIndex: '规则管理',
 		exportIndex: '报表管理',

@@ -43,13 +43,13 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		path: '/',
 		name: '/',
 		component: () => import('/@/layout/index.vue'),
-		redirect: '/riskMarket',
+		redirect: '/dashboard',
 		meta: {
 			isKeepAlive: true,
 		},
 		children: [
 			{
-				path: '/dashborad',
+				path: '/dashboard',
 				name: 'riskMarketIndex',
 				component: () => import('/@/views/riskMarket/index.vue'),
 				meta: {
@@ -169,21 +169,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 							icon: 'ele-Box',
 						},
 					},
-					{
-						path: '/threatRule',
-						name: 'threatRuleIndex',
-						component: () => import('/@/views/threat/rule/index.vue'),
-						meta: {
-							title: 'message.router.threatRuleIndex',
-							isLink: '',
-							isHide: false,
-							isKeepAlive: true,
-							isAffix: false,
-							isIframe: false,
-							roles: ['admin', 'common'],
-							icon: 'iconfont icon-jiliandongxuanzeqi',
-						},
-					},
+
 					{
 						path: '/whiteList',
 						name: 'whiteListIndex',
@@ -214,7 +200,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 							icon: 'ele-Edit',
 						},
 					},
-				]
+				],
 			},
 			{
 				path: '/risk',
@@ -321,8 +307,8 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 							roles: ['admin', 'common'],
 							icon: 'ele-DocumentCopy',
 						},
-					}
-				]
+					},
+				],
 			},
 			{
 				path: '/sysConfig',
@@ -489,7 +475,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 							icon: 'iconfont icon-yunxiazai_o',
 						},
 					},
-				]
+				],
 			},
 		],
 	},

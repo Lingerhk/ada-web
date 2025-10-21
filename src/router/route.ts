@@ -1,4 +1,3 @@
-import path from 'path';
 import { RouteRecordRaw } from 'vue-router';
 
 /**

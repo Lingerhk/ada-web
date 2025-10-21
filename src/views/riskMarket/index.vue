@@ -6,8 +6,8 @@
 					<i class="el-icon-time mr5"></i>
 					<el-form :model="state.form" style="width: 200px">
 						<el-form-item>
-							<el-select v-model="state.form.domain" placeholder="所有域">
-								<el-option label="所有域" value="all" />
+							<el-select v-model="state.form.domain" :placeholder="T('allDomains')">
+								<el-option :label="T('allDomains')" value="all" />
 								<el-option v-for="opt in state.form.domainOptions" :key="opt.value" :value="opt.value"
 									:label="opt.label" />
 							</el-select>
@@ -35,7 +35,7 @@
 				</el-col>
 				<el-col :lg="8" :span="24" class="flex-item">
 					<div class="flex-item-box">
-						<div class="flex-title">今日告警事件TOP5</div>
+						<div class="flex-title">{{ T('topAlarmEventsToday') }}</div>
 						<div class="no-data-img">
 							<el-empty />
 						</div>
@@ -44,7 +44,7 @@
 				<el-col :lg="8" :span="24" class="flex-item">
 					<el-row style="height: 100%;">
 						<div class="flex-item-box">
-							<div class="flex-title">重大事件（30天内）</div>
+							<div class="flex-title">{{ T('majorEventsLast30Days') }}</div>
 							<div class="no-data-img">
 								<el-empty />
 							</div>
@@ -56,10 +56,10 @@
 				<el-col :lg="12" :span="24" class="flex-item">
 					<div class="flex-item-box">
 						<div class="flex-title">
-							<span>告警事件风险趋势</span>
+							<span>{{ T('alarmEventRiskTrend') }}</span>
 							<el-form :model="state.form" style="width: 150px">
 								<el-form-item>
-									<el-select v-model="state.form.riskTrendYear" placeholder="全年">
+									<el-select v-model="state.form.riskTrendYear" :placeholder="T('fullYear')">
 									</el-select>
 								</el-form-item>
 							</el-form>
@@ -73,10 +73,10 @@
 				<el-col :lg="12" :span="24" class="flex-item">
 					<div class="flex-item-box">
 						<div class="flex-title">
-							<span>日志采集统计</span>
+							<span>{{ T('logCollectionStats') }}</span>
 							<el-form :model="state.form" style="width: 150px">
 								<el-form-item>
-									<el-select v-model="state.form.logStatsDuration" placeholder="时间范围">
+									<el-select v-model="state.form.logStatsDuration" :placeholder="T('timeRange')">
 										<el-option label="1 Hour" :value="1" />
 										<el-option label="3 Hours" :value="3" />
 										<el-option label="6 Hours" :value="6" />
@@ -96,25 +96,25 @@
 			<el-row class="flex-item" style="height: 220px;">
 				<el-col :span="8" class="flex-item">
 					<div class="flex-item-box">
-						<div class="flex-title">最近一次检测的漏洞事件数量</div>
+						<div class="flex-title">{{ T('latestVulnerabilityCount') }}</div>
 						<div style="height: 100%;">
 							<el-row :gutter="20" style="padding-top: 10px;">
 								<el-col :span="8">
 									<el-card>
-										<el-row class="bug-title">高危漏洞数量</el-row>
-										<el-row class="bug-value">2</el-row>
+										<el-row class="bug-title">{{ T('highRiskVulnerabilities') }}</el-row>
+										<el-row class="bug-value">{{ state.scan.leak.high }}</el-row>
 									</el-card>
 								</el-col>
 								<el-col :span="8">
 									<el-card>
-										<el-row class="bug-title">中危漏洞数量</el-row>
-										<el-row class="bug-value">2</el-row>
+										<el-row class="bug-title">{{ T('mediumRiskVulnerabilities') }}</el-row>
+										<el-row class="bug-value">{{ state.scan.leak.medium }}</el-row>
 									</el-card>
 								</el-col>
 								<el-col :span="8">
 									<el-card>
-										<el-row class="bug-title">低危漏洞数量</el-row>
-										<el-row class="bug-value">0</el-row>
+										<el-row class="bug-title">{{ T('lowRiskVulnerabilities') }}</el-row>
+										<el-row class="bug-value">{{ state.scan.leak.low }}</el-row>
 									</el-card>
 								</el-col>
 							</el-row>
@@ -124,27 +124,27 @@
 				<el-col :span="8" class="flex-item">
 					<div class="flex-item-box">
 						<div class="flex-title">
-							<span>最近一次检测的基线事件数量</span>
+							<span>{{ T('latestBaselineCount') }}</span>
 						</div>
 						<!-- <div style="width: 100%; height: 100%;" ref="baseLinePieRef"></div> -->
 						<div style="height: 100%;">
 							<el-row :gutter="20" style="padding-top: 10px;">
 								<el-col :span="8">
 									<el-card>
-										<el-row class="bug-title">高危基线事件数量</el-row>
-										<el-row class="bug-value">2</el-row>
+										<el-row class="bug-title">{{ T('highRiskBaseline') }}</el-row>
+										<el-row class="bug-value">{{ state.scan.baseline.high }}</el-row>
 									</el-card>
 								</el-col>
 								<el-col :span="8">
 									<el-card>
-										<el-row class="bug-title">中危基线事件数量</el-row>
-										<el-row class="bug-value">2</el-row>
+										<el-row class="bug-title">{{ T('mediumRiskBaseline') }}</el-row>
+										<el-row class="bug-value">{{ state.scan.baseline.medium }}</el-row>
 									</el-card>
 								</el-col>
 								<el-col :span="8">
 									<el-card>
-										<el-row class="bug-title">低危基线事件数量</el-row>
-										<el-row class="bug-value">0</el-row>
+										<el-row class="bug-title">{{ T('lowRiskBaseline') }}</el-row>
+										<el-row class="bug-value">{{ state.scan.baseline.low }}</el-row>
 									</el-card>
 								</el-col>
 							</el-row>
@@ -155,12 +155,12 @@
 				<el-col :span="8" class="flex-item">
 					<div style="width: 100%; height: 100%;" class="flex-item-box">
 						<div class="flex-title">
-							<span>最近一次检测的弱口令事件命中总数</span>
-							<span class="flex-title-small">同比上次检测 <span style="color: #006eff;">+0条</span></span>
+							<span>{{ T('latestWeakPasswordHits') }}</span>
+							<span class="flex-title-small">{{ T('comparedToPrevious') }} <span style="color: #006eff;">+0{{ T('countUnit') }}</span></span>
 						</div>
 						<el-row style="width: 100%; padding-top: 10px">
 							<FilpNumber :value="state.scan.hits"></FilpNumber>
-							<span style="margin-left: 10px; font-size: 20px; align-self: flex-end;">条</span>
+							<span style="margin-left: 10px; font-size: 20px; align-self: flex-end;">{{ T('countUnit') }}</span>
 						</el-row>
 					</div>
 				</el-col>
@@ -208,7 +208,17 @@ const state = reactive({
 		}
 	},
 	scan: {
-		hits: '000004',
+		hits: '000000',
+		leak: {
+			high: 0,
+			medium: 0,
+			low: 0,
+		},
+		baseline: {
+			high: 0,
+			medium: 0,
+			low: 0,
+		},
 	},
 	myCharts: [] as EmptyArrayType,
 	global: {
@@ -587,6 +597,42 @@ const updateDashboardLogStatsLine = (data: any[]) => {
 	state.global.dashboardLogStatsLine.setOption(option);
 };
 
+const fetchDashboardStats = () => {
+	api.dashboardStats({ domain: state.form.domain } as DashboardStatsReq)
+		.then(resp => resp.response)
+		.then(data => {
+			// Update alarm today pie chart with actual data
+			if (data.alert) {
+				updateAlarmTodayPie(data.alert);
+			}
+
+			// Update vulnerability counts
+			if (data.leak) {
+				state.scan.leak = {
+					high: data.leak['high'] || 0,
+					medium: data.leak['medium'] || 0,
+					low: data.leak['low'] || 0,
+				};
+			}
+
+			// Update baseline counts
+			if (data.baseline) {
+				state.scan.baseline = {
+					high: data.baseline['high'] || 0,
+					medium: data.baseline['medium'] || 0,
+					low: data.baseline['low'] || 0,
+				};
+			}
+
+			// Update weak password hits
+			if (data.weakpwd) {
+				const total = Object.values(data.weakpwd).reduce((sum, val) => sum + val, 0);
+				state.scan.hits = total.toString().padStart(6, '0');
+			}
+		})
+		.catch(err => alertApiError(err));
+};
+
 const fetchDashboardLogStats = () => {
 	const req: DashboardLogStatsReq = {
 		domain: state.form.domain,
@@ -647,13 +693,7 @@ onMounted(() => {
 
 	listDomainOptions().then(options => state.form.domainOptions = options);
 
-	api.dashboardStats({ domain: state.form.domain } as DashboardStatsReq)
-		.then(resp => resp.response)
-		.then(data => {
-			updateAlarmTodayPie({ 2: 10, 3: 9, 4: 33, 5: 9, });
-		})
-		.catch(err => alertApiError(err))
-		.finally(() => updateAlarmTodayPie({ 2: 10, 3: 9, 4: 33, 5: 9, }));
+	fetchDashboardStats();
 
 	api.dashboardTrends({} as DashboardTrendsReq)
 		.then(resp => resp.response)
@@ -689,7 +729,7 @@ watch(
 	() => state.form.domain,
 	() => {
 		// Re-fetch all domain-dependent data
-		// TODO: Add calls for other charts/data that depend on domain
+		fetchDashboardStats();
 		fetchDashboardLogStats();
 	}
 );

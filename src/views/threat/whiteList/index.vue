@@ -98,7 +98,7 @@ import { onMounted, reactive, ref, watch } from 'vue';
 import { DeleteThreatWhitelistReq, ListThreatWhitelistReply, ListThreatWhitelistReply_Details, ListThreatWhitelistReq, UpdateThreatWhitelistReq_ruleInfo } from '/@/api/grpc/ada';
 import api from '/@/api/grpc';
 import { alertApiError, alertResult } from '/@/utils/error';
-import { listDomainOptions, listThreatRuleOptions } from '/@/api/grpc/method';
+import { listDomainOptions, listAlertRuleNameOptions } from '/@/api/grpc/method';
 import { getWhiteListOriginOptions, OptionType } from '/@/utils/constant';
 import { transWhiteList as T } from '/@/utils/translator';
 import { formatApiTime, getPrev7Days, shortcuts } from '/@/utils/formatTime';
@@ -263,7 +263,7 @@ onMounted(() => {
     state.tableRowsSelected = [];
     refresh();
     listDomainOptions().then(options => state.domainOptions = options);
-    listThreatRuleOptions().then(options => state.ruleOptions = [{ label: T('ruleAll'), value: '', }, ...options]);
+    listAlertRuleNameOptions().then(options => state.ruleOptions = [{ label: T('ruleAll'), value: '', }, ...options]);
 });
 
 watch(() => state.req.domain, (val) => {

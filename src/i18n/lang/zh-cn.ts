@@ -334,6 +334,7 @@ export default {
 		},
 		alarmList: {
 			selectThreatName: '选择威胁类型',
+			selectLevel: '选择威胁等级',
 			addWhiteTitle: '加入白名单',
 			addWhiteSubTitle: '当前威胁活动的字段值参考',
 			addWhiteAlert: '加入白名单后，将不再对此条告警事件的告警行为进行更新和消息通知，且不再对此类规则的告警事件进行更新和消息通知。',

@@ -2313,9 +2313,9 @@ export interface ListThreatReply_Details {
  */
 export interface GetThreatNamesReq {
     /**
-     * @generated from protobuf field: string ruleId = 1;
+     * @generated from protobuf field: string flowId = 1;
      */
-    ruleId: string; // 可选，为空则返回所有的rule_id与title的map
+    flowId: string; // 可选，为空则返回所有的flow_id与title的map
 }
 /**
  * @generated from protobuf message ada.GetThreatNamesReply
@@ -2624,26 +2624,6 @@ export interface GetActivityReply {
      * @generated from protobuf field: ada.ActivityDetails details = 1;
      */
     details?: ActivityDetails;
-}
-/**
- * @generated from protobuf message ada.ListThreatConfReq
- */
-export interface ListThreatConfReq {
-}
-/**
- * @generated from protobuf message ada.ListThreatConfReply
- */
-export interface ListThreatConfReply {
-}
-/**
- * @generated from protobuf message ada.UpdateThreatConfReq
- */
-export interface UpdateThreatConfReq {
-}
-/**
- * @generated from protobuf message ada.UpdateThreatConfReply
- */
-export interface UpdateThreatConfReply {
 }
 /**
  * @generated from protobuf message ada.ListSensitiveEntryReq
@@ -4788,6 +4768,26 @@ export interface GetAlertTypesReply {
     alertTypes: {
         [key: string]: string;
     };
+}
+/**
+ * @generated from protobuf message ada.GetAlertRuleNamesReq
+ */
+export interface GetAlertRuleNamesReq {
+    /**
+     * @generated from protobuf field: string ruleId = 1;
+     */
+    ruleId: string; // 可选，为空则返回所有的rule_id与name的map
+}
+/**
+ * @generated from protobuf message ada.GetAlertRuleNamesReply
+ */
+export interface GetAlertRuleNamesReply {
+    /**
+     * @generated from protobuf field: map<string, string> names = 1;
+     */
+    names: {
+        [key: string]: string;
+    }; // rule_id -> rule_name mapping
 }
 /**
  * @generated from protobuf message ada.GetAlertRuleTagsReq
@@ -13324,12 +13324,12 @@ export const ListThreatReply_Details = new ListThreatReply_Details$Type();
 class GetThreatNamesReq$Type extends MessageType<GetThreatNamesReq> {
     constructor() {
         super("ada.GetThreatNamesReq", [
-            { no: 1, name: "ruleId", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 1, name: "flowId", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<GetThreatNamesReq>): GetThreatNamesReq {
         const message = globalThis.Object.create((this.messagePrototype!));
-        message.ruleId = "";
+        message.flowId = "";
         if (value !== undefined)
             reflectionMergePartial<GetThreatNamesReq>(this, message, value);
         return message;
@@ -13339,8 +13339,8 @@ class GetThreatNamesReq$Type extends MessageType<GetThreatNamesReq> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* string ruleId */ 1:
-                    message.ruleId = reader.string();
+                case /* string flowId */ 1:
+                    message.flowId = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -13354,9 +13354,9 @@ class GetThreatNamesReq$Type extends MessageType<GetThreatNamesReq> {
         return message;
     }
     internalBinaryWrite(message: GetThreatNamesReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string ruleId = 1; */
-        if (message.ruleId !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.ruleId);
+        /* string flowId = 1; */
+        if (message.flowId !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.flowId);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -14384,106 +14384,6 @@ class GetActivityReply$Type extends MessageType<GetActivityReply> {
  * @generated MessageType for protobuf message ada.GetActivityReply
  */
 export const GetActivityReply = new GetActivityReply$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class ListThreatConfReq$Type extends MessageType<ListThreatConfReq> {
-    constructor() {
-        super("ada.ListThreatConfReq", []);
-    }
-    create(value?: PartialMessage<ListThreatConfReq>): ListThreatConfReq {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        if (value !== undefined)
-            reflectionMergePartial<ListThreatConfReq>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ListThreatConfReq): ListThreatConfReq {
-        return target ?? this.create();
-    }
-    internalBinaryWrite(message: ListThreatConfReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message ada.ListThreatConfReq
- */
-export const ListThreatConfReq = new ListThreatConfReq$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class ListThreatConfReply$Type extends MessageType<ListThreatConfReply> {
-    constructor() {
-        super("ada.ListThreatConfReply", []);
-    }
-    create(value?: PartialMessage<ListThreatConfReply>): ListThreatConfReply {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        if (value !== undefined)
-            reflectionMergePartial<ListThreatConfReply>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ListThreatConfReply): ListThreatConfReply {
-        return target ?? this.create();
-    }
-    internalBinaryWrite(message: ListThreatConfReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message ada.ListThreatConfReply
- */
-export const ListThreatConfReply = new ListThreatConfReply$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class UpdateThreatConfReq$Type extends MessageType<UpdateThreatConfReq> {
-    constructor() {
-        super("ada.UpdateThreatConfReq", []);
-    }
-    create(value?: PartialMessage<UpdateThreatConfReq>): UpdateThreatConfReq {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        if (value !== undefined)
-            reflectionMergePartial<UpdateThreatConfReq>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: UpdateThreatConfReq): UpdateThreatConfReq {
-        return target ?? this.create();
-    }
-    internalBinaryWrite(message: UpdateThreatConfReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message ada.UpdateThreatConfReq
- */
-export const UpdateThreatConfReq = new UpdateThreatConfReq$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class UpdateThreatConfReply$Type extends MessageType<UpdateThreatConfReply> {
-    constructor() {
-        super("ada.UpdateThreatConfReply", []);
-    }
-    create(value?: PartialMessage<UpdateThreatConfReply>): UpdateThreatConfReply {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        if (value !== undefined)
-            reflectionMergePartial<UpdateThreatConfReply>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: UpdateThreatConfReply): UpdateThreatConfReply {
-        return target ?? this.create();
-    }
-    internalBinaryWrite(message: UpdateThreatConfReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message ada.UpdateThreatConfReply
- */
-export const UpdateThreatConfReply = new UpdateThreatConfReply$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class ListSensitiveEntryReq$Type extends MessageType<ListSensitiveEntryReq> {
     constructor() {
@@ -22049,6 +21949,116 @@ class GetAlertTypesReply$Type extends MessageType<GetAlertTypesReply> {
  */
 export const GetAlertTypesReply = new GetAlertTypesReply$Type();
 // @generated message type with reflection information, may provide speed optimized methods
+class GetAlertRuleNamesReq$Type extends MessageType<GetAlertRuleNamesReq> {
+    constructor() {
+        super("ada.GetAlertRuleNamesReq", [
+            { no: 1, name: "ruleId", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GetAlertRuleNamesReq>): GetAlertRuleNamesReq {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.ruleId = "";
+        if (value !== undefined)
+            reflectionMergePartial<GetAlertRuleNamesReq>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetAlertRuleNamesReq): GetAlertRuleNamesReq {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string ruleId */ 1:
+                    message.ruleId = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetAlertRuleNamesReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string ruleId = 1; */
+        if (message.ruleId !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.ruleId);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.GetAlertRuleNamesReq
+ */
+export const GetAlertRuleNamesReq = new GetAlertRuleNamesReq$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetAlertRuleNamesReply$Type extends MessageType<GetAlertRuleNamesReply> {
+    constructor() {
+        super("ada.GetAlertRuleNamesReply", [
+            { no: 1, name: "names", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 9 /*ScalarType.STRING*/ } }
+        ]);
+    }
+    create(value?: PartialMessage<GetAlertRuleNamesReply>): GetAlertRuleNamesReply {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.names = {};
+        if (value !== undefined)
+            reflectionMergePartial<GetAlertRuleNamesReply>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetAlertRuleNamesReply): GetAlertRuleNamesReply {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* map<string, string> names */ 1:
+                    this.binaryReadMap1(message.names, reader, options);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    private binaryReadMap1(map: GetAlertRuleNamesReply["names"], reader: IBinaryReader, options: BinaryReadOptions): void {
+        let len = reader.uint32(), end = reader.pos + len, key: keyof GetAlertRuleNamesReply["names"] | undefined, val: GetAlertRuleNamesReply["names"][any] | undefined;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case 1:
+                    key = reader.string();
+                    break;
+                case 2:
+                    val = reader.string();
+                    break;
+                default: throw new globalThis.Error("unknown map entry field for field ada.GetAlertRuleNamesReply.names");
+            }
+        }
+        map[key ?? ""] = val ?? "";
+    }
+    internalBinaryWrite(message: GetAlertRuleNamesReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* map<string, string> names = 1; */
+        for (let k of globalThis.Object.keys(message.names))
+            writer.tag(1, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k).tag(2, WireType.LengthDelimited).string(message.names[k]).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.GetAlertRuleNamesReply
+ */
+export const GetAlertRuleNamesReply = new GetAlertRuleNamesReply$Type();
+// @generated message type with reflection information, may provide speed optimized methods
 class GetAlertRuleTagsReq$Type extends MessageType<GetAlertRuleTagsReq> {
     constructor() {
         super("ada.GetAlertRuleTagsReq", []);
@@ -23354,8 +23364,6 @@ export const ADA = new ServiceType("ada.ADA", [
     { name: "ListActivity", options: {}, I: ListActivityReq, O: ListActivityReply },
     { name: "GetActivityNames", options: {}, I: GetActivityNamesReq, O: GetActivityNamesReply },
     { name: "GetActivity", options: {}, I: GetActivityReq, O: GetActivityReply },
-    { name: "ListThreatConf", options: {}, I: ListThreatConfReq, O: ListThreatConfReply },
-    { name: "UpdateThreatConf", options: {}, I: UpdateThreatConfReq, O: UpdateThreatConfReply },
     { name: "ListSensitiveEntry", options: {}, I: ListSensitiveEntryReq, O: ListSensitiveEntryReply },
     { name: "AddSensitiveEntry", options: {}, I: AddSensitiveEntryReq, O: AddSensitiveEntryReply },
     { name: "ListDomainEntry", options: {}, I: ListDomainEntryReq, O: ListDomainEntryReply },
@@ -23373,6 +23381,7 @@ export const ADA = new ServiceType("ada.ADA", [
     { name: "AddAlertRule", options: {}, I: AddAlertRuleReq, O: AddAlertRuleReply },
     { name: "UpdateAlertRule", options: {}, I: UpdateAlertRuleReq, O: UpdateAlertRuleReply },
     { name: "DeleteAlertRule", options: {}, I: DeleteAlertRuleReq, O: DeleteAlertRuleReply },
+    { name: "GetAlertRuleNames", options: {}, I: GetAlertRuleNamesReq, O: GetAlertRuleNamesReply },
     { name: "GetAlertTypes", options: {}, I: GetAlertTypesReq, O: GetAlertTypesReply },
     { name: "GetAlertRuleTags", options: {}, I: GetAlertRuleTagsReq, O: GetAlertRuleTagsReply },
     { name: "ListActivityRule", options: {}, I: ListActivityRuleReq, O: ListActivityRuleReply },

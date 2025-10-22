@@ -63,7 +63,7 @@ import { getAddWhiteOpeartionOptins, OptionType } from '/@/utils/constant';
 import { Delete, Plus } from '@element-plus/icons-vue';
 import api from '/@/api/grpc';
 import { alertApiError, alertResult } from '/@/utils/error';
-import { listDomainOptions, listThreatRuleOptions } from '/@/api/grpc/method';
+import { listDomainOptions, listAlertRuleNameOptions } from '/@/api/grpc/method';
 import MultiSelector from '/@/components/form/multiSelector.vue';
 import { getArraySizeValidator } from '/@/utils/validator';
 
@@ -112,7 +112,7 @@ const candicateFields = ref<Array<OptionType>>(['IpAddress',
 
 const operOptions = getAddWhiteOpeartionOptins();
 const ruleOptions = ref<Array<OptionType>>([]);
-const domainOptions = ref<Array<OptionType>>([]); 
+const domainOptions = ref<Array<OptionType>>([]);
 
 const getCandicateField = (name: null | string) => {
     const otherOptions = candicateFields.value.filter(f => -1 === input.addReqRules.findIndex(addRule => addRule.info.field === f.value));
@@ -157,7 +157,7 @@ const initAddReqRules = () => {
     input.domainSelected = '';
     input.ruleSelected = [];
 
-    listThreatRuleOptions().then(list => {
+    listAlertRuleNameOptions().then(list => {
         ruleOptions.value = list;
         input.ruleSelected = list.map(opt => opt.value);
     });

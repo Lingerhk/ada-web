@@ -42,9 +42,9 @@
                 <!-- 标签 -->
                 <el-row>
                     <el-space wrap size="default">
-                        <el-tag v-for="field in state.data?.attackFlow?.fields" size="small" :key="field">{{
-                            field.item.key
-                            }}</el-tag>
+                        <el-tooltip v-for="field in state.data?.attackFlow?.fields" :key="field.key" :content="field.key" placement="top">
+                            <el-tag size="small">{{ field.value }}</el-tag>
+                        </el-tooltip>
                     </el-space>
                 </el-row>
                 <!-- 说明 -->
@@ -56,12 +56,16 @@
                 </el-row>
                 <el-row justify="center">
                     <el-space wrap :size="200">
-                        <el-col v-for="field in state.data?.attackFlow?.fields" :key="field">
-                            <el-row justify="center">
-                                <el-image style="width: 100px; height: 100px" :src="getImage(field.item.obj)"
-                                    fit="fill" />
-                            </el-row>
-                            <el-row>{{ field.item.key }}</el-row>
+                        <el-col v-for="field in state.data?.attackFlow?.fields" :key="field.key">
+                            <el-tooltip :content="field.key" placement="top">
+                                <el-row justify="center">
+                                    <el-image style="width: 100px; height: 100px" :src="getImage(field.obj)"
+                                        fit="fill" />
+                                </el-row>
+                            </el-tooltip>
+                            <el-tooltip :content="field.key" placement="bottom">
+                                <el-row>{{ field.value }}</el-row>
+                            </el-tooltip>
                         </el-col>
                     </el-space>
                 </el-row>
@@ -78,7 +82,9 @@
                 <!-- 证据列表 -->
                 <el-row>
                     <el-table :data="state.activity.data" v-loading="state.activity.loading" :border="true"
-                        row-class-name="pointer-cursor" style="width: 100%">
+                        row-class-name="pointer-cursor" style="width: 100%"
+                        @row-click="handleRowClick"
+                        ref="evidenceTable">
                         <el-table-column type="expand">
                             <template #default="props">
                                 <JsonViewer :value="JSON.parse(props.row.rawLog)" copyable boxed sort></JsonViewer>
@@ -157,7 +163,7 @@
 
 <script setup lang="ts">
 
-import { computed, reactive, watch } from 'vue';
+import { computed, reactive, watch, ref } from 'vue';
 import { ActivityDetails, AttackFlowReply_Field, GetThreatReply, GetThreatReq, ListActivityReply, ListActivityReq } from '/@/api/grpc/ada';
 import api from '/@/api/grpc';
 import { alertApiError } from '/@/utils/error';
@@ -175,6 +181,8 @@ import UserImage from '/@/assets/user.jpg';
 import ComputerImage from '/@/assets/computer.jpg';
 
 const { t } = useI18n();
+
+const evidenceTable = ref();
 
 const state = reactive({
     open: false,
@@ -283,6 +291,10 @@ const handleOperation = (command: string | number | object) => {
     } else if (command === 'addWhite') {
         state.addWhite.visible = true;
     }
+};
+
+const handleRowClick = (row: ActivityDetails) => {
+    evidenceTable.value?.toggleRowExpansion(row);
 };
 
 watch(() => state.data, () => {

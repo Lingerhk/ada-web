@@ -46,7 +46,14 @@
                     </el-form-item>
                     <!-- 威胁等级 -->
                     <el-form-item :label="$t('message.threat.levelName')">
-                        <LevelCheckbox v-model="threatLevel" />
+                        <el-select v-model="threatLevel" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.threat.alarmList.selectLevel')" popper-class="custom-header">
+                            <template #header>
+                                <el-checkbox v-model="levelCheckAll" :indeterminate="levelIndeterminate" @change="handleLevelCheckAll">
+                                    {{ $t('message.tableCommon.checkAll') }}
+                                </el-checkbox>
+                            </template>
+                            <el-option v-for="option in levelOptions" :key="option.value" :label="option.label" :value="option.value" />
+                        </el-select>
                     </el-form-item>
                     <!-- 处理状态 -->
                     <el-form-item :label="$t('message.threat.tableTitle.eventStatus')">
@@ -77,25 +84,22 @@
             </el-row>
             <!-- 下方显示列表 -->
             <el-row style="margin-top: 30px; padding-left: 28px;">
+                <el-col :span="5" class="attackFlow-container-text">
+                    {{ $t('message.threat.alarmList.attackName') }}
+                </el-col>
                 <el-col :span="4" class="attackFlow-container-text">
                     {{ $t('message.threat.alarmList.attackSource') }}
                 </el-col>
-                <el-col :span="6" class="attackFlow-container-text">
+                <el-col :span="5" class="attackFlow-container-text">
                     {{ $t('message.threat.alarmList.attackMethod') }}
                 </el-col>
                 <el-col :span="3" class="attackFlow-container-text">
                     {{ $t('message.threat.alarmList.attackTarget') }}
                 </el-col>
-                <el-col :span="1" class="attackFlow-container-text">
-                    {{ $t('message.threat.alarmList.attackLevel') }}
-                </el-col>
-                <el-col :span="4" class="attackFlow-container-text">
-                    {{ $t('message.threat.alarmList.attackName') }}
-                </el-col>
                 <el-col :span="4" class="attackFlow-container-text">
                     {{ $t('message.threat.alarmList.attackDomain') }}
                 </el-col>
-                <el-row :span="1" class="attackFlow-container-text">
+                <el-row :span="2" class="attackFlow-container-text">
                 </el-row>
             </el-row>
             <el-scrollbar>
@@ -107,15 +111,21 @@
                             <el-row>
                                 <el-card :class="{'pointer-cursor timeline-card': true, 'selected-card': isSelected(item)}" @click="toggleSelect(item)">
                                     <el-row>
+                                        <el-col :span="5" class="attackFlow-container">
+                                            <el-card shadow="never"
+                                                :style="{ 'border-left': `5px solid ${getLevelColor(item.level)}` }">
+                                                <el-row>{{ item.title }}</el-row>
+                                            </el-card>
+                                        </el-col>
                                         <el-col :span="4" class="attackFlow-container">
                                             <el-space>
                                                 <el-icon :size="32">
                                                     <Monitor />
                                                 </el-icon>
-                                                {{ item.attackFlow?.fields[1].item.value ?? 'Unknown' }}
+                                                {{ item.attackFlow?.fields?.[1]?.item?.value ?? 'Unknown' }}
                                             </el-space>
                                         </el-col>
-                                        <el-col :span="6">
+                                        <el-col :span="5">
                                             <el-row>
                                                 <el-tooltip :content="item.attackFlow?.desc" placement="top">
                                                     <!-- <span class="eventTmpl-container">{{ item.attackFlow?.desc }}</span> -->
@@ -135,19 +145,11 @@
                                                         d="M901.12 0c67.8656 0 122.88 55.0144 122.88 122.88v778.24c0 67.8656-55.0144 122.88-122.88 122.88H122.88c-67.8656 0-122.88-55.0144-122.88-122.88V122.88C0 55.0144 55.0144 0 122.88 0h778.24z m0 40.96H122.88C78.17728 40.96 41.8304 76.76928 40.97536 121.2672L40.96 122.88v778.24c0 44.70272 35.80928 81.0496 80.3072 81.90464L122.88 983.04h778.24c44.70272 0 81.0496-35.80928 81.90464-80.3072L983.04 901.12V122.88c0-44.70272-35.80928-81.0496-80.3072-81.90464L901.12 40.96z m-215.52128 287.86176c35.16416 0.3328 63.83104 10.752 86.00064 31.24736 22.1696 20.66944 36.16768 46.24896 41.99936 76.7488H755.0976c-4.50048-14.66368-12.66688-27.16672-24.4992-37.49888-12.33408-9.8304-27.33568-14.91456-45.0048-15.24736-12.99456 0.3328-24.1664 2.9184-33.49504 7.74656-9.50272 5.00224-17.16736 11.25376-22.99904 18.74944-7.168 7.8336-11.91936 17.92-14.24896 30.25408-2.66752 12.99968-4.00384 37.41696-4.00384 73.24672v2.88256c0.0768 34.2528 1.408 57.5488 4.00384 69.86752 2.3296 12.66688 7.08096 22.91712 14.24896 30.75072 5.83168 7.5008 13.49632 13.58336 22.99904 18.2528 9.33376 5.49888 20.50048 8.2432 33.50016 8.2432 31.0016 0 54.1696-16.57856 69.49888-49.74592h58.50112c-8.00256 33.83296-23.24992 59.83232-45.75232 77.99808-23.16288 18.00192-50.5856 27.00288-82.24768 27.00288-28.672-0.6656-52.5824-7.66464-71.75168-21.00224-19.49696-12.83072-33.664-27.66336-42.496-44.49792a408.5248 408.5248 0 0 1-7.25504-15.74912c-1.9968-5.1712-3.66592-11.66848-4.99712-19.50208-2.49856-14.66368-3.75296-42.83392-3.75296-84.50048v-2.92864c0.06144-40.71424 1.31072-68.0704 3.75296-82.0736 2.6624-14.33088 6.74816-25.91232 12.24704-34.74432 8.83712-16.83456 23.00416-31.83616 42.50112-45.0048 19.16928-13.33248 43.0848-20.16256 71.75168-20.49536z m-309.67808 3.00032c49.3312 0.3328 86.33344 20.83328 111.0016 61.49632 8.832 13.6704 14.4128 28.0064 16.74752 43.00288 1.83296 15.0016 2.74944 40.91392 2.74944 77.7472 0 39.168-1.41824 66.50368-4.2496 82.00192-1.3312 7.8336-3.33312 14.83264-6.00064 20.99712a194.08896 194.08896 0 0 1-10.25024 18.75456c-10.66496 17.16224-25.4976 31.3344-44.49792 42.496-18.83648 12.00128-41.91744 18.00192-69.25312 18.00192H248.4224V331.82208z m-4.16256 52.21888l-2.08896 0.03072h-65.9968v259.9936H369.664c31.0016 0 53.504-10.57792 67.50208-31.744 6.16448-7.8336 10.0864-17.75104 11.7504-29.7472 1.50016-11.83744 2.2528-34.00192 2.2528-66.5088 0-31.66208-0.75264-54.32832-2.2528-67.9936-1.9968-13.6704-6.75328-24.75008-14.25408-33.24928-15.32928-21.1712-36.99712-31.42144-64.9984-30.75072z"
                                                         fill="#444444" p-id="25714"></path>
                                                 </svg>
-                                                {{ item.attackFlow?.fields[2].item.value }}
+                                                {{ item.attackFlow?.fields?.[2]?.item?.value ?? 'Unknown' }}
                                             </el-space>
                                         </el-col>
-                                        <el-col :span="1" class="attackFlow-container">
-                                            <LevelImage :level="item.level" />
-                                        </el-col>
-                                        <el-col :span="4" class="attackFlow-container">
-                                            <el-card shadow="never"
-                                                :style="{ width: '220px', 'border-left': `5px solid ${getLevelColor(item.level)}` }">
-                                                <el-row>{{ item.title }}</el-row></el-card>
-                                        </el-col>
                                         <el-col :span="4" class="attackFlow-container">{{ item.dcHostname }}</el-col>
-                                        <el-row :span="1" class="attackFlow-container">
+                                        <el-row :span="2" class="attackFlow-container">
                                             <el-button @click.stop="handleDetail(item, null)" :icon="ArrowRight">{{
                                                 $t('message.tableCommon.detail')
                                                 }}</el-button>
@@ -186,7 +188,7 @@ import { closeThreats, formatTemplate } from './operation';
 import AddWhiteDialog from './AddWhiteDialog.vue';
 import LevelCheckbox from '/@/components/level/checkbox.vue';
 import { Monitor, ArrowRight  } from '@element-plus/icons-vue';
-import { getLevelColor, OptionType } from '/@/utils/constant';
+import { getLevelColor, getLevelOptions2, OptionType } from '/@/utils/constant';
 import { listThreatRuleOptions } from '/@/api/grpc/method';
 import LevelImage from '/@/components/level/image.vue';
 
@@ -201,6 +203,7 @@ const isAutoRefresh = ref(false);
 const lastOccurenceTime = ref(getPrev1Year());
 const threatIds = ref<string[]>([]);
 const threatIdOptions = ref<OptionType[]>([]);
+const levelOptions = getLevelOptions2();
 const threatLevel = ref<number[]>([]);
 const eventStatus = ref<number>(0);
 const eventStatusOptions = [0, 1];
@@ -208,6 +211,8 @@ const eventStatusOptions = [0, 1];
 // Checkbox states for "Check All"
 const threatIdsCheckAll = ref(false);
 const threatIdsIndeterminate = ref(false);
+const levelCheckAll = ref(false);
+const levelIndeterminate = ref(false);
 
 const pageIdx = ref(1);
 const pageSize = ref(10);
@@ -397,6 +402,16 @@ const handleThreatIdsCheckAll = (val: boolean) => {
     }
 };
 
+// Handle level Select All
+const handleLevelCheckAll = (val: boolean) => {
+    levelIndeterminate.value = false;
+    if (val) {
+        threatLevel.value = levelOptions.map(opt => opt.value);
+    } else {
+        threatLevel.value = [];
+    }
+};
+
 onMounted(() => {
     refreshThreatTable();
 
@@ -438,7 +453,19 @@ watch(threatIds, (val) => {
     refreshThreatTable();
 });
 
-watch([lastOccurenceTime, threatLevel, eventStatus], () => {
+watch(threatLevel, (val) => {
+    levelIndeterminate.value = false;
+    if (val.length === 0) {
+        levelCheckAll.value = false;
+    } else if (val.length === levelOptions.length) {
+        levelCheckAll.value = true;
+    } else {
+        levelIndeterminate.value = true;
+    }
+    refreshThreatTable();
+});
+
+watch([lastOccurenceTime, eventStatus], () => {
     refreshThreatTable();
 });
 

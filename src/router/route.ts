@@ -49,10 +49,10 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		children: [
 			{
 				path: '/dashboard',
-				name: 'riskMarketIndex',
-				component: () => import('/@/views/riskMarket/index.vue'),
+				name: 'dashboardIndex',
+				component: () => import('/@/views/dashboard/index.vue'),
 				meta: {
-					title: 'message.router.riskMarketIndex',
+					title: 'message.router.dashboardIndex',
 					isLink: '',
 					isHide: false,
 					isKeepAlive: true,

@@ -169,7 +169,7 @@
 	</div>
 </template>
 
-<script setup lang="ts" name="riskMarketIndex">
+<script setup lang="ts" name="dashboardIndex">
 import { defineAsyncComponent, reactive, onMounted, watch, nextTick, onActivated, ref, markRaw, onUnmounted } from 'vue';
 import * as echarts from 'echarts';
 import 'echarts-wordcloud';
@@ -177,7 +177,7 @@ import { storeToRefs } from 'pinia';
 import { useTagsViewRoutes } from '/@/stores/tagsViewRoutes';
 import { getLevelColor, OptionType } from '/@/utils/constant';
 import { listDomainOptions } from '/@/api/grpc/method';
-import { transRiskMarket as T } from '/@/utils/translator';
+import { transDashboard as T } from '/@/utils/translator';
 import { useI18n } from 'vue-i18n';
 import api from '/@/api/grpc';
 import { DashboardStatsReq, DashboardTrendsReq, DashboardLogStatsReq } from '/@/api/grpc/ada';
@@ -187,7 +187,7 @@ import { formatDate } from '/@/utils/formatTime';
 const { t } = useI18n();
 
 // 引入组件
-const RiskMarketHead = defineAsyncComponent(() => import('/@/views/riskMarket/head.vue'));
+const DashboardHead = defineAsyncComponent(() => import('/@/views/dashboard/head.vue'));
 const FilpNumber = defineAsyncComponent(() => import('/@/components/flipNumber/FlipNumber.vue'))
 
 // 定义变量内容

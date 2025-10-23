@@ -74,7 +74,7 @@ export default {
 		layoutLinkView: '外鏈',
 		layoutIframeViewOne: '内嵌 iframe1',
 		layoutIframeViewTwo: '内嵌 iframe2',
-		riskMarketIndex: '安全大盘',
+		dashboardIndex: '安全大盘',
 		sycConfigIndex: '系统管理',
 		sycSettingIndex: '域控配置',
 		domainConfigIndex: '域控配置',

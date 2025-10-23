@@ -74,7 +74,7 @@ export default {
 		layoutLinkView: '外链',
 		layoutIframeViewOne: '内嵌 iframe1',
 		layoutIframeViewTwo: '内嵌 iframe2',
-		riskMarketIndex: '安全大盘',
+		dashboardIndex: '安全大盘',
 		sycConfigIndex: '系统',
 		sycSettingIndex: '域控配置',
 		domainConfigIndex: '域控配置',
@@ -1313,7 +1313,7 @@ export default {
 		alertDefaultSuccess: '操作成功',
 		alertDefaultFail: '服务器忙，请稍后重试',
 	},
-	riskMarket: {
+	dashboard: {
 		todayAlarmStats: '今日告警统计',
 		allDomains: '所有域',
 		topAlarmEventsToday: '今日告警事件TOP5',

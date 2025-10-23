@@ -41,8 +41,13 @@ export const transExport = (field: string, list: any[] = []) => {
     return i18n.global.t(`message.risk.export.${field}`, list);
 };
 
+export const transDashboard = (field: string, list: any[] = []) => {
+    return i18n.global.t(`message.dashboard.${field}`, list);
+};
+
+// Deprecated: Use transDashboard instead
 export const transRiskMarket = (field: string, list: any[] = []) => {
-    return i18n.global.t(`message.riskMarket.${field}`, list);
+    return i18n.global.t(`message.dashboard.${field}`, list);
 };
 
 export const transThreatBlock = (field: string, list: any[] = []) => {

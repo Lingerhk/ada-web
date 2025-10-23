@@ -74,7 +74,7 @@ export default {
 		layoutLinkView: 'LinkView',
 		layoutIframeViewOne: 'IframeViewOne',
 		layoutIframeViewTwo: 'IframeViewTwo',
-		riskMarketIndex: 'Dashboard',
+		dashboardIndex: 'Dashboard',
 		sycConfigIndex: 'Configuration',
 		sycSettingIndex: 'Active Directory',
 		domainConfigIndex: 'Domain Configuration',
@@ -1307,7 +1307,7 @@ export default {
 		alertDefaultSuccess: 'alertDefaultSuccess',
 		alertDefaultFail: 'alertDefaultFail',
 	},
-	riskMarket: {
+	dashboard: {
 		todayAlarmStats: 'Today Alarm Statistics',
 		allDomains: 'All Domains',
 		topAlarmEventsToday: 'Top 5 Alarm Events Today',

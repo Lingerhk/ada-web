@@ -46,10 +46,18 @@
 						</div>
 					</div>
 					<!-- Attack Flow Fields Tags -->
-					<div class="field-tags" v-if="state.data?.attackFlow?.fields?.length">
+					<div class="field-tags" v-if="filteredFieldData.length">
 						<el-space wrap :size="8">
-							<el-tooltip v-for="field in state.data?.attackFlow?.fields" :key="field.key" :content="field.key" placement="top">
-								<el-tag type="info" size="default">{{ field.value }}</el-tag>
+							<el-tooltip v-for="field in filteredFieldData" :key="field.fullKey" placement="top">
+								<template #content>
+									<div style="max-width: 300px;">
+										<strong>{{ field.key }}</strong><br/>
+										{{ field.fullKey }}
+									</div>
+								</template>
+								<el-tag type="info" size="default">
+									<strong>{{ field.key }}:</strong> {{ field.value }}
+								</el-tag>
 							</el-tooltip>
 						</el-space>
 					</div>
@@ -71,10 +79,16 @@
 						<el-divider content-position="center">Attack Flow</el-divider>
 						<div class="flow-container">
 							<div class="flow-items">
-								<div v-for="(field, index) in state.data?.attackFlow?.fields" :key="field.key" class="flow-item-wrapper">
+								<div
+									v-for="(field, index) in state.data?.attackFlow?.fields"
+									:key="field.key"
+									class="flow-item-wrapper"
+									:style="{ '--item-index': index }"
+								>
 									<div class="flow-item">
 										<el-tooltip :content="field.key" placement="top">
 											<div class="flow-icon-wrapper">
+												<div class="pulse-ring"></div>
 												<el-image class="flow-icon" :src="getImage(field.obj)" fit="contain" />
 											</div>
 										</el-tooltip>
@@ -84,7 +98,9 @@
 									</div>
 									<!-- Arrow/Relation -->
 									<div v-if="index < state.data?.attackFlow?.relates?.length" class="flow-arrow">
-										<div class="arrow-line"></div>
+										<div class="arrow-line">
+											<div class="arrow-particle"></div>
+										</div>
 										<div class="arrow-label">{{ state.data?.attackFlow?.relates[index] }}</div>
 										<div class="arrow-head"></div>
 									</div>
@@ -187,19 +203,6 @@
 								<p v-else class="content-text">{{ state.data?.desc }}</p>
 							</div>
 						</el-collapse-item>
-						<!-- False Positive Verification -->
-						<el-collapse-item name="verify">
-							<template #title>
-								<div class="collapse-title">
-									<el-icon class="collapse-icon"><Search /></el-icon>
-									<span>{{ T('verifyDesc') }}</span>
-								</div>
-							</template>
-							<div class="collapse-content">
-								<el-empty v-if="!state.data?.references" description="No reference available" :image-size="60" />
-								<p v-else class="content-text">{{ state.data?.references }}</p>
-							</div>
-						</el-collapse-item>
 						<!-- Remediation Suggestions -->
 						<el-collapse-item name="suggestion">
 							<template #title>
@@ -213,17 +216,66 @@
 								<p v-else class="content-text">{{ state.data?.suggestion }}</p>
 							</div>
 						</el-collapse-item>
+						<!-- References -->
+						<el-collapse-item name="verify">
+							<template #title>
+								<div class="collapse-title">
+									<el-icon class="collapse-icon"><Link /></el-icon>
+									<span>{{ T('verifyDesc') }}</span>
+									<el-badge v-if="state.data?.references?.length" :value="state.data.references.length" class="reference-badge" type="primary" />
+								</div>
+							</template>
+							<div class="collapse-content">
+								<el-empty v-if="!state.data?.references?.length" description="No references available" :image-size="60" />
+								<div v-else class="reference-list">
+									<div v-for="(ref, index) in state.data.references" :key="index" class="reference-item">
+										<el-icon class="reference-icon"><Document /></el-icon>
+										<a v-if="isUrl(ref)" :href="ref" target="_blank" rel="noopener noreferrer" class="reference-link">
+											{{ ref }}
+											<el-icon class="external-link-icon"><TopRight /></el-icon>
+										</a>
+										<span v-else class="reference-text">{{ ref }}</span>
+									</div>
+								</div>
+							</div>
+						</el-collapse-item>
 						<!-- Remarks -->
 						<el-collapse-item name="remark">
 							<template #title>
 								<div class="collapse-title">
 									<el-icon class="collapse-icon"><EditPen /></el-icon>
 									<span>{{ T('remark') }}</span>
+									<el-badge v-if="remarkHistory.length" :value="remarkHistory.length" class="reference-badge" type="primary" />
+									<el-button
+										v-if="state.data"
+										size="small"
+										type="primary"
+										link
+										@click.stop="openRemarkDialog"
+										style="margin-left: auto"
+									>
+										<el-icon><Edit /></el-icon>
+										{{ $t('message.tableCommon.edit') }}
+									</el-button>
 								</div>
 							</template>
 							<div class="collapse-content">
-								<el-empty v-if="!state.data?.remark" description="No remarks available" :image-size="60" />
-								<p v-else class="content-text">{{ state.data?.remark }}</p>
+								<el-empty v-if="!remarkHistory.length" description="No remarks available" :image-size="60" />
+								<el-timeline v-else class="remark-timeline">
+									<el-timeline-item
+										v-for="(item, index) in remarkHistory"
+										:key="index"
+										:color="index === 0 ? '#409eff' : '#909399'"
+									>
+										<div class="remark-item">
+											<div class="remark-header">
+												<el-tag size="small" type="info">{{ item.user }}</el-tag>
+												<span class="remark-time">{{ item.time }}</span>
+											</div>
+											<div class="remark-text">{{ item.text }}</div>
+										</div>
+									</el-timeline-item>
+								</el-timeline>
 							</div>
 						</el-collapse-item>
 					</el-collapse>
@@ -247,14 +299,45 @@
 			<el-button @click="state.ruleView.visible = false">{{ $t('message.tableCommon.close') }}</el-button>
 		</template>
 	</el-dialog>
+
+	<!-- Remark Edit Dialog -->
+	<el-dialog v-model="state.remarkDialog.visible" :title="T('remark')" width="600px">
+		<el-form :model="state.remarkDialog" label-width="100px">
+			<el-form-item :label="$t('message.tableCommon.remark')">
+				<el-input
+					v-model="state.remarkDialog.text"
+					type="textarea"
+					:rows="4"
+					:maxlength="128"
+					show-word-limit
+					:placeholder="$t('message.threat.remarkPlaceholder')"
+				/>
+			</el-form-item>
+			<el-alert
+				v-if="remarkHistory.length >= 10"
+				:title="$t('message.threat.remarkLimitWarning')"
+				type="warning"
+				:closable="false"
+				show-icon
+				style="margin-bottom: 16px"
+			/>
+		</el-form>
+		<template #footer>
+			<el-button @click="state.remarkDialog.visible = false">{{ $t('message.tableCommon.cancel') }}</el-button>
+			<el-button type="primary" @click="handleSaveRemark" :loading="state.remarkDialog.saving" :disabled="!state.remarkDialog.text.trim() || remarkHistory.length >= 10">
+				{{ $t('message.tableCommon.save') }}
+			</el-button>
+		</template>
+	</el-dialog>
 </template>
 
 <script setup lang="ts">
 import { computed, reactive, watch, ref } from 'vue';
-import { ActivityDetails, AttackFlowReply_Field, GetThreatReply, GetThreatReq, ListActivityReply, ListActivityReq, GetActivityRuleReq } from '/@/api/grpc/ada';
+import { ActivityDetails, AttackFlowReply_Field, GetThreatReply, GetThreatReq, ListActivityReply, ListActivityReq, GetActivityRuleReq, ActionThreatReq } from '/@/api/grpc/ada';
 import api from '/@/api/grpc';
 import { alertApiError } from '/@/utils/error';
 import { formatApiTime } from '/@/utils/formatTime';
+import { ElMessage } from 'element-plus';
 import {
 	ArrowDown,
 	Clock,
@@ -266,14 +349,17 @@ import {
 	Notebook,
 	Tickets,
 	Warning,
-	Search,
-	EditPen
+	EditPen,
+	Link,
+	TopRight,
+	Edit
 } from '@element-plus/icons-vue';
 import { closeThreats } from './operation';
 import { useI18n } from 'vue-i18n';
 import { JsonViewer } from 'vue3-json-viewer';
 import { transAlarmList as T } from '/@/utils/translator';
 import AddWhiteDialog from './AddWhiteDialog.vue';
+import { Local } from '/@/utils/storage';
 import DcImage from '/@/assets/dc.jpg';
 import IpImage from '/@/assets/ip.jpg';
 import UserImage from '/@/assets/user.jpg';
@@ -289,6 +375,12 @@ hljs.registerLanguage('yaml', yamlLang);
 const { t } = useI18n();
 
 const evidenceTable = ref();
+
+interface RemarkItem {
+	time: string;
+	user: string;
+	text: string;
+}
 
 const state = reactive({
 	open: false,
@@ -316,6 +408,11 @@ const state = reactive({
 		yamlContent: '',
 		highlightedYaml: '',
 	},
+	remarkDialog: {
+		visible: false,
+		text: '',
+		saving: false,
+	},
 });
 
 const handleSizeChange = (val: number) => {
@@ -334,6 +431,96 @@ const updateActivityPage = () => {
 	const end = start + state.activity.pageSize;
 	state.activity.data = state.activity.allData.slice(start, end);
 	console.log(`Showing activities ${start + 1} to ${Math.min(end, state.activity.total)} of ${state.activity.total}`);
+};
+
+const remarkHistory = computed<RemarkItem[]>(() => {
+	if (!state.data?.remark) {
+		return [];
+	}
+	try {
+		const parsed = JSON.parse(state.data.remark);
+		if (Array.isArray(parsed)) {
+			return parsed as RemarkItem[];
+		}
+		return [];
+	} catch {
+		// If remark is not valid JSON, treat as legacy single remark
+		return [];
+	}
+});
+
+const openRemarkDialog = () => {
+	state.remarkDialog.text = '';
+	state.remarkDialog.visible = true;
+};
+
+const handleSaveRemark = async () => {
+	if (!state.data || !state.remarkDialog.text.trim()) {
+		return;
+	}
+
+	// Validate: max 10 remarks
+	if (remarkHistory.value.length >= 10) {
+		ElMessage.warning(t('message.threat.remarkLimitWarning'));
+		return;
+	}
+
+	state.remarkDialog.saving = true;
+
+	try {
+		// Get current user from Local storage (set during login)
+		const currentUser = Local.get('userName') || 'Unknown User';
+
+		// Create new remark item
+		const newRemark: RemarkItem = {
+			time: new Date().toLocaleString('zh-CN', {
+				year: 'numeric',
+				month: '2-digit',
+				day: '2-digit',
+				hour: '2-digit',
+				minute: '2-digit',
+				second: '2-digit',
+				hour12: false
+			}),
+			user: currentUser,
+			text: state.remarkDialog.text.trim(),
+		};
+
+		// Add new remark to the beginning of the array
+		const updatedRemarks = [newRemark, ...remarkHistory.value];
+
+		// Convert to JSON string
+		const remarkJson = JSON.stringify(updatedRemarks);
+
+		// Call ActionThreat API
+		const req: ActionThreatReq = {
+			iD: state.data.iD,
+			eventStatus: state.data.eventStatus || 0,
+			remark: remarkJson,
+		};
+
+		const result = await api.actionThreat(req).then((resp) => resp.response);
+
+		if (result.result.toUpperCase() === 'SUCCESS') {
+			ElMessage.success(t('message.tableCommon.saveSuccess'));
+
+			// Update local state
+			if (state.data) {
+				state.data.remark = remarkJson;
+			}
+
+			// Close dialog
+			state.remarkDialog.visible = false;
+			state.remarkDialog.text = '';
+		} else {
+			ElMessage.error(t('message.tableCommon.saveFailed'));
+		}
+	} catch (err) {
+		console.error('Save remark error:', err);
+		alertApiError(err);
+	} finally {
+		state.remarkDialog.saving = false;
+	}
 };
 
 const getImage = (type: string) => {
@@ -415,21 +602,103 @@ watch(
 );
 
 const formattedTmpl = computed(() => {
-	// 使用正则表达式匹配并处理文本
+	// Parse explanation template and replace [xxx] with fieldData values
 	if (!state.data || !state.data.attackFlow?.desc) {
 		return '';
 	}
 
-	const parts = state.data.attackFlow.desc.split(/(\[[^\]]+\])/);
+	const fieldData = state.data.fieldData || {};
+	const template = state.data.attackFlow.desc;
+
+	// Helper function to get field value from fieldData
+	const getFieldValue = (fieldKey: string): string | null => {
+		// Try different possible key formats
+		const possibleKeys = [
+			`$s1.field_${fieldKey}`,
+			`$s1.${fieldKey}`,
+			`field_${fieldKey}`,
+			fieldKey
+		];
+
+		for (const key of possibleKeys) {
+			if (fieldData[key] && fieldData[key] !== '' && fieldData[key] !== '-') {
+				return fieldData[key];
+			}
+		}
+		return null;
+	};
+
+	// Split template by [xxx] placeholders
+	const parts = template.split(/(\[[^\]]+\])/);
+
 	return parts
 		.map((part) => {
 			if (part.startsWith('[') && part.endsWith(']')) {
-				return `<span style="color: green;">${part}</span>`;
+				// Extract field key(s) from [xxx]
+				const fieldKeys = part.slice(1, -1); // Remove [ and ]
+
+				// Handle multiple keys separated by comma: [key1,key2,key3]
+				// Loop through keys and return the FIRST non-empty value
+				const keys = fieldKeys.split(',').map(k => k.trim());
+
+				// Find first non-empty value
+				for (const key of keys) {
+					const value = getFieldValue(key);
+					if (value) {
+						// Found first valid value, return it immediately
+						return `<span style="color: #67c23a; font-weight: 600;">${value}</span>`;
+					}
+				}
+
+				// No valid values found, show placeholder in gray
+				return `<span style="color: #909399; font-style: italic;">[${fieldKeys}]</span>`;
 			}
 			return part;
 		})
 		.join('');
 });
+
+const filteredFieldData = computed(() => {
+	if (!state.data?.fieldData) {
+		return [];
+	}
+
+	// Internal/system fields to exclude (prefixed with $ or internal metadata)
+	const excludeFields = ['eid', 'sid', 'timestamp', 'unique_key', 'mid', 'unique_id'];
+
+	// Filter and format fieldData
+	return Object.entries(state.data.fieldData)
+		.filter(([key, value]) => {
+			// Exclude empty values and "-" values
+			if (!value || value === '' || value === '-') {
+				return false;
+			}
+			// Exclude internal fields
+			const fieldName = key.replace(/^\$s\d+\./, ''); // Remove $s1. prefix
+			if (excludeFields.includes(fieldName)) {
+				return false;
+			}
+			return true;
+		})
+		.map(([key, value]) => {
+			// Extract the field name (remove $s1. prefix if exists)
+			const cleanKey = key.replace(/^\$s\d+\.field_/, '').replace(/^\$s\d+\./, '');
+			return {
+				key: cleanKey,
+				fullKey: key,
+				value: value
+			};
+		});
+});
+
+const isUrl = (text: string): boolean => {
+	try {
+		const url = new URL(text);
+		return url.protocol === 'http:' || url.protocol === 'https:';
+	} catch {
+		return false;
+	}
+};
 
 const getLevelType = (level: number): string => {
 	const typeMap: Record<number, string> = {
@@ -639,6 +908,20 @@ defineExpose({
 						display: flex;
 						align-items: center;
 						gap: 16px;
+						opacity: 0;
+						animation: fadeInUp 0.6s ease forwards;
+						animation-delay: calc(var(--item-index) * 0.2s);
+					}
+
+					@keyframes fadeInUp {
+						from {
+							opacity: 0;
+							transform: translateY(30px);
+						}
+						to {
+							opacity: 1;
+							transform: translateY(0);
+						}
 					}
 
 					.flow-item {
@@ -650,27 +933,61 @@ defineExpose({
 						background: white;
 						border-radius: 12px;
 						box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-						transition: all 0.3s ease;
+						transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
 						&:hover {
-							transform: translateY(-4px);
-							box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+							transform: translateY(-8px) scale(1.05);
+							box-shadow: 0 8px 30px rgba(64, 158, 255, 0.3);
+
+							.flow-icon-wrapper {
+								.pulse-ring {
+									animation: pulse 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+								}
+							}
 						}
 
 						.flow-icon-wrapper {
+							position: relative;
 							width: 80px;
 							height: 80px;
 							display: flex;
 							align-items: center;
 							justify-content: center;
-							background: #f5f7fa;
+							background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 							border-radius: 50%;
 							padding: 12px;
+							box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+
+							.pulse-ring {
+								position: absolute;
+								width: 100%;
+								height: 100%;
+								border: 3px solid #667eea;
+								border-radius: 50%;
+								opacity: 0;
+							}
+
+							@keyframes pulse {
+								0% {
+									transform: scale(0.95);
+									opacity: 0.7;
+								}
+								50% {
+									transform: scale(1.15);
+									opacity: 0.3;
+								}
+								100% {
+									transform: scale(1.35);
+									opacity: 0;
+								}
+							}
 
 							.flow-icon {
 								width: 100%;
 								height: 100%;
 								border-radius: 8px;
+								position: relative;
+								z-index: 1;
 							}
 						}
 
@@ -692,9 +1009,40 @@ defineExpose({
 						padding: 0 12px;
 
 						.arrow-line {
+							position: relative;
 							width: 40px;
 							height: 2px;
 							background: linear-gradient(90deg, #409eff 0%, #67c23a 100%);
+							overflow: hidden;
+
+							.arrow-particle {
+								position: absolute;
+								width: 8px;
+								height: 8px;
+								background: radial-gradient(circle, #fff 0%, #409eff 100%);
+								border-radius: 50%;
+								top: 50%;
+								transform: translateY(-50%);
+								animation: flowParticle 2s linear infinite;
+								box-shadow: 0 0 10px #409eff;
+							}
+
+							@keyframes flowParticle {
+								0% {
+									left: -8px;
+									opacity: 0;
+								}
+								10% {
+									opacity: 1;
+								}
+								90% {
+									opacity: 1;
+								}
+								100% {
+									left: 40px;
+									opacity: 0;
+								}
+							}
 						}
 
 						.arrow-label {
@@ -705,6 +1053,13 @@ defineExpose({
 							background: #f0f9ff;
 							border-radius: 4px;
 							font-weight: 500;
+							transition: all 0.3s ease;
+
+							&:hover {
+								background: #409eff;
+								color: white;
+								transform: scale(1.1);
+							}
 						}
 
 						.arrow-head {
@@ -713,6 +1068,16 @@ defineExpose({
 							border-left: 8px solid #67c23a;
 							border-top: 5px solid transparent;
 							border-bottom: 5px solid transparent;
+							animation: arrowBounce 1.5s ease-in-out infinite;
+						}
+
+						@keyframes arrowBounce {
+							0%, 100% {
+								transform: translateX(0);
+							}
+							50% {
+								transform: translateX(4px);
+							}
 						}
 					}
 				}
@@ -764,6 +1129,10 @@ defineExpose({
 				font-size: 18px;
 				color: #409eff;
 			}
+
+			.reference-badge {
+				margin-left: 8px;
+			}
 		}
 
 		.collapse-content {
@@ -778,6 +1147,95 @@ defineExpose({
 				line-height: 1.8;
 				color: #606266;
 				white-space: pre-wrap;
+			}
+
+			.remark-timeline {
+				padding: 8px 0;
+
+				.remark-item {
+					.remark-header {
+						display: flex;
+						align-items: center;
+						gap: 12px;
+						margin-bottom: 8px;
+
+						.remark-time {
+							font-size: 13px;
+							color: #909399;
+						}
+					}
+
+					.remark-text {
+						font-size: 14px;
+						line-height: 1.6;
+						color: #606266;
+						padding: 12px;
+						background: #ffffff;
+						border-radius: 6px;
+						border: 1px solid #e4e7ed;
+						white-space: pre-wrap;
+						word-break: break-word;
+					}
+				}
+			}
+
+			.reference-list {
+				display: flex;
+				flex-direction: column;
+				gap: 12px;
+
+				.reference-item {
+					display: flex;
+					align-items: flex-start;
+					gap: 10px;
+					padding: 12px;
+					background: #ffffff;
+					border-radius: 8px;
+					border: 1px solid #e4e7ed;
+					transition: all 0.3s ease;
+
+					&:hover {
+						border-color: #409eff;
+						box-shadow: 0 2px 8px rgba(64, 158, 255, 0.1);
+					}
+
+					.reference-icon {
+						flex-shrink: 0;
+						margin-top: 2px;
+						font-size: 16px;
+						color: #909399;
+					}
+
+					.reference-link {
+						flex: 1;
+						font-size: 14px;
+						color: #409eff;
+						text-decoration: none;
+						word-break: break-all;
+						line-height: 1.6;
+						display: flex;
+						align-items: center;
+						gap: 6px;
+
+						&:hover {
+							color: #66b1ff;
+							text-decoration: underline;
+						}
+
+						.external-link-icon {
+							flex-shrink: 0;
+							font-size: 14px;
+						}
+					}
+
+					.reference-text {
+						flex: 1;
+						font-size: 14px;
+						color: #606266;
+						line-height: 1.6;
+						word-break: break-all;
+					}
+				}
 			}
 		}
 	}

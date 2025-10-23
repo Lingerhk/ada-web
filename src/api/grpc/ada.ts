@@ -2447,7 +2447,7 @@ export interface ActionThreatReq {
     /**
      * @generated from protobuf field: int32 eventStatus = 2;
      */
-    eventStatus: number; // [(validator.field) = {int_gt: 0, int_lt:4}]; // 事件状态,可更新为 1:已处理 2:已加白 3:已阻断
+    eventStatus: number; // [(validator.field) = {int_gt: -1, int_lt: 4}]; // 事件状态: 0:未处理 1:已处理 2:已加白 3:已阻断
     /**
      * @generated from protobuf field: string remark = 3;
      */

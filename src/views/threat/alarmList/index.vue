@@ -179,18 +179,16 @@
 <script setup lang="ts">
 
 import { defineAsyncComponent, onMounted, onUnmounted, ref, watch } from 'vue';
-import { formatApiTime, formatDate, getPrev1Year, getPrev7Days, shortcuts } from '/@/utils/formatTime';
+import { formatApiTime, formatDate, getPrev1Year, shortcuts } from '/@/utils/formatTime';
 import { ListThreatReply, ListThreatReply_Details, ListThreatReq } from '/@/api/grpc/ada';
 import api from '/@/api/grpc';
 import { ElMessage } from 'element-plus';
 import { useI18n } from 'vue-i18n';
 import { closeThreats, formatTemplate } from './operation';
 import AddWhiteDialog from './AddWhiteDialog.vue';
-import LevelCheckbox from '/@/components/level/checkbox.vue';
 import { Monitor, ArrowRight  } from '@element-plus/icons-vue';
 import { getLevelColor, getLevelOptions2, OptionType } from '/@/utils/constant';
 import { listThreatRuleOptions } from '/@/api/grpc/method';
-import LevelImage from '/@/components/level/image.vue';
 
 const { t } = useI18n();
 

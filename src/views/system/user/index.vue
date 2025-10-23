@@ -2,42 +2,42 @@
 	<div class="system-user-container layout-padding">
 		<el-card shadow="hover" class="layout-padding-auto">
 			<div class="system-user-search mb15">
-				<el-input size="default" placeholder="请输入用户名称" style="max-width: 180px"> </el-input>
+				<el-input size="default" :placeholder="$t('message.system.user.searchPlaceholder')" style="max-width: 180px"> </el-input>
 				<el-button size="default" type="primary" class="ml10">
 					<el-icon>
 						<ele-Search />
 					</el-icon>
-					查询
+					{{ $t('message.system.user.search') }}
 				</el-button>
 				<el-button size="default" type="success" class="ml10" @click="onOpenAddUser('add')">
 					<el-icon>
 						<ele-FolderAdd />
 					</el-icon>
-					新增用户
+					{{ $t('message.system.user.addUser') }}
 				</el-button>
 			</div>
 			<el-table :data="state.tableData.data" v-loading="state.tableData.loading" style="width: 100%">
-				<el-table-column type="index" label="序号" width="60" />
-				<el-table-column prop="userName" label="账户名称" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="userNickname" label="用户昵称" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="roleSign" label="关联角色" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="department" label="部门" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="phone" label="手机号" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="email" label="邮箱" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="status" label="用户状态" show-overflow-tooltip>
+				<el-table-column type="index" :label="$t('message.system.user.serialNumber')" width="60" />
+				<el-table-column prop="userName" :label="$t('message.system.user.userName')" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="userNickname" :label="$t('message.system.user.userNickname')" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="roleSign" :label="$t('message.system.user.roleSign')" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="department" :label="$t('message.system.user.department')" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="phone" :label="$t('message.system.user.phone')" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="email" :label="$t('message.system.user.email')" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="status" :label="$t('message.system.user.userStatus')" show-overflow-tooltip>
 					<template #default="scope">
-						<el-tag type="success" v-if="scope.row.status">启用</el-tag>
-						<el-tag type="info" v-else>禁用</el-tag>
+						<el-tag type="success" v-if="scope.row.status">{{ $t('message.system.user.enabled') }}</el-tag>
+						<el-tag type="info" v-else>{{ $t('message.system.user.disabled') }}</el-tag>
 					</template>
 				</el-table-column>
-				<el-table-column prop="describe" label="用户描述" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="createTime" label="创建时间" show-overflow-tooltip></el-table-column>
-				<el-table-column label="操作" width="100">
+				<el-table-column prop="describe" :label="$t('message.system.user.describe')" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="createTime" :label="$t('message.system.user.createTime')" show-overflow-tooltip></el-table-column>
+				<el-table-column :label="$t('message.system.user.operation')" width="100">
 					<template #default="scope">
 						<el-button :disabled="scope.row.userName === 'admin'" size="small" text type="primary" @click="onOpenEditUser('edit', scope.row)"
-							>修改</el-button
+							>{{ $t('message.system.user.edit') }}</el-button
 						>
-						<el-button :disabled="scope.row.userName === 'admin'" size="small" text type="primary" @click="onRowDel(scope.row)">删除</el-button>
+						<el-button :disabled="scope.row.userName === 'admin'" size="small" text type="primary" @click="onRowDel(scope.row)">{{ $t('message.system.user.delete') }}</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -62,6 +62,9 @@
 <script setup lang="ts" name="systemUser">
 import { defineAsyncComponent, reactive, onMounted, ref } from 'vue';
 import { ElMessageBox, ElMessage } from 'element-plus';
+import { useI18n } from 'vue-i18n';
+
+const { t: $t } = useI18n();
 
 // 引入组件
 const UserDialog = defineAsyncComponent(() => import('/@/views/system/user/dialog.vue'));
@@ -116,14 +119,14 @@ const onOpenEditUser = (type: string, row: RowUserType) => {
 };
 // 删除用户
 const onRowDel = (row: RowUserType) => {
-	ElMessageBox.confirm(`此操作将永久删除账户名称：“${row.userName}”，是否继续?`, '提示', {
-		confirmButtonText: '确认',
-		cancelButtonText: '取消',
+	ElMessageBox.confirm($t('message.system.user.deleteConfirm', [row.userName]), $t('message.system.user.deleteConfirmTitle'), {
+		confirmButtonText: $t('message.system.user.confirm'),
+		cancelButtonText: $t('message.system.user.cancel'),
 		type: 'warning',
 	})
 		.then(() => {
 			getTableData();
-			ElMessage.success('删除成功');
+			ElMessage.success($t('message.system.user.deleteSuccess'));
 		})
 		.catch(() => {});
 };

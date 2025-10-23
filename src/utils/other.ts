@@ -55,7 +55,7 @@ export function setTagsViewNameI18n(item: any) {
 	const { query, params, meta } = item;
 	// 修复tagsViewName匹配到其他含下列单词的路由
 	// https://gitee.com/lyt-top/vue-next-admin/pulls/44/files
-	const pattern = /^\{("(zh-cn|en|zh-tw)":"[^,]+",?){1,3}}$/;
+	const pattern = /^\{("(zh-cn|en)":"[^,]+",?){1,2}}$/;
 	if (query?.tagsViewName || params?.tagsViewName) {
 		if (pattern.test(query?.tagsViewName) || pattern.test(params?.tagsViewName)) {
 			// 国际化

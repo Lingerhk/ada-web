@@ -142,7 +142,7 @@ export const useThemeConfig = defineStore('themeConfig', {
 			globalViceTitle: 'AD Aegis Protection',
 			// 网站副标题（登录页顶部文字）
 			globalViceTitleMsg: 'AD Aegis Protection',
-			// 默认初始语言，可选值"<zh-cn|en|zh-tw>"，默认 zh-cn
+			// 默认初始语言，可选值"<zh-cn|en>"，默认 zh-cn
 			globalI18n: 'zh-cn',
 			// 默认全局组件大小，可选值"<large|'default'|small>"，默认 'large'
 			globalComponentSize: 'default',

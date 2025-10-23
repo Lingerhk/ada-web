@@ -4,29 +4,29 @@
 			<el-form ref="userDialogFormRef" :model="state.ruleForm" size="default" label-width="90px">
 				<el-row :gutter="35">
 					<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-						<el-form-item label="账户名称">
-							<el-input v-model="state.ruleForm.userName" placeholder="请输入账户名称" clearable></el-input>
+						<el-form-item :label="$t('message.system.user.userName')">
+							<el-input v-model="state.ruleForm.userName" :placeholder="$t('message.system.user.userNamePlaceholder')" clearable></el-input>
 						</el-form-item>
 					</el-col>
 					<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-						<el-form-item label="用户昵称">
-							<el-input v-model="state.ruleForm.userNickname" placeholder="请输入用户昵称" clearable></el-input>
+						<el-form-item :label="$t('message.system.user.userNickname')">
+							<el-input v-model="state.ruleForm.userNickname" :placeholder="$t('message.system.user.userNicknamePlaceholder')" clearable></el-input>
 						</el-form-item>
 					</el-col>
 					<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-						<el-form-item label="关联角色">
-							<el-select v-model="state.ruleForm.roleSign" placeholder="请选择" clearable class="w100">
-								<el-option label="超级管理员" value="admin"></el-option>
-								<el-option label="普通用户" value="common"></el-option>
+						<el-form-item :label="$t('message.system.user.roleSign')">
+							<el-select v-model="state.ruleForm.roleSign" :placeholder="$t('message.system.user.roleSignPlaceholder')" clearable class="w100">
+								<el-option :label="$t('message.system.user.roleAdmin')" value="admin"></el-option>
+								<el-option :label="$t('message.system.user.roleCommon')" value="common"></el-option>
 							</el-select>
 						</el-form-item>
 					</el-col>
 					<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-						<el-form-item label="部门">
+						<el-form-item :label="$t('message.system.user.department')">
 							<el-cascader
 								:options="state.deptData"
 								:props="{ checkStrictly: true, value: 'deptName', label: 'deptName' }"
-								placeholder="请选择部门"
+								:placeholder="$t('message.system.user.departmentPlaceholder')"
 								clearable
 								class="w100"
 								v-model="state.ruleForm.department"
@@ -39,48 +39,48 @@
 						</el-form-item>
 					</el-col>
 					<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-						<el-form-item label="手机号">
-							<el-input v-model="state.ruleForm.phone" placeholder="请输入手机号" clearable></el-input>
+						<el-form-item :label="$t('message.system.user.phone')">
+							<el-input v-model="state.ruleForm.phone" :placeholder="$t('message.system.user.phonePlaceholder')" clearable></el-input>
 						</el-form-item>
 					</el-col>
 					<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-						<el-form-item label="邮箱">
-							<el-input v-model="state.ruleForm.email" placeholder="请输入" clearable></el-input>
+						<el-form-item :label="$t('message.system.user.email')">
+							<el-input v-model="state.ruleForm.email" :placeholder="$t('message.system.user.emailPlaceholder')" clearable></el-input>
 						</el-form-item>
 					</el-col>
 					<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-						<el-form-item label="性别">
-							<el-select v-model="state.ruleForm.sex" placeholder="请选择" clearable class="w100">
-								<el-option label="男" value="男"></el-option>
-								<el-option label="女" value="女"></el-option>
+						<el-form-item :label="$t('message.system.user.sex')">
+							<el-select v-model="state.ruleForm.sex" :placeholder="$t('message.system.user.sexPlaceholder')" clearable class="w100">
+								<el-option :label="$t('message.system.user.sexMale')" value="男"></el-option>
+								<el-option :label="$t('message.system.user.sexFemale')" value="女"></el-option>
 							</el-select>
 						</el-form-item>
 					</el-col>
 					<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-						<el-form-item label="账户密码">
-							<el-input v-model="state.ruleForm.password" placeholder="请输入" type="password" clearable></el-input>
+						<el-form-item :label="$t('message.system.user.password')">
+							<el-input v-model="state.ruleForm.password" :placeholder="$t('message.system.user.passwordPlaceholder')" type="password" clearable></el-input>
 						</el-form-item>
 					</el-col>
 					<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-						<el-form-item label="账户过期">
-							<el-date-picker v-model="state.ruleForm.overdueTime" type="date" placeholder="请选择" class="w100"> </el-date-picker>
+						<el-form-item :label="$t('message.system.user.overdueTime')">
+							<el-date-picker v-model="state.ruleForm.overdueTime" type="date" :placeholder="$t('message.system.user.overdueTimePlaceholder')" class="w100"> </el-date-picker>
 						</el-form-item>
 					</el-col>
 					<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-						<el-form-item label="用户状态">
-							<el-switch v-model="state.ruleForm.status" inline-prompt active-text="启" inactive-text="禁"></el-switch>
+						<el-form-item :label="$t('message.system.user.userStatus')">
+							<el-switch v-model="state.ruleForm.status" inline-prompt :active-text="$t('message.system.user.statusActive')" :inactive-text="$t('message.system.user.statusInactive')"></el-switch>
 						</el-form-item>
 					</el-col>
 					<el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
-						<el-form-item label="用户描述">
-							<el-input v-model="state.ruleForm.describe" type="textarea" placeholder="请输入用户描述" maxlength="150"></el-input>
+						<el-form-item :label="$t('message.system.user.describe')">
+							<el-input v-model="state.ruleForm.describe" type="textarea" :placeholder="$t('message.system.user.describePlaceholder')" maxlength="150"></el-input>
 						</el-form-item>
 					</el-col>
 				</el-row>
 			</el-form>
 			<template #footer>
 				<span class="dialog-footer">
-					<el-button @click="onCancel" size="default">取 消</el-button>
+					<el-button @click="onCancel" size="default">{{ $t('message.system.user.cancel') }}</el-button>
 					<el-button type="primary" @click="onSubmit" size="default">{{ state.dialog.submitTxt }}</el-button>
 				</span>
 			</template>
@@ -90,6 +90,9 @@
 
 <script setup lang="ts" name="systemUserDialog">
 import { reactive, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t: $t } = useI18n();
 
 // 定义子组件向父组件传值/事件
 const emit = defineEmits(['refresh']);
@@ -123,11 +126,11 @@ const state = reactive({
 const openDialog = (type: string, row: RowUserType) => {
 	if (type === 'edit') {
 		state.ruleForm = row;
-		state.dialog.title = '修改用户';
-		state.dialog.submitTxt = '修 改';
+		state.dialog.title = $t('message.system.user.editUserTitle');
+		state.dialog.submitTxt = $t('message.system.user.update');
 	} else {
-		state.dialog.title = '新增用户';
-		state.dialog.submitTxt = '新 增';
+		state.dialog.title = $t('message.system.user.addUserTitle');
+		state.dialog.submitTxt = $t('message.system.user.submit');
 		// 清空表单，此项需加表单验证才能使用
 		// nextTick(() => {
 		// 	userDialogFormRef.value.resetFields();

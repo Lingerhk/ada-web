@@ -279,6 +279,8 @@ export default {
 			'3': '已阻断',
 			type_0: 'danger',
 			type_1: 'success',
+			type_2: 'info',
+			type_3: 'warning',
 			type_undefined: 'danger',
 		},
 		confirm: {

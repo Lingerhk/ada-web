@@ -39,7 +39,7 @@ enum TerminalStateEnum {
   INIT = 'Init',
   LOADING = 'Loading',
   READY = 'Ready',
-};
+}
 
 const terminal = ref(null);
 const fitAddon = new FitAddon();

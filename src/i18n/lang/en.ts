@@ -1134,6 +1134,7 @@ export default {
 			eventArgs: 'eventArgs',
 			eventResult: 'eventResult',
 			createTm: 'createTm',
+			detailTitle: 'Audit Log Detail',
 		},
 		monitor: {
 			hour: '{0} hours',

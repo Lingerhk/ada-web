@@ -1133,6 +1133,7 @@ export default {
 			eventArgs: '事件属性',
 			eventResult: '事件结果',
 			createTm: '审计时间',
+			detailTitle: '审计日志详情',
 		},
 		monitor: {
 			hour: '{0}小时',

@@ -31,8 +31,17 @@
             </el-row>
             <!-- 下方显示列表 -->
             <el-row style="margin-top: 10px">
-                <el-table :data="state.reply.list" v-loading="state.loading" :border="true"
-                    row-class-name="pointer-cursor" style="width: 100%">
+                <el-table ref="tableRef" :data="state.reply.list" v-loading="state.loading" :border="true"
+                    row-class-name="pointer-cursor" style="width: 100%" @row-click="handleRowClick"
+                    :row-key="(row) => row.iD">
+                    <el-table-column type="expand">
+                        <template #default="props">
+                            <div class="expand-content" @click.stop>
+                                <div class="expand-label">{{ $t('message.system.audit.eventArgs') }}:</div>
+                                <pre class="json-display">{{ formatEventArgs(props.row.eventArgs) }}</pre>
+                            </div>
+                        </template>
+                    </el-table-column>
                     <el-table-column type="index" width="70" :label="$t('message.tableCommon.index')" />
                     <el-table-column prop="username" width="150" :label="$t('message.system.audit.username')"
                         show-overflow-tooltip />
@@ -80,6 +89,8 @@ const { t } = useI18n();
 const EventOptions = getAuditEventOptions(t);
 
 const timeRange = ref([] as string[]);
+const tableRef = ref();
+const currentExpandedRow = ref<string | null>(null);
 
 // Checkbox states for "Check All"
 const eventCheckAll = ref(false);
@@ -118,6 +129,44 @@ const refresh = () => {
     })
     .catch(err => alertApiError(err))
     .finally(() => state.loading = false);
+};
+
+const formatEventArgs = (eventArgs: string): string => {
+    if (!eventArgs) {
+        return '';
+    }
+
+    try {
+        // Try to parse as JSON and format it
+        const parsed = JSON.parse(eventArgs);
+        return JSON.stringify(parsed, null, 2);
+    } catch (e) {
+        // If not valid JSON, return as is
+        return eventArgs;
+    }
+};
+
+const handleRowClick = (row: proto.ListAuditLogReply_Details) => {
+    if (!tableRef.value) return;
+
+    const rowId = row.iD;
+
+    // If clicking the same row that's already expanded, collapse it
+    if (currentExpandedRow.value === rowId) {
+        tableRef.value.toggleRowExpansion(row, false);
+        currentExpandedRow.value = null;
+    } else {
+        // If there's another row expanded, collapse it first
+        if (currentExpandedRow.value !== null) {
+            const prevRow = state.reply.list?.find(r => r.iD === currentExpandedRow.value);
+            if (prevRow) {
+                tableRef.value.toggleRowExpansion(prevRow, false);
+            }
+        }
+        // Expand the new row
+        tableRef.value.toggleRowExpansion(row, true);
+        currentExpandedRow.value = rowId;
+    }
 };
 
 watch(timeRange, (val) => {
@@ -173,3 +222,33 @@ onMounted(() => {
 });
 
 </script>
+
+<style scoped>
+.expand-content {
+    padding: 20px 40px;
+    background-color: #f5f7fa;
+}
+
+.expand-label {
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #303133;
+    font-size: 14px;
+}
+
+.json-display {
+    background-color: #ffffff;
+    padding: 16px;
+    border-radius: 4px;
+    border: 1px solid #dcdfe6;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    margin: 0;
+    color: #303133;
+    max-height: 400px;
+    overflow-y: auto;
+}
+</style>

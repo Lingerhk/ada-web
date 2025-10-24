@@ -157,11 +157,15 @@
 								</el-space>
 							</template>
 						</el-table-column>
-						<el-table-column :label="$t('message.tableCommon.operate')" width="120" align="center" fixed="right">
+						<el-table-column :label="$t('message.tableCommon.operate')" width="200" align="center" fixed="right">
 							<template #default="scope">
 								<el-button size="small" type="primary" link @click.stop="handleViewRule(scope.row)">
 									<el-icon style="margin-right: 4px;"><View /></el-icon>
 									{{ $t('message.tableCommon.view') }}
+								</el-button>
+								<el-button size="small" type="success" link @click.stop="handleViewInKibana(scope.row, scope.$index)">
+									<el-icon style="margin-right: 4px;"><Link /></el-icon>
+									Kibana
 								</el-button>
 							</template>
 						</el-table-column>
@@ -368,6 +372,7 @@ import yaml from 'js-yaml';
 import hljs from 'highlight.js/lib/core';
 import yamlLang from 'highlight.js/lib/languages/yaml';
 import 'highlight.js/styles/github-dark.css';
+import { openKibanaDocInNewTab } from '/@/utils/kibana';
 
 // Register YAML language
 hljs.registerLanguage('yaml', yamlLang);
@@ -770,6 +775,36 @@ const handleViewRule = async (row: ActivityDetails) => {
 		state.ruleView.highlightedYaml = hljs.highlight(state.ruleView.yamlContent, { language: 'yaml' }).value;
 		state.ruleView.visible = true;
 	} catch (err) {
+		alertApiError(err);
+	}
+};
+
+const handleViewInKibana = async (row: ActivityDetails, rowIndex: number) => {
+	if (!state.data?.fieldData) {
+		ElMessage.error('Field data not available');
+		return;
+	}
+
+	try {
+		// Calculate the correct index based on current page
+		// rowIndex is 0-based within current page
+		const actualIndex = rowIndex + 1; // Convert to 1-based index
+
+		// Look for eid in fieldData with the pattern $s{index}.eid
+		const eidKey = `$s${actualIndex}.eid`;
+		const eid = state.data.fieldData[eidKey];
+
+		if (!eid) {
+			ElMessage.error(`Document ID not found for row ${actualIndex}`);
+			console.error(`Expected key: ${eidKey}`, 'Available keys:', Object.keys(state.data.fieldData));
+			return;
+		}
+
+		// Open in new tab
+		await openKibanaDocInNewTab(eid);
+		ElMessage.success('Opening in Kibana...');
+	} catch (err) {
+		console.error('Failed to open Kibana document:', err);
 		alertApiError(err);
 	}
 };

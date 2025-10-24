@@ -15,35 +15,29 @@ export async function getKibanaDataViewId(): Promise<string> {
 		return dataViewIdCache;
 	}
 
-	try {
-		// Use Kibana Data Views API to get all data views
-		// Kibana API endpoint: /api/data_views
-		const response = await request({
-			url: '/kibana/api/data_views',
-			method: 'get',
-			headers: {
-				'kbn-xsrf': 'true'
-			}
-		});
+	// Use Kibana Data Views API to get all data views
+	// Kibana API endpoint: /api/data_views
+	const response = await request({
+		url: '/kibana/api/data_views',
+		method: 'get',
+		headers: {
+			'kbn-xsrf': 'true',
+		},
+	});
 
-		// Response format: { data_view: [...] }
-		if (response?.data_view && Array.isArray(response.data_view)) {
-			// Find the data view with title 'ada-activity'
-			const adaActivityView = response.data_view.find((view: any) =>
-				view.title === 'ada-activity'
-			);
+	// Response format: { data_view: [...] }
+	if (response?.data_view && Array.isArray(response.data_view)) {
+		// Find the data view with title 'ada-activity'
+		const adaActivityView = response.data_view.find((view: any) => view.title === 'ada-activity');
 
-			if (adaActivityView && adaActivityView.id) {
-				// Cache the result
-				dataViewIdCache = adaActivityView.id;
-				return adaActivityView.id;
-			}
+		if (adaActivityView && adaActivityView.id) {
+			// Cache the result
+			dataViewIdCache = adaActivityView.id;
+			return adaActivityView.id;
 		}
-
-		throw new Error('ada-activity data view not found in Kibana');
-	} catch (error) {
-		throw error;
 	}
+
+	throw new Error('ada-activity data view not found in Kibana');
 }
 
 /**
@@ -62,15 +56,11 @@ export function buildKibanaSingleDocUrl(docId: string, dataViewId: string): stri
  * @param docId - The document ID (eid from fieldData)
  */
 export async function openKibanaDocInNewTab(docId: string): Promise<void> {
-	try {
-		const dataViewId = await getKibanaDataViewId();
-		const kibanaUrl = buildKibanaSingleDocUrl(docId, dataViewId);
+	const dataViewId = await getKibanaDataViewId();
+	const kibanaUrl = buildKibanaSingleDocUrl(docId, dataViewId);
 
-		// Open in new tab
-		window.open(kibanaUrl, '_blank', 'noopener,noreferrer');
-	} catch (error) {
-		throw error;
-	}
+	// Open in new tab
+	window.open(kibanaUrl, '_blank', 'noopener,noreferrer');
 }
 
 /**

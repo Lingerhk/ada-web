@@ -332,14 +332,7 @@
 
 <script setup lang="ts">
 import { computed, reactive, watch, ref } from 'vue';
-import {
-	ActivityDetails,
-	AttackFlowReply_Field,
-	GetThreatReply,
-	GetThreatReq,
-	GetActivityRuleReq,
-	ActionThreatReq,
-} from '/@/api/grpc/ada';
+import { ActivityDetails, AttackFlowReply_Field, GetThreatReply, GetThreatReq, GetActivityRuleReq, ActionThreatReq } from '/@/api/grpc/ada';
 import api from '/@/api/grpc';
 import { alertApiError } from '/@/utils/error';
 import { formatApiTime } from '/@/utils/formatTime';
@@ -437,7 +430,6 @@ const updateActivityPage = () => {
 	const start = (state.activity.pageIdx - 1) * state.activity.pageSize;
 	const end = start + state.activity.pageSize;
 	state.activity.data = state.activity.allData.slice(start, end);
-	console.log(`Showing activities ${start + 1} to ${Math.min(end, state.activity.total)} of ${state.activity.total}`);
 };
 
 const remarkHistory = computed<RemarkItem[]>(() => {
@@ -522,8 +514,7 @@ const handleSaveRemark = async () => {
 		} else {
 			ElMessage.error(t('message.tableCommon.saveFailed'));
 		}
-	} catch (err) {
-		console.error('Save remark error:', err);
+	} catch (err: any) {
 		alertApiError(err);
 	} finally {
 		state.remarkDialog.saving = false;
@@ -564,7 +555,6 @@ const open = (title: string, id: string) => {
 		.getThreat(req)
 		.then((resp) => resp.response)
 		.then((data: GetThreatReply) => {
-			console.log('threatDetail:', data);
 			state.data = data;
 
 			// Store all activities and setup pagination

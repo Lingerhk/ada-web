@@ -42,7 +42,6 @@ export async function getKibanaDataViewId(): Promise<string> {
 
 		throw new Error('ada-activity data view not found in Kibana');
 	} catch (error) {
-		console.error('Failed to get Kibana data view ID:', error);
 		throw error;
 	}
 }
@@ -70,7 +69,6 @@ export async function openKibanaDocInNewTab(docId: string): Promise<void> {
 		// Open in new tab
 		window.open(kibanaUrl, '_blank', 'noopener,noreferrer');
 	} catch (error) {
-		console.error('Failed to open Kibana doc in new tab:', error);
 		throw error;
 	}
 }

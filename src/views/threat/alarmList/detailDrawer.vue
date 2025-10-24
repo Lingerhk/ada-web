@@ -19,8 +19,8 @@
 								<el-divider direction="vertical" />
 								<span class="time-range">
 									<el-icon><Clock /></el-icon>
-									{{ $t('message.time.from') }}{{ formatApiTime(state.data?.startTm) }}
-									{{ $t('message.time.to') }}{{ formatApiTime(state.data?.endTm) }}
+									{{ $t('message.time.from') }}{{ formatApiTime(state.data?.startTm) }} {{ $t('message.time.to')
+									}}{{ formatApiTime(state.data?.endTm) }}
 								</span>
 							</div>
 						</div>
@@ -50,8 +50,9 @@
 						<el-space wrap :size="8">
 							<el-tooltip v-for="field in filteredFieldData" :key="field.fullKey" placement="top">
 								<template #content>
-									<div style="max-width: 300px;">
-										<strong>{{ field.key }}</strong><br/>
+									<div style="max-width: 300px">
+										<strong>{{ field.key }}</strong
+										><br />
 										{{ field.fullKey }}
 									</div>
 								</template>
@@ -139,7 +140,7 @@
 						<el-table-column prop="title" :label="$t('message.threat.tableTitle.title')" min-width="200" show-overflow-tooltip />
 						<el-table-column :label="$t('message.threat.tableTitle.createTm')" width="180" align="center">
 							<template #default="scope">
-								<el-icon style="margin-right: 4px;"><Clock /></el-icon>
+								<el-icon style="margin-right: 4px"><Clock /></el-icon>
 								{{ formatApiTime(scope.row.createTm) }}
 							</template>
 						</el-table-column>
@@ -160,11 +161,11 @@
 						<el-table-column :label="$t('message.tableCommon.operate')" width="200" align="center" fixed="right">
 							<template #default="scope">
 								<el-button size="small" type="primary" link @click.stop="handleViewRule(scope.row)">
-									<el-icon style="margin-right: 4px;"><View /></el-icon>
+									<el-icon style="margin-right: 4px"><View /></el-icon>
 									{{ $t('message.tableCommon.view') }}
 								</el-button>
 								<el-button size="small" type="success" link @click.stop="handleViewInKibana(scope.row, scope.$index)">
-									<el-icon style="margin-right: 4px;"><Link /></el-icon>
+									<el-icon style="margin-right: 4px"><Link /></el-icon>
 									Kibana
 								</el-button>
 							</template>
@@ -250,14 +251,7 @@
 									<el-icon class="collapse-icon"><EditPen /></el-icon>
 									<span>{{ T('remark') }}</span>
 									<el-badge v-if="remarkHistory.length" :value="remarkHistory.length" class="reference-badge" type="primary" />
-									<el-button
-										v-if="state.data"
-										size="small"
-										type="primary"
-										link
-										@click.stop="openRemarkDialog"
-										style="margin-left: auto"
-									>
+									<el-button v-if="state.data" size="small" type="primary" link @click.stop="openRemarkDialog" style="margin-left: auto">
 										<el-icon><Edit /></el-icon>
 										{{ $t('message.tableCommon.edit') }}
 									</el-button>
@@ -266,11 +260,7 @@
 							<div class="collapse-content">
 								<el-empty v-if="!remarkHistory.length" description="No remarks available" :image-size="60" />
 								<el-timeline v-else class="remark-timeline">
-									<el-timeline-item
-										v-for="(item, index) in remarkHistory"
-										:key="index"
-										:color="index === 0 ? '#409eff' : '#909399'"
-									>
+									<el-timeline-item v-for="(item, index) in remarkHistory" :key="index" :color="index === 0 ? '#409eff' : '#909399'">
 										<div class="remark-item">
 											<div class="remark-header">
 												<el-tag size="small" type="info">{{ item.user }}</el-tag>
@@ -328,7 +318,12 @@
 		</el-form>
 		<template #footer>
 			<el-button @click="state.remarkDialog.visible = false">{{ $t('message.tableCommon.cancel') }}</el-button>
-			<el-button type="primary" @click="handleSaveRemark" :loading="state.remarkDialog.saving" :disabled="!state.remarkDialog.text.trim() || remarkHistory.length >= 10">
+			<el-button
+				type="primary"
+				@click="handleSaveRemark"
+				:loading="state.remarkDialog.saving"
+				:disabled="!state.remarkDialog.text.trim() || remarkHistory.length >= 10"
+			>
 				{{ $t('message.tableCommon.save') }}
 			</el-button>
 		</template>
@@ -337,7 +332,14 @@
 
 <script setup lang="ts">
 import { computed, reactive, watch, ref } from 'vue';
-import { ActivityDetails, AttackFlowReply_Field, GetThreatReply, GetThreatReq, ListActivityReply, ListActivityReq, GetActivityRuleReq, ActionThreatReq } from '/@/api/grpc/ada';
+import {
+	ActivityDetails,
+	AttackFlowReply_Field,
+	GetThreatReply,
+	GetThreatReq,
+	GetActivityRuleReq,
+	ActionThreatReq,
+} from '/@/api/grpc/ada';
 import api from '/@/api/grpc';
 import { alertApiError } from '/@/utils/error';
 import { formatApiTime } from '/@/utils/formatTime';
@@ -356,7 +358,7 @@ import {
 	EditPen,
 	Link,
 	TopRight,
-	Edit
+	Edit,
 } from '@element-plus/icons-vue';
 import { closeThreats } from './operation';
 import { useI18n } from 'vue-i18n';
@@ -485,7 +487,7 @@ const handleSaveRemark = async () => {
 				hour: '2-digit',
 				minute: '2-digit',
 				second: '2-digit',
-				hour12: false
+				hour12: false,
 			}),
 			user: currentUser,
 			text: state.remarkDialog.text.trim(),
@@ -618,12 +620,7 @@ const formattedTmpl = computed(() => {
 	// Helper function to get field value from fieldData
 	const getFieldValue = (fieldKey: string): string | null => {
 		// Try different possible key formats
-		const possibleKeys = [
-			`$s1.field_${fieldKey}`,
-			`$s1.${fieldKey}`,
-			`field_${fieldKey}`,
-			fieldKey
-		];
+		const possibleKeys = [`$s1.field_${fieldKey}`, `$s1.${fieldKey}`, `field_${fieldKey}`, fieldKey];
 
 		for (const key of possibleKeys) {
 			if (fieldData[key] && fieldData[key] !== '' && fieldData[key] !== '-') {
@@ -644,7 +641,7 @@ const formattedTmpl = computed(() => {
 
 				// Handle multiple keys separated by comma: [key1,key2,key3]
 				// Loop through keys and return the FIRST non-empty value
-				const keys = fieldKeys.split(',').map(k => k.trim());
+				const keys = fieldKeys.split(',').map((k) => k.trim());
 
 				// Find first non-empty value
 				for (const key of keys) {
@@ -691,7 +688,7 @@ const filteredFieldData = computed(() => {
 			return {
 				key: cleanKey,
 				fullKey: key,
-				value: value
+				value: value,
 			};
 		});
 });
@@ -774,7 +771,7 @@ const handleViewRule = async (row: ActivityDetails) => {
 
 		state.ruleView.highlightedYaml = hljs.highlight(state.ruleView.yamlContent, { language: 'yaml' }).value;
 		state.ruleView.visible = true;
-	} catch (err) {
+	} catch (err: any) {
 		alertApiError(err);
 	}
 };
@@ -796,16 +793,14 @@ const handleViewInKibana = async (row: ActivityDetails, rowIndex: number) => {
 
 		if (!eid) {
 			ElMessage.error(`Document ID not found for row ${actualIndex}`);
-			console.error(`Expected key: ${eidKey}`, 'Available keys:', Object.keys(state.data.fieldData));
 			return;
 		}
 
 		// Open in new tab
 		await openKibanaDocInNewTab(eid);
 		ElMessage.success('Opening in Kibana...');
-	} catch (err) {
-		console.error('Failed to open Kibana document:', err);
-		alertApiError(err);
+	} catch (err: any) {
+		ElMessage.error(err?.message || 'Failed to open Kibana document');
 	}
 };
 
@@ -1107,7 +1102,8 @@ defineExpose({
 						}
 
 						@keyframes arrowBounce {
-							0%, 100% {
+							0%,
+							100% {
 								transform: translateX(0);
 							}
 							50% {

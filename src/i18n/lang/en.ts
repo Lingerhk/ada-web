@@ -88,6 +88,7 @@ export default {
 		basicInfoIndex: 'Basic',
 		sysTimeIndex: 'System Time',
 		licenseIndex: 'License',
+		upgradeIndex: 'Upgrade',
 		monitorIndex: 'Monitor',
 		threatIndex: 'Threat Detection',
 		saftyOverviewIndex: 'Overview',
@@ -1034,6 +1035,15 @@ export default {
 			licenseType_file: 'licenseType_file',
 			updateLicenseSucc: 'updateLicenseSucc',
 			updateLicenseFail: 'updateLicenseFail',
+		},
+		upgrade: {
+			title: 'System Upgrade Configuration',
+			upgradeRule: 'Auto Update Rules',
+			upgradeSrv: 'Upgrade Server Address',
+			upgradeSrvPlaceholder: 'Enter upgrade server address',
+			save: 'Save',
+			updateSucc: 'Upgrade configuration updated successfully',
+			updateFail: 'Failed to update upgrade configuration',
 		},
 		diagnose: {
 			type: 'type',

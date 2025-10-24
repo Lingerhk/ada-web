@@ -129,6 +129,44 @@
                         </div>
                 </el-tab-pane>
 
+                <!-- 系统升级 Tab -->
+                <el-tab-pane :label="$t('message.router.upgradeIndex')" name="upgrade">
+                        <h3>{{ $t('message.system.upgrade.title') }}</h3>
+                        <el-form style="margin-top: 30px;" label-width="160px">
+                            <el-form-item>
+                                <template #label>
+                                    <h4>{{ $t('message.system.upgrade.upgradeRule') }}:</h4>
+                                </template>
+                                <el-switch
+                                    v-model="upgradeState.form.upgradeRule"
+                                    :active-value="true"
+                                    :inactive-value="false"
+                                    size="default">
+                                </el-switch>
+                            </el-form-item>
+                            <el-form-item>
+                                <template #label>
+                                    <h4>{{ $t('message.system.upgrade.upgradeSrv') }}:</h4>
+                                </template>
+                                <el-input
+                                    size="default"
+                                    v-model="upgradeState.form.upgradeSrv"
+                                    style="width: 400px"
+                                    :placeholder="$t('message.system.upgrade.upgradeSrvPlaceholder')">
+                                </el-input>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-button
+                                    type="primary"
+                                    size="default"
+                                    @click="updateUpgradeCfg"
+                                    :loading="upgradeState.form.loading">
+                                    {{ $t('message.system.upgrade.save') }}
+                                </el-button>
+                            </el-form-item>
+                        </el-form>
+                </el-tab-pane>
+
                 <!-- 网络诊断 Tab -->
                 <el-tab-pane :label="$t('message.router.diagnoseIndex')" name="diagnose">
                         <el-form label-width="auto" :inline="true">
@@ -240,7 +278,7 @@ import { ElMessage, ElMessageBox, type UploadProps } from 'element-plus';
 import { Edit } from '@element-plus/icons-vue';
 import { useI18n } from 'vue-i18n';
 import api from '/@/api/grpc';
-import { GetSystemInfoReply, GetLicenseReply, UpdateSystemIPReq, UpdateNtpAddressReq, NetworkDebugReq, ListSystemLogsReq, ListSystemLogsReply } from '/@/api/grpc/ada';
+import { GetSystemInfoReply, GetLicenseReply, UpdateSystemCfgReq, NetworkDebugReq, ListSystemLogsReq, ListSystemLogsReply } from '/@/api/grpc/ada';
 import { getSystemInfo } from '/@/api/grpc/method';
 import { alertApiError, alertResult } from '/@/utils/error';
 import { formatApiTime, shortcuts } from '/@/utils/formatTime';
@@ -277,6 +315,15 @@ const licenseState = reactive({
 
 const licenseMethod = ['code', 'file'].map(l => ({ value: l, label: t(`message.system.license.licenseType_${l}`)}));
 
+// Upgrade State
+const upgradeState = reactive({
+    form: {
+        loading: false,
+        upgradeRule: false,
+        upgradeSrv: '',
+    }
+});
+
 // Diagnose State
 const DebugTypes = ['ping', 'nslookup', 'traceroute', 'nc'];
 const diagnoseState = reactive({
@@ -305,10 +352,14 @@ const showUpdateIPDialog = () => {
 };
 
 const handleUpdateIP = (newIP: string) => {
-    const req: UpdateSystemIPReq = {
+    const req: UpdateSystemCfgReq = {
         systemIP: newIP,
+        ntp: '',
+        file: '',
+        upgradeSrv: '',
+        upgradeRule: '',
     };
-    api.updateSystemIP(req)
+    api.updateSystemCfg(req)
     .then(resp => resp.response)
     .then(data => {
         alertResult(data.result, t('message.system.basicInfo.updateIPSucc'), t('message.system.basicInfo.updateIPFail'));
@@ -324,9 +375,14 @@ const handleUpload = (options: any) => {
         return;
     }
 
-    api.updateSystemIcon({
-        file: basicInfoState.iconUpload
-    })
+    const req: UpdateSystemCfgReq = {
+        file: basicInfoState.iconUpload,
+        systemIP: '',
+        ntp: '',
+        upgradeSrv: '',
+        upgradeRule: '',
+    };
+    api.updateSystemCfg(req)
     .then(resp => resp.response)
     .then(data => {
         alertResult(data.result, t('message.system.basicInfo.updateSystemIconSucc'), t('message.system.basicInfo.updateSystemIconFail'));
@@ -358,17 +414,24 @@ const refreshBasicInfo = () => {
     getSystemInfo().then(data => {
         basicInfoState.data = data;
         basicInfoState.icon = data.systemIcon;
+        // Also update upgrade state
+        upgradeState.form.upgradeSrv = data.upgradeSrv || '';
+        upgradeState.form.upgradeRule = data.upgradeRule === 'true';
     });
 };
 
 // System Time Methods
 const updateNtp = () => {
-    const req: UpdateNtpAddressReq = {
-        ntp: sysTimeState.form.ntp
+    const req: UpdateSystemCfgReq = {
+        ntp: sysTimeState.form.ntp,
+        systemIP: '',
+        file: '',
+        upgradeSrv: '',
+        upgradeRule: '',
     };
 
     sysTimeState.form.loading = true;
-    api.updateNtpAddress(req)
+    api.updateSystemCfg(req)
     .then(resp => resp.response)
     .then(data => alertResult(data.result, t('message.sysTime.save') + t('message.api.alertDefaultSuccess'), t('message.api.alertDefaultFail')))
     .catch(err => alertApiError(err))
@@ -413,6 +476,30 @@ const refreshLicense = () => {
         licenseState.data = data;
     })
     .catch(err => alertApiError(err));
+};
+
+// Upgrade Methods
+const updateUpgradeCfg = () => {
+    const req: UpdateSystemCfgReq = {
+        upgradeRule: upgradeState.form.upgradeRule ? 'true' : 'false',
+        upgradeSrv: upgradeState.form.upgradeSrv,
+        ntp: '',
+        systemIP: '',
+        file: '',
+    };
+
+    upgradeState.form.loading = true;
+    api.updateSystemCfg(req)
+    .then(resp => resp.response)
+    .then(data => {
+        alertResult(
+            data.result,
+            t('message.system.upgrade.updateSucc'),
+            t('message.system.upgrade.updateFail')
+        );
+    })
+    .catch(err => alertApiError(err))
+    .finally(() => upgradeState.form.loading = false);
 };
 
 // Diagnose Methods
@@ -587,10 +674,16 @@ watch(systemLogsTimeRange, (val) => {
     refreshSystemLogs();
 });
 
-// Watch tab changes to load data when switching to SystemLogs tab
+// Watch tab changes to load data when switching to SystemLogs or Upgrade tab
 watch(activeTab, (newTab) => {
     if (newTab === 'systemLogs') {
         refreshSystemLogs();
+    } else if (newTab === 'upgrade') {
+        // Refresh upgrade config from basicInfoState
+        if (basicInfoState.data.upgradeSrv !== undefined || basicInfoState.data.upgradeRule !== undefined) {
+            upgradeState.form.upgradeSrv = basicInfoState.data.upgradeSrv || '';
+            upgradeState.form.upgradeRule = basicInfoState.data.upgradeRule === 'true';
+        }
     }
 });
 
@@ -609,6 +702,10 @@ onMounted(async () => {
         const now = new Date(sysTimeState.ts * 1000);
         sysTimeState.time = `${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
     }, 1000);
+
+    // Load Upgrade Config
+    upgradeState.form.upgradeSrv = info.upgradeSrv || '';
+    upgradeState.form.upgradeRule = info.upgradeRule === 'true';
 
     // Load License
     refreshLicense();

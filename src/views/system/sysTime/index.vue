@@ -28,7 +28,7 @@ import { reactive, onMounted, onUnmounted } from 'vue';
 import { getSystemInfo } from '/@/api/grpc/method';
 import { transSysTime as T } from '/@/utils/translator';
 import api from '/@/api/grpc';
-import { UpdateNtpAddressReq } from '/@/api/grpc/ada';
+import { UpdateSystemCfgReq } from '/@/api/grpc/ada';
 import { alertApiError, alertResult } from '/@/utils/error';
 
 const state = reactive({
@@ -44,12 +44,16 @@ const state = reactive({
 let intervalId = null as any;
 
 const updateNtp = () => {
-    const req: UpdateNtpAddressReq = {
-        ntp: state.form.ntp
+    const req: UpdateSystemCfgReq = {
+        ntp: state.form.ntp,
+        systemIP: '',
+        file: '',
+        upgradeSrv: '',
+        upgradeRule: '',
     };
 
     state.form.loading = true;
-    api.updateNtpAddress(req)
+    api.updateSystemCfg(req)
     .then(resp => resp.response)
     .then(data => alertResult(data.result, T('updateNtpSucc'), T('updateNtpFail')))
     .catch(err => alertApiError(err))

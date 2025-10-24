@@ -228,33 +228,6 @@ const addWhiteTitle = ref<string>('');
 const addWhiteDomain = ref<string>('');
 const addWhiteFlowId = ref<string>('');
 
-const shortDcName = (name: string) => {
-    if (!name) {
-        return name;
-    }
-
-    return name.split('.')[0];
-}
-
-const iconTag = (item: any) => {
-    const name = item.obj;
-    const value = item.value;
-
-    const iconMap: Map<string, string> = new Map([
-        ["user", "iconfont icon-icon-"],
-        ["ip", "iconfont icon-shuxingtu"],
-        ["computer", "iconfont icon-diannao1"],
-        ["dc", "iconfont icon-diannao1"],
-    ]);
-
-    const icon = iconMap.get(name);
-
-    // console.log(name, icon, value);
-
-    return icon;
-
-};
-
 const refreshThreatTable = () => {
     const req: ListThreatReq = {
         pageIdx: pageIdx.value,
@@ -268,8 +241,7 @@ const refreshThreatTable = () => {
         sortTm: -1, // 时间排序，1为升序，-1为降序
         eventStatus: eventStatus.value,
     };
-
-    console.log(req)
+    
     tableLoading.value = true;
 
     api.listThreat(req)
@@ -278,26 +250,16 @@ const refreshThreatTable = () => {
         exhausted.value = data.exhausted;
         tableRows.value = data.list;
         total.value = data.page?.total ?? 0;
-        console.log(data.list);
     })
     .catch(err => {
         const msg = decodeURIComponent(err.message);
         ElMessage.error(msg);
-        console.log(err.code, msg);
+
     })
     .finally(() => {
         tableLoading.value = false;
         tableRowsSelected.value = [];
     });
-};
-
-const handleSelect = (row: ListThreatReply_Details, value: boolean) => {
-    // console.log(row, value);
-    if (value) {
-        tableRowsSelected.value = [...tableRowsSelected.value, row];
-    } else {
-        tableRowsSelected.value = tableRowsSelected.value.filter(v => v.iD !== row.iD);
-    }
 };
 
 const isSelected = (row: ListThreatReply_Details) => {
@@ -313,16 +275,7 @@ const toggleSelect = (row: ListThreatReply_Details) => {
     }
 }
 
-const handleAddWhite = (row: ListThreatReply_Details) => {
-    addWhiteFields.value = row.attackFlow?.fields ?? [];
-    addWhiteVisiable.value = true;
-    addWhiteTitle.value = row.title;
-    addWhiteDomain.value = row.domain;
-    addWhiteFlowId.value = row.flowId;
-};
-
 const handleClose = (rows: ListThreatReply_Details[]) => {
-    console.log('close', rows);
     if (!rows || rows.length === 0) {
         return;
     }
@@ -340,8 +293,6 @@ const handleDetail = (row: ListThreatReply_Details, col: any) => {
 }
 
 const handleCloseAdvancedSearch = (index: number) => {
-    console.log("close advanced search", index);
-    console.log("value", advancedSearchRef.value);
     // advancedSearchRef.value = advancedSearchRef.value.filter((v, i) => i !== index);
     advancedSearchRef.value.splice(index, 1);
 }
@@ -351,15 +302,11 @@ const handleAddAdvancedSearch = () => {
 }
 
 const handleSizeChange = (val: number) => {
-  console.log(`${val} items per page`)
-
   pageSize.value = val;
   refreshThreatTable();
 }
 
 const handleCurrentChange = (val: number) => {
-  console.log(`current page: ${val}`)
-
   pageIdx.value = val;
   refreshThreatTable();
 }

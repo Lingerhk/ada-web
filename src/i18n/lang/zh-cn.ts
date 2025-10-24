@@ -88,6 +88,7 @@ export default {
 		basicInfoIndex: '基础信息',
 		sysTimeIndex: '系统时间',
 		licenseIndex: '产品许可',
+		upgradeIndex: '系统升级',
 		monitorIndex: '系统监控',
 		threatIndex: '威胁检测',
 		saftyOverviewIndex: '攻击态势',
@@ -1033,6 +1034,15 @@ export default {
 			licenseType_file: '授权文件',
 			updateLicenseSucc: '更新授权成功',
 			updateLicenseFail: '更新授权失败',
+		},
+		upgrade: {
+			title: '系统升级配置',
+			upgradeRule: '自动更新规则',
+			upgradeSrv: '升级服务器地址',
+			upgradeSrvPlaceholder: '请输入升级服务器地址',
+			save: '保存',
+			updateSucc: '更新升级配置成功',
+			updateFail: '更新升级配置失败',
 		},
 		diagnose: {
 			type: '诊断类型',

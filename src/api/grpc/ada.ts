@@ -1261,6 +1261,14 @@ export interface GetSystemInfoReply {
     statsCfg: {
         [key: string]: string;
     }; // 系统监控参数
+    /**
+     * @generated from protobuf field: string upgradeSrv = 17;
+     */
+    upgradeSrv: string; // 升级服务器地址
+    /**
+     * @generated from protobuf field: string upgradeRule = 18;
+     */
+    upgradeRule: string; // 升级规则开关 "true|false"
 }
 /**
  * @generated from protobuf message ada.GetSystemIconReq
@@ -1275,42 +1283,6 @@ export interface GetSystemIconReply {
      * @generated from protobuf field: string icon = 1;
      */
     icon: string;
-}
-/**
- * @generated from protobuf message ada.UpdateSystemIconReq
- */
-export interface UpdateSystemIconReq {
-    /**
-     * @generated from protobuf field: string file = 1;
-     */
-    file: string; // 将文件转为base64字符串传过来
-}
-/**
- * @generated from protobuf message ada.UpdateSystemIconReply
- */
-export interface UpdateSystemIconReply {
-    /**
-     * @generated from protobuf field: string result = 1;
-     */
-    result: string; //  success failed
-}
-/**
- * @generated from protobuf message ada.UpdateNtpAddressReq
- */
-export interface UpdateNtpAddressReq {
-    /**
-     * @generated from protobuf field: string ntp = 1;
-     */
-    ntp: string;
-}
-/**
- * @generated from protobuf message ada.UpdateNtpAddressReply
- */
-export interface UpdateNtpAddressReply {
-    /**
-     * @generated from protobuf field: string result = 1;
-     */
-    result: string; //  success failed
 }
 /**
  * @generated from protobuf message ada.UpdateSystemLanguageReq
@@ -1331,22 +1303,38 @@ export interface UpdateSystemLanguageReply {
     result: string; //  success failed
 }
 /**
- * @generated from protobuf message ada.UpdateSystemIPReq
+ * @generated from protobuf message ada.UpdateSystemCfgReq
  */
-export interface UpdateSystemIPReq {
+export interface UpdateSystemCfgReq {
     /**
-     * @generated from protobuf field: string systemIP = 1;
+     * @generated from protobuf field: string ntp = 1;
      */
-    systemIP: string;
+    ntp: string; // ntp server
+    /**
+     * @generated from protobuf field: string systemIP = 2;
+     */
+    systemIP: string; // system ip
+    /**
+     * @generated from protobuf field: string file = 3;
+     */
+    file: string; // 将文件转为base64字符串传过来
+    /**
+     * @generated from protobuf field: string upgradeSrv = 4;
+     */
+    upgradeSrv: string; // 更新srv地址
+    /**
+     * @generated from protobuf field: string upgradeRule = 5;
+     */
+    upgradeRule: string; // "true|false"
 }
 /**
- * @generated from protobuf message ada.UpdateSystemIPReply
+ * @generated from protobuf message ada.UpdateSystemCfgReply
  */
-export interface UpdateSystemIPReply {
+export interface UpdateSystemCfgReply {
     /**
      * @generated from protobuf field: string result = 1;
      */
-    result: string; //  success failed
+    result: string;
 }
 /**
  * @generated from protobuf message ada.GetSystemStatsReq
@@ -9279,7 +9267,9 @@ class GetSystemInfoReply$Type extends MessageType<GetSystemInfoReply> {
             { no: 13, name: "systemTimestamp", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 14, name: "systemNtpAddress", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 15, name: "systemLanguage", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 16, name: "statsCfg", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 9 /*ScalarType.STRING*/ } }
+            { no: 16, name: "statsCfg", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 9 /*ScalarType.STRING*/ } },
+            { no: 17, name: "upgradeSrv", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 18, name: "upgradeRule", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<GetSystemInfoReply>): GetSystemInfoReply {
@@ -9300,6 +9290,8 @@ class GetSystemInfoReply$Type extends MessageType<GetSystemInfoReply> {
         message.systemNtpAddress = "";
         message.systemLanguage = "";
         message.statsCfg = {};
+        message.upgradeSrv = "";
+        message.upgradeRule = "";
         if (value !== undefined)
             reflectionMergePartial<GetSystemInfoReply>(this, message, value);
         return message;
@@ -9356,6 +9348,12 @@ class GetSystemInfoReply$Type extends MessageType<GetSystemInfoReply> {
                     break;
                 case /* map<string, string> statsCfg */ 16:
                     this.binaryReadMap16(message.statsCfg, reader, options);
+                    break;
+                case /* string upgradeSrv */ 17:
+                    message.upgradeSrv = reader.string();
+                    break;
+                case /* string upgradeRule */ 18:
+                    message.upgradeRule = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -9433,6 +9431,12 @@ class GetSystemInfoReply$Type extends MessageType<GetSystemInfoReply> {
         /* map<string, string> statsCfg = 16; */
         for (let k of globalThis.Object.keys(message.statsCfg))
             writer.tag(16, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k).tag(2, WireType.LengthDelimited).string(message.statsCfg[k]).join();
+        /* string upgradeSrv = 17; */
+        if (message.upgradeSrv !== "")
+            writer.tag(17, WireType.LengthDelimited).string(message.upgradeSrv);
+        /* string upgradeRule = 18; */
+        if (message.upgradeRule !== "")
+            writer.tag(18, WireType.LengthDelimited).string(message.upgradeRule);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -9515,194 +9519,6 @@ class GetSystemIconReply$Type extends MessageType<GetSystemIconReply> {
  * @generated MessageType for protobuf message ada.GetSystemIconReply
  */
 export const GetSystemIconReply = new GetSystemIconReply$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class UpdateSystemIconReq$Type extends MessageType<UpdateSystemIconReq> {
-    constructor() {
-        super("ada.UpdateSystemIconReq", [
-            { no: 1, name: "file", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
-        ]);
-    }
-    create(value?: PartialMessage<UpdateSystemIconReq>): UpdateSystemIconReq {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.file = "";
-        if (value !== undefined)
-            reflectionMergePartial<UpdateSystemIconReq>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: UpdateSystemIconReq): UpdateSystemIconReq {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* string file */ 1:
-                    message.file = reader.string();
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: UpdateSystemIconReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string file = 1; */
-        if (message.file !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.file);
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message ada.UpdateSystemIconReq
- */
-export const UpdateSystemIconReq = new UpdateSystemIconReq$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class UpdateSystemIconReply$Type extends MessageType<UpdateSystemIconReply> {
-    constructor() {
-        super("ada.UpdateSystemIconReply", [
-            { no: 1, name: "result", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
-        ]);
-    }
-    create(value?: PartialMessage<UpdateSystemIconReply>): UpdateSystemIconReply {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.result = "";
-        if (value !== undefined)
-            reflectionMergePartial<UpdateSystemIconReply>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: UpdateSystemIconReply): UpdateSystemIconReply {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* string result */ 1:
-                    message.result = reader.string();
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: UpdateSystemIconReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string result = 1; */
-        if (message.result !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.result);
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message ada.UpdateSystemIconReply
- */
-export const UpdateSystemIconReply = new UpdateSystemIconReply$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class UpdateNtpAddressReq$Type extends MessageType<UpdateNtpAddressReq> {
-    constructor() {
-        super("ada.UpdateNtpAddressReq", [
-            { no: 1, name: "ntp", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
-        ]);
-    }
-    create(value?: PartialMessage<UpdateNtpAddressReq>): UpdateNtpAddressReq {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.ntp = "";
-        if (value !== undefined)
-            reflectionMergePartial<UpdateNtpAddressReq>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: UpdateNtpAddressReq): UpdateNtpAddressReq {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* string ntp */ 1:
-                    message.ntp = reader.string();
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: UpdateNtpAddressReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string ntp = 1; */
-        if (message.ntp !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.ntp);
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message ada.UpdateNtpAddressReq
- */
-export const UpdateNtpAddressReq = new UpdateNtpAddressReq$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class UpdateNtpAddressReply$Type extends MessageType<UpdateNtpAddressReply> {
-    constructor() {
-        super("ada.UpdateNtpAddressReply", [
-            { no: 1, name: "result", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
-        ]);
-    }
-    create(value?: PartialMessage<UpdateNtpAddressReply>): UpdateNtpAddressReply {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.result = "";
-        if (value !== undefined)
-            reflectionMergePartial<UpdateNtpAddressReply>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: UpdateNtpAddressReply): UpdateNtpAddressReply {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* string result */ 1:
-                    message.result = reader.string();
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: UpdateNtpAddressReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string result = 1; */
-        if (message.result !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.result);
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message ada.UpdateNtpAddressReply
- */
-export const UpdateNtpAddressReply = new UpdateNtpAddressReply$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class UpdateSystemLanguageReq$Type extends MessageType<UpdateSystemLanguageReq> {
     constructor() {
@@ -9798,26 +9614,46 @@ class UpdateSystemLanguageReply$Type extends MessageType<UpdateSystemLanguageRep
  */
 export const UpdateSystemLanguageReply = new UpdateSystemLanguageReply$Type();
 // @generated message type with reflection information, may provide speed optimized methods
-class UpdateSystemIPReq$Type extends MessageType<UpdateSystemIPReq> {
+class UpdateSystemCfgReq$Type extends MessageType<UpdateSystemCfgReq> {
     constructor() {
-        super("ada.UpdateSystemIPReq", [
-            { no: 1, name: "systemIP", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        super("ada.UpdateSystemCfgReq", [
+            { no: 1, name: "ntp", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "systemIP", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "file", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "upgradeSrv", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 5, name: "upgradeRule", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
-    create(value?: PartialMessage<UpdateSystemIPReq>): UpdateSystemIPReq {
+    create(value?: PartialMessage<UpdateSystemCfgReq>): UpdateSystemCfgReq {
         const message = globalThis.Object.create((this.messagePrototype!));
+        message.ntp = "";
         message.systemIP = "";
+        message.file = "";
+        message.upgradeSrv = "";
+        message.upgradeRule = "";
         if (value !== undefined)
-            reflectionMergePartial<UpdateSystemIPReq>(this, message, value);
+            reflectionMergePartial<UpdateSystemCfgReq>(this, message, value);
         return message;
     }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: UpdateSystemIPReq): UpdateSystemIPReq {
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: UpdateSystemCfgReq): UpdateSystemCfgReq {
         let message = target ?? this.create(), end = reader.pos + length;
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* string systemIP */ 1:
+                case /* string ntp */ 1:
+                    message.ntp = reader.string();
+                    break;
+                case /* string systemIP */ 2:
                     message.systemIP = reader.string();
+                    break;
+                case /* string file */ 3:
+                    message.file = reader.string();
+                    break;
+                case /* string upgradeSrv */ 4:
+                    message.upgradeSrv = reader.string();
+                    break;
+                case /* string upgradeRule */ 5:
+                    message.upgradeRule = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -9830,10 +9666,22 @@ class UpdateSystemIPReq$Type extends MessageType<UpdateSystemIPReq> {
         }
         return message;
     }
-    internalBinaryWrite(message: UpdateSystemIPReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string systemIP = 1; */
+    internalBinaryWrite(message: UpdateSystemCfgReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string ntp = 1; */
+        if (message.ntp !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.ntp);
+        /* string systemIP = 2; */
         if (message.systemIP !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.systemIP);
+            writer.tag(2, WireType.LengthDelimited).string(message.systemIP);
+        /* string file = 3; */
+        if (message.file !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.file);
+        /* string upgradeSrv = 4; */
+        if (message.upgradeSrv !== "")
+            writer.tag(4, WireType.LengthDelimited).string(message.upgradeSrv);
+        /* string upgradeRule = 5; */
+        if (message.upgradeRule !== "")
+            writer.tag(5, WireType.LengthDelimited).string(message.upgradeRule);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -9841,24 +9689,24 @@ class UpdateSystemIPReq$Type extends MessageType<UpdateSystemIPReq> {
     }
 }
 /**
- * @generated MessageType for protobuf message ada.UpdateSystemIPReq
+ * @generated MessageType for protobuf message ada.UpdateSystemCfgReq
  */
-export const UpdateSystemIPReq = new UpdateSystemIPReq$Type();
+export const UpdateSystemCfgReq = new UpdateSystemCfgReq$Type();
 // @generated message type with reflection information, may provide speed optimized methods
-class UpdateSystemIPReply$Type extends MessageType<UpdateSystemIPReply> {
+class UpdateSystemCfgReply$Type extends MessageType<UpdateSystemCfgReply> {
     constructor() {
-        super("ada.UpdateSystemIPReply", [
+        super("ada.UpdateSystemCfgReply", [
             { no: 1, name: "result", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
-    create(value?: PartialMessage<UpdateSystemIPReply>): UpdateSystemIPReply {
+    create(value?: PartialMessage<UpdateSystemCfgReply>): UpdateSystemCfgReply {
         const message = globalThis.Object.create((this.messagePrototype!));
         message.result = "";
         if (value !== undefined)
-            reflectionMergePartial<UpdateSystemIPReply>(this, message, value);
+            reflectionMergePartial<UpdateSystemCfgReply>(this, message, value);
         return message;
     }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: UpdateSystemIPReply): UpdateSystemIPReply {
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: UpdateSystemCfgReply): UpdateSystemCfgReply {
         let message = target ?? this.create(), end = reader.pos + length;
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
@@ -9877,7 +9725,7 @@ class UpdateSystemIPReply$Type extends MessageType<UpdateSystemIPReply> {
         }
         return message;
     }
-    internalBinaryWrite(message: UpdateSystemIPReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+    internalBinaryWrite(message: UpdateSystemCfgReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
         /* string result = 1; */
         if (message.result !== "")
             writer.tag(1, WireType.LengthDelimited).string(message.result);
@@ -9888,9 +9736,9 @@ class UpdateSystemIPReply$Type extends MessageType<UpdateSystemIPReply> {
     }
 }
 /**
- * @generated MessageType for protobuf message ada.UpdateSystemIPReply
+ * @generated MessageType for protobuf message ada.UpdateSystemCfgReply
  */
-export const UpdateSystemIPReply = new UpdateSystemIPReply$Type();
+export const UpdateSystemCfgReply = new UpdateSystemCfgReply$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class GetSystemStatsReq$Type extends MessageType<GetSystemStatsReq> {
     constructor() {
@@ -23334,10 +23182,8 @@ export const ADA = new ServiceType("ada.ADA", [
     { name: "UpdateSensorVersion", options: {}, I: UpdateSensorVersionReq, O: UpdateSensorVersionReply },
     { name: "GetSystemInfo", options: {}, I: GetSystemInfoReq, O: GetSystemInfoReply },
     { name: "GetSystemIcon", options: {}, I: GetSystemIconReq, O: GetSystemIconReply },
-    { name: "UpdateSystemIcon", options: {}, I: UpdateSystemIconReq, O: UpdateSystemIconReply },
-    { name: "UpdateNtpAddress", options: {}, I: UpdateNtpAddressReq, O: UpdateNtpAddressReply },
     { name: "UpdateSystemLanguage", options: {}, I: UpdateSystemLanguageReq, O: UpdateSystemLanguageReply },
-    { name: "UpdateSystemIP", options: {}, I: UpdateSystemIPReq, O: UpdateSystemIPReply },
+    { name: "UpdateSystemCfg", options: {}, I: UpdateSystemCfgReq, O: UpdateSystemCfgReply },
     { name: "GetSystemStats", options: {}, I: GetSystemStatsReq, O: GetSystemStatsReply },
     { name: "SetSystemStatsCfg", options: {}, I: SetSystemStatsCfgReq, O: SetSystemStatsCfgReply },
     { name: "GetLicense", options: {}, I: GetLicenseReq, O: GetLicenseReply },

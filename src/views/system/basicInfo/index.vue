@@ -48,7 +48,7 @@
 <script setup lang="ts">
 import { onMounted, reactive } from 'vue';
 import { ElMessage, type UploadProps, ElMessageBox } from 'element-plus'
-import { GetSystemInfoReply, UpdateSystemIPReq } from '/@/api/grpc/ada';
+import { GetSystemInfoReply, UpdateSystemCfgReq } from '/@/api/grpc/ada';
 import api from '/@/api/grpc';
 import { alertApiError, alertResult } from '/@/utils/error';
 import { useI18n } from 'vue-i18n';
@@ -78,10 +78,14 @@ const showUpdateIPDialog = () => {
 };
 
 const handleUpdateIP = (newIP: string) => {
-    const req: UpdateSystemIPReq = {
+    const req: UpdateSystemCfgReq = {
         systemIP: newIP,
+        ntp: '',
+        file: '',
+        upgradeSrv: '',
+        upgradeRule: '',
     };
-    api.updateSystemIP(req)
+    api.updateSystemCfg(req)
     .then(resp => resp.response)
     .then(data => {
         alertResult(data.result, t('message.system.basicInfo.updateIPSucc'), t('message.system.basicInfo.updateIPFail'));
@@ -97,9 +101,14 @@ const handleUpload = (options: any) => {
         return;
     }
 
-    api.updateSystemIcon({
-        file: state.iconUpload
-    })
+    const req: UpdateSystemCfgReq = {
+        file: state.iconUpload,
+        systemIP: '',
+        ntp: '',
+        upgradeSrv: '',
+        upgradeRule: '',
+    };
+    api.updateSystemCfg(req)
     .then(resp => resp.response)
     .then(data => {
         alertResult(data.result, t('message.system.basicInfo.updateSystemIconSucc'), t('message.system.basicInfo.updateSystemIconFail'))

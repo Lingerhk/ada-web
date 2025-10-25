@@ -1,25 +1,36 @@
 <template>
 	<div class="layout-footer pb15">
 		<div class="layout-footer-warp">
-			<div>vue-next-admin，Made by lyt with ❤️</div>
-			<div class="mt5">深圳市 xxx 公司版权所有</div>
+			<div style="font-weight: 500;">AD Aegis Protection Platform</div>
+			<div class="mt5">© 2025 ADAegis. All rights reserved.</div>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts" name="layoutFooter">
-// 此处需有内容（注释也得），否则缓存将失败
+import { onMounted } from 'vue';
+
+// 调试信息
+onMounted(() => {
+	console.log('Footer component mounted!');
+});
 </script>
 
 <style scoped lang="scss">
 .layout-footer {
 	width: 100%;
 	display: flex;
+	padding: 20px 0;
+	margin-top: 30px;
+	border-top: 1px solid var(--el-border-color-lighter);
+	background-color: var(--el-bg-color);
 	&-warp {
 		margin: auto;
-		color: var(--el-text-color-secondary);
+		color: var(--el-text-color-regular);
 		text-align: center;
 		animation: error-num 0.3s ease;
+		font-size: 14px;
+		line-height: 1.8;
 	}
 }
 </style>

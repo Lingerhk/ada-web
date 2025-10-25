@@ -483,15 +483,13 @@ const initAlarmRiskTrendLine = () => {
 			// data: [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 			// 设置区域填充样式
 			areaStyle: {
-				normal: {
-					color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ // 从上到下的渐变色
-						offset: 0,
-						color: 'rgba(58,77,233,0.8)' // 折线图顶端颜色
-					}, {
-						offset: 1,
-						color: 'rgba(58,77,233,0)' // 折线图底端颜色
-					}])
-				}
+				color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ // 从上到下的渐变色
+					offset: 0,
+					color: 'rgba(58,77,233,0.8)' // 折线图顶端颜色
+				}, {
+					offset: 1,
+					color: 'rgba(58,77,233,0)' // 折线图底端颜色
+				}])
 			}
 		}]
 	};

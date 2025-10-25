@@ -1,11 +1,18 @@
 <template>
     <div class="layout-pd">
         <el-card shadow="hover">
-            <el-row justify="space-between">
+            <el-row justify="space-between" style="flex-wrap: nowrap;">
                 <!-- 搜索 -->
-                <el-form :inline="true" class="filter-form">
+                <el-form :inline="true" class="filter-form" style="flex: 1;">
                     <el-form-item :label="$t('message.threat.levelName')">
-                        <LevelCheckbox v-model="threatLevel" />
+                        <el-select v-model="threatLevel" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 130px" :placeholder="$t('message.threat.alarmList.selectLevel')" popper-class="custom-header">
+                            <template #header>
+                                <el-checkbox v-model="levelCheckAll" :indeterminate="levelIndeterminate" @change="handleLevelCheckAll">
+                                    {{ $t('message.tableCommon.checkAll') }}
+                                </el-checkbox>
+                            </template>
+                            <el-option v-for="option in levelOptions" :key="option.value" :label="option.label" :value="option.value" />
+                        </el-select>
                     </el-form-item>
                     <el-form-item :label="$t('message.tableCommon.dcHostname')">
                         <el-select v-model="dchostSelected" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.threat.activityList.selectDcHostname')" popper-class="custom-header">
@@ -35,7 +42,7 @@
                 </el-form>
                 <!-- 右侧按钮 -->
                 <el-space wrap size="default"
-                    style="min-width: 450px; justify-content:right; align-items: flex-start; padding-top: 5px;">
+                    style="min-width: 450px; justify-content: flex-end; align-items: flex-start; padding-top: 5px; flex-shrink: 0;">
                     <el-input v-model="idInput" size="default" :placeholder="$t('message.threat.idInput')"
                         style="width: 290px;" :suffix-icon="Search" clearable></el-input>
                     <el-button type="primary" size="default" @click="resetReqParams">{{
@@ -47,30 +54,31 @@
             </el-row>
             <!-- 下方显示列表 -->
             <el-row style="margin-top: 10px">
-                <el-table :data="data" v-loading="loading" :border="true" row-class-name="pointer-cursor"
-                    style="width: 100%">
-                    <el-table-column type="expand">
-                        <template #default="props">
-                            <JsonViewer :value="JSON.parse(props.row.rawLog)" copyable boxed sort></JsonViewer>
-                        </template>
-                    </el-table-column>
-                    <el-table-column type="index" width="70" :label="$t('message.tableCommon.index')" />
-                    <el-table-column prop="title" :label="$t('message.threat.tableTitle.title')"
-                        show-overflow-tooltip />
-                    <el-table-column prop="dcHostname" :label="$t('message.threat.tableTitle.dcHostname')" />
-                    <el-table-column :label="$t('message.threat.tableTitle.createTm')">
+                <div style="width: 100%; overflow-x: auto;">
+                    <el-table :data="data" v-loading="loading" :border="true" row-class-name="pointer-cursor"
+                        style="width: 100%;" @row-click="handleRowClick" ref="activityTable">
+                        <el-table-column type="expand" width="50">
+                            <template #default="props">
+                                <div class="json-viewer-wrapper">
+                                    <JsonViewer :value="JSON.parse(props.row.rawLog)" copyable boxed sort></JsonViewer>
+                                </div>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="title" :label="$t('message.threat.tableTitle.title')" :width="250" show-overflow-tooltip />
+                    <el-table-column :label="$t('message.threat.tableTitle.createTm')" :width="160">
                         <template #default="scope">{{ formatApiTime(scope.row.createTm) }}</template>
                     </el-table-column>
-                    <el-table-column :label="$t('message.threat.tableTitle.level')" :width="100">
+                        <el-table-column prop="dcHostname" :label="$t('message.threat.tableTitle.dcHostname')" :width="200" />
+                    <el-table-column :label="$t('message.threat.tableTitle.level')" :width="100" align="center">
                         <template #default="scope">
-                            <LevelImage :level="scope.row.level" />
+                            <el-tag :type="getLevelType(scope.row.level)" effect="dark">
+                                {{ $t(`message.threat.level.${scope.row.level}`) }}
+                            </el-tag>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="ruleConfidence" :label="$t('message.threat.tableTitle.ruleConfidence')"
-                        :width="100" />
                     <el-table-column prop="desc" :label="$t('message.threat.tableTitle.desc')" :width="300"
                         show-overflow-tooltip />
-                    <el-table-column prop="fieldData" :label="$t('message.threat.tableTitle.fieldData')">
+                    <el-table-column prop="fieldData" :label="$t('message.threat.tableTitle.fieldData')" :width="160">
                         <template #default="scope">
                             <el-space wrap size="small">
                                 <el-tooltip v-for="key in filterFieldDataKey(scope.row.fieldData)" :key="key"
@@ -80,14 +88,16 @@
                             </el-space>
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('message.threat.tableTitle.tags')">
+                    <el-table-column :label="$t('message.threat.tableTitle.tags')" :width="120">
                         <template #default="scope">
                             <el-space wrap size="small">
                                 <el-tag v-for="tag in scope.row.tags" size="small" :key="tag">{{ tag }}</el-tag>
                             </el-space>
                         </template>
                     </el-table-column>
+                    <el-table-column prop="ruleConfidence" :label="$t('message.threat.tableTitle.ruleConfidence')" :width="120" />
                 </el-table>
+                </div>
             </el-row>
             <!-- 分页 -->
             <el-row style="margin-top: 10px" justify="space-between">
@@ -108,15 +118,15 @@ import { ActivityDetails, ListActivityReply, ListActivityReq } from '/@/api/grpc
 import { alertApiError } from '/@/utils/error';
 import { formatApiTime, shortcuts } from '/@/utils/formatTime';
 import { Search } from '@element-plus/icons-vue';
-import LevelCheckbox from '/@/components/level/checkbox.vue';
-import LevelImage from '/@/components/level/image.vue';
 import { listActivityOptions, listDchostOptions } from '/@/api/grpc/method';
+import { getLevelOptions2 } from '/@/utils/constant';
 
 const pageIdx = ref(1);
 const pageSize = ref(10);
 const total = ref(0);
 const exhausted = ref(false);
 const threatLevel = ref<number[]>([]);
+const levelOptions = getLevelOptions2();
 const lastOccurenceTime = ref<string[]>([]);
 const idInput = ref('');
 
@@ -128,8 +138,11 @@ const titleOptions = ref<any[]>([]);
 
 const loading = ref(false);
 const data = ref([] as ActivityDetails[]);
+const activityTable = ref();
 
 // Checkbox states for "Check All"
+const levelCheckAll = ref(false);
+const levelIndeterminate = ref(false);
 const dchostCheckAll = ref(false);
 const dchostIndeterminate = ref(false);
 const titleCheckAll = ref(false);
@@ -142,6 +155,21 @@ const filterFieldDataKey = (fieldData: Object) => {
 const resetReqParams = () => {
     threatLevel.value = [];
     lastOccurenceTime.value = [];
+};
+
+const handleRowClick = (row: ActivityDetails) => {
+    activityTable.value?.toggleRowExpansion(row);
+};
+
+const getLevelType = (level: number): string => {
+    const typeMap: Record<number, string> = {
+        1: 'info',
+        2: 'success',
+        3: 'warning',
+        4: 'danger',
+        5: 'danger',
+    };
+    return typeMap[level] || 'info';
 };
 
 const refreshActivity = () => {
@@ -183,6 +211,16 @@ const handleCurrentChange = (val: number) => {
     refreshActivity();
 };
 
+// Handle level Select All
+const handleLevelCheckAll = (val: boolean) => {
+    levelIndeterminate.value = false;
+    if (val) {
+        threatLevel.value = levelOptions.map(opt => opt.value);
+    } else {
+        threatLevel.value = [];
+    }
+};
+
 // Handle dchost Select All
 const handleDchostCheckAll = (val: boolean) => {
     dchostIndeterminate.value = false;
@@ -210,6 +248,18 @@ onMounted(() => {
     listActivityOptions().then(res => titleOptions.value = res);
 });
 
+watch(threatLevel, (val) => {
+    levelIndeterminate.value = false;
+    if (val.length === 0) {
+        levelCheckAll.value = false;
+    } else if (val.length === levelOptions.length) {
+        levelCheckAll.value = true;
+    } else {
+        levelIndeterminate.value = true;
+    }
+    refreshActivity();
+});
+
 watch(dchostSelected, (val) => {
     dchostIndeterminate.value = false;
     if (val.length === 0) {
@@ -234,9 +284,15 @@ watch(titleSelected, (val) => {
     refreshActivity();
 });
 
-watch(() => [threatLevel.value, lastOccurenceTime.value, idInput.value, pageIdx.value, pageSize.value], refreshActivity);
+watch(() => [lastOccurenceTime.value, idInput.value], refreshActivity);
 
 </script>
 
-<style type="scss" scoped>
+<style lang="scss" scoped>
+.json-viewer-wrapper {
+    padding: 16px;
+    background: #f5f7fa;
+    border-radius: 8px;
+    margin: 16px;
+}
 </style>

@@ -14,16 +14,9 @@ export const NextLoading = {
 		div.setAttribute('class', 'loading-next');
 		const htmls = `
 			<div class="loading-next-box">
-				<div class="loading-next-box-warp">
-					<div class="loading-next-box-item"></div>
-					<div class="loading-next-box-item"></div>
-					<div class="loading-next-box-item"></div>
-					<div class="loading-next-box-item"></div>
-					<div class="loading-next-box-item"></div>
-					<div class="loading-next-box-item"></div>
-					<div class="loading-next-box-item"></div>
-					<div class="loading-next-box-item"></div>
-					<div class="loading-next-box-item"></div>
+				<div class="loading-next-logo">
+					<img src="/logo.svg" alt="Loading..." class="loading-logo-img" />
+					<div class="loading-shine-effect"></div>
 				</div>
 			</div>
 		`;

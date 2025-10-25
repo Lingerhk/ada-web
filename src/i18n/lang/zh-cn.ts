@@ -221,14 +221,6 @@ export default {
 		copyTextSuccess: '复制成功！',
 		copyTextError: '复制失败！',
 	},
-	upgrade: {
-		title: '新版本升级',
-		msg: '新版本来啦，马上更新尝鲜吧！不用担心，更新很快的哦！',
-		desc: '提示：更新会还原默认配置',
-		btnOne: '残忍拒绝',
-		btnTwo: '马上更新',
-		btnTwoLoading: '更新中',
-	},
 	adDomainConfig: {
 		run: '正常',
 		error: '异常',
@@ -258,7 +250,7 @@ export default {
 		},
 		tableTitle: {
 			title: '威胁名称',
-			level: '严重性',
+			level: '风险等级',
 			status: '状态',
 			domain: '所在域',
 			endTm: '最后发生时间',
@@ -267,7 +259,7 @@ export default {
 			eventStatus: '状态',
 			dcHostname: '所在域控',
 			ruleConfidence: '规则置信度',
-			desc: '行为解释',
+			desc: '行为描述',
 			fieldData: '关联资产',
 		},
 		status: {
@@ -339,7 +331,7 @@ export default {
 		},
 		alarmList: {
 			selectThreatName: '选择威胁类型',
-			selectLevel: '选择威胁等级',
+			selectLevel: '选择风险等级',
 			addWhiteTitle: '加入白名单',
 			addWhiteSubTitle: '当前威胁活动的字段值参考',
 			addWhiteAlert: '加入白名单后，将不再对此条告警事件的告警行为进行更新和消息通知，且不再对此类规则的告警事件进行更新和消息通知。',
@@ -400,7 +392,7 @@ export default {
 		},
 		activityList: {
 			selectDcHostname: '选择域控',
-			selectTitle: '选择活动标题',
+			selectTitle: '选择威胁名称',
 		},
 		sensitiveEntryList: {
 			selectOrigin: '选择来源',
@@ -1366,6 +1358,8 @@ export default {
 		mfaPlaceholder: '请输入二次验证码（可选）',
 		title: 'AD域盾防护平台',
 		subtitle: 'AD Aegis For Threat Protection',
+		usernameRequired: '请输入用户名',
+		passwordRequired: '请输入密码',
 	},
 	download: {
 		responseError: '网络响应错误',

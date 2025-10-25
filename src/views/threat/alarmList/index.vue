@@ -46,7 +46,7 @@
                     </el-form-item>
                     <!-- 威胁等级 -->
                     <el-form-item :label="$t('message.threat.levelName')">
-                        <el-select v-model="threatLevel" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.threat.alarmList.selectLevel')" popper-class="custom-header">
+                        <el-select v-model="threatLevel" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 130px" :placeholder="$t('message.threat.alarmList.selectLevel')" popper-class="custom-header">
                             <template #header>
                                 <el-checkbox v-model="levelCheckAll" :indeterminate="levelIndeterminate" @change="handleLevelCheckAll">
                                     {{ $t('message.tableCommon.checkAll') }}

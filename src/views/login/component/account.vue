@@ -1,13 +1,13 @@
 <template>
-	<el-form size="large" class="login-content-form" @keyup.enter="onSignIn">
-		<el-form-item class="login-animation1">
+	<el-form ref="loginFormRef" :model="state.ruleForm" :rules="state.rules" size="large" class="login-content-form" @keyup.enter="onSignIn">
+		<el-form-item class="login-animation1" prop="userName">
 			<el-input text :placeholder="$t('message.login.usernamePlaceholder')" v-model="state.ruleForm.userName" clearable autocomplete="off" name="username">
 				<template #prefix>
 					<el-icon class="el-input__icon"><ele-User /></el-icon>
 				</template>
 			</el-input>
 		</el-form-item>
-		<el-form-item class="login-animation2">
+		<el-form-item class="login-animation2" prop="password">
 			<el-input
 				:type="state.isShowPassword ? 'text' : 'password'"
 				:placeholder="$t('message.login.passwordPlaceholder')"
@@ -57,9 +57,9 @@
 </template>
 
 <script setup lang="ts" name="loginAccount">
-import { reactive, computed, onMounted } from 'vue';
+import { reactive, computed, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { ElMessage } from 'element-plus';
+import { ElMessage, type FormInstance, type FormRules } from 'element-plus';
 import { useI18n } from 'vue-i18n';
 import Cookies from 'js-cookie';
 import { storeToRefs } from 'pinia';
@@ -79,6 +79,8 @@ const storesThemeConfig = useThemeConfig();
 const { themeConfig } = storeToRefs(storesThemeConfig);
 const route = useRoute();
 const router = useRouter();
+const loginFormRef = ref<FormInstance>();
+
 const state = reactive({
 	isShowPassword: false,
 	ruleForm: {
@@ -86,6 +88,14 @@ const state = reactive({
 		password: '',
 		code: '',
 	},
+	rules: {
+		userName: [
+			{ required: true, message: t('message.login.usernameRequired'), trigger: 'blur' }
+		],
+		password: [
+			{ required: true, message: t('message.login.passwordRequired'), trigger: 'blur' }
+		],
+	} as FormRules,
 	loading: {
 		signIn: false,
 	},
@@ -125,26 +135,16 @@ const loginAda = async () => {
 
 // 登录
 const onSignIn = async () => {
-	
-	await loginAda();
-	return;
+	if (!loginFormRef.value) return;
 
-	state.loading.signIn = true;
-	// 存储 token 到浏览器缓存
-	Session.set('token', Math.random().toString(36).substr(0));
-	// 模拟数据，对接接口时，记得删除多余代码及对应依赖的引入。用于 `/src/stores/userInfo.ts` 中不同用户登录判断（模拟数据）
-	Cookies.set('userName', state.ruleForm.userName);
-	if (!themeConfig.value.isRequestRoutes) {
-		// 前端控制路由，2、请注意执行顺序
-		const isNoPower = await initFrontEndControlRoutes();
-		signInSuccess(isNoPower);
-	} else {
-		// 模拟后端控制路由，isRequestRoutes 为 true，则开启后端控制路由
-		// 添加完动态路由，再进行 router 跳转，否则可能报错 No match found for location with path "/"
-		const isNoPower = await initBackEndControlRoutes();
-		// 执行完 initBackEndControlRoutes，再执行 signInSuccess
-		signInSuccess(isNoPower);
-	}
+	// 验证表单
+	await loginFormRef.value.validate(async (valid) => {
+		if (valid) {
+			await loginAda();
+		} else {
+			return false;
+		}
+	});
 };
 // 登录成功后的跳转
 const signInSuccess = (isNoPower: boolean | undefined) => {

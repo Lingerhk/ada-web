@@ -137,7 +137,7 @@ export const useThemeConfig = defineStore('themeConfig', {
 			 * 全局网站标题 / 副标题
 			 */
 			// 网站主标题（菜单导航、浏览器当前网页标题）
-			globalTitle: 'ADAegis v2.9.1',
+			globalTitle: 'ADAegis',
 			// 网站副标题（登录页顶部文字）
 			globalViceTitle: 'AD Aegis Protection',
 			// 网站副标题（登录页顶部文字）

@@ -221,14 +221,6 @@ export default {
 		copyTextSuccess: 'Copy succeeded!',
 		copyTextError: 'Copy failed!',
 	},
-	upgrade: {
-		title: 'New version',
-		msg: 'The new version is available, please update it now! Dont worry, the update is fast!',
-		desc: 'Prompt: Update will restore the default configuration',
-		btnOne: 'Cruel refusal',
-		btnTwo: 'Update now',
-		btnTwoLoading: 'Updating',
-	},
 	adDomainConfig: {
 		run: 'run',
 		error: 'error',
@@ -339,10 +331,11 @@ export default {
 		},
 		alarmList: {
 			selectThreatName: 'Select Threat Type',
-			selectLevel: 'Select Threat Level',
+			selectLevel: 'Select Risk Level',
 			addWhiteTitle: 'Add to Whitelist',
 			addWhiteSubTitle: 'Field Value Reference for Current Threat Activity',
-			addWhiteAlert: 'After adding to whitelist, this alert event will no longer be updated and notified, and similar rule-based alert events will no longer be updated and notified.',
+			addWhiteAlert:
+				'After adding to whitelist, this alert event will no longer be updated and notified, and similar rule-based alert events will no longer be updated and notified.',
 			addWhiteButton: 'Add to Whitelist',
 			cancel: 'Cancel',
 			confirm: 'Confirm',
@@ -1396,5 +1389,7 @@ export default {
 		mfaPlaceholder: 'Please enter MFA code (optional)',
 		title: 'AD Aegis Protection Platform',
 		subtitle: 'AD Aegis For Threat Protection',
+		usernameRequired: 'Please enter username',
+		passwordRequired: 'Please enter password',
 	},
 };

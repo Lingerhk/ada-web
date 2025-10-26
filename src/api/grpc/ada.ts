@@ -44,11 +44,11 @@ export interface LoginReq {
     /**
      * @generated from protobuf field: string username = 1;
      */
-    username: string;
+    username: string; // [(validator.field) = {string_not_empty: true}];
     /**
      * @generated from protobuf field: string password = 2;
      */
-    password: string;
+    password: string; // [(validator.field) = {string_not_empty: true}];
     /**
      * @generated from protobuf field: string totpCode = 3;
      */
@@ -1269,6 +1269,14 @@ export interface GetSystemInfoReply {
      * @generated from protobuf field: string upgradeRule = 18;
      */
     upgradeRule: string; // 升级规则开关 "true|false"
+    /**
+     * @generated from protobuf field: string currentRuleVer = 19;
+     */
+    currentRuleVer: string; // 当前规则版本
+    /**
+     * @generated from protobuf field: string cloudRuleVer = 20;
+     */
+    cloudRuleVer: string; // 云端规则版本
 }
 /**
  * @generated from protobuf message ada.GetSystemIconReq
@@ -1326,6 +1334,14 @@ export interface UpdateSystemCfgReq {
      * @generated from protobuf field: string upgradeRule = 5;
      */
     upgradeRule: string; // "true|false"
+    /**
+     * @generated from protobuf field: string currentRuleVer = 6;
+     */
+    currentRuleVer: string; // 当前规则版本
+    /**
+     * @generated from protobuf field: string cloudRuleVer = 7;
+     */
+    cloudRuleVer: string; // 云端规则版本
 }
 /**
  * @generated from protobuf message ada.UpdateSystemCfgReply
@@ -9269,7 +9285,9 @@ class GetSystemInfoReply$Type extends MessageType<GetSystemInfoReply> {
             { no: 15, name: "systemLanguage", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 16, name: "statsCfg", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 9 /*ScalarType.STRING*/ } },
             { no: 17, name: "upgradeSrv", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 18, name: "upgradeRule", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 18, name: "upgradeRule", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 19, name: "currentRuleVer", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 20, name: "cloudRuleVer", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<GetSystemInfoReply>): GetSystemInfoReply {
@@ -9292,6 +9310,8 @@ class GetSystemInfoReply$Type extends MessageType<GetSystemInfoReply> {
         message.statsCfg = {};
         message.upgradeSrv = "";
         message.upgradeRule = "";
+        message.currentRuleVer = "";
+        message.cloudRuleVer = "";
         if (value !== undefined)
             reflectionMergePartial<GetSystemInfoReply>(this, message, value);
         return message;
@@ -9354,6 +9374,12 @@ class GetSystemInfoReply$Type extends MessageType<GetSystemInfoReply> {
                     break;
                 case /* string upgradeRule */ 18:
                     message.upgradeRule = reader.string();
+                    break;
+                case /* string currentRuleVer */ 19:
+                    message.currentRuleVer = reader.string();
+                    break;
+                case /* string cloudRuleVer */ 20:
+                    message.cloudRuleVer = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -9437,6 +9463,12 @@ class GetSystemInfoReply$Type extends MessageType<GetSystemInfoReply> {
         /* string upgradeRule = 18; */
         if (message.upgradeRule !== "")
             writer.tag(18, WireType.LengthDelimited).string(message.upgradeRule);
+        /* string currentRuleVer = 19; */
+        if (message.currentRuleVer !== "")
+            writer.tag(19, WireType.LengthDelimited).string(message.currentRuleVer);
+        /* string cloudRuleVer = 20; */
+        if (message.cloudRuleVer !== "")
+            writer.tag(20, WireType.LengthDelimited).string(message.cloudRuleVer);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -9621,7 +9653,9 @@ class UpdateSystemCfgReq$Type extends MessageType<UpdateSystemCfgReq> {
             { no: 2, name: "systemIP", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "file", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "upgradeSrv", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 5, name: "upgradeRule", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 5, name: "upgradeRule", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 6, name: "currentRuleVer", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 7, name: "cloudRuleVer", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<UpdateSystemCfgReq>): UpdateSystemCfgReq {
@@ -9631,6 +9665,8 @@ class UpdateSystemCfgReq$Type extends MessageType<UpdateSystemCfgReq> {
         message.file = "";
         message.upgradeSrv = "";
         message.upgradeRule = "";
+        message.currentRuleVer = "";
+        message.cloudRuleVer = "";
         if (value !== undefined)
             reflectionMergePartial<UpdateSystemCfgReq>(this, message, value);
         return message;
@@ -9654,6 +9690,12 @@ class UpdateSystemCfgReq$Type extends MessageType<UpdateSystemCfgReq> {
                     break;
                 case /* string upgradeRule */ 5:
                     message.upgradeRule = reader.string();
+                    break;
+                case /* string currentRuleVer */ 6:
+                    message.currentRuleVer = reader.string();
+                    break;
+                case /* string cloudRuleVer */ 7:
+                    message.cloudRuleVer = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -9682,6 +9724,12 @@ class UpdateSystemCfgReq$Type extends MessageType<UpdateSystemCfgReq> {
         /* string upgradeRule = 5; */
         if (message.upgradeRule !== "")
             writer.tag(5, WireType.LengthDelimited).string(message.upgradeRule);
+        /* string currentRuleVer = 6; */
+        if (message.currentRuleVer !== "")
+            writer.tag(6, WireType.LengthDelimited).string(message.currentRuleVer);
+        /* string cloudRuleVer = 7; */
+        if (message.cloudRuleVer !== "")
+            writer.tag(7, WireType.LengthDelimited).string(message.cloudRuleVer);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

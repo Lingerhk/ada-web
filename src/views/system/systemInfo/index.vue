@@ -135,6 +135,28 @@
                         <el-form style="margin-top: 30px;" label-width="160px">
                             <el-form-item>
                                 <template #label>
+                                    <h4>{{ $t('message.system.upgrade.ruleVersion') }}:</h4>
+                                </template>
+                                <span>{{ upgradeState.currentRuleVer }}</span>
+                                <el-tooltip
+                                    v-if="upgradeState.hasNewVersion"
+                                    :content="$t('message.system.upgrade.canUpgradeTo', { version: upgradeState.cloudRuleVer })"
+                                    placement="top">
+                                    <el-icon color="#409EFF" style="margin-left: 8px; cursor: pointer;" :size="16">
+                                        <UploadFilled />
+                                    </el-icon>
+                                </el-tooltip>
+                                <el-tooltip
+                                    v-if="upgradeState.isLatestVersion"
+                                    :content="$t('message.system.upgrade.latestVersion')"
+                                    placement="top">
+                                    <el-icon color="#67C23A" style="margin-left: 8px; cursor: pointer;" :size="16">
+                                        <CircleCheck />
+                                    </el-icon>
+                                </el-tooltip>
+                            </el-form-item>
+                            <el-form-item>
+                                <template #label>
                                     <h4>{{ $t('message.system.upgrade.upgradeRule') }}:</h4>
                                 </template>
                                 <el-switch
@@ -273,9 +295,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, onUnmounted, watch } from 'vue';
+import { ref, reactive, onMounted, onUnmounted, watch, computed } from 'vue';
 import { ElMessage, ElMessageBox, type UploadProps } from 'element-plus';
-import { Edit } from '@element-plus/icons-vue';
+import { Edit, UploadFilled, CircleCheck } from '@element-plus/icons-vue';
 import { useI18n } from 'vue-i18n';
 import api from '/@/api/grpc';
 import { GetSystemInfoReply, GetLicenseReply, UpdateSystemCfgReq, NetworkDebugReq, ListSystemLogsReq, ListSystemLogsReply } from '/@/api/grpc/ada';
@@ -321,7 +343,23 @@ const upgradeState = reactive({
         loading: false,
         upgradeRule: false,
         upgradeSrv: '',
-    }
+    },
+    currentRuleVer: '',
+    cloudRuleVer: '',
+    hasNewVersion: computed(() => {
+        if (!upgradeState.cloudRuleVer) {
+            return false;
+        }
+        // Compare versions - assuming format like "1.0.0" or similar
+        return upgradeState.cloudRuleVer > upgradeState.currentRuleVer;
+    }),
+    isLatestVersion: computed(() => {
+        if (!upgradeState.cloudRuleVer) {
+            return false;
+        }
+        // Check if current version equals cloud version
+        return upgradeState.cloudRuleVer === upgradeState.currentRuleVer;
+    })
 });
 
 // Diagnose State
@@ -417,6 +455,8 @@ const refreshBasicInfo = () => {
         // Also update upgrade state
         upgradeState.form.upgradeSrv = data.upgradeSrv || '';
         upgradeState.form.upgradeRule = data.upgradeRule === 'true';
+        upgradeState.currentRuleVer = data.currentRuleVer || '';
+        upgradeState.cloudRuleVer = data.cloudRuleVer || '';
     });
 };
 
@@ -683,6 +723,8 @@ watch(activeTab, (newTab) => {
         if (basicInfoState.data.upgradeSrv !== undefined || basicInfoState.data.upgradeRule !== undefined) {
             upgradeState.form.upgradeSrv = basicInfoState.data.upgradeSrv || '';
             upgradeState.form.upgradeRule = basicInfoState.data.upgradeRule === 'true';
+            upgradeState.currentRuleVer = basicInfoState.data.currentRuleVer || '';
+            upgradeState.cloudRuleVer = basicInfoState.data.cloudRuleVer || '';
         }
     }
 });
@@ -706,6 +748,8 @@ onMounted(async () => {
     // Load Upgrade Config
     upgradeState.form.upgradeSrv = info.upgradeSrv || '';
     upgradeState.form.upgradeRule = info.upgradeRule === 'true';
+    upgradeState.currentRuleVer = info.currentRuleVer || '';
+    upgradeState.cloudRuleVer = info.cloudRuleVer || '';
 
     // Load License
     refreshLicense();

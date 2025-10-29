@@ -4566,6 +4566,31 @@ export interface ListAlertRuleReply {
     rules: AlertRuleInfo[];
 }
 /**
+ * @generated from protobuf message ada.AlertDetection
+ */
+export interface AlertDetection {
+    /**
+     * @generated from protobuf field: string eventType = 1;
+     */
+    eventType: string; // [(validator.field) = {regex: "count|multi_eve|multi_pkt|multi_eve_pkt"}]; // 事件类型
+    /**
+     * @generated from protobuf field: string winSize = 2;
+     */
+    winSize: string; // 窗口大小
+    /**
+     * @generated from protobuf field: bool sorted = 3;
+     */
+    sorted: boolean; // 是否排序
+    /**
+     * @generated from protobuf field: repeated string sigmaRules = 4;
+     */
+    sigmaRules: string[]; // 关联sigma规则
+    /**
+     * @generated from protobuf field: string matchBy = 5;
+     */
+    matchBy: string; // 匹配条件
+}
+/**
  * @generated from protobuf message ada.AddAlertRuleReq
  */
 export interface AddAlertRuleReq {
@@ -4602,9 +4627,9 @@ export interface AddAlertRuleReq {
      */
     logsource: string;
     /**
-     * @generated from protobuf field: string detection = 9;
+     * @generated from protobuf field: ada.AlertDetection detection = 9;
      */
-    detection: string; // [(validator.field) = {string_not_empty: true}]; // Yaml string
+    detection?: AlertDetection;
     /**
      * @generated from protobuf field: string type = 10;
      */
@@ -4680,9 +4705,9 @@ export interface UpdateAlertRuleReq {
      */
     logsource: string;
     /**
-     * @generated from protobuf field: string detection = 9;
+     * @generated from protobuf field: ada.AlertDetection detection = 9;
      */
-    detection: string; // Yaml string
+    detection?: AlertDetection;
     /**
      * @generated from protobuf field: string type = 10;
      */
@@ -4798,6 +4823,33 @@ export interface GetActivityRuleFieldsReply {
      * @generated from protobuf field: repeated string fields = 1;
      */
     fields: string[]; // 所有行为规则Fields列表
+}
+/**
+ * @generated from protobuf message ada.RuleNameItem
+ */
+export interface RuleNameItem {
+    /**
+     * @generated from protobuf field: string ruleId = 1;
+     */
+    ruleId: string; // 规则ID，如 'winlog-0000-1101'
+    /**
+     * @generated from protobuf field: string title = 2;
+     */
+    title: string; // 规则名称
+}
+/**
+ * @generated from protobuf message ada.GetActivityRuleNamesReq
+ */
+export interface GetActivityRuleNamesReq {
+}
+/**
+ * @generated from protobuf message ada.GetActivityRuleNamesReply
+ */
+export interface GetActivityRuleNamesReply {
+    /**
+     * @generated from protobuf field: repeated ada.RuleNameItem rules = 1;
+     */
+    rules: RuleNameItem[]; // 所有行为规则ID和名称列表
 }
 /**
  * @generated from protobuf message ada.GetActivityRuleUniqueFieldsReq
@@ -21121,6 +21173,85 @@ class ListAlertRuleReply$Type extends MessageType<ListAlertRuleReply> {
  */
 export const ListAlertRuleReply = new ListAlertRuleReply$Type();
 // @generated message type with reflection information, may provide speed optimized methods
+class AlertDetection$Type extends MessageType<AlertDetection> {
+    constructor() {
+        super("ada.AlertDetection", [
+            { no: 1, name: "eventType", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "winSize", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "sorted", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 4, name: "sigmaRules", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 5, name: "matchBy", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<AlertDetection>): AlertDetection {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.eventType = "";
+        message.winSize = "";
+        message.sorted = false;
+        message.sigmaRules = [];
+        message.matchBy = "";
+        if (value !== undefined)
+            reflectionMergePartial<AlertDetection>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: AlertDetection): AlertDetection {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string eventType */ 1:
+                    message.eventType = reader.string();
+                    break;
+                case /* string winSize */ 2:
+                    message.winSize = reader.string();
+                    break;
+                case /* bool sorted */ 3:
+                    message.sorted = reader.bool();
+                    break;
+                case /* repeated string sigmaRules */ 4:
+                    message.sigmaRules.push(reader.string());
+                    break;
+                case /* string matchBy */ 5:
+                    message.matchBy = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: AlertDetection, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string eventType = 1; */
+        if (message.eventType !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.eventType);
+        /* string winSize = 2; */
+        if (message.winSize !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.winSize);
+        /* bool sorted = 3; */
+        if (message.sorted !== false)
+            writer.tag(3, WireType.Varint).bool(message.sorted);
+        /* repeated string sigmaRules = 4; */
+        for (let i = 0; i < message.sigmaRules.length; i++)
+            writer.tag(4, WireType.LengthDelimited).string(message.sigmaRules[i]);
+        /* string matchBy = 5; */
+        if (message.matchBy !== "")
+            writer.tag(5, WireType.LengthDelimited).string(message.matchBy);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.AlertDetection
+ */
+export const AlertDetection = new AlertDetection$Type();
+// @generated message type with reflection information, may provide speed optimized methods
 class AddAlertRuleReq$Type extends MessageType<AddAlertRuleReq> {
     constructor() {
         super("ada.AddAlertRuleReq", [
@@ -21132,7 +21263,7 @@ class AddAlertRuleReq$Type extends MessageType<AddAlertRuleReq> {
             { no: 6, name: "status", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 7, name: "tags", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 8, name: "logsource", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 9, name: "detection", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 9, name: "detection", kind: "message", T: () => AlertDetection },
             { no: 10, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 11, name: "references", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 12, name: "suggestion", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
@@ -21151,7 +21282,6 @@ class AddAlertRuleReq$Type extends MessageType<AddAlertRuleReq> {
         message.status = "";
         message.tags = [];
         message.logsource = "";
-        message.detection = "";
         message.type = "";
         message.references = [];
         message.suggestion = "";
@@ -21190,8 +21320,8 @@ class AddAlertRuleReq$Type extends MessageType<AddAlertRuleReq> {
                 case /* string logsource */ 8:
                     message.logsource = reader.string();
                     break;
-                case /* string detection */ 9:
-                    message.detection = reader.string();
+                case /* ada.AlertDetection detection */ 9:
+                    message.detection = AlertDetection.internalBinaryRead(reader, reader.uint32(), options, message.detection);
                     break;
                 case /* string type */ 10:
                     message.type = reader.string();
@@ -21247,9 +21377,9 @@ class AddAlertRuleReq$Type extends MessageType<AddAlertRuleReq> {
         /* string logsource = 8; */
         if (message.logsource !== "")
             writer.tag(8, WireType.LengthDelimited).string(message.logsource);
-        /* string detection = 9; */
-        if (message.detection !== "")
-            writer.tag(9, WireType.LengthDelimited).string(message.detection);
+        /* ada.AlertDetection detection = 9; */
+        if (message.detection)
+            AlertDetection.internalBinaryWrite(message.detection, writer.tag(9, WireType.LengthDelimited).fork(), options).join();
         /* string type = 10; */
         if (message.type !== "")
             writer.tag(10, WireType.LengthDelimited).string(message.type);
@@ -21345,7 +21475,7 @@ class UpdateAlertRuleReq$Type extends MessageType<UpdateAlertRuleReq> {
             { no: 6, name: "status", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 7, name: "tags", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 8, name: "logsource", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 9, name: "detection", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 9, name: "detection", kind: "message", T: () => AlertDetection },
             { no: 10, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 11, name: "references", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 12, name: "suggestion", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
@@ -21364,7 +21494,6 @@ class UpdateAlertRuleReq$Type extends MessageType<UpdateAlertRuleReq> {
         message.status = "";
         message.tags = [];
         message.logsource = "";
-        message.detection = "";
         message.type = "";
         message.references = [];
         message.suggestion = "";
@@ -21403,8 +21532,8 @@ class UpdateAlertRuleReq$Type extends MessageType<UpdateAlertRuleReq> {
                 case /* string logsource */ 8:
                     message.logsource = reader.string();
                     break;
-                case /* string detection */ 9:
-                    message.detection = reader.string();
+                case /* ada.AlertDetection detection */ 9:
+                    message.detection = AlertDetection.internalBinaryRead(reader, reader.uint32(), options, message.detection);
                     break;
                 case /* string type */ 10:
                     message.type = reader.string();
@@ -21460,9 +21589,9 @@ class UpdateAlertRuleReq$Type extends MessageType<UpdateAlertRuleReq> {
         /* string logsource = 8; */
         if (message.logsource !== "")
             writer.tag(8, WireType.LengthDelimited).string(message.logsource);
-        /* string detection = 9; */
-        if (message.detection !== "")
-            writer.tag(9, WireType.LengthDelimited).string(message.detection);
+        /* ada.AlertDetection detection = 9; */
+        if (message.detection)
+            AlertDetection.internalBinaryWrite(message.detection, writer.tag(9, WireType.LengthDelimited).fork(), options).join();
         /* string type = 10; */
         if (message.type !== "")
             writer.tag(10, WireType.LengthDelimited).string(message.type);
@@ -21974,6 +22103,133 @@ class GetActivityRuleFieldsReply$Type extends MessageType<GetActivityRuleFieldsR
  * @generated MessageType for protobuf message ada.GetActivityRuleFieldsReply
  */
 export const GetActivityRuleFieldsReply = new GetActivityRuleFieldsReply$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class RuleNameItem$Type extends MessageType<RuleNameItem> {
+    constructor() {
+        super("ada.RuleNameItem", [
+            { no: 1, name: "ruleId", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "title", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<RuleNameItem>): RuleNameItem {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.ruleId = "";
+        message.title = "";
+        if (value !== undefined)
+            reflectionMergePartial<RuleNameItem>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: RuleNameItem): RuleNameItem {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string ruleId */ 1:
+                    message.ruleId = reader.string();
+                    break;
+                case /* string title */ 2:
+                    message.title = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: RuleNameItem, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string ruleId = 1; */
+        if (message.ruleId !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.ruleId);
+        /* string title = 2; */
+        if (message.title !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.title);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.RuleNameItem
+ */
+export const RuleNameItem = new RuleNameItem$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetActivityRuleNamesReq$Type extends MessageType<GetActivityRuleNamesReq> {
+    constructor() {
+        super("ada.GetActivityRuleNamesReq", []);
+    }
+    create(value?: PartialMessage<GetActivityRuleNamesReq>): GetActivityRuleNamesReq {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        if (value !== undefined)
+            reflectionMergePartial<GetActivityRuleNamesReq>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetActivityRuleNamesReq): GetActivityRuleNamesReq {
+        return target ?? this.create();
+    }
+    internalBinaryWrite(message: GetActivityRuleNamesReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.GetActivityRuleNamesReq
+ */
+export const GetActivityRuleNamesReq = new GetActivityRuleNamesReq$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetActivityRuleNamesReply$Type extends MessageType<GetActivityRuleNamesReply> {
+    constructor() {
+        super("ada.GetActivityRuleNamesReply", [
+            { no: 1, name: "rules", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => RuleNameItem }
+        ]);
+    }
+    create(value?: PartialMessage<GetActivityRuleNamesReply>): GetActivityRuleNamesReply {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.rules = [];
+        if (value !== undefined)
+            reflectionMergePartial<GetActivityRuleNamesReply>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetActivityRuleNamesReply): GetActivityRuleNamesReply {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated ada.RuleNameItem rules */ 1:
+                    message.rules.push(RuleNameItem.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetActivityRuleNamesReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated ada.RuleNameItem rules = 1; */
+        for (let i = 0; i < message.rules.length; i++)
+            RuleNameItem.internalBinaryWrite(message.rules[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.GetActivityRuleNamesReply
+ */
+export const GetActivityRuleNamesReply = new GetActivityRuleNamesReply$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class GetActivityRuleUniqueFieldsReq$Type extends MessageType<GetActivityRuleUniqueFieldsReq> {
     constructor() {
@@ -23158,7 +23414,7 @@ export const ADA = new ServiceType("ada.ADA", [
     { name: "AddActivityRule", options: {}, I: AddActivityRuleReq, O: AddActivityRuleReply },
     { name: "UpdateActivityRule", options: {}, I: UpdateActivityRuleReq, O: UpdateActivityRuleReply },
     { name: "DeleteActivityRule", options: {}, I: DeleteActivityRuleReq, O: DeleteActivityRuleReply },
-    { name: "GetActivityRuleFields", options: {}, I: GetActivityRuleFieldsReq, O: GetActivityRuleFieldsReply },
+    { name: "GetActivityRuleNames", options: {}, I: GetActivityRuleNamesReq, O: GetActivityRuleNamesReply },
     { name: "GetActivityRuleUniqueFields", options: {}, I: GetActivityRuleUniqueFieldsReq, O: GetActivityRuleUniqueFieldsReply },
     { name: "ScanRiskStats", options: {}, I: ScanRiskStatsReq, O: ScanRiskStatsReply },
     { name: "ListBaseline", options: {}, I: ListBaselineReq, O: ListBaselineReply },

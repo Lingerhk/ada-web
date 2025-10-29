@@ -61,8 +61,8 @@ import type { ScanRiskStatsReply } from "./ada";
 import type { ScanRiskStatsReq } from "./ada";
 import type { GetActivityRuleUniqueFieldsReply } from "./ada";
 import type { GetActivityRuleUniqueFieldsReq } from "./ada";
-import type { GetActivityRuleFieldsReply } from "./ada";
-import type { GetActivityRuleFieldsReq } from "./ada";
+import type { GetActivityRuleNamesReply } from "./ada";
+import type { GetActivityRuleNamesReq } from "./ada";
 import type { DeleteActivityRuleReply } from "./ada";
 import type { DeleteActivityRuleReq } from "./ada";
 import type { UpdateActivityRuleReply } from "./ada";
@@ -587,9 +587,9 @@ export interface IADAClient {
      */
     deleteActivityRule(input: DeleteActivityRuleReq, options?: RpcOptions): UnaryCall<DeleteActivityRuleReq, DeleteActivityRuleReply>;
     /**
-     * @generated from protobuf rpc: GetActivityRuleFields(ada.GetActivityRuleFieldsReq) returns (ada.GetActivityRuleFieldsReply);
+     * @generated from protobuf rpc: GetActivityRuleNames(ada.GetActivityRuleNamesReq) returns (ada.GetActivityRuleNamesReply);
      */
-    getActivityRuleFields(input: GetActivityRuleFieldsReq, options?: RpcOptions): UnaryCall<GetActivityRuleFieldsReq, GetActivityRuleFieldsReply>;
+    getActivityRuleNames(input: GetActivityRuleNamesReq, options?: RpcOptions): UnaryCall<GetActivityRuleNamesReq, GetActivityRuleNamesReply>;
     /**
      * @generated from protobuf rpc: GetActivityRuleUniqueFields(ada.GetActivityRuleUniqueFieldsReq) returns (ada.GetActivityRuleUniqueFieldsReply);
      */
@@ -1310,11 +1310,11 @@ export class ADAClient implements IADAClient, ServiceInfo {
         return stackIntercept<DeleteActivityRuleReq, DeleteActivityRuleReply>("unary", this._transport, method, opt, input);
     }
     /**
-     * @generated from protobuf rpc: GetActivityRuleFields(ada.GetActivityRuleFieldsReq) returns (ada.GetActivityRuleFieldsReply);
+     * @generated from protobuf rpc: GetActivityRuleNames(ada.GetActivityRuleNamesReq) returns (ada.GetActivityRuleNamesReply);
      */
-    getActivityRuleFields(input: GetActivityRuleFieldsReq, options?: RpcOptions): UnaryCall<GetActivityRuleFieldsReq, GetActivityRuleFieldsReply> {
+    getActivityRuleNames(input: GetActivityRuleNamesReq, options?: RpcOptions): UnaryCall<GetActivityRuleNamesReq, GetActivityRuleNamesReply> {
         const method = this.methods[80], opt = this._transport.mergeOptions(options);
-        return stackIntercept<GetActivityRuleFieldsReq, GetActivityRuleFieldsReply>("unary", this._transport, method, opt, input);
+        return stackIntercept<GetActivityRuleNamesReq, GetActivityRuleNamesReply>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: GetActivityRuleUniqueFields(ada.GetActivityRuleUniqueFieldsReq) returns (ada.GetActivityRuleUniqueFieldsReply);

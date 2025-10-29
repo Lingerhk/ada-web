@@ -353,6 +353,10 @@ export const getActivityRuleFields = async () => {
 	return api.getActivityRuleFields({}).then((resp) => resp.response);
 };
 
+export const getActivityRuleNames = async () => {
+	return api.getActivityRuleNames({}).then((resp) => resp.response);
+};
+
 export const getActivityRuleUniqueFields = async () => {
 	return api.getActivityRuleUniqueFields({}).then((resp) => resp.response);
 };

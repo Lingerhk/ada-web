@@ -263,20 +263,64 @@
                 <el-form-item :label="$t('message.ruleManage.logsource')" prop="logsource">
                     <el-input v-model="alertRuleDialog.form.logsource" :placeholder="$t('message.ruleManage.enterLogsource')" />
                 </el-form-item>
-                <el-form-item :label="$t('message.ruleManage.detection')" prop="detection" required>
-                    <Codemirror
-                        ref="alertCodeMirrorRef"
-                        v-model:value="alertRuleDialog.form.detection"
-                        :options="{
-                            mode: 'yaml',
-                            theme: 'material',
-                            lineNumbers: true,
-                            lineWrapping: false
-                        }"
-                        height="200px"
-                        width="100%"
-                        :placeholder="$t('message.ruleManage.enterDetection')"
-                    />
+                <el-form-item :label="$t('message.ruleManage.detection')" required>
+                    <div style="width: 100%; border: 1px solid #dcdfe6; padding: 12px; border-radius: 4px; box-sizing: border-box;">
+                        <div style="display: flex; gap: 12px; margin-bottom: 16px; align-items: flex-end;">
+                            <div style="flex: 1;">
+                                <div style="font-size: 12px; color: #909399; margin-bottom: 4px; font-weight: 500;">Event Type</div>
+                                <el-select
+                                    v-model="alertRuleDialog.form.detection.eventType"
+                                    placeholder="Select event type"
+                                    size="small"
+                                    style="width: 100%;"
+                                    clearable
+                                    teleported
+                                >
+                                    <el-option label="count" value="count" />
+                                    <el-option label="multi_eve" value="multi_eve" />
+                                    <el-option label="multi_pkt" value="multi_pkt" />
+                                    <el-option label="multi_eve_pkt" value="multi_eve_pkt" />
+                                </el-select>
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="font-size: 12px; color: #909399; margin-bottom: 4px; font-weight: 500;">Window Size</div>
+                                <el-input v-model="alertRuleDialog.form.detection.winSize" placeholder="e.g., 5m" size="small" />
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 16px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                <div style="font-size: 12px; color: #909399; font-weight: 500;">Sigma Rules</div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <div style="font-size: 12px; color: #909399; font-weight: 500;">Sorted</div>
+                                    <el-checkbox v-model="alertRuleDialog.form.detection.sorted" />
+                                </div>
+                            </div>
+                            <div v-for="(rule, index) in alertRuleDialog.form.detection.sigmaRules" :key="index" style="display: flex; margin-bottom: 8px; align-items: center; gap: 8px;">
+                                <el-select
+                                    v-model="alertRuleDialog.form.detection.sigmaRules[index]"
+                                    placeholder="Select sigma rule"
+                                    style="flex: 1;"
+                                    size="small"
+                                    filterable
+                                    clearable
+                                    teleported
+                                >
+                                    <el-option
+                                        v-for="option in activityRuleOptions"
+                                        :key="option.ruleId"
+                                        :label="`${option.title} (${option.ruleId})`"
+                                        :value="option.ruleId"
+                                    />
+                                </el-select>
+                                <el-button type="primary" :icon="Plus" circle size="small" style="width: 18px; height: 18px;" @click="addAlertDetectionSigmaRule" />
+                                <el-button type="danger" :icon="Minus" circle size="small" style="width: 18px; height: 18px; margin-left: 1px;" @click="removeAlertDetectionSigmaRule(index)" />
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 0;">
+                            <div style="font-size: 12px; color: #909399; margin-bottom: 4px; font-weight: 500;">Match By</div>
+                            <el-input v-model="alertRuleDialog.form.detection.matchBy" placeholder="Enter match condition" size="small" />
+                        </div>
+                    </div>
                 </el-form-item>
                 <el-form-item :label="$t('message.ruleManage.reference')" prop="references">
                     <div style="width: 100%;">
@@ -510,7 +554,7 @@ import { ref, reactive, onMounted, watch, nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { Plus, Minus, QuestionFilled, Upload } from '@element-plus/icons-vue';
-import { listAlertRules, addAlertRule, updateAlertRule, deleteAlertRule, listActivityRules, addActivityRule, updateActivityRule, deleteActivityRule, getAlertTypes, getAlertRuleTags, getActivityRuleFields, getActivityRuleUniqueFields } from '/@/api/grpc/method';
+import { listAlertRules, addAlertRule, updateAlertRule, deleteAlertRule, listActivityRules, addActivityRule, updateActivityRule, deleteActivityRule, getAlertTypes, getAlertRuleTags, getActivityRuleFields, getActivityRuleUniqueFields, getActivityRuleNames } from '/@/api/grpc/method';
 import type { ListAlertRuleReq, AddAlertRuleReq, UpdateAlertRuleReq, ListActivityRuleReq, AddActivityRuleReq, UpdateActivityRuleReq, AlertRuleInfo, ActivityRuleInfo } from '/@/api/grpc/ada';
 import yaml from 'js-yaml';
 import hljs from 'highlight.js/lib/core';
@@ -543,6 +587,9 @@ const availableTags = ref<string[]>([]);
 // All available fields and uniqueFields from backend
 const availableFields = ref<string[]>([]);
 const availableUniqueFields = ref<string[]>([]);
+
+// All available activity rules (for sigma rules selection)
+const activityRuleOptions = ref<Array<{ ruleId: string; title: string }>>([]);
 
 // Alert Rules State
 const alertRules = reactive({
@@ -588,6 +635,14 @@ interface AttackFlowForm {
     relates: string[];
 }
 
+interface AlertDetectionForm {
+    eventType: string;
+    winSize: string;
+    sorted: boolean;
+    sigmaRules: string[];
+    matchBy: string;
+}
+
 // Alert Rule Dialog State
 const alertRuleDialog = reactive({
     visible: false,
@@ -604,7 +659,13 @@ const alertRuleDialog = reactive({
         logsource: '',
         type: '',
         autoBlock: false,
-        detection: '',
+        detection: {
+            eventType: '',
+            winSize: '',
+            sorted: false,
+            sigmaRules: [''],
+            matchBy: '',
+        } as AlertDetectionForm,
         references: [] as string[],
         attackFlow: {
             desc: '',
@@ -737,7 +798,13 @@ const handleAddAlertRule = () => {
         logsource: '',
         type: '',
         autoBlock: false,
-        detection: '',
+        detection: {
+            eventType: '',
+            winSize: '',
+            sorted: false,
+            sigmaRules: [''],
+            matchBy: '',
+        },
         references: [''],
         attackFlow: {
             desc: '',
@@ -897,6 +964,40 @@ const handleEditAlertRule = (row: AlertRuleInfo) => {
         relates: [''],
     };
 
+    // Parse detection - handle both string (from old YAML) and object formats
+    let detectionForm: AlertDetectionForm;
+    if (typeof row.detection === 'string') {
+        // Parse YAML string to object
+        try {
+            const detectionObj = yaml.load(row.detection) as any;
+            detectionForm = {
+                eventType: detectionObj.event_type || '',
+                winSize: detectionObj.win_size || '',
+                sorted: detectionObj.sorted || false,
+                sigmaRules: (detectionObj.sigma_rules || []).length > 0 ? [...detectionObj.sigma_rules] : [''],
+                matchBy: detectionObj.match_by || '',
+            };
+        } catch (error) {
+            console.error('Failed to parse detection YAML:', error);
+            detectionForm = {
+                eventType: '',
+                winSize: '',
+                sorted: false,
+                sigmaRules: [''],
+                matchBy: '',
+            };
+        }
+    } else {
+        // Already an object
+        detectionForm = {
+            eventType: (row.detection as any).eventType || '',
+            winSize: (row.detection as any).winSize || '',
+            sorted: (row.detection as any).sorted || false,
+            sigmaRules: ((row.detection as any).sigmaRules || []).length > 0 ? [...(row.detection as any).sigmaRules] : [''],
+            matchBy: (row.detection as any).matchBy || '',
+        };
+    }
+
     alertRuleDialog.form = {
         iD: row.iD,
         title: row.title,
@@ -908,7 +1009,7 @@ const handleEditAlertRule = (row: AlertRuleInfo) => {
         logsource: row.logsource,
         type: row.type,
         autoBlock: row.autoBlock,
-        detection: row.detection || '',
+        detection: detectionForm,
         references: row.references.length > 0 ? [...row.references] : [''],
         attackFlow: attackFlowForm,
         suggestion: row.suggestion,
@@ -919,14 +1020,6 @@ const handleEditAlertRule = (row: AlertRuleInfo) => {
 };
 
 const handleSaveAlertRule = async () => {
-    // Validate YAML syntax
-    try {
-        yaml.load(alertRuleDialog.form.detection);
-    } catch (error) {
-        ElMessage.error(t('message.ruleManage.invalidYamlFormat') + ': ' + (error as Error).message);
-        return;
-    }
-
     // Validate Attack Flow
     const attackFlowValidation = validateAttackFlow();
     if (!attackFlowValidation.isValid) {
@@ -945,6 +1038,15 @@ const handleSaveAlertRule = async () => {
         relates: alertRuleDialog.form.attackFlow.relates.filter(r => r.trim() !== ''),
     };
 
+    // Convert detection from form format to proto format
+    const detectionProto = {
+        eventType: alertRuleDialog.form.detection.eventType,
+        winSize: alertRuleDialog.form.detection.winSize,
+        sorted: alertRuleDialog.form.detection.sorted,
+        sigmaRules: alertRuleDialog.form.detection.sigmaRules.filter(r => r.trim() !== ''),
+        matchBy: alertRuleDialog.form.detection.matchBy,
+    };
+
     alertRuleDialog.saving = true;
     try {
         if (alertRuleDialog.isEdit) {
@@ -959,7 +1061,7 @@ const handleSaveAlertRule = async () => {
                 logsource: alertRuleDialog.form.logsource,
                 type: alertRuleDialog.form.type,
                 autoBlock: alertRuleDialog.form.autoBlock,
-                detection: alertRuleDialog.form.detection,
+                detection: detectionProto,
                 references: alertRuleDialog.form.references.filter(ref => ref.trim() !== ''),
                 attackFlow: attackFlowProto,
                 suggestion: alertRuleDialog.form.suggestion,
@@ -979,7 +1081,7 @@ const handleSaveAlertRule = async () => {
                 logsource: alertRuleDialog.form.logsource,
                 type: alertRuleDialog.form.type,
                 autoBlock: alertRuleDialog.form.autoBlock,
-                detection: alertRuleDialog.form.detection,
+                detection: detectionProto,
                 references: alertRuleDialog.form.references.filter(ref => ref.trim() !== ''),
                 attackFlow: attackFlowProto,
                 suggestion: alertRuleDialog.form.suggestion,
@@ -1045,6 +1147,17 @@ const addAttackFlowRelate = () => {
 
 const removeAttackFlowRelate = (relateIndex: number) => {
     alertRuleDialog.form.attackFlow.relates.splice(relateIndex, 1);
+};
+
+// Helper methods for managing alert detection sigma rules
+const addAlertDetectionSigmaRule = () => {
+    alertRuleDialog.form.detection.sigmaRules.push('');
+};
+
+const removeAlertDetectionSigmaRule = (index: number) => {
+    if (alertRuleDialog.form.detection.sigmaRules.length > 1) {
+        alertRuleDialog.form.detection.sigmaRules.splice(index, 1);
+    }
 };
 
 // Helper function to refresh CodeMirror to fix line numbers gutter width
@@ -1583,6 +1696,15 @@ const fetchActivityRuleUniqueFields = async () => {
     }
 };
 
+const fetchActivityRuleNames = async () => {
+    try {
+        const response = await getActivityRuleNames();
+        activityRuleOptions.value = response.rules || [];
+    } catch (error) {
+        console.error('Failed to fetch activity rule names:', error);
+    }
+};
+
 // Watch for tab changes
 watch(activeTab, (newTab) => {
     if (newTab === 'activityRule' && activityRules.list.length === 0) {
@@ -1621,6 +1743,7 @@ onMounted(() => {
     fetchAlertRuleTags();
     fetchActivityRuleFields();
     fetchActivityRuleUniqueFields();
+    fetchActivityRuleNames();
     fetchAlertRules();
 });
 </script>

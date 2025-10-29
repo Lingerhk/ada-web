@@ -496,6 +496,8 @@ export default {
 		delete: 'Delete',
 		view: 'View',
 		edit: 'Edit',
+		download: 'Download',
+		downloadSuccess: 'Download successful',
 		updateVersion: 'updateVersion',
 		index: 'ID',
 		closeBulk: 'closeBulk',

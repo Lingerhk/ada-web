@@ -493,6 +493,8 @@ export default {
 		delete: '删除',
 		view: '查看',
 		edit: '修改',
+		download: '下载',
+		downloadSuccess: '下载成功',
 		updateVersion: '版本更新',
 		index: '编号',
 		closeBulk: '批量关闭',

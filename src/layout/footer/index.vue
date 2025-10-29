@@ -1,7 +1,6 @@
 <template>
 	<div class="layout-footer pb15">
 		<div class="layout-footer-warp">
-			<div style="font-weight: 500;">AD Aegis Protection Platform</div>
 			<div class="mt5">© 2025 ADAegis. All rights reserved.</div>
 		</div>
 	</div>
@@ -29,7 +28,7 @@ onMounted(() => {
 		color: var(--el-text-color-regular);
 		text-align: center;
 		animation: error-num 0.3s ease;
-		font-size: 14px;
+		font-size: 13px;
 		line-height: 1.8;
 	}
 }

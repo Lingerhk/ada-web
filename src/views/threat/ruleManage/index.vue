@@ -463,7 +463,10 @@
                 <pre><code class="language-yaml" v-html="alertRuleViewDialog.highlightedYaml"></code></pre>
             </div>
             <template #footer>
-                <el-button @click="alertRuleViewDialog.visible = false">{{ $t('message.tableCommon.close') }}</el-button>
+                <div style="display: flex; justify-content: space-between; width: 100%;">
+                    <el-button @click="handleDownloadAlertRule">{{ $t('message.tableCommon.download') }}</el-button>
+                    <el-button @click="alertRuleViewDialog.visible = false">{{ $t('message.tableCommon.close') }}</el-button>
+                </div>
             </template>
         </el-dialog>
 
@@ -477,7 +480,10 @@
                 <pre><code class="language-yaml" v-html="activityRuleViewDialog.highlightedYaml"></code></pre>
             </div>
             <template #footer>
-                <el-button @click="activityRuleViewDialog.visible = false">{{ $t('message.tableCommon.close') }}</el-button>
+                <div style="display: flex; justify-content: space-between; width: 100%;">
+                    <el-button @click="handleDownloadActivityRule">{{ $t('message.tableCommon.download') }}</el-button>
+                    <el-button @click="activityRuleViewDialog.visible = false">{{ $t('message.tableCommon.close') }}</el-button>
+                </div>
             </template>
         </el-dialog>
     </div>
@@ -625,6 +631,7 @@ const alertRuleViewDialog = reactive({
     visible: false,
     yamlContent: '',
     highlightedYaml: '',
+    ruleId: '',
 });
 
 // Activity Rule View Dialog State
@@ -632,6 +639,7 @@ const activityRuleViewDialog = reactive({
     visible: false,
     yamlContent: '',
     highlightedYaml: '',
+    ruleId: '',
 });
 
 // Fetch Alert Rules
@@ -735,6 +743,17 @@ const handleViewAlertRule = async (row: AlertRuleInfo) => {
         return time.split(' ')[0].replace(/-/g, '/');
     };
 
+    // Parse detection field from YAML string to object
+    let detectionObject: any = '';
+    if (row.detection) {
+        try {
+            detectionObject = yaml.load(row.detection);
+        } catch (error) {
+            console.error('Failed to parse detection YAML:', error);
+            detectionObject = row.detection; // Fallback to string if parsing fails
+        }
+    }
+
     const ruleObject = {
         title: row.title,
         id: row.iD || '',
@@ -751,7 +770,7 @@ const handleViewAlertRule = async (row: AlertRuleInfo) => {
         autoBlock: row.autoBlock,
         suggestion: row.suggestion || '',
         level: levelMap[row.level] || 'medium',
-        detection: row.detection || ''
+        detection: detectionObject
     };
 
     alertRuleViewDialog.yamlContent = yaml.dump(ruleObject, {
@@ -795,6 +814,17 @@ const handleViewAlertRule = async (row: AlertRuleInfo) => {
 
             // Append each sigma rule's YAML content
             for (const activityRule of activityRules) {
+                // Parse detection field from YAML string to object
+                let sigmaDetectionObject: any = '';
+                if (activityRule.detection) {
+                    try {
+                        sigmaDetectionObject = yaml.load(activityRule.detection);
+                    } catch (error) {
+                        console.error('Failed to parse sigma detection YAML:', error);
+                        sigmaDetectionObject = activityRule.detection; // Fallback to string if parsing fails
+                    }
+                }
+
                 const activityRuleObject = {
                     title: activityRule.title,
                     id: activityRule.iD || '',
@@ -806,7 +836,7 @@ const handleViewAlertRule = async (row: AlertRuleInfo) => {
                     modified: formatDate(activityRule.updateTm),
                     tags: activityRule.tags || [],
                     logsource: activityRule.logsource || '',
-                    detection: activityRule.detection || '',
+                    detection: sigmaDetectionObject,
                     fields: activityRule.fields || [],
                     unique_fields: activityRule.uniqueFields || [],
                     level: levelMap[activityRule.level] || 'medium'
@@ -827,6 +857,7 @@ const handleViewAlertRule = async (row: AlertRuleInfo) => {
     }
 
     alertRuleViewDialog.highlightedYaml = hljs.highlight(alertRuleViewDialog.yamlContent, { language: 'yaml' }).value;
+    alertRuleViewDialog.ruleId = row.iD;
     alertRuleViewDialog.visible = true;
 };
 
@@ -1174,6 +1205,17 @@ const handleViewActivityRule = (row: ActivityRuleInfo) => {
         return time.split(' ')[0].replace(/-/g, '/');
     };
 
+    // Parse detection field from YAML string to object
+    let detectionObject: any = '';
+    if (row.detection) {
+        try {
+            detectionObject = yaml.load(row.detection);
+        } catch (error) {
+            console.error('Failed to parse detection YAML:', error);
+            detectionObject = row.detection; // Fallback to string if parsing fails
+        }
+    }
+
     const ruleObject = {
         title: row.title,
         id: row.iD || '',
@@ -1185,7 +1227,7 @@ const handleViewActivityRule = (row: ActivityRuleInfo) => {
         modified: formatDate(row.updateTm),
         tags: row.tags || [],
         logsource: row.logsource || '',
-        detection: row.detection || '',
+        detection: detectionObject,
         fields: row.fields || [],
         unique_fields: row.uniqueFields || [],
         level: levelMap[row.level] || 'medium'
@@ -1198,6 +1240,7 @@ const handleViewActivityRule = (row: ActivityRuleInfo) => {
         sortKeys: false
     });
     activityRuleViewDialog.highlightedYaml = hljs.highlight(activityRuleViewDialog.yamlContent, { language: 'yaml' }).value;
+    activityRuleViewDialog.ruleId = row.iD;
     activityRuleViewDialog.visible = true;
 };
 
@@ -1319,6 +1362,43 @@ const handleActivityRulePageChange = () => {
 const handleActivityDialogClose = () => {
     activityRuleFormRef.value?.resetFields();
     activityRuleDialog.idValidationError = '';
+};
+
+// Download handlers
+const handleDownloadAlertRule = () => {
+    const yamlContent = alertRuleViewDialog.yamlContent;
+    const ruleId = alertRuleViewDialog.ruleId || 'alert-rule';
+    const fileName = `${ruleId}.yml`;
+
+    const blob = new Blob([yamlContent], { type: 'text/yaml;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    ElMessage.success(t('message.tableCommon.downloadSuccess') || 'Download success');
+};
+
+const handleDownloadActivityRule = () => {
+    const yamlContent = activityRuleViewDialog.yamlContent;
+    const ruleId = activityRuleViewDialog.ruleId || 'activity-rule';
+    const fileName = `${ruleId}.yml`;
+
+    const blob = new Blob([yamlContent], { type: 'text/yaml;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    ElMessage.success(t('message.tableCommon.downloadSuccess') || 'Download success');
 };
 
 // Utility functions

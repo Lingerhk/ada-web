@@ -338,6 +338,22 @@
             width="600px"
             @close="handleActivityDialogClose"
         >
+            <template #header>
+                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                    <span>{{ activityRuleDialog.isEdit ? $t('message.ruleManage.editActivityRule') : $t('message.ruleManage.addActivityRule') }}</span>
+                    <el-button v-if="!activityRuleDialog.isEdit" size="small" @click="handleImportActivityRule">
+                        <el-icon style="margin-right: 4px;"><Upload /></el-icon>
+                        {{ $t('message.tableCommon.import') }}
+                    </el-button>
+                </div>
+            </template>
+            <input
+                ref="activityRuleFileInput"
+                type="file"
+                accept=".yml,.yaml"
+                style="display: none;"
+                @change="handleActivityRuleFileChange"
+            />
             <el-form :model="activityRuleDialog.form" label-width="120px" ref="activityRuleFormRef">
                 <el-form-item label="ID" prop="iD" required>
                     <div style="display: flex; flex-direction: column; gap: 8px;">
@@ -493,7 +509,7 @@
 import { ref, reactive, onMounted, watch, nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { Plus, Minus, QuestionFilled } from '@element-plus/icons-vue';
+import { Plus, Minus, QuestionFilled, Upload } from '@element-plus/icons-vue';
 import { listAlertRules, addAlertRule, updateAlertRule, deleteAlertRule, listActivityRules, addActivityRule, updateActivityRule, deleteActivityRule, getAlertTypes, getAlertRuleTags, getActivityRuleFields, getActivityRuleUniqueFields } from '/@/api/grpc/method';
 import type { ListAlertRuleReq, AddAlertRuleReq, UpdateAlertRuleReq, ListActivityRuleReq, AddActivityRuleReq, UpdateActivityRuleReq, AlertRuleInfo, ActivityRuleInfo } from '/@/api/grpc/ada';
 import yaml from 'js-yaml';
@@ -516,6 +532,7 @@ const alertRuleFormRef = ref();
 const activityRuleFormRef = ref();
 const alertCodeMirrorRef = ref();
 const activityCodeMirrorRef = ref();
+const activityRuleFileInput = ref<HTMLInputElement>();
 
 // Alert types map from backend
 const alertTypesMap = ref<Record<string, string>>({});
@@ -1362,6 +1379,83 @@ const handleActivityRulePageChange = () => {
 const handleActivityDialogClose = () => {
     activityRuleFormRef.value?.resetFields();
     activityRuleDialog.idValidationError = '';
+};
+
+// Import handlers
+const handleImportActivityRule = () => {
+    if (activityRuleFileInput.value) {
+        activityRuleFileInput.value.click();
+    }
+};
+
+const handleActivityRuleFileChange = async (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    const file = target.files?.[0];
+
+    if (!file) return;
+
+    try {
+        const fileContent = await file.text();
+        const ruleData = yaml.load(fileContent) as any;
+
+        // Level mapping from string to number
+        const levelMap: Record<string, number> = {
+            'info': 1,
+            'low': 2,
+            'medium': 3,
+            'high': 4,
+            'critical': 5
+        };
+
+        // Fill the form with parsed data
+        activityRuleDialog.form.iD = ruleData.id || '';
+        activityRuleDialog.form.title = ruleData.title || '';
+        activityRuleDialog.form.description = ruleData.description || '';
+        activityRuleDialog.form.level = levelMap[ruleData.level?.toLowerCase()] || 3;
+        activityRuleDialog.form.status = ruleData.status || 'stable';
+        activityRuleDialog.form.tags = Array.isArray(ruleData.tags) ? ruleData.tags : [];
+        activityRuleDialog.form.logsource = ruleData.logsource || '';
+        activityRuleDialog.form.author = ruleData.author || '';
+        activityRuleDialog.form.rdxKey = ruleData.rdxKey || ruleData.rdx_key || '';
+        activityRuleDialog.form.fields = Array.isArray(ruleData.fields) ? ruleData.fields : [];
+        activityRuleDialog.form.uniqueFields = Array.isArray(ruleData.unique_fields) ? ruleData.unique_fields : (Array.isArray(ruleData.uniqueFields) ? ruleData.uniqueFields : []);
+
+        // Handle references
+        if (Array.isArray(ruleData.references) && ruleData.references.length > 0) {
+            activityRuleDialog.form.references = [...ruleData.references];
+        } else {
+            activityRuleDialog.form.references = [''];
+        }
+
+        // Handle detection - convert object to YAML string
+        if (ruleData.detection) {
+            if (typeof ruleData.detection === 'string') {
+                activityRuleDialog.form.detection = ruleData.detection;
+            } else {
+                activityRuleDialog.form.detection = yaml.dump(ruleData.detection, {
+                    indent: 2,
+                    lineWidth: -1,
+                    noRefs: true,
+                    sortKeys: false
+                });
+            }
+        } else {
+            activityRuleDialog.form.detection = '';
+        }
+
+        // Validate the ID
+        validateActivityRuleId();
+
+        ElMessage.success(t('message.tableCommon.importSuccess') || 'Import successful');
+    } catch (error: any) {
+        console.error('Failed to import YAML file:', error);
+        ElMessage.error(t('message.tableCommon.importFailed') || `Import failed: ${error.message}`);
+    } finally {
+        // Reset file input
+        if (target) {
+            target.value = '';
+        }
+    }
 };
 
 // Download handlers

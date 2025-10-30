@@ -838,6 +838,19 @@ const handleViewAlertRule = async (row: AlertRuleInfo) => {
         }
     }
 
+    // Parse attack_flow field to object format for YAML
+    let attackFlowObject: any = undefined;
+    if (row.attackFlow && (row.attackFlow.fields?.length > 0 || row.attackFlow.relates?.length > 0 || row.attackFlow.desc)) {
+        attackFlowObject = {
+            desc: row.attackFlow.desc || '',
+            fields: row.attackFlow.fields?.map(field => ({
+                obj: field.obj,
+                key: field.key
+            })) || [],
+            relates: row.attackFlow.relates || []
+        };
+    }
+
     const ruleObject = {
         title: row.title,
         id: row.iD || '',
@@ -854,7 +867,8 @@ const handleViewAlertRule = async (row: AlertRuleInfo) => {
         autoBlock: row.autoBlock,
         suggestion: row.suggestion || '',
         level: levelMap[row.level] || 'medium',
-        detection: detectionObject
+        detection: detectionObject,
+        attack_flow: attackFlowObject
     };
 
     alertRuleViewDialog.yamlContent = yaml.dump(ruleObject, {

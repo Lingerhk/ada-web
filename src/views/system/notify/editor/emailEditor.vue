@@ -70,7 +70,7 @@ import '../style.scss';
 import { reactive, ref } from 'vue';
 import { EditorData } from '../constant';
 import { FormRules } from 'element-plus';
-import { transOutgoing as T } from '/@/utils/translator';
+import { transNotify as T } from '/@/utils/translator';
 import { validateEmail, validateNumeric, validateURL } from '/@/utils/validator';
 
 const model = defineModel({

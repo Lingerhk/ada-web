@@ -415,11 +415,11 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 						},
 					},
 					{
-						path: '/outgoing',
-						name: 'outgoingIndex',
-						component: () => import('/@/views/system/outgoing/index.vue'),
+						path: '/notify',
+						name: 'notifyIndex',
+						component: () => import('/@/views/system/notify/index.vue'),
 						meta: {
-							title: 'message.router.outgoingIndex',
+							title: 'message.router.notifyIndex',
 							isLink: '',
 							isHide: false,
 							isKeepAlive: true,

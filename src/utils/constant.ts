@@ -25,11 +25,11 @@ export const getWeakpwdLockedOptions = (t: any) => [0, 1].map(l => ({ value: l, 
 
 export const getSensorStatusOptions = (t: any) => ['Init', 'Stopped', 'Running'].map(l => ({ value: l, label: t(`message.sysConfig.sensorConfig.status_${l}`) }));
 
-export const getOutgoingModuleOptions = (t: any) => ['alert', 'baseline', 'leak', 'system'].map(l => ({ value: l, label: t(`message.system.outgoing.module_${l}`) }));
+export const getNotifyModuleOptions = (t: any) => ['alert', 'baseline', 'leak', 'system'].map(l => ({ value: l, label: t(`message.system.notify.module_${l}`) }));
 
-export const getOutgoingNotifyOptions = (t: any) => ['syslog', 'webhook', 'email'].map(l => ({ value: l, label: t(`message.system.outgoing.notify_${l}`) }));
+export const getNotifyNotifyOptions = (t: any) => ['syslog', 'webhook', 'email'].map(l => ({ value: l, label: t(`message.system.notify.notify_${l}`) }));
 
-export const getOutgoingEnableOptions = (t: any) => ['enable', 'disable'].map(l => ({ value: l, label: t(`message.system.outgoing.enable_${l}`) }));
+export const getNotifyEnableOptions = (t: any) => ['enable', 'disable'].map(l => ({ value: l, label: t(`message.system.notify.enable_${l}`) }));
 
 export const getMessageTypeOptions = (t: any) => ['alert', 'baseline', 'leak', 'system'].map(l => ({ value: l, label: t(`message.system.message.msgType_${l}`) }));
 

@@ -4,8 +4,8 @@
             <el-row justify="space-between">
                 <!-- 搜索 -->
                 <el-form :inline="true">
-                    <el-form-item :label="$t('message.system.outgoing.moduleName')">
-                        <el-select v-model="state.req.moduleName" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.system.outgoing.selectModule')" popper-class="custom-header">
+                    <el-form-item :label="$t('message.system.notify.moduleName')">
+                        <el-select v-model="state.req.moduleName" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.system.notify.selectModule')" popper-class="custom-header">
                             <template #header>
                                 <el-checkbox v-model="moduleCheckAll" :indeterminate="moduleIndeterminate" @change="handleModuleCheckAll">
                                     {{ $t('message.tableCommon.checkAll') }}
@@ -14,8 +14,8 @@
                             <el-option v-for="option in ModuleOptions" :key="option.value" :label="option.label" :value="option.value" />
                         </el-select>
                     </el-form-item>
-                    <el-form-item :label="$t('message.system.outgoing.notifyType')">
-                        <el-select v-model="state.req.notifyType" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.system.outgoing.selectNotify')" popper-class="custom-header">
+                    <el-form-item :label="$t('message.system.notify.notifyType')">
+                        <el-select v-model="state.req.notifyType" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.system.notify.selectNotify')" popper-class="custom-header">
                             <template #header>
                                 <el-checkbox v-model="notifyCheckAll" :indeterminate="notifyIndeterminate" @change="handleNotifyCheckAll">
                                     {{ $t('message.tableCommon.checkAll') }}
@@ -24,8 +24,8 @@
                             <el-option v-for="option in NotifyOptions" :key="option.value" :label="option.label" :value="option.value" />
                         </el-select>
                     </el-form-item>
-                    <el-form-item :label="$t('message.system.outgoing.enable')">
-                        <el-select v-model="state.req.enable" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 150px" :placeholder="$t('message.system.outgoing.selectEnable')" popper-class="custom-header">
+                    <el-form-item :label="$t('message.system.notify.enable')">
+                        <el-select v-model="state.req.enable" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 150px" :placeholder="$t('message.system.notify.selectEnable')" popper-class="custom-header">
                             <template #header>
                                 <el-checkbox v-model="enableCheckAll" :indeterminate="enableIndeterminate" @change="handleEnableCheckAll">
                                     {{ $t('message.tableCommon.checkAll') }}
@@ -41,22 +41,22 @@
                 <el-table :data="state.reply.list" v-loading="state.loading" :border="true"
                     row-class-name="pointer-cursor" style="width: 100%">
                     <el-table-column type="index" width="50" />
-                    <el-table-column prop="moduleName" :label="$t('message.system.outgoing.moduleName')">
+                    <el-table-column prop="moduleName" :label="$t('message.system.notify.moduleName')">
                         <template #default="prop">
-                            {{ $t(`message.system.outgoing.module_${prop.row.moduleName}`) }}
+                            {{ $t(`message.system.notify.module_${prop.row.moduleName}`) }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="notifyType" :label="$t('message.system.outgoing.notifyType')" :formatter="formatNotifyType"/>
-                    <el-table-column prop="endpoint" :label="$t('message.system.outgoing.endpoint')" />
-                    <el-table-column prop="remark" :label="$t('message.system.outgoing.remark')"
+                    <el-table-column prop="notifyType" :label="$t('message.system.notify.notifyType')" :formatter="formatNotifyType"/>
+                    <el-table-column prop="endpoint" :label="$t('message.system.notify.endpoint')" />
+                    <el-table-column prop="remark" :label="$t('message.system.notify.remark')"
                         :show-overflow-tooltip="true" />
-                    <el-table-column prop="enable" :label="$t('message.system.outgoing.enable')" :width="90">
+                    <el-table-column prop="enable" :label="$t('message.system.notify.enable')" :width="90">
                         <template #default="prop">
                             <el-switch v-model="prop.row.enable" active-value="enable" inactive-value="disable" @change="(v: string) => switchNotification(prop.row, v)"
                                 size="default" />
                         </template>
                     </el-table-column>
-                    <el-table-column prop="updateTm" :label="$t('message.system.outgoing.updateTm')">
+                    <el-table-column prop="updateTm" :label="$t('message.system.notify.updateTm')">
                         <template #default="prop">
                             {{ formatApiTime(prop.row.updateTm) }}
                         </template>
@@ -89,18 +89,18 @@ import { onMounted, reactive, ref, watch } from 'vue';
 import { EnableNotifyConfReq, ListNotifyConfReply, ListNotifyConfReply_Details, ListNotifyConfReq } from '/@/api/grpc/ada';
 import api from '/@/api/grpc';
 import { alertApiError, alertResult } from '/@/utils/error';
-import { getOutgoingEnableOptions, getOutgoingNotifyOptions, getOutgoingModuleOptions } from '/@/utils/constant';
+import { getNotifyEnableOptions, getNotifyNotifyOptions, getNotifyModuleOptions } from '/@/utils/constant';
 import { useI18n } from 'vue-i18n';
 import { formatApiTime } from '/@/utils/formatTime';
-import { transOutgoing as T } from '/@/utils/translator';
+import { transNotify as T } from '/@/utils/translator';
 import Drawer from './drawer.vue';
 import { formatNotifyType } from './constant';
 
 const { t } = useI18n();
 
-const ModuleOptions = getOutgoingModuleOptions(t);
-const NotifyOptions = getOutgoingNotifyOptions(t);
-const EnableOptions = getOutgoingEnableOptions(t);
+const ModuleOptions = getNotifyModuleOptions(t);
+const NotifyOptions = getNotifyNotifyOptions(t);
+const EnableOptions = getNotifyEnableOptions(t);
 
 // Checkbox states for "Check All"
 const moduleCheckAll = ref(false);
@@ -140,7 +140,7 @@ const switchNotification = (data: ListNotifyConfReply_Details, v: string) => {
     api.enableNotifyConf(req)
     .then(resp => resp.response)
     .then(data => {
-        alertResult(data.result, t('message.system.outgoing.enableSucc'), t('message.system.outgoing.enableFail'));
+        alertResult(data.result, t('message.system.notify.enableSucc'), t('message.system.notify.enableFail'));
     })
     .catch(err => alertApiError(err))
     .finally(() => refresh());

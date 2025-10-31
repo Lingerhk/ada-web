@@ -39,8 +39,8 @@
                 <el-table :data="state.reply.list" v-loading="state.loading" :border="true"
                     row-class-name="pointer-cursor" style="width: 100%">
                     <el-table-column type="index" width="60" :label="transExport('index')" />
-                    <el-table-column min-width="240" prop="name" :label="transExport('name')" />
-                    <el-table-column min-width="100" prop="type" :label="transExport('type')"
+                    <el-table-column min-width="200" prop="name" :label="transExport('name')" />
+                    <el-table-column min-width="60" prop="type" :label="transExport('type')"
                         :formatter="(_, __, value, ___) => transExport(`type_${value}`)" />
                     <el-table-column min-width="80" prop="status" :label="transExport('status')">
                         <template #default="prop">
@@ -53,22 +53,20 @@
                             </el-tooltip>
                         </template>
                     </el-table-column>
-                    <el-table-column min-width="80" prop="fileType" :label="transExport('fileType')" />
+                    <el-table-column min-width="60" prop="fileType" :label="transExport('fileType')" />
                     <el-table-column min-width="120" prop="createTm" :label="transExport('createTm')"
                         :formatter="(_, __, value, ___) => formatApiTime(value)" />
                     <el-table-column min-width="120" prop="updateTm" :label="transExport('updateTm')"
                         :formatter="(_, __, value, ___) => formatApiTime(value)" />
-                    <el-table-column :label="transExport('operation')">
+                    <el-table-column :label="transExport('operation')" width="200" fixed="right" align="center">
                         <template #default="prop">
-                            <el-space spacer="|">
-                                <el-button type="primary" text @click="handleDownload(prop.row)"
-                                    :disabled="prop.row.status !== 'finish'"
-                                    :loading="downloadingTask.findIndex((id) => id === prop.row.iD) !== -1">{{
-                                    transExport('download')
-                                    }}</el-button>
-                                <el-button type="danger" text @click="handleDelete(prop.row)">{{ transExport('delete')
-                                    }}</el-button>
-                            </el-space>
+                            <el-button size="small" @click="handleDownload(prop.row)"
+                                :disabled="prop.row.status !== 'finish'"
+                                :loading="downloadingTask.findIndex((id) => id === prop.row.iD) !== -1">{{
+                                transExport('download')
+                                }}</el-button>
+                            <el-button size="small" type="danger" @click="handleDelete(prop.row)">{{ transExport('delete')
+                                }}</el-button>
                         </template>
                     </el-table-column>
                 </el-table>

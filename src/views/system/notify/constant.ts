@@ -1,5 +1,5 @@
 import { ListNotifyConfReply_Details } from "/@/api/grpc/ada";
-import { transOutgoing as T } from '/@/utils/translator';
+import { transNotify as T } from '/@/utils/translator';
 
 export type EditorData = {
     [key: string]: string;

@@ -7,7 +7,7 @@
             <span style="font-size: 14px;">{{ $t('message.accountPerson.changePasswordSubTitle') }}</span>
         </template>
         <template #default>
-            <el-form ref="formRef" :model="form" :rules="rules" label-width="120px" label-position="left" size="default"
+            <el-form ref="formRef" :model="form" :rules="rules" label-width="150px" label-position="left" size="default"
                 style="width: 100%;" status-icon>
                 <el-form-item :label="$t('message.accountPerson.changePasswordOldPlaceholder')" prop="oldPassword">
                     <el-input v-model="form.oldPassword" show-password />

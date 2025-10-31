@@ -25,8 +25,8 @@ export const transWhiteList = (field: string, list: any[] = []) => {
     return i18n.global.t(`message.threat.whiteList.${field}`, list);
 };
 
-export const transOutgoing = (field: string, list: any[] = []) => {
-    return i18n.global.t(`message.system.outgoing.${field}`, list);
+export const transNotify = (field: string, list: any[] = []) => {
+    return i18n.global.t(`message.system.notify.${field}`, list);
 };
 
 export const transMonitor = (field: string, list: any[] = []) => {

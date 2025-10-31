@@ -31,9 +31,15 @@
                                 <template #label><span class="form-label">{{ T('createTm') }}:</span></template>
                                 {{ formatApiTime(state.me?.createTm) }}
                             </el-form-item>
-                            <el-form-item>
+                            <el-form-item class="password-strength-item">
                                 <template #label><span class="form-label">{{ T('passwordStrength') }}:</span></template>
-                                <span :class="'password-strength-'+state.me?.passStrength">{{ T('passwordStrength_'+state.me?.passStrength) }}</span>
+                                <el-tooltip :content="T('passwordStrength_'+state.me?.passStrength)" placement="top">
+                                    <div class="password-strength-bars">
+                                        <span :class="['strength-bar', getStrengthBarClass(1, state.me?.passStrength)]"></span>
+                                        <span :class="['strength-bar', getStrengthBarClass(2, state.me?.passStrength)]"></span>
+                                        <span :class="['strength-bar', getStrengthBarClass(3, state.me?.passStrength)]"></span>
+                                    </div>
+                                </el-tooltip>
                             </el-form-item>
                         </div>
                     </el-form>
@@ -185,6 +191,31 @@ const state = reactive({
         post: '',
     } as UpdateUserReq,
 });
+
+const getStrengthBarClass = (barIndex: number, strength: string) => {
+    const strengthLevels: { [key: string]: number } = {
+        'low': 1,
+        'middle': 2,
+        'high': 3
+    };
+
+    const level = strengthLevels[strength] || 0;
+
+    if (barIndex > level) {
+        return 'strength-bar-inactive';
+    }
+
+    // Return color class based on strength level
+    if (strength === 'low') {
+        return 'strength-bar-red';
+    } else if (strength === 'middle') {
+        return 'strength-bar-yellow';
+    } else if (strength === 'high') {
+        return 'strength-bar-blue';
+    }
+
+    return 'strength-bar-inactive';
+};
 
 const refreshQrCode = () => {
     state.mfa.secret = generateSecret();

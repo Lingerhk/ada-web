@@ -7,10 +7,54 @@
 .password-strength-midlle {
     color: #e6a23b;
 }
+.password-strength-middle {
+    color: #e6a23b;
+}
 .password-strength-low {
     color: #f56c6c;
+}
+.password-strength-icon {
+    cursor: pointer;
+    vertical-align: middle;
 }
 .form-label {
     font-weight: bold;
     font-size: 14px;
+}
+
+/* Password Strength Progress Bars */
+.password-strength-item .el-form-item__content {
+    display: inline-flex !important;
+    align-items: center;
+}
+
+.password-strength-bars {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.strength-bar {
+    width: 30px;
+    height: 8px;
+    display: inline-block;
+    border-radius: 2px;
+    transition: background-color 0.3s ease;
+}
+
+.strength-bar-inactive {
+    background-color: #e0e0e0;
+}
+
+.strength-bar-red {
+    background-color: #f56c6c;
+}
+
+.strength-bar-yellow {
+    background-color: #e6a23b;
+}
+
+.strength-bar-blue {
+    background-color: #409eff;
 }

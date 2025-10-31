@@ -83,7 +83,7 @@
 import './style.scss';
 
 import { computed, reactive, ref, watch } from 'vue';
-import { transOutgoing as T } from '/@/utils/translator';
+import { transNotify as T } from '/@/utils/translator';
 import { ListNotifyConfReply_Details, TestNotifyConfReq, UpdateNotifyConfReq } from '/@/api/grpc/ada';
 import api from '/@/api/grpc';
 import LevelCheckbox from '/@/components/level/checkbox.vue';

@@ -218,11 +218,11 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 				},
 				children: [
 					{
-						path: '/detectionOverview',
-						name: 'detectionOverviewIndex',
-						component: () => import('/@/views/risk/detectionOverview/index.vue'),
+						path: '/riskOverview',
+						name: 'riskOverviewIndex',
+						component: () => import('/@/views/risk/riskOverview/index.vue'),
 						meta: {
-							title: 'message.router.detectionOverviewIndex',
+							title: 'message.router.riskOverviewIndex',
 							isLink: '',
 							isHide: false,
 							isKeepAlive: true,

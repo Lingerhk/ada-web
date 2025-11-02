@@ -97,7 +97,7 @@ export default {
 		threatKibana: '日志检索',
 		sensitiveEntryListIndex: '监控配置',
 		riskIndex: '风险检测',
-		detectionOverviewIndex: '风险态势',
+		riskOverviewIndex: '风险态势',
 		baselineIndex: '基线检测',
 		leakIndex: '漏洞检测',
 		weakpwdIndex: '弱口令检测',

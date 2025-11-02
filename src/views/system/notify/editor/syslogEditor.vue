@@ -1,7 +1,7 @@
 <template>
     <el-form ref="formRef" :model="model" label-width="150px" label-position="left" :rules="rules">
         <!-- interval -->
-        <!-- <el-form-item prop="alert_interval">
+        <el-form-item prop="alert_interval">
             <template #label>
                 <span class="form-item-label">{{ T('alertInterval') }}</span>
             </template>
@@ -9,7 +9,7 @@
                 <span>{{ T('alertIntervalHint') }}</span><el-input-number v-model="model.alert_interval" :width="100"
                     size="default" :disabled="props.ro" :min="0" />
             </template>
-        </el-form-item> -->
+        </el-form-item>
         <!-- server ip -->
         <el-form-item prop="endpoint" :status-icon="false">
             <template #label>
@@ -77,7 +77,7 @@ watch(() => epData, (val) => {
 const emits = defineEmits(['test']);
 
 interface RuleForm {
-    // alert_interval: string,
+    alert_interval: string,
     endpoint: string,
 }
 
@@ -98,9 +98,9 @@ const validateEndpoint = (rule, value, callback) => {
 };
 
 const rules = reactive<FormRules<RuleForm>>({
-    // alert_interval: [
-    //     { required: true, message: T('requireAlertInterval'), trigger: ['blur', 'change'] },
-    // ],
+    alert_interval: [
+        { required: true, message: T('requireAlertInterval'), trigger: ['blur', 'change'] },
+    ],
     endpoint: [
         { required: true, validator: validateEndpoint, message: T('requireEndpoint'), trigger: 'change' },
     ],

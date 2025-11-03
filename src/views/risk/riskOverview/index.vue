@@ -3,10 +3,9 @@
         <el-card shadow="hover">
             <div class="big-data-up mb15">
                 <div class="up-left">
-                    <!-- TODO: i18n & 对接后端 -->
                     <el-form style="width: 200px" size="default">
                         <el-form-item>
-                            <el-select v-model="domain" placeholder="所有域">
+                            <el-select v-model="domain" :placeholder="$t('message.risk.overview.domainPlaceholder')">
                                 <el-option v-for="domain in domainOptions" :label="domain.label" :key="domain.value" :value="domain.value"></el-option>
                             </el-select>
                         </el-form-item>

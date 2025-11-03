@@ -28,8 +28,15 @@
                             <el-option v-for="option in SubTypeOptions" :key="option.value" :label="option.label" :value="option.value" />
                         </el-select>
                     </el-form-item>
-                    <el-form-item :label="$t('message.threat.levelName')">
-                        <LeveLCheckbox v-model="state.req.level" />
+                    <el-form-item :label="$t('message.tableCommon.level.name')">
+                        <el-select v-model="state.req.level" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.risk.baseline.selectLevel')" popper-class="custom-header">
+                            <template #header>
+                                <el-checkbox v-model="levelCheckAll" :indeterminate="levelIndeterminate" @change="handleLevelCheckAll">
+                                    {{ $t('message.tableCommon.checkAll') }}
+                                </el-checkbox>
+                            </template>
+                            <el-option v-for="option in LevelOptions" :key="option.value" :label="option.label" :value="option.value" />
+                        </el-select>
                     </el-form-item>
                     <el-form-item :label="$t('message.risk.baseline.result')">
                         <el-select v-model="state.req.result" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.risk.baseline.selectResult')" popper-class="custom-header">
@@ -41,14 +48,14 @@
                             <el-option v-for="option in ResultOpitions" :key="option.value" :label="option.label" :value="option.value" />
                         </el-select>
                     </el-form-item>
+                    <el-form-item>
+                        <el-input v-model="state.req.search" size="default" :placeholder="$t('message.risk.searchInput')"
+                            style="width: 290px;" :suffix-icon="Search" clearable></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <ExportButton type="baseline" />
+                    </el-form-item>
                 </el-form>
-                <!-- 右侧按钮 -->
-                <el-space wrap size="default"
-                    style="min-width: 450px; justify-content:right; align-items: flex-start; padding-top: 5px;">
-                    <el-input v-model="state.req.search" size="default" :placeholder="$t('message.risk.searchInput')"
-                        style="width: 290px;" :suffix-icon="Search" clearable></el-input>
-                    <ExportButton type="baseline" />
-                </el-space>
             </el-row>
             <!-- 下方显示列表 -->
             <el-row style="margin-top: 10px">
@@ -111,7 +118,7 @@ import { useI18n } from 'vue-i18n';
 import { listDomainOptions, recheckTask } from '/@/api/grpc/method';
 import { ElMessageBox } from 'element-plus';
 import ExportButton from '/@/views/system/export/exportButton.vue';
-import LeveLCheckbox from '/@/components/level/checkbox.vue';
+import { getLevelOptions } from '/@/utils/constant';
 
 const { t } = useI18n();
 
@@ -121,6 +128,7 @@ const AddDrawerRef = ref();
 const AddDrawer = defineAsyncComponent(() => import('./addDrawer.vue'));
 
 const SubTypeOptions = getSubTypeOptions(t);
+const LevelOptions = getLevelOptions(t);
 const ResultOpitions = getResultOptions();
 
 // Checkbox states for "Check All"
@@ -128,6 +136,8 @@ const domainCheckAll = ref(false);
 const domainIndeterminate = ref(false);
 const subTypeCheckAll = ref(false);
 const subTypeIndeterminate = ref(false);
+const levelCheckAll = ref(false);
+const levelIndeterminate = ref(false);
 const resultCheckAll = ref(false);
 const resultIndeterminate = ref(false);
 
@@ -204,6 +214,16 @@ const handleSubTypeCheckAll = (val: boolean) => {
     }
 };
 
+// Handle level Select All
+const handleLevelCheckAll = (val: boolean) => {
+    levelIndeterminate.value = false;
+    if (val) {
+        state.req.level = LevelOptions.map(opt => opt.value);
+    } else {
+        state.req.level = [];
+    }
+};
+
 // Handle result Select All
 const handleResultCheckAll = (val: boolean) => {
     resultIndeterminate.value = false;
@@ -241,6 +261,19 @@ watch(() => state.req.subType, (val) => {
     refresh();
 });
 
+watch(() => state.req.level, (val) => {
+    levelIndeterminate.value = false;
+    if (val.length === 0) {
+        levelCheckAll.value = false;
+    } else if (val.length === LevelOptions.length) {
+        levelCheckAll.value = true;
+    } else {
+        levelIndeterminate.value = true;
+    }
+    state.req.pageIdx = 1;
+    refresh();
+});
+
 watch(() => state.req.result, (val) => {
     resultIndeterminate.value = false;
     if (val.length === 0) {
@@ -250,11 +283,6 @@ watch(() => state.req.result, (val) => {
     } else {
         resultIndeterminate.value = true;
     }
-    state.req.pageIdx = 1;
-    refresh();
-});
-
-watch(() => state.req.level, () => {
     state.req.pageIdx = 1;
     refresh();
 });

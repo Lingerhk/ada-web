@@ -715,6 +715,7 @@ export default {
 			normal: '暂无风险',
 			risk: '存在风险',
 			allDomain: '所有域',
+			domainPlaceholder: '所有域',
 		},
 		baseline: {
 			name: '基线名称',
@@ -740,6 +741,7 @@ export default {
 			addDomain: '添加所在域',
 			selectDomain: '选择域',
 			selectSubType: '选择基线类型',
+			selectLevel: '选择风险等级',
 			selectResult: '选择检测结果',
 		},
 		leak: {
@@ -831,13 +833,13 @@ export default {
 			},
 		},
 		ruleConfig: {
-			templateName: '模板名称',
-			templateType: '模板类型',
+			templateName: '名称',
+			templateType: '类型',
 			all: '所有检测',
 			baseline: '基线检测',
 			leak: '漏洞检测',
 			weakpwd: '弱口令检测',
-			updateTm: '配置更新时间',
+			updateTm: '更新时间',
 			selectType: '选择模板类型',
 			detailDrawerTitle: '检测模板详情',
 			detailWeakpwd: '弱口令',

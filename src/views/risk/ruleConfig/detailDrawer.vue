@@ -27,11 +27,15 @@
                     :data="state.dataMore?.plugins.slice(state.pageIdx - 1, state.pageIdx - 1 + state.pageSize) ?? []"
                     :border="true" row-class-name="pointer-cursor" row-key="ID" :expand-row-keys="state.expandedKeys">
                     <el-table-column v-for="key in state.keys" :prop="key"
-                        :label="$t(`message.risk.ruleConfig.${state.data?.type}DetailTitle_${key}`)" :key="key">
+                        :label="$t(`message.risk.ruleConfig.${state.data?.type}DetailTitle_${key}`)" :key="key"
+                        :align="key === 'level' ? 'center' : 'left'">
                         <template #default="props">
                             <el-button v-if="key === 'metaData'" size="default" @click="handleExpand(props.row)" text
                                 type="primary" :icon="Edit"
                                 :disabled="Object.keys(props.row.metaData).length === 0"></el-button>
+                            <el-tag v-else-if="key === 'level'" :type="getLevelType(props.row[key])" effect="dark">
+                                {{ $t(`message.tableCommon.level.${props.row[key]}`) }}
+                            </el-tag>
                             <span v-else>
                                 {{ ['iD', 'name'].findIndex(v => v === key) === - 1 ?
                                     $t(`message.risk.ruleConfig.${state.data?.type}DetailValue_${props.row[key]}`) :
@@ -114,6 +118,17 @@ const state = reactive({
         mode: "htmlmixed", // Language mode
     },
 });
+
+const getLevelType = (level: number): string => {
+    const typeMap: Record<number, string> = {
+        1: 'info',
+        2: 'success',
+        3: 'warning',
+        4: 'danger',
+        5: 'danger',
+    };
+    return typeMap[level] || 'info';
+};
 
 const handleExpand = (data: GetScanTmplReply) => {
     tableRef.value.toggleRowExpansion(data);

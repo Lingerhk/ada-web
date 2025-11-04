@@ -141,9 +141,30 @@ const state = reactive({
 const toggleRowExpansion = (row: ListNotifyReply_Details) => {
     const index = state.expandedRowKeys.indexOf(row.iD);
     if (index > -1) {
+        // Collapse the row
         state.expandedRowKeys.splice(index, 1);
     } else {
+        // Expand the row
         state.expandedRowKeys.push(row.iD);
+
+        // Mark as read if status is 0 (unread)
+        if (row.status === 0) {
+            const req: UpdateNotifyReq = {
+                iDs: [row.iD],
+            };
+
+            api.updateNotify(req)
+                .then(resp => resp.response)
+                .then(data => {
+                    if (data.result === 'SUCCESS') {
+                        // Update local status to read (1)
+                        row.status = 1;
+                    }
+                })
+                .catch(err => {
+                    console.error('Failed to mark message as read:', err);
+                });
+        }
     }
 };
 

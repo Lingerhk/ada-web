@@ -96,7 +96,7 @@ export default {
 		activityListIndex: '行为分析',
 		threatKibana: '日志检索',
 		sensitiveEntryListIndex: '监控配置',
-		riskIndex: '风险检测',
+		riskIndex: '风险扫描',
 		riskOverviewIndex: '风险态势',
 		baselineIndex: '基线检测',
 		leakIndex: '漏洞检测',

@@ -96,7 +96,7 @@ export default {
 		activityListIndex: 'Activity List',
 		threatKibana: 'Kibana Board',
 		sensitiveEntryListIndex: 'Sensitive Entry',
-		riskIndex: 'Risk Check',
+		riskIndex: 'Risk Scan',
 		riskOverviewIndex: 'Overview',
 		baselineIndex: 'Baseline',
 		leakIndex: 'Leak',

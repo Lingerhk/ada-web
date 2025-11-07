@@ -1255,6 +1255,10 @@ export interface GetSystemInfoReply {
      * @generated from protobuf field: string cloudRuleVer = 20;
      */
     cloudRuleVer: string; // 云端规则版本
+    /**
+     * @generated from protobuf field: ada.SystemProxyInfo systemProxy = 21;
+     */
+    systemProxy?: SystemProxyInfo; // 系统代理配置
 }
 /**
  * @generated from protobuf message ada.GetSystemIconReq
@@ -1329,6 +1333,73 @@ export interface UpdateSystemCfgReply {
      * @generated from protobuf field: string result = 1;
      */
     result: string;
+}
+/**
+ * SystemProxy related messages
+ *
+ * @generated from protobuf message ada.SystemProxyInfo
+ */
+export interface SystemProxyInfo {
+    /**
+     * @generated from protobuf field: string httpProxy = 1;
+     */
+    httpProxy: string; // HTTP代理地址
+    /**
+     * @generated from protobuf field: string httpsProxy = 2;
+     */
+    httpsProxy: string; // HTTPS代理地址
+    /**
+     * @generated from protobuf field: bool upgradeProxy = 3;
+     */
+    upgradeProxy: boolean; // 升级时使用代理
+    /**
+     * @generated from protobuf field: bool notifyProxy = 4;
+     */
+    notifyProxy: boolean; // 告警通知时使用代理
+}
+/**
+ * @generated from protobuf message ada.GetSystemProxyReq
+ */
+export interface GetSystemProxyReq {
+}
+/**
+ * @generated from protobuf message ada.GetSystemProxyReply
+ */
+export interface GetSystemProxyReply {
+    /**
+     * @generated from protobuf field: ada.SystemProxyInfo systemProxy = 1;
+     */
+    systemProxy?: SystemProxyInfo;
+}
+/**
+ * @generated from protobuf message ada.UpdateSystemProxyReq
+ */
+export interface UpdateSystemProxyReq {
+    /**
+     * @generated from protobuf field: string httpProxy = 1;
+     */
+    httpProxy: string; // [(validator.field) = {regex: "^http://[^\\s]+|^(\\s&&[^\\f\\n\\r\\t\\v])*"}]; // HTTP代理地址，格式: http://proxy:port
+    /**
+     * @generated from protobuf field: string httpsProxy = 2;
+     */
+    httpsProxy: string; // [(validator.field) = {regex: "^https://[^\\s]+|^(\\s&&[^\\f\\n\\r\\t\\v])*"}]; // HTTPS代理地址，格式: https://proxy:port
+    /**
+     * @generated from protobuf field: bool upgradeProxy = 3;
+     */
+    upgradeProxy: boolean; // 升级时使用代理
+    /**
+     * @generated from protobuf field: bool notifyProxy = 4;
+     */
+    notifyProxy: boolean; // 告警通知时使用代理
+}
+/**
+ * @generated from protobuf message ada.UpdateSystemProxyReply
+ */
+export interface UpdateSystemProxyReply {
+    /**
+     * @generated from protobuf field: string result = 1;
+     */
+    result: string; // SUCCESS||FAILED
 }
 /**
  * @generated from protobuf message ada.GetSystemStatsReq
@@ -9227,7 +9298,8 @@ class GetSystemInfoReply$Type extends MessageType<GetSystemInfoReply> {
             { no: 17, name: "upgradeSrv", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 18, name: "upgradeRule", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 19, name: "currentRuleVer", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 20, name: "cloudRuleVer", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 20, name: "cloudRuleVer", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 21, name: "systemProxy", kind: "message", T: () => SystemProxyInfo }
         ]);
     }
     create(value?: PartialMessage<GetSystemInfoReply>): GetSystemInfoReply {
@@ -9321,6 +9393,9 @@ class GetSystemInfoReply$Type extends MessageType<GetSystemInfoReply> {
                 case /* string cloudRuleVer */ 20:
                     message.cloudRuleVer = reader.string();
                     break;
+                case /* ada.SystemProxyInfo systemProxy */ 21:
+                    message.systemProxy = SystemProxyInfo.internalBinaryRead(reader, reader.uint32(), options, message.systemProxy);
+                    break;
                 default:
                     let u = options.readUnknownField;
                     if (u === "throw")
@@ -9409,6 +9484,9 @@ class GetSystemInfoReply$Type extends MessageType<GetSystemInfoReply> {
         /* string cloudRuleVer = 20; */
         if (message.cloudRuleVer !== "")
             writer.tag(20, WireType.LengthDelimited).string(message.cloudRuleVer);
+        /* ada.SystemProxyInfo systemProxy = 21; */
+        if (message.systemProxy)
+            SystemProxyInfo.internalBinaryWrite(message.systemProxy, writer.tag(21, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -9727,6 +9805,266 @@ class UpdateSystemCfgReply$Type extends MessageType<UpdateSystemCfgReply> {
  * @generated MessageType for protobuf message ada.UpdateSystemCfgReply
  */
 export const UpdateSystemCfgReply = new UpdateSystemCfgReply$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class SystemProxyInfo$Type extends MessageType<SystemProxyInfo> {
+    constructor() {
+        super("ada.SystemProxyInfo", [
+            { no: 1, name: "httpProxy", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "httpsProxy", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "upgradeProxy", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 4, name: "notifyProxy", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
+        ]);
+    }
+    create(value?: PartialMessage<SystemProxyInfo>): SystemProxyInfo {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.httpProxy = "";
+        message.httpsProxy = "";
+        message.upgradeProxy = false;
+        message.notifyProxy = false;
+        if (value !== undefined)
+            reflectionMergePartial<SystemProxyInfo>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: SystemProxyInfo): SystemProxyInfo {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string httpProxy */ 1:
+                    message.httpProxy = reader.string();
+                    break;
+                case /* string httpsProxy */ 2:
+                    message.httpsProxy = reader.string();
+                    break;
+                case /* bool upgradeProxy */ 3:
+                    message.upgradeProxy = reader.bool();
+                    break;
+                case /* bool notifyProxy */ 4:
+                    message.notifyProxy = reader.bool();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: SystemProxyInfo, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string httpProxy = 1; */
+        if (message.httpProxy !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.httpProxy);
+        /* string httpsProxy = 2; */
+        if (message.httpsProxy !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.httpsProxy);
+        /* bool upgradeProxy = 3; */
+        if (message.upgradeProxy !== false)
+            writer.tag(3, WireType.Varint).bool(message.upgradeProxy);
+        /* bool notifyProxy = 4; */
+        if (message.notifyProxy !== false)
+            writer.tag(4, WireType.Varint).bool(message.notifyProxy);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.SystemProxyInfo
+ */
+export const SystemProxyInfo = new SystemProxyInfo$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetSystemProxyReq$Type extends MessageType<GetSystemProxyReq> {
+    constructor() {
+        super("ada.GetSystemProxyReq", []);
+    }
+    create(value?: PartialMessage<GetSystemProxyReq>): GetSystemProxyReq {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        if (value !== undefined)
+            reflectionMergePartial<GetSystemProxyReq>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetSystemProxyReq): GetSystemProxyReq {
+        return target ?? this.create();
+    }
+    internalBinaryWrite(message: GetSystemProxyReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.GetSystemProxyReq
+ */
+export const GetSystemProxyReq = new GetSystemProxyReq$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetSystemProxyReply$Type extends MessageType<GetSystemProxyReply> {
+    constructor() {
+        super("ada.GetSystemProxyReply", [
+            { no: 1, name: "systemProxy", kind: "message", T: () => SystemProxyInfo }
+        ]);
+    }
+    create(value?: PartialMessage<GetSystemProxyReply>): GetSystemProxyReply {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        if (value !== undefined)
+            reflectionMergePartial<GetSystemProxyReply>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetSystemProxyReply): GetSystemProxyReply {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* ada.SystemProxyInfo systemProxy */ 1:
+                    message.systemProxy = SystemProxyInfo.internalBinaryRead(reader, reader.uint32(), options, message.systemProxy);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetSystemProxyReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* ada.SystemProxyInfo systemProxy = 1; */
+        if (message.systemProxy)
+            SystemProxyInfo.internalBinaryWrite(message.systemProxy, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.GetSystemProxyReply
+ */
+export const GetSystemProxyReply = new GetSystemProxyReply$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class UpdateSystemProxyReq$Type extends MessageType<UpdateSystemProxyReq> {
+    constructor() {
+        super("ada.UpdateSystemProxyReq", [
+            { no: 1, name: "httpProxy", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "httpsProxy", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "upgradeProxy", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 4, name: "notifyProxy", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
+        ]);
+    }
+    create(value?: PartialMessage<UpdateSystemProxyReq>): UpdateSystemProxyReq {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.httpProxy = "";
+        message.httpsProxy = "";
+        message.upgradeProxy = false;
+        message.notifyProxy = false;
+        if (value !== undefined)
+            reflectionMergePartial<UpdateSystemProxyReq>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: UpdateSystemProxyReq): UpdateSystemProxyReq {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string httpProxy */ 1:
+                    message.httpProxy = reader.string();
+                    break;
+                case /* string httpsProxy */ 2:
+                    message.httpsProxy = reader.string();
+                    break;
+                case /* bool upgradeProxy */ 3:
+                    message.upgradeProxy = reader.bool();
+                    break;
+                case /* bool notifyProxy */ 4:
+                    message.notifyProxy = reader.bool();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: UpdateSystemProxyReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string httpProxy = 1; */
+        if (message.httpProxy !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.httpProxy);
+        /* string httpsProxy = 2; */
+        if (message.httpsProxy !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.httpsProxy);
+        /* bool upgradeProxy = 3; */
+        if (message.upgradeProxy !== false)
+            writer.tag(3, WireType.Varint).bool(message.upgradeProxy);
+        /* bool notifyProxy = 4; */
+        if (message.notifyProxy !== false)
+            writer.tag(4, WireType.Varint).bool(message.notifyProxy);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.UpdateSystemProxyReq
+ */
+export const UpdateSystemProxyReq = new UpdateSystemProxyReq$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class UpdateSystemProxyReply$Type extends MessageType<UpdateSystemProxyReply> {
+    constructor() {
+        super("ada.UpdateSystemProxyReply", [
+            { no: 1, name: "result", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<UpdateSystemProxyReply>): UpdateSystemProxyReply {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.result = "";
+        if (value !== undefined)
+            reflectionMergePartial<UpdateSystemProxyReply>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: UpdateSystemProxyReply): UpdateSystemProxyReply {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string result */ 1:
+                    message.result = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: UpdateSystemProxyReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string result = 1; */
+        if (message.result !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.result);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.UpdateSystemProxyReply
+ */
+export const UpdateSystemProxyReply = new UpdateSystemProxyReply$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class GetSystemStatsReq$Type extends MessageType<GetSystemStatsReq> {
     constructor() {
@@ -23399,6 +23737,8 @@ export const ADA = new ServiceType("ada.ADA", [
     { name: "GetSystemIcon", options: {}, I: GetSystemIconReq, O: GetSystemIconReply },
     { name: "UpdateSystemLanguage", options: {}, I: UpdateSystemLanguageReq, O: UpdateSystemLanguageReply },
     { name: "UpdateSystemCfg", options: {}, I: UpdateSystemCfgReq, O: UpdateSystemCfgReply },
+    { name: "GetSystemProxy", options: {}, I: GetSystemProxyReq, O: GetSystemProxyReply },
+    { name: "UpdateSystemProxy", options: {}, I: UpdateSystemProxyReq, O: UpdateSystemProxyReply },
     { name: "GetSystemStats", options: {}, I: GetSystemStatsReq, O: GetSystemStatsReply },
     { name: "SetSystemStatsCfg", options: {}, I: SetSystemStatsCfgReq, O: SetSystemStatsCfgReply },
     { name: "GetLicense", options: {}, I: GetLicenseReq, O: GetLicenseReply },

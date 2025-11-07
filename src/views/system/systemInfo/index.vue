@@ -5,141 +5,144 @@
                 <!-- 基础信息 Tab -->
                 <el-tab-pane :label="$t('message.router.basicInfoIndex')" name="basicInfo">
                         <h3>{{ $t('message.system.basicInfo.title') }}</h3>
-                        <div class="basic-info-container">
-                            <el-form label-position="left" label-width="120px">
-                                <el-form-item>
-                                    <template #label>
-                                        <h4>{{ $t('message.system.basicInfo.systemName') }}:</h4>
-                                    </template>
-                                    {{ basicInfoState.data.systemName }}
-                                </el-form-item>
-                                <el-form-item>
-                                    <template #label>
-                                        <h4>{{ $t('message.system.basicInfo.ip') }}:</h4>
-                                    </template>
-                                    {{ basicInfoState.data.systemIP }}
-                                    <el-button type="primary" :icon="Edit" circle @click="showUpdateIPDialog" style="margin-left: 10px;"/>
-                                </el-form-item>
-                            </el-form>
-
-                            <el-form class="logo-form" label-position="left" label-width="120px">
-                                <el-form-item>
-                                    <template #label>
-                                        <h4>LOGO:</h4>
-                                    </template>
-                                    <el-upload action="#" :show-file-list="false"
-                                        :before-upload="beforeUpload"
-                                        :http-request="handleUpload">
-                                        <template #trigger>
-                                            <div class="logo-container">
-                                                <img class="logo-img" :src="basicInfoState.icon" alt="Logo" />
-                                                <div class="logo-overlay">
-                                                    <el-icon size="24"><Edit /></el-icon>
-                                                    <span>{{ $t('message.tableCommon.edit') }}</span>
-                                                </div>
+                        <el-form style="margin-top: 30px;" label-width="180px">
+                            <el-form-item>
+                                <template #label>
+                                    <h4>{{ $t('message.system.basicInfo.systemName') }}:</h4>
+                                </template>
+                                {{ basicInfoState.data.systemName }}
+                            </el-form-item>
+                            <el-form-item>
+                                <template #label>
+                                    <h4>{{ $t('message.system.basicInfo.ip') }}:</h4>
+                                </template>
+                                {{ basicInfoState.data.systemIP }}
+                                <el-button type="primary" :icon="Edit" circle @click="showUpdateIPDialog" style="margin-left: 10px;"/>
+                            </el-form-item>
+                            <el-form-item>
+                                <template #label>
+                                    <h4>{{ $t('message.system.basicInfo.systemLogo') }}:</h4>
+                                </template>
+                                <el-upload action="#" :show-file-list="false"
+                                    :before-upload="beforeUpload"
+                                    :http-request="handleUpload">
+                                    <template #trigger>
+                                        <div class="logo-container">
+                                            <img class="logo-img" :src="basicInfoState.icon" alt="Logo" />
+                                            <div class="logo-overlay">
+                                                <el-icon size="24"><Edit /></el-icon>
+                                                <span>{{ $t('message.tableCommon.edit') }}</span>
                                             </div>
-                                        </template>
-                                    </el-upload>
-                                </el-form-item>
-                            </el-form>
-                        </div>
+                                        </div>
+                                    </template>
+                                </el-upload>
+                            </el-form-item>
+                        </el-form>
                 </el-tab-pane>
 
                 <!-- 系统时间 Tab -->
                 <el-tab-pane :label="$t('message.router.sysTimeIndex')" name="sysTime">
-                        <h3>{{ $t('message.sysTime.sysTime') }}: {{ sysTimeState.time }}</h3>
-                        <el-form style="margin-top: 30px;">
+                        <h3>{{ $t('message.system.sysTime.title') }}</h3>
+                        <el-form style="margin-top: 30px;" label-width="180px">
                             <el-form-item>
-                                <el-radio-group v-model="sysTimeState.form.enable" class="ml-4">
-                                    <el-radio value="1" size="default">{{ $t('message.sysTime.enableNtp') }}</el-radio>
-                                </el-radio-group>
+                                <template #label>
+                                    <h4>{{ $t('message.system.sysTime.currentTime') }}:</h4>
+                                </template>
+                                {{ sysTimeState.time }}
                             </el-form-item>
                             <el-form-item>
                                 <template #label>
-                                    <h4>{{ $t('message.sysTime.ntp') }}:</h4>
+                                    <h4>{{ $t('message.system.sysTime.enableNtp') }}:</h4>
                                 </template>
-                                <el-input size="default" v-model="sysTimeState.form.ntp" style="width: 240px"></el-input>
+                                <el-checkbox
+                                    v-model="sysTimeState.form.enableNtp"
+                                    size="default">
+                                    {{ $t('message.system.sysTime.enableNtpDesc') }}
+                                </el-checkbox>
                             </el-form-item>
                             <el-form-item>
-                                <el-button type="primary" size="default" @click="updateNtp" :loading="sysTimeState.form.loading">{{ $t('message.sysTime.save') }}</el-button>
+                                <template #label>
+                                    <h4>{{ $t('message.system.sysTime.ntpServer') }}:</h4>
+                                </template>
+                                <el-input size="default" v-model="sysTimeState.form.ntp" style="width: 400px"></el-input>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-button type="primary" size="default" @click="updateNtp" :loading="sysTimeState.form.loading">{{ $t('message.system.sysTime.save') }}</el-button>
                             </el-form-item>
                         </el-form>
                 </el-tab-pane>
 
                 <!-- 产品许可 Tab -->
                 <el-tab-pane :label="$t('message.router.licenseIndex')" name="license">
-                        <div class="basic-info-container">
-                            <el-form label-position="left" label-width="120px">
-                                <el-form-item>
-                                    <template #label>
-                                        <h4>{{ $t('message.system.license.version') }}:</h4>
+                        <h3>{{ $t('message.system.license.title') }}</h3>
+                        <el-form style="margin-top: 30px;" label-width="180px">
+                            <el-form-item>
+                                <template #label>
+                                    <h4>{{ $t('message.system.license.version') }}:</h4>
+                                </template>
+                                {{ licenseState.data.version }}
+                            </el-form-item>
+                            <el-form-item>
+                                <template #label>
+                                    <h4>{{ $t('message.system.license.endTime') }}:</h4>
+                                </template>
+                                {{ formatApiTime(new Date(Number(licenseState.data.endTime) * 1000).toLocaleString()) }}
+                            </el-form-item>
+                            <el-form-item>
+                                <template #label>
+                                    <h4>{{ $t('message.system.license.trait') }}:</h4>
+                                </template>
+                                {{ licenseState.data.trait }}
+                            </el-form-item>
+                            <el-form-item>
+                                <template #label>
+                                    <h4>{{ $t('message.system.license.partner') }}:</h4>
+                                </template>
+                                {{ licenseState.data.partner }}
+                            </el-form-item>
+                            <el-form-item>
+                                <template #label>
+                                    <h4>{{ $t('message.system.license.grantType') }}:</h4>
+                                </template>
+                                <el-radio-group v-model="licenseState.methodToUpdateLicense">
+                                    <el-radio v-for="item in licenseMethod" :value="item.value" size="default" :key="item.value">
+                                        {{ item.label }}
+                                    </el-radio>
+                                </el-radio-group>
+                            </el-form-item>
+                            <el-form-item v-if="licenseState.methodToUpdateLicense === 'code'">
+                                <el-input size="default" v-model="licenseState.licenseCode" style="width: 400px;"
+                                    :placeholder="$t('message.system.license.inputLicenseCode')"></el-input>
+                                <el-button style="margin-left: 10px;" size="default" type="primary" @click="submitLicenseKey">{{
+                                    $t('message.system.license.updateLicense') }}</el-button>
+                            </el-form-item>
+                            <el-form-item v-if="licenseState.methodToUpdateLicense === 'file'">
+                                <el-upload ref="uploadRef" action="#" :limit="1" :auto-upload="true" :show-file-list="false"
+                                    :before-upload="beforeUploadFile" :http-request="handleUploadFile">
+                                    <template #trigger>
+                                        <el-input size="default" v-model="licenseState.licenseFilename" readonly
+                                            style="width: 400px;"
+                                            :placeholder="$t('message.system.license.uploadLicenseFilePlaceholder')">{{
+                                            licenseState.licenseFilename }}</el-input>
                                     </template>
-                                    {{ licenseState.data.version }}
-                                </el-form-item>
-                                <el-form-item>
-                                    <template #label>
-                                        <h4>{{ $t('message.system.license.endTime') }}:</h4>
-                                    </template>
-                                    {{ formatApiTime(new Date(Number(licenseState.data.endTime) * 1000).toLocaleString()) }}
-                                </el-form-item>
-                                <el-form-item>
-                                    <template #label>
-                                        <h4>{{ $t('message.system.license.trait') }}:</h4>
-                                    </template>
-                                    {{ licenseState.data.trait }}
-                                </el-form-item>
-                                <el-form-item>
-                                    <template #label>
-                                        <h4>{{ $t('message.system.license.partner') }}:</h4>
-                                    </template>
-                                    {{ licenseState.data.partner }}
-                                </el-form-item>
-                                <el-form-item>
-                                    <template #label>
-                                        <h4>{{ $t('message.system.license.grantType') }}:</h4>
-                                    </template>
-                                    <el-radio-group v-model="licenseState.methodToUpdateLicense" class="ml-4">
-                                        <el-radio v-for="item in licenseMethod" :value="item.value" size="default" :key="item.value">
-                                            {{ item.label }}
-                                        </el-radio>
-                                    </el-radio-group>
-                                </el-form-item>
-                                <el-form-item v-if="licenseState.methodToUpdateLicense === 'code'">
-                                    <div>
-                                        <el-input size="default" v-model="licenseState.licenseCode" style="width: 240px;"
-                                            :placeholder="$t('message.system.license.inputLicenseCode')"></el-input>
-                                        <el-button style="margin-left: 10px;" size="default" type="primary" @click="submitLicenseKey">{{
-                                            $t('message.system.license.updateLicense') }}</el-button>
-                                    </div>
-                                </el-form-item>
-                                <el-form-item v-if="licenseState.methodToUpdateLicense === 'file'">
-                                    <el-upload ref="uploadRef" action="#" :limit="1" :auto-upload="true" :show-file-list="false"
-                                        :before-upload="beforeUploadFile" :http-request="handleUploadFile">
-                                        <template #trigger>
-                                            <el-input size="default" v-model="licenseState.licenseFilename" readonly
-                                                style="width: 240px;"
-                                                :placeholder="$t('message.system.license.uploadLicenseFilePlaceholder')">{{
-                                                licenseState.licenseFilename }}</el-input>
-                                        </template>
-                                        <el-button type="primary" size="default" style="margin-left: 10px;" @click="submitLicenseKey">{{
-                                            $t('message.system.license.uploadLicenseFile') }}</el-button>
-                                    </el-upload>
-                                </el-form-item>
-                            </el-form>
-                        </div>
+                                    <el-button type="primary" size="default" style="margin-left: 10px;" @click="submitLicenseKey">{{
+                                        $t('message.system.license.uploadLicenseFile') }}</el-button>
+                                </el-upload>
+                            </el-form-item>
+                        </el-form>
                 </el-tab-pane>
 
                 <!-- 系统升级 Tab -->
                 <el-tab-pane :label="$t('message.router.upgradeIndex')" name="upgrade">
                         <h3>{{ $t('message.system.upgrade.title') }}</h3>
-                        <el-form style="margin-top: 30px;" label-width="160px">
+                        <el-form style="margin-top: 30px;" label-width="180px">
                             <el-form-item>
                                 <template #label>
                                     <h4>{{ $t('message.system.upgrade.ruleVersion') }}:</h4>
                                 </template>
                                 <span>{{ upgradeState.currentRuleVer }}</span>
                                 <el-tooltip
-                                    v-if="upgradeState.hasNewVersion"
+                                    v-if="hasNewVersion"
                                     :content="$t('message.system.upgrade.canUpgradeTo', { version: upgradeState.cloudRuleVer })"
                                     placement="top">
                                     <el-icon color="#409EFF" style="margin-left: 8px; cursor: pointer;" :size="16">
@@ -147,7 +150,7 @@
                                     </el-icon>
                                 </el-tooltip>
                                 <el-tooltip
-                                    v-if="upgradeState.isLatestVersion"
+                                    v-if="isLatestVersion"
                                     :content="$t('message.system.upgrade.latestVersion')"
                                     placement="top">
                                     <el-icon color="#67C23A" style="margin-left: 8px; cursor: pointer;" :size="16">
@@ -159,12 +162,11 @@
                                 <template #label>
                                     <h4>{{ $t('message.system.upgrade.upgradeRule') }}:</h4>
                                 </template>
-                                <el-switch
+                                <el-checkbox
                                     v-model="upgradeState.form.upgradeRule"
-                                    :active-value="true"
-                                    :inactive-value="false"
                                     size="default">
-                                </el-switch>
+                                    {{ $t('message.system.upgrade.upgradeRuleDesc') }}
+                                </el-checkbox>
                             </el-form-item>
                             <el-form-item>
                                 <template #label>
@@ -189,9 +191,68 @@
                         </el-form>
                 </el-tab-pane>
 
+                <!-- 系统代理 Tab -->
+                <el-tab-pane :label="$t('message.router.systemProxyIndex')" name="systemProxy">
+                        <h3>{{ $t('message.system.systemProxy.title') }}</h3>
+                        <el-form style="margin-top: 30px;" label-width="180px">
+                            <el-form-item>
+                                <template #label>
+                                    <h4>{{ $t('message.system.systemProxy.httpProxy') }}:</h4>
+                                </template>
+                                <el-input
+                                    size="default"
+                                    v-model="systemProxyState.form.httpProxy"
+                                    style="width: 400px"
+                                    :placeholder="$t('message.system.systemProxy.httpProxyPlaceholder')">
+                                </el-input>
+                            </el-form-item>
+                            <el-form-item>
+                                <template #label>
+                                    <h4>{{ $t('message.system.systemProxy.httpsProxy') }}:</h4>
+                                </template>
+                                <el-input
+                                    size="default"
+                                    v-model="systemProxyState.form.httpsProxy"
+                                    style="width: 400px"
+                                    :placeholder="$t('message.system.systemProxy.httpsProxyPlaceholder')">
+                                </el-input>
+                            </el-form-item>
+                            <el-form-item>
+                                <template #label>
+                                    <h4>{{ $t('message.system.systemProxy.upgradeProxy') }}:</h4>
+                                </template>
+                                <el-checkbox
+                                    v-model="systemProxyState.form.upgradeProxy"
+                                    size="default">
+                                    {{ $t('message.system.systemProxy.upgradeProxyDesc') }}
+                                </el-checkbox>
+                            </el-form-item>
+                            <el-form-item>
+                                <template #label>
+                                    <h4>{{ $t('message.system.systemProxy.notifyProxy') }}:</h4>
+                                </template>
+                                <el-checkbox
+                                    v-model="systemProxyState.form.notifyProxy"
+                                    size="default">
+                                    {{ $t('message.system.systemProxy.notifyProxyDesc') }}
+                                </el-checkbox>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-button
+                                    type="primary"
+                                    size="default"
+                                    @click="updateSystemProxy"
+                                    :loading="systemProxyState.form.loading">
+                                    {{ $t('message.system.systemProxy.save') }}
+                                </el-button>
+                            </el-form-item>
+                        </el-form>
+                </el-tab-pane>
+
                 <!-- 网络诊断 Tab -->
                 <el-tab-pane :label="$t('message.router.diagnoseIndex')" name="diagnose">
-                        <el-form label-width="auto" :inline="true">
+                        <h3>{{ $t('message.system.diagnose.title') }}</h3>
+                        <el-form label-width="auto" :inline="true" style="margin-top: 30px;">
                             <el-form-item>
                                 <template #label>{{ $t('message.system.diagnose.type') }}</template>
                                 <el-radio-group v-model="diagnoseState.req.type">
@@ -300,7 +361,7 @@ import { ElMessage, ElMessageBox, type UploadProps } from 'element-plus';
 import { Edit, UploadFilled, CircleCheck } from '@element-plus/icons-vue';
 import { useI18n } from 'vue-i18n';
 import api from '/@/api/grpc';
-import { GetSystemInfoReply, GetLicenseReply, UpdateSystemCfgReq, NetworkDebugReq, ListSystemLogsReq, ListSystemLogsReply } from '/@/api/grpc/ada';
+import { GetSystemInfoReply, GetLicenseReply, UpdateSystemCfgReq, NetworkDebugReq, ListSystemLogsReq, ListSystemLogsReply, UpdateSystemProxyReq } from '/@/api/grpc/ada';
 import { getSystemInfo } from '/@/api/grpc/method';
 import { alertApiError, alertResult } from '/@/utils/error';
 import { formatApiTime, shortcuts } from '/@/utils/formatTime';
@@ -322,7 +383,7 @@ const sysTimeState = reactive({
     form: {
         loading: false,
         ntp: '',
-        enable: '1',
+        enableNtp: true,
     }
 });
 
@@ -346,20 +407,33 @@ const upgradeState = reactive({
     },
     currentRuleVer: '',
     cloudRuleVer: '',
-    hasNewVersion: computed(() => {
-        if (!upgradeState.cloudRuleVer) {
-            return false;
-        }
-        // Compare versions - assuming format like "1.0.0" or similar
-        return upgradeState.cloudRuleVer > upgradeState.currentRuleVer;
-    }),
-    isLatestVersion: computed(() => {
-        if (!upgradeState.cloudRuleVer) {
-            return false;
-        }
-        // Check if current version equals cloud version
-        return upgradeState.cloudRuleVer === upgradeState.currentRuleVer;
-    })
+});
+
+const hasNewVersion = computed(() => {
+    if (!upgradeState.cloudRuleVer) {
+        return false;
+    }
+    // Compare versions - assuming format like "1.0.0" or similar
+    return upgradeState.cloudRuleVer > upgradeState.currentRuleVer;
+});
+
+const isLatestVersion = computed(() => {
+    if (!upgradeState.cloudRuleVer) {
+        return false;
+    }
+    // Check if current version equals cloud version
+    return upgradeState.cloudRuleVer === upgradeState.currentRuleVer;
+});
+
+// System Proxy State
+const systemProxyState = reactive({
+    form: {
+        loading: false,
+        httpProxy: '',
+        httpsProxy: '',
+        upgradeProxy: false,
+        notifyProxy: false,
+    }
 });
 
 // Diagnose State
@@ -373,7 +447,7 @@ const diagnoseState = reactive({
     result: '',
 });
 
-let intervalId: NodeJS.Timeout | null = null;
+let intervalId: number | null = null;
 
 // Basic Info Methods
 const showUpdateIPDialog = () => {
@@ -396,6 +470,8 @@ const handleUpdateIP = (newIP: string) => {
         file: '',
         upgradeSrv: '',
         upgradeRule: '',
+        currentRuleVer: '',
+        cloudRuleVer: '',
     };
     api.updateSystemCfg(req)
     .then(resp => resp.response)
@@ -408,7 +484,7 @@ const handleUpdateIP = (newIP: string) => {
     .catch(err => alertApiError(err));
 };
 
-const handleUpload = (options: any) => {
+const handleUpload = () => {
     if (basicInfoState.iconUpload === '') {
         return;
     }
@@ -419,6 +495,8 @@ const handleUpload = (options: any) => {
         ntp: '',
         upgradeSrv: '',
         upgradeRule: '',
+        currentRuleVer: '',
+        cloudRuleVer: '',
     };
     api.updateSystemCfg(req)
     .then(resp => resp.response)
@@ -468,6 +546,8 @@ const updateNtp = () => {
         file: '',
         upgradeSrv: '',
         upgradeRule: '',
+        currentRuleVer: '',
+        cloudRuleVer: '',
     };
 
     sysTimeState.form.loading = true;
@@ -526,6 +606,8 @@ const updateUpgradeCfg = () => {
         ntp: '',
         systemIP: '',
         file: '',
+        currentRuleVer: '',
+        cloudRuleVer: '',
     };
 
     upgradeState.form.loading = true;
@@ -540,6 +622,60 @@ const updateUpgradeCfg = () => {
     })
     .catch(err => alertApiError(err))
     .finally(() => upgradeState.form.loading = false);
+};
+
+// System Proxy Methods
+const updateSystemProxy = () => {
+    // Validate proxy URLs
+    const httpProxyPattern = /^http:\/\/.+/;
+    const httpsProxyPattern = /^https:\/\/.+/;
+
+    if (systemProxyState.form.httpProxy && !httpProxyPattern.test(systemProxyState.form.httpProxy)) {
+        ElMessage.error(t('message.system.systemProxy.invalidHttpProxy'));
+        return;
+    }
+
+    if (systemProxyState.form.httpsProxy && !httpsProxyPattern.test(systemProxyState.form.httpsProxy)) {
+        ElMessage.error(t('message.system.systemProxy.invalidHttpsProxy'));
+        return;
+    }
+
+    const req: UpdateSystemProxyReq = {
+        httpProxy: systemProxyState.form.httpProxy,
+        httpsProxy: systemProxyState.form.httpsProxy,
+        upgradeProxy: systemProxyState.form.upgradeProxy,
+        notifyProxy: systemProxyState.form.notifyProxy,
+    };
+
+    systemProxyState.form.loading = true;
+    api.updateSystemProxy(req)
+    .then(resp => resp.response)
+    .then(data => {
+        alertResult(
+            data.result,
+            t('message.system.systemProxy.updateSucc'),
+            t('message.system.systemProxy.updateFail')
+        );
+        if (data.result === 'SUCCESS') {
+            refreshSystemProxy();
+        }
+    })
+    .catch(err => alertApiError(err))
+    .finally(() => systemProxyState.form.loading = false);
+};
+
+const refreshSystemProxy = () => {
+    api.getSystemProxy({})
+    .then(resp => resp.response)
+    .then(data => {
+        if (data.systemProxy) {
+            systemProxyState.form.httpProxy = data.systemProxy.httpProxy || '';
+            systemProxyState.form.httpsProxy = data.systemProxy.httpsProxy || '';
+            systemProxyState.form.upgradeProxy = data.systemProxy.upgradeProxy || false;
+            systemProxyState.form.notifyProxy = data.systemProxy.notifyProxy || false;
+        }
+    })
+    .catch(err => alertApiError(err));
 };
 
 // Diagnose Methods
@@ -651,7 +787,7 @@ const handleLogsCurrentPageChange = (newPage: number) => {
     refreshSystemLogs();
 };
 
-const handleLogsortChange = ({ column, prop, order }: { column: any, prop: string, order: 'ascending' | 'descending' | null }) => {
+const handleLogsortChange = ({ prop, order }: { prop: string, order: 'ascending' | 'descending' | null }) => {
     if (prop === 'time') {
         if (order === 'ascending') {
             systemLogsState.req.sortTime = 1;
@@ -714,7 +850,7 @@ watch(systemLogsTimeRange, (val) => {
     refreshSystemLogs();
 });
 
-// Watch tab changes to load data when switching to SystemLogs or Upgrade tab
+// Watch tab changes to load data when switching to SystemLogs, Upgrade, or SystemProxy tab
 watch(activeTab, (newTab) => {
     if (newTab === 'systemLogs') {
         refreshSystemLogs();
@@ -726,6 +862,8 @@ watch(activeTab, (newTab) => {
             upgradeState.currentRuleVer = basicInfoState.data.currentRuleVer || '';
             upgradeState.cloudRuleVer = basicInfoState.data.cloudRuleVer || '';
         }
+    } else if (newTab === 'systemProxy') {
+        refreshSystemProxy();
     }
 });
 
@@ -751,6 +889,14 @@ onMounted(async () => {
     upgradeState.currentRuleVer = info.currentRuleVer || '';
     upgradeState.cloudRuleVer = info.cloudRuleVer || '';
 
+    // Load System Proxy Config
+    if (info.systemProxy) {
+        systemProxyState.form.httpProxy = info.systemProxy.httpProxy || '';
+        systemProxyState.form.httpsProxy = info.systemProxy.httpsProxy || '';
+        systemProxyState.form.upgradeProxy = info.systemProxy.upgradeProxy || false;
+        systemProxyState.form.notifyProxy = info.systemProxy.notifyProxy || false;
+    }
+
     // Load License
     refreshLicense();
 });
@@ -763,23 +909,12 @@ onUnmounted(() => {
 </script>
 
 <style scoped lang="scss">
-.basic-info-container {
-    display: flex;
-    flex-direction: row;
-    gap: 40px;
-    margin-top: 20px;
-
-    .logo-form {
-        flex-shrink: 0;
-    }
-}
-
 .logo-container {
     position: relative;
-    width: 200px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
     border: 1px dashed #d9d9d9;
-    border-radius: 6px;
+    border-radius: 50%;
     cursor: pointer;
     overflow: hidden;
     display: flex;

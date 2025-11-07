@@ -4544,11 +4544,15 @@ export interface AlertRuleInfo {
      */
     attackFlow?: AttackFlowReply;
     /**
-     * @generated from protobuf field: string createTm = 16;
+     * @generated from protobuf field: repeated string uniqueFilter = 16;
+     */
+    uniqueFilter: string[]; // 唯一性过滤器
+    /**
+     * @generated from protobuf field: string createTm = 17;
      */
     createTm: string;
     /**
-     * @generated from protobuf field: string updateTm = 17;
+     * @generated from protobuf field: string updateTm = 18;
      */
     updateTm: string;
 }
@@ -4654,6 +4658,10 @@ export interface AddAlertRuleReq {
      * @generated from protobuf field: ada.AttackFlowReply attackFlow = 15;
      */
     attackFlow?: AttackFlowReply;
+    /**
+     * @generated from protobuf field: repeated string uniqueFilter = 16;
+     */
+    uniqueFilter: string[]; // 唯一性过滤器
 }
 /**
  * @generated from protobuf message ada.AddAlertRuleReply
@@ -4732,6 +4740,10 @@ export interface UpdateAlertRuleReq {
      * @generated from protobuf field: ada.AttackFlowReply attackFlow = 15;
      */
     attackFlow?: AttackFlowReply;
+    /**
+     * @generated from protobuf field: repeated string uniqueFilter = 16;
+     */
+    uniqueFilter: string[]; // 唯一性过滤器
 }
 /**
  * @generated from protobuf message ada.UpdateAlertRuleReply
@@ -20963,8 +20975,9 @@ class AlertRuleInfo$Type extends MessageType<AlertRuleInfo> {
             { no: 13, name: "suggestion", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 14, name: "autoBlock", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
             { no: 15, name: "attackFlow", kind: "message", T: () => AttackFlowReply },
-            { no: 16, name: "createTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 17, name: "updateTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 16, name: "uniqueFilter", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 17, name: "createTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 18, name: "updateTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<AlertRuleInfo>): AlertRuleInfo {
@@ -20983,6 +20996,7 @@ class AlertRuleInfo$Type extends MessageType<AlertRuleInfo> {
         message.references = [];
         message.suggestion = "";
         message.autoBlock = false;
+        message.uniqueFilter = [];
         message.createTm = "";
         message.updateTm = "";
         if (value !== undefined)
@@ -21039,10 +21053,13 @@ class AlertRuleInfo$Type extends MessageType<AlertRuleInfo> {
                 case /* ada.AttackFlowReply attackFlow */ 15:
                     message.attackFlow = AttackFlowReply.internalBinaryRead(reader, reader.uint32(), options, message.attackFlow);
                     break;
-                case /* string createTm */ 16:
+                case /* repeated string uniqueFilter */ 16:
+                    message.uniqueFilter.push(reader.string());
+                    break;
+                case /* string createTm */ 17:
                     message.createTm = reader.string();
                     break;
-                case /* string updateTm */ 17:
+                case /* string updateTm */ 18:
                     message.updateTm = reader.string();
                     break;
                 default:
@@ -21102,12 +21119,15 @@ class AlertRuleInfo$Type extends MessageType<AlertRuleInfo> {
         /* ada.AttackFlowReply attackFlow = 15; */
         if (message.attackFlow)
             AttackFlowReply.internalBinaryWrite(message.attackFlow, writer.tag(15, WireType.LengthDelimited).fork(), options).join();
-        /* string createTm = 16; */
+        /* repeated string uniqueFilter = 16; */
+        for (let i = 0; i < message.uniqueFilter.length; i++)
+            writer.tag(16, WireType.LengthDelimited).string(message.uniqueFilter[i]);
+        /* string createTm = 17; */
         if (message.createTm !== "")
-            writer.tag(16, WireType.LengthDelimited).string(message.createTm);
-        /* string updateTm = 17; */
+            writer.tag(17, WireType.LengthDelimited).string(message.createTm);
+        /* string updateTm = 18; */
         if (message.updateTm !== "")
-            writer.tag(17, WireType.LengthDelimited).string(message.updateTm);
+            writer.tag(18, WireType.LengthDelimited).string(message.updateTm);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -21269,7 +21289,8 @@ class AddAlertRuleReq$Type extends MessageType<AddAlertRuleReq> {
             { no: 12, name: "suggestion", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 13, name: "author", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 14, name: "autoBlock", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
-            { no: 15, name: "attackFlow", kind: "message", T: () => AttackFlowReply }
+            { no: 15, name: "attackFlow", kind: "message", T: () => AttackFlowReply },
+            { no: 16, name: "uniqueFilter", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<AddAlertRuleReq>): AddAlertRuleReq {
@@ -21287,6 +21308,7 @@ class AddAlertRuleReq$Type extends MessageType<AddAlertRuleReq> {
         message.suggestion = "";
         message.author = "";
         message.autoBlock = false;
+        message.uniqueFilter = [];
         if (value !== undefined)
             reflectionMergePartial<AddAlertRuleReq>(this, message, value);
         return message;
@@ -21340,6 +21362,9 @@ class AddAlertRuleReq$Type extends MessageType<AddAlertRuleReq> {
                     break;
                 case /* ada.AttackFlowReply attackFlow */ 15:
                     message.attackFlow = AttackFlowReply.internalBinaryRead(reader, reader.uint32(), options, message.attackFlow);
+                    break;
+                case /* repeated string uniqueFilter */ 16:
+                    message.uniqueFilter.push(reader.string());
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -21398,6 +21423,9 @@ class AddAlertRuleReq$Type extends MessageType<AddAlertRuleReq> {
         /* ada.AttackFlowReply attackFlow = 15; */
         if (message.attackFlow)
             AttackFlowReply.internalBinaryWrite(message.attackFlow, writer.tag(15, WireType.LengthDelimited).fork(), options).join();
+        /* repeated string uniqueFilter = 16; */
+        for (let i = 0; i < message.uniqueFilter.length; i++)
+            writer.tag(16, WireType.LengthDelimited).string(message.uniqueFilter[i]);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -21481,7 +21509,8 @@ class UpdateAlertRuleReq$Type extends MessageType<UpdateAlertRuleReq> {
             { no: 12, name: "suggestion", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 13, name: "author", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 14, name: "autoBlock", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
-            { no: 15, name: "attackFlow", kind: "message", T: () => AttackFlowReply }
+            { no: 15, name: "attackFlow", kind: "message", T: () => AttackFlowReply },
+            { no: 16, name: "uniqueFilter", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<UpdateAlertRuleReq>): UpdateAlertRuleReq {
@@ -21499,6 +21528,7 @@ class UpdateAlertRuleReq$Type extends MessageType<UpdateAlertRuleReq> {
         message.suggestion = "";
         message.author = "";
         message.autoBlock = false;
+        message.uniqueFilter = [];
         if (value !== undefined)
             reflectionMergePartial<UpdateAlertRuleReq>(this, message, value);
         return message;
@@ -21552,6 +21582,9 @@ class UpdateAlertRuleReq$Type extends MessageType<UpdateAlertRuleReq> {
                     break;
                 case /* ada.AttackFlowReply attackFlow */ 15:
                     message.attackFlow = AttackFlowReply.internalBinaryRead(reader, reader.uint32(), options, message.attackFlow);
+                    break;
+                case /* repeated string uniqueFilter */ 16:
+                    message.uniqueFilter.push(reader.string());
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -21610,6 +21643,9 @@ class UpdateAlertRuleReq$Type extends MessageType<UpdateAlertRuleReq> {
         /* ada.AttackFlowReply attackFlow = 15; */
         if (message.attackFlow)
             AttackFlowReply.internalBinaryWrite(message.attackFlow, writer.tag(15, WireType.LengthDelimited).fork(), options).join();
+        /* repeated string uniqueFilter = 16; */
+        for (let i = 0; i < message.uniqueFilter.length; i++)
+            writer.tag(16, WireType.LengthDelimited).string(message.uniqueFilter[i]);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

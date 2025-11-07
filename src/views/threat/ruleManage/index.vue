@@ -356,6 +356,11 @@
                         </div>
                     </div>
                 </el-form-item>
+                <el-form-item label="Unique Filter" prop="uniqueFilter">
+                    <el-select v-model="alertRuleDialog.form.uniqueFilter" multiple allow-create filterable placeholder="Enter Unique Filter" style="width: 100%">
+                        <el-option v-for="field in availableUniqueFields" :key="field" :label="field" :value="field" />
+                    </el-select>
+                </el-form-item>
                 <el-form-item :label="$t('message.ruleManage.suggestion')" prop="suggestion">
                     <el-input v-model="alertRuleDialog.form.suggestion" type="textarea" rows="3" :placeholder="$t('message.ruleManage.enterSuggestion')" />
                 </el-form-item>
@@ -672,6 +677,7 @@ const alertRuleDialog = reactive({
             fields: [{ obj: '', key: '', value: '' }] as AttackFlowField[],
             relates: [''] as string[],
         } as AttackFlowForm,
+        uniqueFilter: [] as string[],
         suggestion: '',
         author: '',
         createTmFormatted: '',
@@ -811,6 +817,7 @@ const handleAddAlertRule = () => {
             fields: [{ obj: '', key: '', value: '' }],
             relates: [''],
         },
+        uniqueFilter: [],
         suggestion: '',
         author: '',
         createTmFormatted: '',
@@ -868,7 +875,8 @@ const handleViewAlertRule = async (row: AlertRuleInfo) => {
         suggestion: row.suggestion || '',
         level: levelMap[row.level] || 'medium',
         detection: detectionObject,
-        attack_flow: attackFlowObject
+        attack_flow: attackFlowObject,
+        unique_filter: row.uniqueFilter || []
     };
 
     alertRuleViewDialog.yamlContent = yaml.dump(ruleObject, {
@@ -1026,6 +1034,7 @@ const handleEditAlertRule = (row: AlertRuleInfo) => {
         detection: detectionForm,
         references: row.references.length > 0 ? [...row.references] : [''],
         attackFlow: attackFlowForm,
+        uniqueFilter: row.uniqueFilter && row.uniqueFilter.length > 0 ? [...row.uniqueFilter] : [],
         suggestion: row.suggestion,
         author: row.author,
         createTmFormatted: formatTime(row.createTm),
@@ -1078,6 +1087,7 @@ const handleSaveAlertRule = async () => {
                 detection: detectionProto,
                 references: alertRuleDialog.form.references.filter(ref => ref.trim() !== ''),
                 attackFlow: attackFlowProto,
+                uniqueFilter: alertRuleDialog.form.uniqueFilter,
                 suggestion: alertRuleDialog.form.suggestion,
                 author: alertRuleDialog.form.author,
             };
@@ -1098,6 +1108,7 @@ const handleSaveAlertRule = async () => {
                 detection: detectionProto,
                 references: alertRuleDialog.form.references.filter(ref => ref.trim() !== ''),
                 attackFlow: attackFlowProto,
+                uniqueFilter: alertRuleDialog.form.uniqueFilter,
                 suggestion: alertRuleDialog.form.suggestion,
                 author: alertRuleDialog.form.author,
             };
@@ -1295,6 +1306,7 @@ const handleToggleAlertRule = async (row: AlertRuleInfo) => {
             detection: '',
             references: [...row.references],
             attackFlow: row.attackFlow,
+            uniqueFilter: row.uniqueFilter || [],
             suggestion: row.suggestion,
             author: row.author,
         };

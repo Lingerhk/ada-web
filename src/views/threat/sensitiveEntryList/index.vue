@@ -4,7 +4,7 @@
             <el-tabs v-model="state.req.type">
                 <el-tab-pane v-for="option in typeOptions" :label="$t(option.label)" :name="option.value"
                     :key="option.value">
-                    <el-row justify="space-between">
+                    <el-row>
                         <!-- 搜索 -->
                         <el-form :inline="true" class="filter-form">
                             <el-form-item>
@@ -38,24 +38,6 @@
                                 </el-select>
                             </el-form-item>
                         </el-form>
-                        <!-- 右侧按钮 -->
-                        <el-space wrap size="default">
-                            <el-form :inline="true">
-                                <el-form-item>
-                                    <el-button size="default" type="primary" @click="refreshList">{{
-                                        $t('message.threat.refreshManually') }}</el-button>
-                                </el-form-item>
-                            </el-form>
-                            <!-- <el-form :inline="true">
-                                <el-form-item>
-                                    <el-input size="default"
-                                        v-model="state.req.domain"
-                                        clearable
-							            style="width: 350px"
-                                        :placeholder="$t('message.threat.sensitive.domainFilter')"></el-input>
-                                </el-form-item>
-                            </el-form> -->
-                        </el-space>
                     </el-row>
                     <!-- 列表 -->
                     <el-row>

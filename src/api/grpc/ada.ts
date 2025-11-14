@@ -4394,11 +4394,11 @@ export interface DashboardStatsReq {
  */
 export interface DashboardStatsReply {
     /**
-     * @generated from protobuf field: map<string, int32> asset = 1;
+     * @generated from protobuf field: map<string, int32> agent = 1;
      */
-    asset: {
+    agent: {
         [key: string]: number;
-    }; // 监控资产数: {"total": 121323, "today": 12}
+    }; // 代理统计: {"domains": 2, "sensors": 5, "dcs": 10}
     /**
      * @generated from protobuf field: map<string, int32> alert = 2;
      */
@@ -4423,6 +4423,24 @@ export interface DashboardStatsReply {
     weakpwd: {
         [key: string]: number;
     }; // 弱口令数: {"high": 2, "medium ": 3, "low": 1}
+    /**
+     * @generated from protobuf field: map<string, int32> asset = 6;
+     */
+    asset: {
+        [key: string]: number;
+    }; // 资产分布: {"users": 100, "computers": 50, "groups": 20}
+    /**
+     * @generated from protobuf field: map<string, int32> rule = 7;
+     */
+    rule: {
+        [key: string]: number;
+    }; // 规则分布: {"alert": 50, "activity": 100}
+    /**
+     * @generated from protobuf field: map<string, int32> event = 8;
+     */
+    event: {
+        [key: string]: number;
+    }; // 事件统计: {"events": 200, "activities": 500}
 }
 /**
  * @generated from protobuf message ada.DashboardTrendsReq
@@ -20687,20 +20705,26 @@ export const DashboardStatsReq = new DashboardStatsReq$Type();
 class DashboardStatsReply$Type extends MessageType<DashboardStatsReply> {
     constructor() {
         super("ada.DashboardStatsReply", [
-            { no: 1, name: "asset", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 5 /*ScalarType.INT32*/ } },
+            { no: 1, name: "agent", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 5 /*ScalarType.INT32*/ } },
             { no: 2, name: "alert", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 5 /*ScalarType.INT32*/ } },
             { no: 3, name: "baseline", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 5 /*ScalarType.INT32*/ } },
             { no: 4, name: "leak", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 5 /*ScalarType.INT32*/ } },
-            { no: 5, name: "weakpwd", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 5 /*ScalarType.INT32*/ } }
+            { no: 5, name: "weakpwd", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 5 /*ScalarType.INT32*/ } },
+            { no: 6, name: "asset", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 5 /*ScalarType.INT32*/ } },
+            { no: 7, name: "rule", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 5 /*ScalarType.INT32*/ } },
+            { no: 8, name: "event", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 5 /*ScalarType.INT32*/ } }
         ]);
     }
     create(value?: PartialMessage<DashboardStatsReply>): DashboardStatsReply {
         const message = globalThis.Object.create((this.messagePrototype!));
-        message.asset = {};
+        message.agent = {};
         message.alert = {};
         message.baseline = {};
         message.leak = {};
         message.weakpwd = {};
+        message.asset = {};
+        message.rule = {};
+        message.event = {};
         if (value !== undefined)
             reflectionMergePartial<DashboardStatsReply>(this, message, value);
         return message;
@@ -20710,8 +20734,8 @@ class DashboardStatsReply$Type extends MessageType<DashboardStatsReply> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* map<string, int32> asset */ 1:
-                    this.binaryReadMap1(message.asset, reader, options);
+                case /* map<string, int32> agent */ 1:
+                    this.binaryReadMap1(message.agent, reader, options);
                     break;
                 case /* map<string, int32> alert */ 2:
                     this.binaryReadMap2(message.alert, reader, options);
@@ -20725,6 +20749,15 @@ class DashboardStatsReply$Type extends MessageType<DashboardStatsReply> {
                 case /* map<string, int32> weakpwd */ 5:
                     this.binaryReadMap5(message.weakpwd, reader, options);
                     break;
+                case /* map<string, int32> asset */ 6:
+                    this.binaryReadMap6(message.asset, reader, options);
+                    break;
+                case /* map<string, int32> rule */ 7:
+                    this.binaryReadMap7(message.rule, reader, options);
+                    break;
+                case /* map<string, int32> event */ 8:
+                    this.binaryReadMap8(message.event, reader, options);
+                    break;
                 default:
                     let u = options.readUnknownField;
                     if (u === "throw")
@@ -20736,8 +20769,8 @@ class DashboardStatsReply$Type extends MessageType<DashboardStatsReply> {
         }
         return message;
     }
-    private binaryReadMap1(map: DashboardStatsReply["asset"], reader: IBinaryReader, options: BinaryReadOptions): void {
-        let len = reader.uint32(), end = reader.pos + len, key: keyof DashboardStatsReply["asset"] | undefined, val: DashboardStatsReply["asset"][any] | undefined;
+    private binaryReadMap1(map: DashboardStatsReply["agent"], reader: IBinaryReader, options: BinaryReadOptions): void {
+        let len = reader.uint32(), end = reader.pos + len, key: keyof DashboardStatsReply["agent"] | undefined, val: DashboardStatsReply["agent"][any] | undefined;
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
@@ -20747,7 +20780,7 @@ class DashboardStatsReply$Type extends MessageType<DashboardStatsReply> {
                 case 2:
                     val = reader.int32();
                     break;
-                default: throw new globalThis.Error("unknown map entry field for field ada.DashboardStatsReply.asset");
+                default: throw new globalThis.Error("unknown map entry field for field ada.DashboardStatsReply.agent");
             }
         }
         map[key ?? ""] = val ?? 0;
@@ -20816,10 +20849,58 @@ class DashboardStatsReply$Type extends MessageType<DashboardStatsReply> {
         }
         map[key ?? ""] = val ?? 0;
     }
+    private binaryReadMap6(map: DashboardStatsReply["asset"], reader: IBinaryReader, options: BinaryReadOptions): void {
+        let len = reader.uint32(), end = reader.pos + len, key: keyof DashboardStatsReply["asset"] | undefined, val: DashboardStatsReply["asset"][any] | undefined;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case 1:
+                    key = reader.string();
+                    break;
+                case 2:
+                    val = reader.int32();
+                    break;
+                default: throw new globalThis.Error("unknown map entry field for field ada.DashboardStatsReply.asset");
+            }
+        }
+        map[key ?? ""] = val ?? 0;
+    }
+    private binaryReadMap7(map: DashboardStatsReply["rule"], reader: IBinaryReader, options: BinaryReadOptions): void {
+        let len = reader.uint32(), end = reader.pos + len, key: keyof DashboardStatsReply["rule"] | undefined, val: DashboardStatsReply["rule"][any] | undefined;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case 1:
+                    key = reader.string();
+                    break;
+                case 2:
+                    val = reader.int32();
+                    break;
+                default: throw new globalThis.Error("unknown map entry field for field ada.DashboardStatsReply.rule");
+            }
+        }
+        map[key ?? ""] = val ?? 0;
+    }
+    private binaryReadMap8(map: DashboardStatsReply["event"], reader: IBinaryReader, options: BinaryReadOptions): void {
+        let len = reader.uint32(), end = reader.pos + len, key: keyof DashboardStatsReply["event"] | undefined, val: DashboardStatsReply["event"][any] | undefined;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case 1:
+                    key = reader.string();
+                    break;
+                case 2:
+                    val = reader.int32();
+                    break;
+                default: throw new globalThis.Error("unknown map entry field for field ada.DashboardStatsReply.event");
+            }
+        }
+        map[key ?? ""] = val ?? 0;
+    }
     internalBinaryWrite(message: DashboardStatsReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* map<string, int32> asset = 1; */
-        for (let k of globalThis.Object.keys(message.asset))
-            writer.tag(1, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k).tag(2, WireType.Varint).int32(message.asset[k]).join();
+        /* map<string, int32> agent = 1; */
+        for (let k of globalThis.Object.keys(message.agent))
+            writer.tag(1, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k).tag(2, WireType.Varint).int32(message.agent[k]).join();
         /* map<string, int32> alert = 2; */
         for (let k of globalThis.Object.keys(message.alert))
             writer.tag(2, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k).tag(2, WireType.Varint).int32(message.alert[k]).join();
@@ -20832,6 +20913,15 @@ class DashboardStatsReply$Type extends MessageType<DashboardStatsReply> {
         /* map<string, int32> weakpwd = 5; */
         for (let k of globalThis.Object.keys(message.weakpwd))
             writer.tag(5, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k).tag(2, WireType.Varint).int32(message.weakpwd[k]).join();
+        /* map<string, int32> asset = 6; */
+        for (let k of globalThis.Object.keys(message.asset))
+            writer.tag(6, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k).tag(2, WireType.Varint).int32(message.asset[k]).join();
+        /* map<string, int32> rule = 7; */
+        for (let k of globalThis.Object.keys(message.rule))
+            writer.tag(7, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k).tag(2, WireType.Varint).int32(message.rule[k]).join();
+        /* map<string, int32> event = 8; */
+        for (let k of globalThis.Object.keys(message.event))
+            writer.tag(8, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k).tag(2, WireType.Varint).int32(message.event[k]).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

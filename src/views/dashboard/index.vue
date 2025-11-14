@@ -19,6 +19,59 @@
 			</div>
 		</div>
 		<div class="chart-main">
+			<el-row class="flex-item" style="height: 220px;">
+				<el-col :span="24" class="flex-item">
+					<div class="flex-item-box">
+						<div class="flex-title">{{ T('summary') }}</div>
+						<div style="height: 100%;">
+							<el-row :gutter="20" style="padding-top: 10px;">
+								<el-col :span="6">
+									<el-card>
+										<el-row class="summary-title">{{ T('assets') }}</el-row>
+										<el-row class="summary-detail">
+											{{ T('users') }}: {{ state.asset.distribution.users }} |
+											{{ T('computers') }}: {{ state.asset.distribution.computers }} |
+											{{ T('groups') }}: {{ state.asset.distribution.groups }}
+										</el-row>
+										<el-row class="summary-value">{{ state.asset.total }}</el-row>
+									</el-card>
+								</el-col>
+								<el-col :span="6">
+									<el-card>
+										<el-row class="summary-title">{{ T('rules') }}</el-row>
+										<el-row class="summary-detail">
+											{{ T('alertRules') }}: {{ state.rules.distribution.alert }} |
+											{{ T('activityRules') }}: {{ state.rules.distribution.activity }}
+										</el-row>
+										<el-row class="summary-value">{{ state.rules.total }}</el-row>
+									</el-card>
+								</el-col>
+								<el-col :span="6">
+									<el-card>
+										<el-row class="summary-title">{{ T('agents') }}</el-row>
+										<el-row class="summary-detail">
+											{{ T('domains') }}: {{ state.agent.distribution.domains }} |
+											{{ T('sensors') }}: {{ state.agent.distribution.sensors }} |
+											{{ T('dcs') }}: {{ state.agent.distribution.dcs }}
+										</el-row>
+										<el-row class="summary-value">{{ state.agent.total }}</el-row>
+									</el-card>
+								</el-col>
+								<el-col :span="6">
+									<el-card>
+										<el-row class="summary-title">{{ T('events') }}</el-row>
+										<el-row class="summary-detail">
+											{{ T('alertEvents') }}: {{ state.event.distribution.events }} |
+											{{ T('activities') }}: {{ state.event.distribution.activities }}
+										</el-row>
+										<el-row class="summary-value">{{ state.event.total }}</el-row>
+									</el-card>
+								</el-col>
+							</el-row>
+						</div>
+					</div>
+				</el-col>
+			</el-row>
 			<el-row class="flex-item">
 				<el-col :lg="8" :span="24" class="flex-item">
 					<div class="flex-item-box">
@@ -218,6 +271,36 @@ const state = reactive({
 			high: 0,
 			medium: 0,
 			low: 0,
+		},
+	},
+	asset: {
+		total: 0,
+		distribution: {
+			users: 0,
+			computers: 0,
+			groups: 0,
+		},
+	},
+	rules: {
+		total: 0,
+		distribution: {
+			alert: 0,
+			activity: 0,
+		},
+	},
+	agent: {
+		total: 0,
+		distribution: {
+			domains: 0,
+			sensors: 0,
+			dcs: 0,
+		},
+	},
+	event: {
+		total: 0,
+		distribution: {
+			events: 0,
+			activities: 0,
 		},
 	},
 	myCharts: [] as EmptyArrayType,
@@ -627,6 +710,50 @@ const fetchDashboardStats = () => {
 				const total = Object.values(data.weakpwd).reduce((sum, val) => sum + val, 0);
 				state.scan.hits = total.toString().padStart(6, '0');
 			}
+
+			// Update asset distribution
+			if (data.asset) {
+				state.asset.distribution = {
+					users: data.asset['users'] || 0,
+					computers: data.asset['computers'] || 0,
+					groups: data.asset['groups'] || 0,
+				};
+				state.asset.total = (data.asset['users'] || 0) +
+				                     (data.asset['computers'] || 0) +
+				                     (data.asset['groups'] || 0);
+			}
+
+			// Update rule distribution
+			if (data.rule) {
+				state.rules.distribution = {
+					alert: data.rule['alert'] || 0,
+					activity: data.rule['activity'] || 0,
+				};
+				state.rules.total = (data.rule['alert'] || 0) +
+				                    (data.rule['activity'] || 0);
+			}
+
+			// Update agent distribution
+			if (data.agent) {
+				state.agent.distribution = {
+					domains: data.agent['domains'] || 0,
+					sensors: data.agent['sensors'] || 0,
+					dcs: data.agent['dcs'] || 0,
+				};
+				state.agent.total = (data.agent['domains'] || 0) +
+				                    (data.agent['sensors'] || 0) +
+				                    (data.agent['dcs'] || 0);
+			}
+
+			// Update event distribution
+			if (data.event) {
+				state.event.distribution = {
+					events: data.event['events'] || 0,
+					activities: data.event['activities'] || 0,
+				};
+				state.event.total = (data.event['events'] || 0) +
+				                    (data.event['activities'] || 0);
+			}
 		})
 		.catch(err => alertApiError(err));
 };
@@ -757,6 +884,36 @@ onUnmounted(() => {
 .bug-value {
 	font-size: 32px;
 	margin-top: 10px;
+}
+
+.asset-title {
+	font-size: 16px;
+	color: #67c23a;
+}
+
+.asset-value {
+	font-size: 32px;
+	margin-top: 10px;
+}
+
+.summary-title {
+	font-size: 16px;
+	color: #409eff;
+	font-weight: bold;
+}
+
+.summary-detail {
+	font-size: 12px;
+	color: #909399;
+	margin-top: 8px;
+	line-height: 1.5;
+}
+
+.summary-value {
+	font-size: 32px;
+	margin-top: 10px;
+	color: #303133;
+	font-weight: bold;
 }
 
 .no-data-img {

@@ -4,7 +4,12 @@
             <!-- serching -->
             <el-row justify="space-between">
                 <el-form :inline="true" class="filter-form">
-                    <el-form-item><el-button type="primary" @click="handleNew">{{ T('new') }}</el-button></el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="handleNew">
+                            <el-icon><Plus /></el-icon>
+                            {{ T('new') }}
+                        </el-button>
+                    </el-form-item>
                     <el-form-item :label="T('domain')">
                         <el-select v-model="state.req.domain" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="T('selectDomain')" popper-class="custom-header">
                             <template #header>
@@ -91,6 +96,7 @@ import { formatApiTime, shortcuts } from '/@/utils/formatTime';
 import AddModDrawer from './addModDrawer.vue';
 import DetailModDrawer from './detailDrawer.vue';
 import { ElMessageBox } from 'element-plus';
+import { Plus } from '@element-plus/icons-vue';
 import { useI18n } from 'vue-i18n';
 
 const drawerRef = ref();

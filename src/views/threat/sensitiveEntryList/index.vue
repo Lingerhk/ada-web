@@ -8,8 +8,10 @@
                         <!-- 搜索 -->
                         <el-form :inline="true" class="filter-form">
                             <el-form-item>
-                                <el-button @click="handleNewSensityEntry" type="primary" size="default">{{
-                                    $t('message.tableCommon.new') }}</el-button>
+                                <el-button @click="handleNewSensityEntry" type="primary" size="default">
+                                    <el-icon><Plus /></el-icon>
+                                    {{ $t('message.tableCommon.new') }}
+                                </el-button>
                             </el-form-item>
                             <el-form-item :label="$t('message.threat.sensitive.origin')">
                                 <el-select v-model="state.req.origin" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.threat.sensitiveEntryList.selectOrigin')" popper-class="custom-header">
@@ -100,6 +102,7 @@ import api from '/@/api/grpc';
 import { alertApiError } from '/@/utils/error';
 import { formatApiTime, shortcuts } from '/@/utils/formatTime';
 import { ElMessage, ElMessageBox } from 'element-plus';
+import { Plus } from '@element-plus/icons-vue';
 import { typeOptions, originOptions } from './constant';
 import { OptionType } from '/@/utils/constant';
 import { listDomainOptions } from '/@/api/grpc/method';

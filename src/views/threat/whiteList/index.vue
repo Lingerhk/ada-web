@@ -4,7 +4,12 @@
             <!-- serching -->
             <el-row justify="space-between" style="margin-bottom: 15px;">
                 <el-form :inline="true" class="filter-form">
-                    <el-form-item><el-button type="primary" @click="handleNew">{{ $t('message.tableCommon.new') }}</el-button></el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="handleNew">
+                            <el-icon><Plus /></el-icon>
+                            {{ $t('message.tableCommon.new') }}
+                        </el-button>
+                    </el-form-item>
                     <el-form-item :label="T('domain')">
                         <el-select v-model="state.req.domain" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="T('selectDomain')" popper-class="custom-header">
                             <template #header>
@@ -104,6 +109,7 @@ import { transWhiteList as T } from '/@/utils/translator';
 import { formatApiTime, getPrev7Days, shortcuts } from '/@/utils/formatTime';
 import UpdateWhiteDialog from './UpdateWhiteDialog.vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
+import { Plus } from '@element-plus/icons-vue';
 import { useI18n } from 'vue-i18n';
 import AddGlobalWhiteDialog from './AddGlobalWhiteDialog.vue';
 

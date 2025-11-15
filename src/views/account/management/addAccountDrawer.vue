@@ -242,10 +242,7 @@ const nextStep = async () => {
             mobile: state.data.mobile,
             email: state.data.email,
             remark: '',
-            address: '', // 所在地
-            realName: '',// 真实姓名
             department: '', // 部门
-            post: '', // 岗位
         } as AddUserReq)
         .then(resp => resp.response)
         .then(result => {

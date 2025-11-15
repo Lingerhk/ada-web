@@ -50,21 +50,11 @@
             <!-- Profile -->
             <el-tab-pane :label="T('profile')">
                 <el-form size="default" :label-position="labelPosition" label-width="auto" style="margin-top: 10px;" ref="formRef" :rules="rules" :model="state.form">
-                    <h3 style="margin-bottom: 20px;">{{ T('coreInfo') }}</h3>
-                    <el-form-item :label="T('realName')" label-width="100px">
-                        <el-input v-model="state.form.realName" clearable style="width: 400px" :placeholder="T('realNamePlaceholder')"></el-input>
-                    </el-form-item>
                     <h3 style="margin-bottom: 20px;">{{ T('businessInfo') }}</h3>
                     <el-form-item :label="T('department')" label-width="100px">
                         <el-input v-model="state.form.department" clearable style="width: 400px" :placeholder="T('departmentPlaceholder')"></el-input>
                     </el-form-item>
-                    <el-form-item :label="T('post')" label-width="100px">
-                        <el-input v-model="state.form.post" clearable style="width: 400px" :placeholder="T('postPlaceholder')"></el-input>
-                    </el-form-item>
                     <h3 style="margin-bottom: 20px;">{{ T('contactInfo') }}</h3>
-                    <el-form-item :label="T('address')" label-width="100px">
-                        <el-input v-model="state.form.address" clearable style="width: 400px" :placeholder="T('addressPlaceholder')"></el-input>
-                    </el-form-item>
                     <el-form-item :label="T('email')" label-width="100px" prop="email">
                         <el-input v-model="state.form.email" clearable style="width: 400px" :placeholder="T('emailPlaceholder')"></el-input>
                     </el-form-item>
@@ -221,10 +211,7 @@ const state = reactive({
         email: '',
         remark: '',
         role: '',
-        address: '',
-        realName: '',
         department: '',
-        post: '',
     } as UpdateUserReq,
     accessKeys: [] as AccessKeyDetails[],
     keysLoading: false,
@@ -322,13 +309,10 @@ const refresh = () => {
         if (data.list.length > 0) {
             state.me = data.list[0];
             state.form = {
-                realName: state.me.realName,
                 mobile: state.me.mobile,
                 email: state.me.email,
                 remark: state.me.remark,
-                address: state.me.address,
                 department: state.me.department,
-                post: state.me.post,
                 username: state.me.username,
                 role: state.me.role,
             };

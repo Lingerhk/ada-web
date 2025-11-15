@@ -15,7 +15,7 @@
                         <el-option v-for="option in option.role" :key="option.value" :label="option.label" :value="option.value" />
                     </el-select>
                 </el-form-item>
-                <el-form-item :label="T('mfa')">
+                <el-form-item :label="T('mfa_short')">
                     <el-select v-model="state.filter.mfa" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="T('selectMfa')" popper-class="custom-header">
                         <template #header>
                             <el-checkbox v-model="mfaCheckAll" :indeterminate="mfaIndeterminate" @change="handleMfaCheckAll">
@@ -54,7 +54,7 @@
                         {{ T(`role_${prop.row.role}`) }}
                     </template>
                 </el-table-column>
-                <el-table-column prop="hasMfa" :label="T('mfa')">
+                <el-table-column prop="hasMfa" :label="T('mfa_short')">
                     <template #default="prop">
                         {{ T(`mfa_${prop.row.hasMfa}`) }}
                     </template>
@@ -77,17 +77,11 @@
                         {{ formatApiTime(prop.row.pwdUpdateTm) }}
                     </template>
                 </el-table-column>
-                <el-table-column prop="remark" :label="T('remark')"></el-table-column>
-                <el-table-column :label="T('operation')">
+                <el-table-column :label="T('operation')" width="210" fixed="right" align="center">
                     <template #default="scope">
-                        <el-button :disabled="priv > scope.row.priv" size="large" text type="primary"
-                            @click="onEditAccount(scope.row)">{{ T('modify')
-                            }}</el-button>
-                        <el-button :disabled="priv > scope.row.priv" size="large" text type="error"
-                            @click="onDelete(scope.row)">{{ T('delete') }}</el-button>
-                        <el-button :disabled="priv > scope.row.priv" size="large" text type="primary"
-                            @click="onResetPass(scope.row)">{{ T('resetPass')
-                            }}</el-button>
+                        <el-button size="small" @click="onViewAccount(scope.row)">{{ T('view') }}</el-button>
+                        <el-button size="small" :disabled="priv > scope.row.priv" @click="onEditAccount(scope.row)">{{ T('edit') }}</el-button>
+                        <el-button size="small" type="danger" :disabled="priv > scope.row.priv" @click="onDelete(scope.row)">{{ T('delete') }}</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -100,28 +94,28 @@
             </el-row>
         </el-card>
         <AddAccountDrawer ref="addAccountDrawerRef" />
+        <ViewAccountDrawer ref="viewAccountDrawerRef" />
         <EditAccountDrawer ref="editAccountDrawerRef" />
     </div>
 </template>
 
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, reactive, ref, watch } from 'vue';
-import { ListUserReq, ListUserReply_Details, ResetPasswordReq } from '/@/api/grpc/ada';
+import { ListUserReq, ListUserReply_Details } from '/@/api/grpc/ada';
 import api from '/@/api/grpc';
-import { ElMessage, ElMessageBox } from 'element-plus';
+import { ElMessageBox } from 'element-plus';
 import { transAccount as T } from '/@/utils/translator';
 import { formatApiTime, shortcuts } from '/@/utils/formatTime';
 import { useI18n } from 'vue-i18n';
-import { generateSecret } from '/@/utils/security';
-import useClipboard from 'vue-clipboard3';
 import { alertApiError, alertResult } from '/@/utils/error';
 import { Local } from '/@/utils/storage';
 
 const { t } = useI18n();
-const { toClipboard } = useClipboard();
 
 const AddAccountDrawer = defineAsyncComponent(() => import('./addAccountDrawer.vue'));
 const addAccountDrawerRef = ref();
+const ViewAccountDrawer = defineAsyncComponent(() => import('./viewAccountDrawer.vue'));
+const viewAccountDrawerRef = ref();
 const EditAccountDrawer = defineAsyncComponent(() => import('./editAccountDrawer.vue'));
 const editAccountDrawerRef = ref();
 
@@ -165,8 +159,12 @@ const onAddAccount = () => {
     addAccountDrawerRef.value.open(refreshUser);
 };
 
+const onViewAccount = (row) => {
+    viewAccountDrawerRef.value.open(row);
+};
+
 const onEditAccount = (row) => {
-    editAccountDrawerRef.value.open(row);
+    editAccountDrawerRef.value.open(row, refreshUser);
 };
 
 const onDelete = (row) => {
@@ -184,56 +182,6 @@ const onDelete = (row) => {
         .finally(() => refreshUser());
     }).catch(err => {
 
-    });
-}
-
-const onResetPass = (row) => {
-	ElMessageBox.confirm(T('resetPasswordText'), t('message.dialog.prompt'), {
-		confirmButtonText: t('message.dialog.confirm'),
-		cancelButtonText: t('message.dialog.cancel'),
-		type: 'warning',
-	}).then(async () => {
-        const newPassword = generateSecret();
-        const username = row.username;
-
-        const req: ResetPasswordReq = {
-            username,
-            newPassword,
-        };
-
-        const ok = api.resetPassword(req)
-        .then(resp => resp.response)
-        .then(data => {
-            return alertResult(data.result, T('resetPasswordSucc'), T('resetPasswordFail'));
-        })
-        .catch(err => {
-            alertApiError(err);
-            return false;
-        });
-
-        if (!ok) {
-            return;
-        }
-
-        ElMessageBox.alert(T('resetPasswordAlert', [newPassword]), T('resetPasswordPrompt'), {
-            dangerouslyUseHTMLString: true,
-            confirmButtonText: T('copyPassword'),
-            center: true,
-            beforeClose: async (action, instance, done) => {
-                if (action === 'confirm') {
-                    const ok = await toClipboard(newPassword).then(() => true).catch(err => {console.log(err); return false});
-                    ElMessage({
-                        message: ok ? T('copySucc', [username, newPassword]) : T('copyFail'),
-                        type: ok ? 'success' : 'warning',
-                    });
-                }
-                done();
-            },
-        }).catch(err => {
-
-        });
-	}).catch(err => {
-        console.log(err);
     });
 };
 

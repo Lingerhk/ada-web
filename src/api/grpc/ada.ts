@@ -250,21 +250,13 @@ export interface ListUserReply_Details {
      */
     pwdUpdateTm: string; // 密码更新时间
     /**
-     * @generated from protobuf field: string address = 13;
-     */
-    address: string; // 所在地
-    /**
-     * @generated from protobuf field: string realName = 14;
-     */
-    realName: string; // 真实姓名
-    /**
      * @generated from protobuf field: string department = 15;
      */
     department: string; // 部门
     /**
-     * @generated from protobuf field: string post = 16;
+     * @generated from protobuf field: string updateTm = 17;
      */
-    post: string; // 岗位
+    updateTm: string; // 更新时间
 }
 /**
  * @generated from protobuf message ada.AddUserReq
@@ -295,21 +287,9 @@ export interface AddUserReq {
      */
     remark: string;
     /**
-     * @generated from protobuf field: string address = 7;
-     */
-    address: string; // 所在地
-    /**
-     * @generated from protobuf field: string realName = 8;
-     */
-    realName: string; // 真实姓名
-    /**
      * @generated from protobuf field: string department = 9;
      */
     department: string; // 部门
-    /**
-     * @generated from protobuf field: string post = 10;
-     */
-    post: string; // 岗位
 }
 /**
  * @generated from protobuf message ada.AddUserReply
@@ -345,21 +325,9 @@ export interface UpdateUserReq {
      */
     role: string; // 可选，super用户可以修改任意username的role
     /**
-     * @generated from protobuf field: string address = 6;
-     */
-    address: string; // 所在地
-    /**
-     * @generated from protobuf field: string realName = 7;
-     */
-    realName: string; // 真实姓名
-    /**
      * @generated from protobuf field: string department = 8;
      */
     department: string; // 部门
-    /**
-     * @generated from protobuf field: string post = 9;
-     */
-    post: string; // 岗位
 }
 /**
  * @generated from protobuf message ada.UpdateUserReply
@@ -5984,10 +5952,8 @@ class ListUserReply_Details$Type extends MessageType<ListUserReply_Details> {
             { no: 10, name: "hasMfa", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
             { no: 11, name: "avatar", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 12, name: "pwdUpdateTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 13, name: "address", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 14, name: "realName", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 15, name: "department", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 16, name: "post", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 17, name: "updateTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<ListUserReply_Details>): ListUserReply_Details {
@@ -6004,10 +5970,8 @@ class ListUserReply_Details$Type extends MessageType<ListUserReply_Details> {
         message.hasMfa = false;
         message.avatar = "";
         message.pwdUpdateTm = "";
-        message.address = "";
-        message.realName = "";
         message.department = "";
-        message.post = "";
+        message.updateTm = "";
         if (value !== undefined)
             reflectionMergePartial<ListUserReply_Details>(this, message, value);
         return message;
@@ -6053,17 +6017,11 @@ class ListUserReply_Details$Type extends MessageType<ListUserReply_Details> {
                 case /* string pwdUpdateTm */ 12:
                     message.pwdUpdateTm = reader.string();
                     break;
-                case /* string address */ 13:
-                    message.address = reader.string();
-                    break;
-                case /* string realName */ 14:
-                    message.realName = reader.string();
-                    break;
                 case /* string department */ 15:
                     message.department = reader.string();
                     break;
-                case /* string post */ 16:
-                    message.post = reader.string();
+                case /* string updateTm */ 17:
+                    message.updateTm = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -6113,18 +6071,12 @@ class ListUserReply_Details$Type extends MessageType<ListUserReply_Details> {
         /* string pwdUpdateTm = 12; */
         if (message.pwdUpdateTm !== "")
             writer.tag(12, WireType.LengthDelimited).string(message.pwdUpdateTm);
-        /* string address = 13; */
-        if (message.address !== "")
-            writer.tag(13, WireType.LengthDelimited).string(message.address);
-        /* string realName = 14; */
-        if (message.realName !== "")
-            writer.tag(14, WireType.LengthDelimited).string(message.realName);
         /* string department = 15; */
         if (message.department !== "")
             writer.tag(15, WireType.LengthDelimited).string(message.department);
-        /* string post = 16; */
-        if (message.post !== "")
-            writer.tag(16, WireType.LengthDelimited).string(message.post);
+        /* string updateTm = 17; */
+        if (message.updateTm !== "")
+            writer.tag(17, WireType.LengthDelimited).string(message.updateTm);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -6145,10 +6097,7 @@ class AddUserReq$Type extends MessageType<AddUserReq> {
             { no: 4, name: "mobile", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 5, name: "email", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 6, name: "remark", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 7, name: "address", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 8, name: "realName", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 9, name: "department", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 10, name: "post", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 9, name: "department", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<AddUserReq>): AddUserReq {
@@ -6159,10 +6108,7 @@ class AddUserReq$Type extends MessageType<AddUserReq> {
         message.mobile = "";
         message.email = "";
         message.remark = "";
-        message.address = "";
-        message.realName = "";
         message.department = "";
-        message.post = "";
         if (value !== undefined)
             reflectionMergePartial<AddUserReq>(this, message, value);
         return message;
@@ -6190,17 +6136,8 @@ class AddUserReq$Type extends MessageType<AddUserReq> {
                 case /* string remark */ 6:
                     message.remark = reader.string();
                     break;
-                case /* string address */ 7:
-                    message.address = reader.string();
-                    break;
-                case /* string realName */ 8:
-                    message.realName = reader.string();
-                    break;
                 case /* string department */ 9:
                     message.department = reader.string();
-                    break;
-                case /* string post */ 10:
-                    message.post = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -6232,18 +6169,9 @@ class AddUserReq$Type extends MessageType<AddUserReq> {
         /* string remark = 6; */
         if (message.remark !== "")
             writer.tag(6, WireType.LengthDelimited).string(message.remark);
-        /* string address = 7; */
-        if (message.address !== "")
-            writer.tag(7, WireType.LengthDelimited).string(message.address);
-        /* string realName = 8; */
-        if (message.realName !== "")
-            writer.tag(8, WireType.LengthDelimited).string(message.realName);
         /* string department = 9; */
         if (message.department !== "")
             writer.tag(9, WireType.LengthDelimited).string(message.department);
-        /* string post = 10; */
-        if (message.post !== "")
-            writer.tag(10, WireType.LengthDelimited).string(message.post);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -6310,10 +6238,7 @@ class UpdateUserReq$Type extends MessageType<UpdateUserReq> {
             { no: 3, name: "email", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "remark", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 5, name: "role", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 6, name: "address", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 7, name: "realName", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 8, name: "department", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 9, name: "post", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 8, name: "department", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<UpdateUserReq>): UpdateUserReq {
@@ -6323,10 +6248,7 @@ class UpdateUserReq$Type extends MessageType<UpdateUserReq> {
         message.email = "";
         message.remark = "";
         message.role = "";
-        message.address = "";
-        message.realName = "";
         message.department = "";
-        message.post = "";
         if (value !== undefined)
             reflectionMergePartial<UpdateUserReq>(this, message, value);
         return message;
@@ -6351,17 +6273,8 @@ class UpdateUserReq$Type extends MessageType<UpdateUserReq> {
                 case /* string role */ 5:
                     message.role = reader.string();
                     break;
-                case /* string address */ 6:
-                    message.address = reader.string();
-                    break;
-                case /* string realName */ 7:
-                    message.realName = reader.string();
-                    break;
                 case /* string department */ 8:
                     message.department = reader.string();
-                    break;
-                case /* string post */ 9:
-                    message.post = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -6390,18 +6303,9 @@ class UpdateUserReq$Type extends MessageType<UpdateUserReq> {
         /* string role = 5; */
         if (message.role !== "")
             writer.tag(5, WireType.LengthDelimited).string(message.role);
-        /* string address = 6; */
-        if (message.address !== "")
-            writer.tag(6, WireType.LengthDelimited).string(message.address);
-        /* string realName = 7; */
-        if (message.realName !== "")
-            writer.tag(7, WireType.LengthDelimited).string(message.realName);
         /* string department = 8; */
         if (message.department !== "")
             writer.tag(8, WireType.LengthDelimited).string(message.department);
-        /* string post = 9; */
-        if (message.post !== "")
-            writer.tag(9, WireType.LengthDelimited).string(message.post);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

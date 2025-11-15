@@ -126,6 +126,41 @@
                     </el-form-item>
                 </el-form>
             </el-tab-pane>
+
+            <!-- API Key -->
+            <el-tab-pane :label="T('apiKey')">
+                <el-row style="margin-bottom: 15px;">
+                    <el-button type="primary" @click="handleGenerateKey">
+                        <el-icon><Plus /></el-icon>
+                        {{ T('generateKey') }}
+                    </el-button>
+                </el-row>
+                <el-table :data="state.accessKeys" v-loading="state.keysLoading" border style="width: 100%;">
+                    <el-table-column type="index" :label="$t('message.tableCommon.index')" width="70" />
+                    <el-table-column prop="secretKey" :label="T('secretKey')" min-width="200" show-overflow-tooltip />
+                    <el-table-column prop="remark" :label="T('remark')" min-width="150" show-overflow-tooltip />
+                    <el-table-column prop="status" :label="T('status')" width="100">
+                        <template #default="scope">
+                            <el-tag :type="scope.row.status === 'active' ? 'success' : 'info'">
+                                {{ T('status_' + scope.row.status) }}
+                            </el-tag>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="createTm" :label="T('createTm')" width="180" />
+                    <el-table-column prop="updateTm" :label="T('updateTm')" width="180" />
+                    <el-table-column :label="$t('message.tableCommon.operation')" width="100">
+                        <template #default="scope">
+                            <el-button
+                                text
+                                type="warning"
+                                :disabled="scope.row.status === 'disabled'"
+                                @click="handleDeleteKey(scope.row)">
+                                {{ T('disable') }}
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-tab-pane>
         </el-tabs>
     </div>
 </template>
@@ -133,9 +168,10 @@
 <script setup lang="ts">
 import { ref, onMounted, reactive, watch } from 'vue';
 import api from '/@/api/grpc/index';
-import { DisableMfaReq, EnableMfaReq, ListUserReply_Details, ListUserReq, UpdateUserReq } from '/@/api/grpc/ada';
+import { DisableMfaReq, EnableMfaReq, ListUserReply_Details, ListUserReq, UpdateUserReq, AccessKeyDetails, ListAccessKeyReq, GenerateAccessKeyReq, DeleteAccessKeyReq } from '/@/api/grpc/ada';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import type { FormInstance, FormRules, UploadProps } from 'element-plus'
+import { Plus } from '@element-plus/icons-vue';
 import { useI18n } from 'vue-i18n';
 import { alertApiError, alertResult } from '/@/utils/error';
 import { formatApiTime } from '/@/utils/formatTime';
@@ -190,6 +226,8 @@ const state = reactive({
         department: '',
         post: '',
     } as UpdateUserReq,
+    accessKeys: [] as AccessKeyDetails[],
+    keysLoading: false,
 });
 
 const getStrengthBarClass = (barIndex: number, strength: string) => {
@@ -296,7 +334,9 @@ const refresh = () => {
             };
             state.enableMfa = state.me.hasMfa;
             state.mfa.username = state.me.username;
-            refreshQrCode()
+            refreshQrCode();
+            // Load access keys after user data is loaded
+            loadAccessKeys();
         }
     })
     .catch(err => {
@@ -345,8 +385,123 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
   return true
 }
 
+// AccessKey Management Functions
+const loadAccessKeys = async () => {
+    if (!state.me?.username) return;
+
+    state.keysLoading = true;
+    const req: ListAccessKeyReq = {
+        username: state.me.username,
+    };
+
+    try {
+        const resp = await api.listAccessKey(req);
+        state.accessKeys = resp.response.list || [];
+    } catch (err) {
+        alertApiError(err);
+    } finally {
+        state.keysLoading = false;
+    }
+};
+
+const handleGenerateKey = async () => {
+    if (!state.me?.username) return;
+
+    ElMessageBox.prompt(T('remarkPlaceholder'), T('generateKey'), {
+        confirmButtonText: T('confirm'),
+        cancelButtonText: T('cancel'),
+        inputPattern: /.{0,100}/,
+        inputErrorMessage: T('invalidRemark'),
+    }).then(async ({ value }) => {
+        const req: GenerateAccessKeyReq = {
+            username: state.me!.username,
+            remark: value || '',
+        };
+
+        try {
+            const resp = await api.generateAccessKey(req);
+            const data = resp.response;
+
+            if (data.result === 'success') {
+                ElMessageBox.alert(
+                    `<div style="word-break: break-all;">
+                        <p style="display: flex; align-items: center;">
+                            <strong>Secret Key:</strong>
+                            <span style="margin-left: 8px;">${data.secretKey}</span>
+                            <button id="copySecretKeyBtn" onclick="(function(){
+                                const key = '${data.secretKey}';
+                                navigator.clipboard.writeText(key).then(() => {
+                                    const btn = document.getElementById('copySecretKeyBtn');
+                                    const originalHtml = btn.innerHTML;
+                                    btn.innerHTML = '<svg viewBox=\\'0 0 1024 1024\\' width=\\'14\\' height=\\'14\\' style=\\'vertical-align: middle;\\'><path d=\\'M912 190h-69.9c-9.8 0-19.1 4.5-25.1 12.2L404.7 724.5 207 474a32 32 0 0 0-25.1-12.2H112c-6.7 0-10.4 7.7-6.3 12.9l273.9 347c12.8 16.2 37.4 16.2 50.3 0l488.4-618.9c4.1-5.1 0.4-12.8-6.3-12.8z\\' fill=\\'currentColor\\'></path></svg> Copied';
+                                    setTimeout(() => {
+                                        btn.innerHTML = originalHtml;
+                                    }, 2000);
+                                }).catch(() => {
+                                    alert('Failed to copy to clipboard');
+                                });
+                            })()" style="margin-left: 10px; padding: 4px 8px; cursor: pointer; border: 1px solid #409eff; background: #ecf5ff; color: #409eff; border-radius: 4px;">
+                                <svg viewBox="0 0 1024 1024" width="14" height="14" style="vertical-align: middle;">
+                                    <path d="M768 832a64 64 0 0 1-64 64H192a64 64 0 0 1-64-64V320a64 64 0 0 1 64-64h512a64 64 0 0 1 64 64v512z m64-640v576a64 64 0 0 0 64-64V192a64 64 0 0 0-64-64H320a64 64 0 0 0-64 64h512a64 64 0 0 1 64 64z" fill="currentColor"></path>
+                                </svg>
+                                Copy
+                            </button>
+                        </p>
+                        <p style="color: red; margin-top: 10px;">${T('secretKeyWarning')}</p>
+                    </div>`,
+                    T('keyGenerated'),
+                    {
+                        dangerouslyUseHTMLString: true,
+                        confirmButtonText: T('confirm'),
+                    }
+                );
+
+                await loadAccessKeys();
+            } else {
+                ElMessage.error(data.message || T('operationFailed'));
+            }
+        } catch (err) {
+            alertApiError(err);
+        }
+    }).catch(() => {
+        // User cancelled
+    });
+};
+
+const handleDeleteKey = (key: AccessKeyDetails) => {
+    ElMessageBox.confirm(
+        T('confirmDisableKey') || 'Are you sure you want to disable this access key?',
+        T('warning'),
+        {
+            confirmButtonText: T('confirm'),
+            cancelButtonText: T('cancel'),
+            type: 'warning',
+        }
+    ).then(async () => {
+        const req: DeleteAccessKeyReq = {
+            iD: key.iD,
+        };
+
+        try {
+            const resp = await api.deleteAccessKey(req);
+            const data = resp.response;
+
+            if (data.result === 'success') {
+                ElMessage.success(T('disableSucc') || 'Access key disabled successfully');
+                await loadAccessKeys();
+            } else {
+                ElMessage.error(data.message || T('disableFail') || 'Failed to disable access key');
+            }
+        } catch (err) {
+            alertApiError(err);
+        }
+    }).catch(() => {
+        // User cancelled
+    });
+};
+
 onMounted(() => {
-    refresh()
+    refresh();
 });
 
 </script>

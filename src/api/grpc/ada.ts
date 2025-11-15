@@ -547,6 +547,111 @@ export interface ResetPasswordReply {
     result: string;
 }
 /**
+ * AccessKey
+ *
+ * @generated from protobuf message ada.ListAccessKeyReq
+ */
+export interface ListAccessKeyReq {
+    /**
+     * @generated from protobuf field: string username = 1;
+     */
+    username: string; // 用户名，留空则列出所有AccessKey（管理员权限）
+}
+/**
+ * @generated from protobuf message ada.AccessKeyDetails
+ */
+export interface AccessKeyDetails {
+    /**
+     * @generated from protobuf field: string iD = 1;
+     */
+    iD: string; // ID
+    /**
+     * @generated from protobuf field: string username = 2;
+     */
+    username: string; // 所属用户
+    /**
+     * @generated from protobuf field: string secretKey = 4;
+     */
+    secretKey: string; // SecretKey (masked: sk-xx*****xxx)
+    /**
+     * @generated from protobuf field: string remark = 5;
+     */
+    remark: string; // 备注
+    /**
+     * @generated from protobuf field: string status = 6;
+     */
+    status: string; // 状态: active|disabled
+    /**
+     * @generated from protobuf field: string createTm = 7;
+     */
+    createTm: string; // 创建时间
+    /**
+     * @generated from protobuf field: string updateTm = 8;
+     */
+    updateTm: string; // 更新时间
+}
+/**
+ * @generated from protobuf message ada.ListAccessKeyReply
+ */
+export interface ListAccessKeyReply {
+    /**
+     * @generated from protobuf field: repeated ada.AccessKeyDetails list = 1;
+     */
+    list: AccessKeyDetails[];
+}
+/**
+ * @generated from protobuf message ada.GenerateAccessKeyReq
+ */
+export interface GenerateAccessKeyReq {
+    /**
+     * @generated from protobuf field: string username = 1;
+     */
+    username: string; // [(validator.field) = {length_gt: 0}]; // 用户名
+    /**
+     * @generated from protobuf field: string remark = 2;
+     */
+    remark: string; // 备注
+}
+/**
+ * @generated from protobuf message ada.GenerateAccessKeyReply
+ */
+export interface GenerateAccessKeyReply {
+    /**
+     * @generated from protobuf field: string result = 1;
+     */
+    result: string; // success|fail
+    /**
+     * @generated from protobuf field: string secretKey = 3;
+     */
+    secretKey: string; // 生成的SecretKey（明文，仅此时返回）
+    /**
+     * @generated from protobuf field: string message = 4;
+     */
+    message: string; // 错误信息
+}
+/**
+ * @generated from protobuf message ada.DeleteAccessKeyReq
+ */
+export interface DeleteAccessKeyReq {
+    /**
+     * @generated from protobuf field: string iD = 1;
+     */
+    iD: string; // [(validator.field) = {length_gt: 0}]; // AccessKey ID
+}
+/**
+ * @generated from protobuf message ada.DeleteAccessKeyReply
+ */
+export interface DeleteAccessKeyReply {
+    /**
+     * @generated from protobuf field: string result = 1;
+     */
+    result: string; // success|fail
+    /**
+     * @generated from protobuf field: string message = 2;
+     */
+    message: string; // 错误信息
+}
+/**
  * Domain
  *
  * @generated from protobuf message ada.ListDomainReq
@@ -7170,6 +7275,415 @@ class ResetPasswordReply$Type extends MessageType<ResetPasswordReply> {
  * @generated MessageType for protobuf message ada.ResetPasswordReply
  */
 export const ResetPasswordReply = new ResetPasswordReply$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class ListAccessKeyReq$Type extends MessageType<ListAccessKeyReq> {
+    constructor() {
+        super("ada.ListAccessKeyReq", [
+            { no: 1, name: "username", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<ListAccessKeyReq>): ListAccessKeyReq {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.username = "";
+        if (value !== undefined)
+            reflectionMergePartial<ListAccessKeyReq>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ListAccessKeyReq): ListAccessKeyReq {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string username */ 1:
+                    message.username = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: ListAccessKeyReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string username = 1; */
+        if (message.username !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.username);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.ListAccessKeyReq
+ */
+export const ListAccessKeyReq = new ListAccessKeyReq$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class AccessKeyDetails$Type extends MessageType<AccessKeyDetails> {
+    constructor() {
+        super("ada.AccessKeyDetails", [
+            { no: 1, name: "iD", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "username", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "secretKey", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 5, name: "remark", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 6, name: "status", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 7, name: "createTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 8, name: "updateTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<AccessKeyDetails>): AccessKeyDetails {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.iD = "";
+        message.username = "";
+        message.secretKey = "";
+        message.remark = "";
+        message.status = "";
+        message.createTm = "";
+        message.updateTm = "";
+        if (value !== undefined)
+            reflectionMergePartial<AccessKeyDetails>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: AccessKeyDetails): AccessKeyDetails {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string iD */ 1:
+                    message.iD = reader.string();
+                    break;
+                case /* string username */ 2:
+                    message.username = reader.string();
+                    break;
+                case /* string secretKey */ 4:
+                    message.secretKey = reader.string();
+                    break;
+                case /* string remark */ 5:
+                    message.remark = reader.string();
+                    break;
+                case /* string status */ 6:
+                    message.status = reader.string();
+                    break;
+                case /* string createTm */ 7:
+                    message.createTm = reader.string();
+                    break;
+                case /* string updateTm */ 8:
+                    message.updateTm = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: AccessKeyDetails, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string iD = 1; */
+        if (message.iD !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.iD);
+        /* string username = 2; */
+        if (message.username !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.username);
+        /* string secretKey = 4; */
+        if (message.secretKey !== "")
+            writer.tag(4, WireType.LengthDelimited).string(message.secretKey);
+        /* string remark = 5; */
+        if (message.remark !== "")
+            writer.tag(5, WireType.LengthDelimited).string(message.remark);
+        /* string status = 6; */
+        if (message.status !== "")
+            writer.tag(6, WireType.LengthDelimited).string(message.status);
+        /* string createTm = 7; */
+        if (message.createTm !== "")
+            writer.tag(7, WireType.LengthDelimited).string(message.createTm);
+        /* string updateTm = 8; */
+        if (message.updateTm !== "")
+            writer.tag(8, WireType.LengthDelimited).string(message.updateTm);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.AccessKeyDetails
+ */
+export const AccessKeyDetails = new AccessKeyDetails$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class ListAccessKeyReply$Type extends MessageType<ListAccessKeyReply> {
+    constructor() {
+        super("ada.ListAccessKeyReply", [
+            { no: 1, name: "list", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => AccessKeyDetails }
+        ]);
+    }
+    create(value?: PartialMessage<ListAccessKeyReply>): ListAccessKeyReply {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.list = [];
+        if (value !== undefined)
+            reflectionMergePartial<ListAccessKeyReply>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ListAccessKeyReply): ListAccessKeyReply {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated ada.AccessKeyDetails list */ 1:
+                    message.list.push(AccessKeyDetails.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: ListAccessKeyReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated ada.AccessKeyDetails list = 1; */
+        for (let i = 0; i < message.list.length; i++)
+            AccessKeyDetails.internalBinaryWrite(message.list[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.ListAccessKeyReply
+ */
+export const ListAccessKeyReply = new ListAccessKeyReply$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GenerateAccessKeyReq$Type extends MessageType<GenerateAccessKeyReq> {
+    constructor() {
+        super("ada.GenerateAccessKeyReq", [
+            { no: 1, name: "username", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "remark", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GenerateAccessKeyReq>): GenerateAccessKeyReq {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.username = "";
+        message.remark = "";
+        if (value !== undefined)
+            reflectionMergePartial<GenerateAccessKeyReq>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GenerateAccessKeyReq): GenerateAccessKeyReq {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string username */ 1:
+                    message.username = reader.string();
+                    break;
+                case /* string remark */ 2:
+                    message.remark = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GenerateAccessKeyReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string username = 1; */
+        if (message.username !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.username);
+        /* string remark = 2; */
+        if (message.remark !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.remark);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.GenerateAccessKeyReq
+ */
+export const GenerateAccessKeyReq = new GenerateAccessKeyReq$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GenerateAccessKeyReply$Type extends MessageType<GenerateAccessKeyReply> {
+    constructor() {
+        super("ada.GenerateAccessKeyReply", [
+            { no: 1, name: "result", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "secretKey", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "message", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GenerateAccessKeyReply>): GenerateAccessKeyReply {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.result = "";
+        message.secretKey = "";
+        message.message = "";
+        if (value !== undefined)
+            reflectionMergePartial<GenerateAccessKeyReply>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GenerateAccessKeyReply): GenerateAccessKeyReply {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string result */ 1:
+                    message.result = reader.string();
+                    break;
+                case /* string secretKey */ 3:
+                    message.secretKey = reader.string();
+                    break;
+                case /* string message */ 4:
+                    message.message = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GenerateAccessKeyReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string result = 1; */
+        if (message.result !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.result);
+        /* string secretKey = 3; */
+        if (message.secretKey !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.secretKey);
+        /* string message = 4; */
+        if (message.message !== "")
+            writer.tag(4, WireType.LengthDelimited).string(message.message);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.GenerateAccessKeyReply
+ */
+export const GenerateAccessKeyReply = new GenerateAccessKeyReply$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class DeleteAccessKeyReq$Type extends MessageType<DeleteAccessKeyReq> {
+    constructor() {
+        super("ada.DeleteAccessKeyReq", [
+            { no: 1, name: "iD", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<DeleteAccessKeyReq>): DeleteAccessKeyReq {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.iD = "";
+        if (value !== undefined)
+            reflectionMergePartial<DeleteAccessKeyReq>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: DeleteAccessKeyReq): DeleteAccessKeyReq {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string iD */ 1:
+                    message.iD = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: DeleteAccessKeyReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string iD = 1; */
+        if (message.iD !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.iD);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.DeleteAccessKeyReq
+ */
+export const DeleteAccessKeyReq = new DeleteAccessKeyReq$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class DeleteAccessKeyReply$Type extends MessageType<DeleteAccessKeyReply> {
+    constructor() {
+        super("ada.DeleteAccessKeyReply", [
+            { no: 1, name: "result", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "message", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<DeleteAccessKeyReply>): DeleteAccessKeyReply {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.result = "";
+        message.message = "";
+        if (value !== undefined)
+            reflectionMergePartial<DeleteAccessKeyReply>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: DeleteAccessKeyReply): DeleteAccessKeyReply {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string result */ 1:
+                    message.result = reader.string();
+                    break;
+                case /* string message */ 2:
+                    message.message = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: DeleteAccessKeyReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string result = 1; */
+        if (message.result !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.result);
+        /* string message = 2; */
+        if (message.message !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.message);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.DeleteAccessKeyReply
+ */
+export const DeleteAccessKeyReply = new DeleteAccessKeyReply$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class ListDomainReq$Type extends MessageType<ListDomainReq> {
     constructor() {
@@ -23811,6 +24325,9 @@ export const ADA = new ServiceType("ada.ADA", [
     { name: "DisableMfa", options: {}, I: DisableMfaReq, O: DisableMfaReply },
     { name: "UpdateAvatar", options: {}, I: UpdateAvatarReq, O: UpdateAvatarReply },
     { name: "ResetPassword", options: {}, I: ResetPasswordReq, O: ResetPasswordReply },
+    { name: "ListAccessKey", options: {}, I: ListAccessKeyReq, O: ListAccessKeyReply },
+    { name: "GenerateAccessKey", options: {}, I: GenerateAccessKeyReq, O: GenerateAccessKeyReply },
+    { name: "DeleteAccessKey", options: {}, I: DeleteAccessKeyReq, O: DeleteAccessKeyReply },
     { name: "ListDomain", options: {}, I: ListDomainReq, O: ListDomainReply },
     { name: "AddDomain", options: {}, I: AddDomainReq, O: AddDomainReply },
     { name: "TestDomain", options: {}, I: TestDomainReq, O: TestDomainReply },

@@ -47,6 +47,40 @@
             </el-row>
         </el-card>
         <el-tabs type="border-card" style="margin-top: 20px;">
+            <!-- Profile -->
+            <el-tab-pane :label="T('profile')">
+                <el-form size="default" :label-position="labelPosition" label-width="auto" style="margin-top: 10px;" ref="formRef" :rules="rules" :model="state.form">
+                    <h3 style="margin-bottom: 20px;">{{ T('coreInfo') }}</h3>
+                    <el-form-item :label="T('realName')" label-width="100px">
+                        <el-input v-model="state.form.realName" clearable style="width: 400px" :placeholder="T('realNamePlaceholder')"></el-input>
+                    </el-form-item>
+                    <h3 style="margin-bottom: 20px;">{{ T('businessInfo') }}</h3>
+                    <el-form-item :label="T('department')" label-width="100px">
+                        <el-input v-model="state.form.department" clearable style="width: 400px" :placeholder="T('departmentPlaceholder')"></el-input>
+                    </el-form-item>
+                    <el-form-item :label="T('post')" label-width="100px">
+                        <el-input v-model="state.form.post" clearable style="width: 400px" :placeholder="T('postPlaceholder')"></el-input>
+                    </el-form-item>
+                    <h3 style="margin-bottom: 20px;">{{ T('contactInfo') }}</h3>
+                    <el-form-item :label="T('address')" label-width="100px">
+                        <el-input v-model="state.form.address" clearable style="width: 400px" :placeholder="T('addressPlaceholder')"></el-input>
+                    </el-form-item>
+                    <el-form-item :label="T('email')" label-width="100px" prop="email">
+                        <el-input v-model="state.form.email" clearable style="width: 400px" :placeholder="T('emailPlaceholder')"></el-input>
+                    </el-form-item>
+                    <el-form-item :label="T('mobile')" label-width="100px" prop="mobile">
+                        <el-input v-model="state.form.mobile" clearable style="width: 400px" :placeholder="T('mobilePlaceholder')"></el-input>
+                    </el-form-item>
+                    <h3 style="margin-bottom: 20px;">{{ T('otherInfo') }}</h3>
+                    <el-form-item :label="T('remark')" label-width="100px">
+                        <el-input v-model="state.form.remark" clearable type="textarea" style="width: 400px" :placeholder="T('remarkPlaceholder')"></el-input>
+                    </el-form-item>
+                    <el-form-item label-width="100px">
+                        <el-button type="primary" @click="saveUserInfo(formRef)">{{ T('save') }}</el-button>
+                    </el-form-item>
+                </el-form>
+            </el-tab-pane>
+
             <!-- MFA -->
             <el-tab-pane :label="T('mfa')">
                 <el-space direction="vertical" size="default" style="width: 100%;" alignment="normal">
@@ -93,40 +127,6 @@
                 </el-form>
             </el-tab-pane>
 
-            <!-- Profile -->
-            <el-tab-pane :label="T('profile')">
-                <el-form size="default" :label-position="labelPosition" label-width="auto" style="margin-top: 10px;" ref="formRef" :rules="rules" :model="state.form">
-                    <h3 style="margin-bottom: 20px;">{{ T('coreInfo') }}</h3>
-                    <el-form-item :label="T('realName')" label-width="100px">
-                        <el-input v-model="state.form.realName" clearable style="width: 400px" :placeholder="T('realNamePlaceholder')"></el-input>
-                    </el-form-item>
-                    <h3 style="margin-bottom: 20px;">{{ T('businessInfo') }}</h3>
-                    <el-form-item :label="T('department')" label-width="100px">
-                        <el-input v-model="state.form.department" clearable style="width: 400px" :placeholder="T('departmentPlaceholder')"></el-input>
-                    </el-form-item>
-                    <el-form-item :label="T('post')" label-width="100px">
-                        <el-input v-model="state.form.post" clearable style="width: 400px" :placeholder="T('postPlaceholder')"></el-input>
-                    </el-form-item>
-                    <h3 style="margin-bottom: 20px;">{{ T('contactInfo') }}</h3>
-                    <el-form-item :label="T('address')" label-width="100px">
-                        <el-input v-model="state.form.address" clearable style="width: 400px" :placeholder="T('addressPlaceholder')"></el-input>
-                    </el-form-item>
-                    <el-form-item :label="T('email')" label-width="100px" prop="email">
-                        <el-input v-model="state.form.email" clearable style="width: 400px" :placeholder="T('emailPlaceholder')"></el-input>
-                    </el-form-item>
-                    <el-form-item :label="T('mobile')" label-width="100px" prop="mobile">
-                        <el-input v-model="state.form.mobile" clearable style="width: 400px" :placeholder="T('mobilePlaceholder')"></el-input>
-                    </el-form-item>
-                    <h3 style="margin-bottom: 20px;">{{ T('otherInfo') }}</h3>
-                    <el-form-item :label="T('remark')" label-width="100px">
-                        <el-input v-model="state.form.remark" clearable type="textarea" style="width: 400px" :placeholder="T('remarkPlaceholder')"></el-input>
-                    </el-form-item>
-                    <el-form-item label-width="100px">
-                        <el-button type="primary" @click="saveUserInfo(formRef)">{{ T('save') }}</el-button>
-                    </el-form-item>
-                </el-form>
-            </el-tab-pane>
-
             <!-- API Key -->
             <el-tab-pane :label="T('apiKey')">
                 <el-row style="margin-bottom: 15px;">
@@ -151,8 +151,8 @@
                     <el-table-column :label="$t('message.tableCommon.operation')" width="100">
                         <template #default="scope">
                             <el-button
-                                text
-                                type="warning"
+                                size="small"
+                                type="danger"
                                 :disabled="scope.row.status === 'disabled'"
                                 @click="handleDeleteKey(scope.row)">
                                 {{ T('disable') }}
@@ -423,38 +423,121 @@ const handleGenerateKey = async () => {
             const data = resp.response;
 
             if (data.result === 'success') {
-                ElMessageBox.alert(
-                    `<div style="word-break: break-all;">
-                        <p style="display: flex; align-items: center;">
-                            <strong>Secret Key:</strong>
-                            <span style="margin-left: 8px;">${data.secretKey}</span>
-                            <button id="copySecretKeyBtn" onclick="(function(){
-                                const key = '${data.secretKey}';
-                                navigator.clipboard.writeText(key).then(() => {
-                                    const btn = document.getElementById('copySecretKeyBtn');
-                                    const originalHtml = btn.innerHTML;
-                                    btn.innerHTML = '<svg viewBox=\\'0 0 1024 1024\\' width=\\'14\\' height=\\'14\\' style=\\'vertical-align: middle;\\'><path d=\\'M912 190h-69.9c-9.8 0-19.1 4.5-25.1 12.2L404.7 724.5 207 474a32 32 0 0 0-25.1-12.2H112c-6.7 0-10.4 7.7-6.3 12.9l273.9 347c12.8 16.2 37.4 16.2 50.3 0l488.4-618.9c4.1-5.1 0.4-12.8-6.3-12.8z\\' fill=\\'currentColor\\'></path></svg> Copied';
-                                    setTimeout(() => {
-                                        btn.innerHTML = originalHtml;
-                                    }, 2000);
-                                }).catch(() => {
-                                    alert('Failed to copy to clipboard');
-                                });
-                            })()" style="margin-left: 10px; padding: 4px 8px; cursor: pointer; border: 1px solid #409eff; background: #ecf5ff; color: #409eff; border-radius: 4px;">
-                                <svg viewBox="0 0 1024 1024" width="14" height="14" style="vertical-align: middle;">
-                                    <path d="M768 832a64 64 0 0 1-64 64H192a64 64 0 0 1-64-64V320a64 64 0 0 1 64-64h512a64 64 0 0 1 64 64v512z m64-640v576a64 64 0 0 0 64-64V192a64 64 0 0 0-64-64H320a64 64 0 0 0-64 64h512a64 64 0 0 1 64 64z" fill="currentColor"></path>
+                // Create a unique ID for this message box
+                const copyBtnId = `copySecretKeyBtn_${Date.now()}`;
+
+                const messageBox = ElMessageBox.alert(
+                    `<div style="padding: 12px 0;">
+                        <div style="margin-bottom: 20px;">
+                            <div style="font-size: 14px; color: #606266; margin-bottom: 8px; font-weight: 500;">
+                                <svg viewBox="0 0 1024 1024" width="16" height="16" style="vertical-align: middle; margin-right: 4px;">
+                                    <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm-32 232c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v272c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V296zm32 440a48.01 48.01 0 0 1 0-96 48.01 48.01 0 0 1 0 96z" fill="#e6a23c"></path>
                                 </svg>
-                                Copy
-                            </button>
-                        </p>
-                        <p style="color: red; margin-top: 10px;">${T('secretKeyWarning')}</p>
+                                Secret Key
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="flex: 1; padding: 12px 16px; background: #f5f7fa; border: 1px solid #dcdfe6; border-radius: 4px; font-family: 'Monaco', 'Courier New', monospace; font-size: 13px; color: #303133; word-break: break-all; line-height: 1.6;">
+                                    ${data.secretKey}
+                                </div>
+                                <button id="${copyBtnId}" style="flex-shrink: 0; height: 40px; padding: 0 15px; cursor: pointer; border: 1px solid #409eff; background: #409eff; color: #fff; border-radius: 4px; font-size: 14px; transition: all 0.3s; display: flex; align-items: center; gap: 6px;">
+                                    <svg viewBox="0 0 1024 1024" width="16" height="16" style="vertical-align: middle; fill: currentColor;">
+                                        <path d="M768 832a64 64 0 0 1-64 64H192a64 64 0 0 1-64-64V320a64 64 0 0 1 64-64h512a64 64 0 0 1 64 64v512z m64-640v576a64 64 0 0 0 64-64V192a64 64 0 0 0-64-64H320a64 64 0 0 0-64 64h512a64 64 0 0 1 64 64z"></path>
+                                    </svg>
+                                    <span>Copy</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div style="padding: 12px 16px; background: #fef0f0; border: 1px solid #fde2e2; border-radius: 4px; display: flex; gap: 8px;">
+                            <svg viewBox="0 0 1024 1024" width="16" height="16" style="flex-shrink: 0; margin-top: 2px;">
+                                <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm-32 232c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v272c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V296zm32 440a48.01 48.01 0 0 1 0-96 48.01 48.01 0 0 1 0 96z" fill="#f56c6c"></path>
+                            </svg>
+                            <div style="flex: 1; font-size: 13px; color: #f56c6c; line-height: 1.6;">
+                                ${T('secretKeyWarning')}
+                            </div>
+                        </div>
                     </div>`,
                     T('keyGenerated'),
                     {
                         dangerouslyUseHTMLString: true,
                         confirmButtonText: T('confirm'),
+                        customClass: 'secret-key-message-box',
                     }
                 );
+
+                // Add click handler after the message box is rendered
+                setTimeout(() => {
+                    const copyBtn = document.getElementById(copyBtnId);
+                    if (copyBtn) {
+                        // Add hover effect
+                        copyBtn.onmouseenter = () => {
+                            copyBtn.style.background = '#66b1ff';
+                            copyBtn.style.borderColor = '#66b1ff';
+                        };
+                        copyBtn.onmouseleave = () => {
+                            if (!copyBtn.classList.contains('copied')) {
+                                copyBtn.style.background = '#409eff';
+                                copyBtn.style.borderColor = '#409eff';
+                            }
+                        };
+
+                        copyBtn.onclick = () => {
+                            const key = data.secretKey;
+
+                            // Function to copy text with fallback
+                            const copyToClipboard = (text: string) => {
+                                // Try modern clipboard API first
+                                if (navigator.clipboard && navigator.clipboard.writeText) {
+                                    return navigator.clipboard.writeText(text);
+                                }
+
+                                // Fallback to execCommand
+                                return new Promise<void>((resolve, reject) => {
+                                    const textArea = document.createElement('textarea');
+                                    textArea.value = text;
+                                    textArea.style.position = 'fixed';
+                                    textArea.style.left = '-999999px';
+                                    textArea.style.top = '-999999px';
+                                    document.body.appendChild(textArea);
+                                    textArea.focus();
+                                    textArea.select();
+
+                                    try {
+                                        const successful = document.execCommand('copy');
+                                        document.body.removeChild(textArea);
+                                        if (successful) {
+                                            resolve();
+                                        } else {
+                                            reject(new Error('Copy command failed'));
+                                        }
+                                    } catch (err) {
+                                        document.body.removeChild(textArea);
+                                        reject(err);
+                                    }
+                                });
+                            };
+
+                            copyToClipboard(key).then(() => {
+                                const originalHtml = copyBtn.innerHTML;
+                                copyBtn.classList.add('copied');
+                                copyBtn.style.background = '#67c23a';
+                                copyBtn.style.borderColor = '#67c23a';
+                                copyBtn.innerHTML = `<svg viewBox="0 0 1024 1024" width="16" height="16" style="vertical-align: middle; fill: currentColor;">
+                                    <path d="M912 190h-69.9c-9.8 0-19.1 4.5-25.1 12.2L404.7 724.5 207 474a32 32 0 0 0-25.1-12.2H112c-6.7 0-10.4 7.7-6.3 12.9l273.9 347c12.8 16.2 37.4 16.2 50.3 0l488.4-618.9c4.1-5.1 0.4-12.8-6.3-12.8z"></path>
+                                </svg>
+                                <span>Copied!</span>`;
+                                setTimeout(() => {
+                                    copyBtn.classList.remove('copied');
+                                    copyBtn.style.background = '#409eff';
+                                    copyBtn.style.borderColor = '#409eff';
+                                    copyBtn.innerHTML = originalHtml;
+                                }, 2000);
+                            }).catch((err) => {
+                                console.error('Failed to copy:', err);
+                                ElMessage.error('Failed to copy to clipboard');
+                            });
+                        };
+                    }
+                }, 100);
 
                 await loadAccessKeys();
             } else {

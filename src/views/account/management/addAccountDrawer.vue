@@ -128,9 +128,9 @@
         </template>
         <template #footer>
             <div style="display: flex; justify-content: space-between; padding: 20px;">
-                <el-button v-if="state.active === 0" @click="state.open = false">关闭</el-button>
-                <el-button v-if="state.active !== 0" @click="prevStep()" type="primary">上一步</el-button>
-                <el-button @click="nextStep" type="primary"> {{ state.active < 2 ? "下一步" : "确定" }}</el-button>
+                <el-button v-if="state.active === 0" @click="state.open = false">{{ $t('message.accountPerson.close') }}</el-button>
+                <el-button v-if="state.active !== 0" @click="prevStep()" type="primary">{{ $t('message.accountPerson.prevStep') }}</el-button>
+                <el-button @click="nextStep" type="primary">{{ state.active < 2 ? $t('message.accountPerson.nextStep') : $t('message.dialog.confirm') }}</el-button>
             </div>
         </template>
     </el-drawer>
@@ -162,7 +162,7 @@ const initData = {
 
 const state = reactive({
     open: false,
-    title: '创建子账户',
+    title: '',
     data: initData,
     active: 0,
     onClose: () => {},

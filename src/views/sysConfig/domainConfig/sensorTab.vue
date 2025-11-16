@@ -61,14 +61,14 @@
 				{{ formatApiTime(scope.row.lastOnlineTm) }}
 			</template>
 		</el-table-column>
-		<el-table-column :label="$t('message.tableCommon.operation')">
+		<el-table-column :label="$t('message.tableCommon.operation')" width="210">
 			<template #default="scope">
-				<el-button size="large" text type="primary" @click="onEdit(scope.row)">{{
-					$t('message.tableCommon.edit') }}</el-button>
-				<el-button size="large" text type="primary" @click="onDetail(scope.row)">{{
+				<el-button size="small" @click="onDetail(scope.row)">{{
 					$t('message.tableCommon.detail') }}</el-button>
-				<el-button size="large" text type="primary" @click="onDelete(scope.row)"
-					:disabled="false">{{ $t('message.tableCommon.delete') }}</el-button>
+				<el-button size="small" @click="onEdit(scope.row)">{{
+					$t('message.tableCommon.edit') }}</el-button>
+				<el-button size="small" type="danger" @click="onDelete(scope.row)">{{
+					$t('message.tableCommon.delete') }}</el-button>
 			</template>
 		</el-table-column>
 	</el-table>

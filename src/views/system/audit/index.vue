@@ -22,7 +22,7 @@
                 </el-form>
                 <el-form :inline="true">
                     <el-space>
-                        <el-input v-model="state.keyword" style="width: 350px" :suffix-icon="Search"
+                        <el-input v-model="state.keyword" style="width: 250px" :suffix-icon="Search"
                             :placeholder="$t('message.system.audit.searchPlaceholder')" clearable
                             @change="onKeywordChanged" />
                         <ExportButton type="audit" />

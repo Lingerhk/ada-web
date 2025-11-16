@@ -3,6 +3,7 @@
 		<el-form label-width="auto" :inline="true">
 			<el-form-item>
 				<el-button size="default" type="primary" @click="handleAdd">
+					<el-icon><Plus /></el-icon>
 					{{ $t('message.tableCommon.new') }}
 				</el-button>
 			</el-form-item>
@@ -57,11 +58,11 @@
 		</el-table-column>
 		<el-table-column :label="$t('message.tableCommon.operation')" width="240">
 			<template #default="scope">
-				<el-button size="large" text type="primary" @click="onOpenDetailDialog(scope.row)">{{
+				<el-button size="small" @click="onOpenDetailDialog(scope.row)">{{
 					$t('message.tableCommon.detail') }}</el-button>
-				<el-button size="large" text type="primary" @click="handleEdit(scope.row)">{{
+				<el-button size="small" @click="handleEdit(scope.row)">{{
 					$t('message.tableCommon.edit') }}</el-button>
-				<el-button size="large" text type="danger" @click="onTabelRowDel(scope.row)">{{
+				<el-button size="small" type="danger" @click="onTabelRowDel(scope.row)">{{
 					$t('message.tableCommon.delete') }}</el-button>
 			</template>
 		</el-table-column>
@@ -80,12 +81,11 @@
 <script setup lang="ts">
 import { defineAsyncComponent, ref, onMounted, reactive, watch } from 'vue';
 import { ElMessageBox, ElMessage } from 'element-plus';
-import { Search } from '@element-plus/icons-vue';
+import { Search, QuestionFilled, Plus } from '@element-plus/icons-vue';
 import api from '/@/api/grpc/index';
 import * as proto from '/@/api/grpc/ada';
 import { alertApiError } from '/@/utils/error';
 import { useI18n } from 'vue-i18n';
-import { QuestionFilled } from '@element-plus/icons-vue'
 
 const { t } = useI18n();
 

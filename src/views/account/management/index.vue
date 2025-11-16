@@ -3,7 +3,10 @@
         <el-card shadow="hover">
             <el-form :inline="true">
                 <el-form-item>
-                    <el-button type="primary" size="default" @click="onAddAccount">{{ T('new') }}</el-button>
+                    <el-button type="primary" size="default" @click="onAddAccount">
+                        <el-icon><Plus /></el-icon>
+                        {{ T('new') }}
+                    </el-button>
                 </el-form-item>
                 <el-form-item :label="T('role')">
                     <el-select v-model="state.filter.role" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="T('selectRole')" popper-class="custom-header">
@@ -106,6 +109,7 @@ import { defineAsyncComponent, onMounted, reactive, ref, watch } from 'vue';
 import { ListUserReq, ListUserReply_Details } from '/@/api/grpc/ada';
 import api from '/@/api/grpc';
 import { ElMessageBox } from 'element-plus';
+import { Plus } from '@element-plus/icons-vue';
 import { transAccount as T } from '/@/utils/translator';
 import { formatApiTime, shortcuts } from '/@/utils/formatTime';
 import { useI18n } from 'vue-i18n';

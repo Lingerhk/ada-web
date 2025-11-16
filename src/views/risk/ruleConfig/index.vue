@@ -5,8 +5,10 @@
                 <!-- 搜索 -->
                 <el-form :inline="true">
                     <el-form-item>
-                        <el-button size="default" type="primary" @click="handleAdd">{{ $t('message.tableCommon.new')
-                            }}</el-button>
+                        <el-button size="default" type="primary" @click="handleAdd">
+                            <el-icon><Plus /></el-icon>
+                            {{ $t('message.tableCommon.new') }}
+                        </el-button>
                     </el-form-item>
                     <el-form-item :label="$t('message.risk.ruleConfig.templateType')">
                         <el-select size="default" v-model="state.req.type" clearable
@@ -61,6 +63,7 @@ import { getRiskTypeOptions } from '../constant';
 import { useI18n } from 'vue-i18n';
 import { formatApiTime } from '/@/utils/formatTime';
 import { ElMessageBox, alertEffects } from 'element-plus';
+import { Plus } from '@element-plus/icons-vue';
 import api from '/@/api/grpc';
 
 const DetailDrawerRef = ref();

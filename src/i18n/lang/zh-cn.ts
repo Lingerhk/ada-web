@@ -1289,6 +1289,9 @@ export default {
 		mfa: '双因素认证',
 		mfa_short: 'MFA',
 		mfa_enable: '已启用',
+		mfaStatus: 'MFA状态',
+		mfaStatusLabel: '当前状态',
+		mfaConfiguration: 'MFA配置',
 		mfa_disable: '未启用',
 		selectMfa: '选择MFA状态',
 		new: '新建',
@@ -1298,6 +1301,7 @@ export default {
 		createTm: '创建时间',
 		updateTm: '更新时间',
 		pwdUpdateTm: '密码最后修改时间',
+		activeTm: '活跃时间',
 		passwordStrength: '密码强度', // 密码强度: high/middle/low
 		passwordStrength_high: '高',
 		passwordStrength_middle: '中',

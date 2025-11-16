@@ -250,11 +250,15 @@ export interface ListUserReply_Details {
      */
     pwdUpdateTm: string; // 密码更新时间
     /**
-     * @generated from protobuf field: string department = 15;
+     * @generated from protobuf field: string department = 13;
      */
     department: string; // 部门
     /**
-     * @generated from protobuf field: string updateTm = 17;
+     * @generated from protobuf field: string activeTm = 14;
+     */
+    activeTm: string; // 活跃时间
+    /**
+     * @generated from protobuf field: string updateTm = 15;
      */
     updateTm: string; // 更新时间
 }
@@ -557,6 +561,10 @@ export interface AccessKeyDetails {
      * @generated from protobuf field: string updateTm = 8;
      */
     updateTm: string; // 更新时间
+    /**
+     * @generated from protobuf field: string activeTm = 9;
+     */
+    activeTm: string; // 最近使用时间
 }
 /**
  * @generated from protobuf message ada.ListAccessKeyReply
@@ -5952,8 +5960,9 @@ class ListUserReply_Details$Type extends MessageType<ListUserReply_Details> {
             { no: 10, name: "hasMfa", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
             { no: 11, name: "avatar", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 12, name: "pwdUpdateTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 15, name: "department", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 17, name: "updateTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 13, name: "department", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 14, name: "activeTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 15, name: "updateTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<ListUserReply_Details>): ListUserReply_Details {
@@ -5971,6 +5980,7 @@ class ListUserReply_Details$Type extends MessageType<ListUserReply_Details> {
         message.avatar = "";
         message.pwdUpdateTm = "";
         message.department = "";
+        message.activeTm = "";
         message.updateTm = "";
         if (value !== undefined)
             reflectionMergePartial<ListUserReply_Details>(this, message, value);
@@ -6017,10 +6027,13 @@ class ListUserReply_Details$Type extends MessageType<ListUserReply_Details> {
                 case /* string pwdUpdateTm */ 12:
                     message.pwdUpdateTm = reader.string();
                     break;
-                case /* string department */ 15:
+                case /* string department */ 13:
                     message.department = reader.string();
                     break;
-                case /* string updateTm */ 17:
+                case /* string activeTm */ 14:
+                    message.activeTm = reader.string();
+                    break;
+                case /* string updateTm */ 15:
                     message.updateTm = reader.string();
                     break;
                 default:
@@ -6071,12 +6084,15 @@ class ListUserReply_Details$Type extends MessageType<ListUserReply_Details> {
         /* string pwdUpdateTm = 12; */
         if (message.pwdUpdateTm !== "")
             writer.tag(12, WireType.LengthDelimited).string(message.pwdUpdateTm);
-        /* string department = 15; */
+        /* string department = 13; */
         if (message.department !== "")
-            writer.tag(15, WireType.LengthDelimited).string(message.department);
-        /* string updateTm = 17; */
+            writer.tag(13, WireType.LengthDelimited).string(message.department);
+        /* string activeTm = 14; */
+        if (message.activeTm !== "")
+            writer.tag(14, WireType.LengthDelimited).string(message.activeTm);
+        /* string updateTm = 15; */
         if (message.updateTm !== "")
-            writer.tag(17, WireType.LengthDelimited).string(message.updateTm);
+            writer.tag(15, WireType.LengthDelimited).string(message.updateTm);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -7236,7 +7252,8 @@ class AccessKeyDetails$Type extends MessageType<AccessKeyDetails> {
             { no: 5, name: "remark", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 6, name: "status", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 7, name: "createTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 8, name: "updateTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 8, name: "updateTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 9, name: "activeTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<AccessKeyDetails>): AccessKeyDetails {
@@ -7248,6 +7265,7 @@ class AccessKeyDetails$Type extends MessageType<AccessKeyDetails> {
         message.status = "";
         message.createTm = "";
         message.updateTm = "";
+        message.activeTm = "";
         if (value !== undefined)
             reflectionMergePartial<AccessKeyDetails>(this, message, value);
         return message;
@@ -7277,6 +7295,9 @@ class AccessKeyDetails$Type extends MessageType<AccessKeyDetails> {
                     break;
                 case /* string updateTm */ 8:
                     message.updateTm = reader.string();
+                    break;
+                case /* string activeTm */ 9:
+                    message.activeTm = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -7311,6 +7332,9 @@ class AccessKeyDetails$Type extends MessageType<AccessKeyDetails> {
         /* string updateTm = 8; */
         if (message.updateTm !== "")
             writer.tag(8, WireType.LengthDelimited).string(message.updateTm);
+        /* string activeTm = 9; */
+        if (message.activeTm !== "")
+            writer.tag(9, WireType.LengthDelimited).string(message.activeTm);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

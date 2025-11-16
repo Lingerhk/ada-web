@@ -23,9 +23,16 @@
 }
 
 /* Password Strength Progress Bars */
+.password-strength-item {
+    display: inline-flex !important;
+    align-items: center;
+    white-space: nowrap;
+}
+
 .password-strength-item .el-form-item__content {
     display: inline-flex !important;
     align-items: center;
+    flex-wrap: nowrap;
 }
 
 .password-strength-bars {
@@ -57,4 +64,56 @@
 
 .strength-bar-blue {
     background-color: #409eff;
+}
+
+/* Avatar/Logo Upload with Hover Overlay */
+.avatar-container {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    border: 1px dashed #d9d9d9;
+    border-radius: 50%;
+    cursor: pointer;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.3s;
+}
+
+.avatar-container:hover {
+    border-color: #409eff;
+}
+
+.avatar-container:hover .avatar-overlay {
+    opacity: 1;
+}
+
+.avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-placeholder {
+    font-size: 32px;
+    color: #8c939d;
+}
+
+.avatar-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s;
+    gap: 5px;
+    font-size: 12px;
 }

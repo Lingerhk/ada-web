@@ -39,6 +39,9 @@
                 <el-descriptions-item :label="T('pwdUpdateTm')">
                     {{ formatApiTime(state.data.pwdUpdateTm) }}
                 </el-descriptions-item>
+                <el-descriptions-item :label="T('activeTm')">
+                    {{ state.data.activeTm ? formatApiTime(state.data.activeTm) : '-' }}
+                </el-descriptions-item>
                 <el-descriptions-item :label="T('updateTm')">
                     {{ formatApiTime(state.data.updateTm) }}
                 </el-descriptions-item>

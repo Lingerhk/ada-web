@@ -3,13 +3,20 @@
         <el-card shadow="hover">
             <el-row>
                 <div>
-                    <el-upload class="avatar-uploader"
-                        action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15" :show-file-list="false"
+                    <el-upload action="#" :show-file-list="false"
                         :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-                        <img v-if="state.avatar" :src="state.avatar" class="avatar" />
-                        <el-icon v-else class="avatar-uploader-icon">
-                            <Plus />
-                        </el-icon>
+                        <template #trigger>
+                            <div class="avatar-container">
+                                <img v-if="state.avatar" :src="state.avatar" class="avatar-img" />
+                                <el-icon v-else class="avatar-placeholder">
+                                    <Plus />
+                                </el-icon>
+                                <div class="avatar-overlay">
+                                    <el-icon :size="24"><Edit /></el-icon>
+                                    <span>{{ $t('message.tableCommon.edit') }}</span>
+                                </div>
+                            </div>
+                        </template>
                     </el-upload>
                 </div>
                 <div class="user-info">
@@ -31,13 +38,17 @@
                                 <template #label><span class="form-label">{{ T('createTm') }}:</span></template>
                                 {{ formatApiTime(state.me?.createTm) }}
                             </el-form-item>
-                            <el-form-item class="password-strength-item">
+                            <el-form-item>
+                                <template #label><span class="form-label">{{ T('activeTm') }}:</span></template>
+                                {{ state.me?.activeTm ? formatApiTime(state.me?.activeTm) : '-' }}
+                            </el-form-item>
+                            <el-form-item class="password-strength-item" label-width="150px">
                                 <template #label><span class="form-label">{{ T('passwordStrength') }}:</span></template>
                                 <el-tooltip :content="T('passwordStrength_'+state.me?.passStrength)" placement="top">
                                     <div class="password-strength-bars">
-                                        <span :class="['strength-bar', getStrengthBarClass(1, state.me?.passStrength)]"></span>
-                                        <span :class="['strength-bar', getStrengthBarClass(2, state.me?.passStrength)]"></span>
-                                        <span :class="['strength-bar', getStrengthBarClass(3, state.me?.passStrength)]"></span>
+                                        <span :class="['strength-bar', getStrengthBarClass(1, state.me?.passStrength || 'low')]"></span>
+                                        <span :class="['strength-bar', getStrengthBarClass(2, state.me?.passStrength || 'middle')]"></span>
+                                        <span :class="['strength-bar', getStrengthBarClass(3, state.me?.passStrength || 'high')]"></span>
                                     </div>
                                 </el-tooltip>
                             </el-form-item>
@@ -136,8 +147,21 @@
                             </el-tag>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="createTm" :label="T('createTm')" width="180" />
-                    <el-table-column prop="updateTm" :label="T('updateTm')" width="180" />
+                    <el-table-column prop="createTm" :label="T('createTm')" width="180">
+                        <template #default="scope">
+                            {{ formatApiTime(scope.row.createTm) }}
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="updateTm" :label="T('updateTm')" width="180">
+                        <template #default="scope">
+                            {{ formatApiTime(scope.row.updateTm) }}
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="activeTm" :label="T('activeTm')" width="180">
+                        <template #default="scope">
+                            {{ formatApiTime(scope.row.activeTm) || '-' }}
+                        </template>
+                    </el-table-column>
                     <el-table-column :label="$t('message.tableCommon.operation')" width="100">
                         <template #default="scope">
                             <el-button
@@ -161,7 +185,7 @@ import api from '/@/api/grpc/index';
 import { DisableMfaReq, EnableMfaReq, ListUserReply_Details, ListUserReq, UpdateUserReq, AccessKeyDetails, ListAccessKeyReq, GenerateAccessKeyReq, DeleteAccessKeyReq } from '/@/api/grpc/ada';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import type { FormInstance, FormRules, UploadProps } from 'element-plus'
-import { Plus } from '@element-plus/icons-vue';
+import { Plus, Edit } from '@element-plus/icons-vue';
 import { useI18n } from 'vue-i18n';
 import { alertApiError, alertResult } from '/@/utils/error';
 import { formatApiTime } from '/@/utils/formatTime';

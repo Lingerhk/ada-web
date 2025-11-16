@@ -49,14 +49,16 @@
             <el-table :data="state.table.data" v-loading="state.table.loading" style="width: 100%">
                 <el-table-column type="index" width="80px" />
                 <el-table-column prop="username" :label="T('username')"></el-table-column>
-                <el-table-column prop="role" :label="T('role')">
+                <el-table-column prop="role" :label="T('role')" width="110">
                     <template #default="prop">
                         {{ T(`role_${prop.row.role}`) }}
                     </template>
                 </el-table-column>
-                <el-table-column prop="hasMfa" :label="T('mfa_short')">
+                <el-table-column prop="hasMfa" :label="T('mfa_short')" width="100" align="center">
                     <template #default="prop">
-                        {{ T(`mfa_${prop.row.hasMfa}`) }}
+                        <el-tag :type="prop.row.hasMfa ? 'success' : 'info'" size="small">
+                            {{ T('mfa_' + (prop.row.hasMfa ? 'enable' : 'disable')) }}
+                        </el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column prop="passStrength" :label="T('passwordStrength')">
@@ -72,9 +74,9 @@
                         {{ formatApiTime(prop.row.createTm) }}
                     </template>
                 </el-table-column>
-                <el-table-column prop="pwdUpdateTm" :label="T('pwdUpdateTm')" :width="170">
+                <el-table-column prop="activeTm" :label="T('activeTm')" :width="170">
                     <template #default="prop">
-                        {{ formatApiTime(prop.row.pwdUpdateTm) }}
+                        {{ prop.row.activeTm ? formatApiTime(prop.row.activeTm) : '-' }}
                     </template>
                 </el-table-column>
                 <el-table-column :label="T('operation')" width="210" fixed="right" align="center">

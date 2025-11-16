@@ -17,7 +17,13 @@
                                     <h4>{{ $t('message.system.basicInfo.ip') }}:</h4>
                                 </template>
                                 {{ basicInfoState.data.systemIP }}
-                                <el-button type="primary" :icon="Edit" circle @click="showUpdateIPDialog" style="margin-left: 10px;"/>
+                                <el-tooltip
+                                    :content="$t('message.tableCommon.edit')"
+                                    placement="top">
+                                    <el-icon color="#409EFF" style="margin-left: 8px; cursor: pointer;" :size="16" @click="showUpdateIPDialog">
+                                        <Edit />
+                                    </el-icon>
+                                </el-tooltip>
                             </el-form-item>
                             <el-form-item>
                                 <template #label>

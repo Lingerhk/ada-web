@@ -535,7 +535,13 @@ const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
 const refreshBasicInfo = () => {
     getSystemInfo().then(data => {
         basicInfoState.data = data;
-        basicInfoState.icon = data.systemIcon;
+        // Format system icon as proper data URL if it's not already
+        const isFilePath = data.systemIcon && /\.(png|jpg|svg)$/i.test(data.systemIcon);
+        if (data.systemIcon && !data.systemIcon.startsWith('data:') && !isFilePath) {
+            basicInfoState.icon = `data:image/png;base64,${data.systemIcon}`;
+        } else {
+            basicInfoState.icon = data.systemIcon;
+        }
         // Also update upgrade state
         upgradeState.form.upgradeSrv = data.upgradeSrv || '';
         upgradeState.form.upgradeRule = data.upgradeRule === 'true';

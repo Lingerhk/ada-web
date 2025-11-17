@@ -35,6 +35,12 @@ const viteConfig = defineConfig((mode: ConfigEnv) => {
 					changeOrigin: true,
 					rewrite: (path) => path.replace(/^\/gitee/, ''),
 				},
+				'/kibana': {
+					target: env.VITE_ADA_API_URL || 'http://localhost:80',
+					ws: true,
+					changeOrigin: true,
+					secure: false,
+				},
 			},
 		},
 		build: {

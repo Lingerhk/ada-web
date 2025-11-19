@@ -6,6 +6,11 @@ import request from '/@/utils/request';
 let dataViewIdCache: string | null = null;
 
 /**
+ * Kibana session status
+ */
+let kibanaSessionInitialized = false;
+
+/**
  * Get Kibana data-view-id for ada-activity index pattern using Kibana API
  * @returns Promise with the data-view-id
  */
@@ -68,4 +73,43 @@ export async function openKibanaDocInNewTab(docId: string): Promise<void> {
  */
 export function clearKibanaCache(): void {
 	dataViewIdCache = null;
+}
+
+/**
+ * Initialize Kibana session with auto-login
+ * This should be called before loading Kibana iframe
+ * @returns Promise with session initialization result
+ */
+export async function initKibanaSession(): Promise<{ app: string; hash: boolean }> {
+	// Return immediately if session already initialized
+	if (kibanaSessionInitialized) {
+		return { app: '', hash: false };
+	}
+
+	try {
+		const response = await request({
+			url: '/kibana/GenSession',
+			method: 'post',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		});
+
+		if (response?.code === 0) {
+			kibanaSessionInitialized = true;
+			return { app: '', hash: false };
+		} else {
+			throw new Error('Failed to initialize Kibana session');
+		}
+	} catch (error) {
+		console.error('Kibana session initialization error:', error);
+		throw error;
+	}
+}
+
+/**
+ * Reset Kibana session state (for logout or session expiry)
+ */
+export function resetKibanaSession(): void {
+	kibanaSessionInitialized = false;
 }

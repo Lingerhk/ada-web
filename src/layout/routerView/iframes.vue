@@ -23,6 +23,7 @@
 <script setup lang="ts" name="layoutIframeView">
 import { computed, watch, ref, nextTick } from 'vue';
 import { useRoute } from 'vue-router';
+import { initKibanaSession } from '/@/utils/kibana';
 
 // 定义父组件传过来的值
 const props = defineProps({
@@ -71,9 +72,20 @@ const closeIframeLoading = (val: string, item: RouteItem) => {
 // 监听路由变化，初始化 iframe 数据，防止多个 iframe 时，切换不生效
 watch(
 	() => route.fullPath,
-	(val) => {
+	async (val) => {
 		const item: any = props.list.find((v: any) => v.path === val);
 		if (!item) return false;
+
+		// Initialize Kibana session if this is a Kibana route
+		if (item.path === '/kibana' || item.name === 'threatKibana') {
+			try {
+				await initKibanaSession();
+			} catch (error) {
+				console.error('Failed to initialize Kibana session:', error);
+				// Continue loading iframe even if session init fails
+			}
+		}
+
 		if (!item.meta.isIframeOpen) item.meta.isIframeOpen = true;
 		closeIframeLoading(val, item);
 	},

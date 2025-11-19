@@ -13,7 +13,14 @@
 					</div>
 				</div>
 				<div class="right">
-					<img src="https://i.hd-r.cn/2cf0d2e192660eec23eb9d0655753e7d.png" />
+					<div class="error-icon">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+							<circle cx="100" cy="100" r="80" stroke="currentColor" stroke-width="4" opacity="0.2"/>
+							<path d="M100 70 L100 110 M100 130 L100 135" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+							<circle cx="100" cy="100" r="60" stroke="currentColor" stroke-width="4" fill="none"/>
+							<path d="M85 95 L95 85 M105 85 L115 95" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+						</svg>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -79,9 +86,17 @@ const onSetAuth = () => {
 			animation-name: error-img;
 			animation-duration: 2s;
 			animation-fill-mode: forwards;
-			img {
-				width: 100%;
-				height: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			.error-icon {
+				width: 80%;
+				height: 80%;
+				color: var(--el-color-warning);
+				svg {
+					width: 100%;
+					height: 100%;
+				}
 			}
 		}
 	}

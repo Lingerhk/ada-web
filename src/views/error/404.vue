@@ -13,7 +13,12 @@
 					</div>
 				</div>
 				<div class="right">
-					<img src="https://i.hd-r.cn/1a0d90a6c1e8b0184c7299dda713effd.png" />
+					<div class="error-icon">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+							<circle cx="100" cy="100" r="80" stroke="currentColor" stroke-width="4" opacity="0.2"/>
+							<path d="M70 85 L85 70 M115 70 L130 85 M70 130 Q100 110 130 130" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+						</svg>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -79,9 +84,17 @@ const onGoHome = () => {
 			animation-name: error-img;
 			animation-duration: 2s;
 			animation-fill-mode: forwards;
-			img {
-				width: 100%;
-				height: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			.error-icon {
+				width: 80%;
+				height: 80%;
+				color: var(--el-color-info);
+				svg {
+					width: 100%;
+					height: 100%;
+				}
 			}
 		}
 	}

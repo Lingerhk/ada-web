@@ -736,6 +736,7 @@ export default {
 			result_0: 'No Risk',
 			PrivilegedAccounts: 'Privileged Accounts',
 			Anomalies: 'Anomalies',
+			StaleObjects: 'Stale Objects',
 			Trusts: 'Trust Relationships',
 			desc: 'Description',
 			verifyDesc: 'Verification Description',

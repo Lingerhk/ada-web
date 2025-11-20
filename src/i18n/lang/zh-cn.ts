@@ -729,6 +729,7 @@ export default {
 			result_0: '暂无风险',
 			PrivilegedAccounts: '特权帐户',
 			Anomalies: '异常现象',
+			StaleObjects: '陈旧对象',
 			Trusts: '信任关系',
 			desc: '描述',
 			verifyDesc: '验证描述',

@@ -8,6 +8,9 @@ const subTypeOptions = [{
     label: 'message.risk.baseline.Anomalies',
     value: 'Anomalies'
 }, {
+    label: 'message.risk.baseline.StaleObjects',
+    value: 'StaleObjects'
+}, {
     label: 'message.risk.baseline.Trusts',
     value: 'Trusts'
 }];

@@ -235,11 +235,23 @@ const initI18nOrSize = (value: string, attr: string) => {
 let messageTimerId: NodeJS.Timeout | null = null;
 const news = ref<Array<any>>([]);
 
+// Get shown notification IDs from session storage
+const getShownNotificationIds = (): string[] => {
+	const shown = Session.get('shownNotificationIds');
+	return shown ? shown : [];
+};
+
+// Save shown notification IDs to session storage
+const saveShownNotificationIds = (ids: string[]) => {
+	Session.set('shownNotificationIds', ids);
+};
+
 const refreshMessage = () => {
 	getUnreadNotification().then(data => {
 
 		let _news: any[] = [];
-		let index = 0;
+		const shownIds = getShownNotificationIds();
+		const newShownIds = [...shownIds];
 
 		data.list.forEach(d => {
 			const _data = {
@@ -251,9 +263,13 @@ const refreshMessage = () => {
 
 			_news = [..._news, _data];
 
-			if (-1 !== news.value.findIndex(n => n.id === d.iD)) {
+			// Skip showing notification popup if already shown in this session
+			if (shownIds.includes(d.iD)) {
 				return;
 			}
+
+			// Mark this notification as shown
+			newShownIds.push(d.iD);
 
 			// 用timeout避免样式重叠
 			setTimeout(() => {
@@ -265,6 +281,11 @@ const refreshMessage = () => {
 				});
 			});
 		});
+
+		// Save updated shown IDs
+		if (newShownIds.length !== shownIds.length) {
+			saveShownNotificationIds(newShownIds);
+		}
 
 		news.value = _news;
 	})

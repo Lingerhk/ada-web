@@ -6,11 +6,17 @@ export type EditorData = {
 };
 
 export const formatNotifyType = (row: ListNotifyConfReply_Details, column: any, cellValue: any, index: number) => {
-    return row.notifyType === 'webhook' ? T(`notify_${row.notifyType}${row.metadata.application_type ?? ''}`) : row.notifyType;
+    if (row.notifyType === 'webhook') {
+        return T(`notify_${row.notifyType}${row.metadata.application_type ?? ''}`);
+    }
+    return T(`notify_${row.notifyType}`);
 };
 
 export const formatNotifyTypeFromUpdateReq = (notifyType: string, applicationType?: string) => {
-    return notifyType === 'webhook' ? T(`notify_${notifyType}${applicationType ?? ''}`) : notifyType;
+    if (notifyType === 'webhook') {
+        return T(`notify_${notifyType}${applicationType ?? ''}`);
+    }
+    return T(`notify_${notifyType}`);
 };
 
 export const parseWebhookType = (url: string): string => {

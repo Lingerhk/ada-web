@@ -45,7 +45,14 @@
                             </template>
                             <LevelCheckbox v-model="form.level" text check-all :disabled="ro" />
                         </el-form-item>
-                        <!-- item 5 endpoint -->
+                        <!-- item 5 remark -->
+                        <el-form-item>
+                            <template #label>
+                                <span class="form-item-label">{{ T('remark') }}</span>
+                            </template>
+                            <el-input v-model="form.remark" type="textarea" :rows="3" :placeholder="T('remarkPlaceholder')" :disabled="ro" />
+                        </el-form-item>
+                        <!-- item 6 endpoint -->
                         <!-- <el-form-item>
                             <template #label>
                                 <span class="form-item-label">{{ T('endpoint') }}</span>
@@ -116,6 +123,7 @@ const form = ref<UpdateNotifyConfReq>({
     endpoint: '',
     level: [],
     metadata: {},
+    remark: '',
 });
 const editorRef = ref();
 
@@ -132,8 +140,9 @@ watch(() => model.value, (val) => {
         id: props.data.id, // [(validator.field) = {string_not_empty: true}];
         enable: props.data.enable, // [(validator.field) = {regex: "enable|disable"}]; //启用状态， 开启enable 关闭disable
         endpoint: props.data.endpoint,
-        level: [],
+        level: props.data.level || [],
         metadata: { ...props.data.metadata }, // 都有: alert_interval: 20(str), 可选: email类型: server(str),port(str),username,password,receiver; syslog类型; webhook类型: application_type(weixin/feishu/dingtalk/common)
+        remark: props.data.remark || '',
     }
 });
 
@@ -141,7 +150,9 @@ const testNotifyConf = () => {
 
     testLoading.value = true;
 
-    const { endpoint, ...rest } = form.value.metadata;
+    const { endpoint: metadataEndpoint, ...rest } = form.value.metadata;
+    // Use endpoint from metadata if set by editor, otherwise use form.endpoint
+    const endpoint = metadataEndpoint || form.value.endpoint;
 
     const req: TestNotifyConfReq = {
         moduleName: props.data.moduleName,
@@ -187,6 +198,7 @@ const nextStep = async () => {
             endpoint,
             level: form.value.level,
             metadata, // 都有: alert_interval: 20(str), 可选: email类型: server(str),port(str),username,password,receiver; syslog类型; webhook类型: application_type(weixin/feishu/dingtalk/common)
+            remark: form.value.remark,
         };
         console.log('updateNotifyConf', req);
 

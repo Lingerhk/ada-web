@@ -1861,6 +1861,10 @@ export interface ListNotifyConfReply_Details {
      * @generated from protobuf field: string updateTm = 8;
      */
     updateTm: string; // 修改时间
+    /**
+     * @generated from protobuf field: repeated int32 level = 9;
+     */
+    level: number[]; // 危险等级
 }
 /**
  * @generated from protobuf message ada.UpdateNotifyConfReq
@@ -1888,6 +1892,10 @@ export interface UpdateNotifyConfReq {
     metadata: {
         [key: string]: string;
     }; // 都有: alert_interval: 20(str), 可选: email类型: server(str),port(str),username,password,receiver; syslog类型; webhook类型: application_type(weixin/feishu/dingtalk/common)
+    /**
+     * @generated from protobuf field: string remark = 6;
+     */
+    remark: string; // 备注
 }
 /**
  * @generated from protobuf message ada.UpdateNotifyConfReply
@@ -1955,6 +1963,72 @@ export interface TestNotifyConfReply {
      * @generated from protobuf field: string msg = 2;
      */
     msg: string;
+}
+/**
+ * @generated from protobuf message ada.AddNotifyConfReq
+ */
+export interface AddNotifyConfReq {
+    /**
+     * @generated from protobuf field: string moduleName = 1;
+     */
+    moduleName: string; // [(validator.field) = {regex: "alert|baseline|leak|system"}]; // 模块类型 alert,baseline,leak,system
+    /**
+     * @generated from protobuf field: string notifyType = 2;
+     */
+    notifyType: string; // [(validator.field) = {regex: "syslog|webhook|email"}]; // 通知类型 syslog,webhook,email
+    /**
+     * @generated from protobuf field: string endpoint = 3;
+     */
+    endpoint: string; // 通知目标
+    /**
+     * @generated from protobuf field: string enable = 4;
+     */
+    enable: string; // [(validator.field) = {regex: "enable|disable"}]; // 启用状态， 开启enable 关闭disable
+    /**
+     * @generated from protobuf field: repeated int32 level = 5;
+     */
+    level: number[]; // 危险等级
+    /**
+     * @generated from protobuf field: map<string, string> metadata = 6;
+     */
+    metadata: {
+        [key: string]: string;
+    }; // 配置参数
+    /**
+     * @generated from protobuf field: string remark = 7;
+     */
+    remark: string; // 备注
+}
+/**
+ * @generated from protobuf message ada.AddNotifyConfReply
+ */
+export interface AddNotifyConfReply {
+    /**
+     * @generated from protobuf field: string result = 1;
+     */
+    result: string; // SUCCESS||FAILED
+    /**
+     * @generated from protobuf field: string id = 2;
+     */
+    id: string; // 新增配置的ID
+}
+/**
+ * @generated from protobuf message ada.DeleteNotifyConfReq
+ */
+export interface DeleteNotifyConfReq {
+    /**
+     * @generated from protobuf field: string id = 1;
+     */
+    id: string; // [(validator.field) = {string_not_empty: true}]; // 配置ID
+}
+/**
+ * @generated from protobuf message ada.DeleteNotifyConfReply
+ */
+export interface DeleteNotifyConfReply {
+    /**
+     * @generated from protobuf field: string result = 1;
+     */
+    result: string; // SUCCESS||FAILED
 }
 /**
  * @generated from protobuf message ada.ListExportTaskReq
@@ -11756,7 +11830,8 @@ class ListNotifyConfReply_Details$Type extends MessageType<ListNotifyConfReply_D
             { no: 5, name: "remark", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 6, name: "enable", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 7, name: "metadata", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 9 /*ScalarType.STRING*/ } },
-            { no: 8, name: "updateTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 8, name: "updateTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 9, name: "level", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ }
         ]);
     }
     create(value?: PartialMessage<ListNotifyConfReply_Details>): ListNotifyConfReply_Details {
@@ -11769,6 +11844,7 @@ class ListNotifyConfReply_Details$Type extends MessageType<ListNotifyConfReply_D
         message.enable = "";
         message.metadata = {};
         message.updateTm = "";
+        message.level = [];
         if (value !== undefined)
             reflectionMergePartial<ListNotifyConfReply_Details>(this, message, value);
         return message;
@@ -11801,6 +11877,13 @@ class ListNotifyConfReply_Details$Type extends MessageType<ListNotifyConfReply_D
                     break;
                 case /* string updateTm */ 8:
                     message.updateTm = reader.string();
+                    break;
+                case /* repeated int32 level */ 9:
+                    if (wireType === WireType.LengthDelimited)
+                        for (let e = reader.int32() + reader.pos; reader.pos < e;)
+                            message.level.push(reader.int32());
+                    else
+                        message.level.push(reader.int32());
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -11854,6 +11937,13 @@ class ListNotifyConfReply_Details$Type extends MessageType<ListNotifyConfReply_D
         /* string updateTm = 8; */
         if (message.updateTm !== "")
             writer.tag(8, WireType.LengthDelimited).string(message.updateTm);
+        /* repeated int32 level = 9; */
+        if (message.level.length) {
+            writer.tag(9, WireType.LengthDelimited).fork();
+            for (let i = 0; i < message.level.length; i++)
+                writer.int32(message.level[i]);
+            writer.join();
+        }
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -11872,7 +11962,8 @@ class UpdateNotifyConfReq$Type extends MessageType<UpdateNotifyConfReq> {
             { no: 2, name: "enable", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "endpoint", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "level", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ },
-            { no: 5, name: "metadata", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 9 /*ScalarType.STRING*/ } }
+            { no: 5, name: "metadata", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 9 /*ScalarType.STRING*/ } },
+            { no: 6, name: "remark", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<UpdateNotifyConfReq>): UpdateNotifyConfReq {
@@ -11882,6 +11973,7 @@ class UpdateNotifyConfReq$Type extends MessageType<UpdateNotifyConfReq> {
         message.endpoint = "";
         message.level = [];
         message.metadata = {};
+        message.remark = "";
         if (value !== undefined)
             reflectionMergePartial<UpdateNotifyConfReq>(this, message, value);
         return message;
@@ -11909,6 +12001,9 @@ class UpdateNotifyConfReq$Type extends MessageType<UpdateNotifyConfReq> {
                     break;
                 case /* map<string, string> metadata */ 5:
                     this.binaryReadMap5(message.metadata, reader, options);
+                    break;
+                case /* string remark */ 6:
+                    message.remark = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -11957,6 +12052,9 @@ class UpdateNotifyConfReq$Type extends MessageType<UpdateNotifyConfReq> {
         /* map<string, string> metadata = 5; */
         for (let k of globalThis.Object.keys(message.metadata))
             writer.tag(5, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k).tag(2, WireType.LengthDelimited).string(message.metadata[k]).join();
+        /* string remark = 6; */
+        if (message.remark !== "")
+            writer.tag(6, WireType.LengthDelimited).string(message.remark);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -12258,6 +12356,274 @@ class TestNotifyConfReply$Type extends MessageType<TestNotifyConfReply> {
  * @generated MessageType for protobuf message ada.TestNotifyConfReply
  */
 export const TestNotifyConfReply = new TestNotifyConfReply$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class AddNotifyConfReq$Type extends MessageType<AddNotifyConfReq> {
+    constructor() {
+        super("ada.AddNotifyConfReq", [
+            { no: 1, name: "moduleName", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "notifyType", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "endpoint", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "enable", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 5, name: "level", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ },
+            { no: 6, name: "metadata", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 9 /*ScalarType.STRING*/ } },
+            { no: 7, name: "remark", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<AddNotifyConfReq>): AddNotifyConfReq {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.moduleName = "";
+        message.notifyType = "";
+        message.endpoint = "";
+        message.enable = "";
+        message.level = [];
+        message.metadata = {};
+        message.remark = "";
+        if (value !== undefined)
+            reflectionMergePartial<AddNotifyConfReq>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: AddNotifyConfReq): AddNotifyConfReq {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string moduleName */ 1:
+                    message.moduleName = reader.string();
+                    break;
+                case /* string notifyType */ 2:
+                    message.notifyType = reader.string();
+                    break;
+                case /* string endpoint */ 3:
+                    message.endpoint = reader.string();
+                    break;
+                case /* string enable */ 4:
+                    message.enable = reader.string();
+                    break;
+                case /* repeated int32 level */ 5:
+                    if (wireType === WireType.LengthDelimited)
+                        for (let e = reader.int32() + reader.pos; reader.pos < e;)
+                            message.level.push(reader.int32());
+                    else
+                        message.level.push(reader.int32());
+                    break;
+                case /* map<string, string> metadata */ 6:
+                    this.binaryReadMap6(message.metadata, reader, options);
+                    break;
+                case /* string remark */ 7:
+                    message.remark = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    private binaryReadMap6(map: AddNotifyConfReq["metadata"], reader: IBinaryReader, options: BinaryReadOptions): void {
+        let len = reader.uint32(), end = reader.pos + len, key: keyof AddNotifyConfReq["metadata"] | undefined, val: AddNotifyConfReq["metadata"][any] | undefined;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case 1:
+                    key = reader.string();
+                    break;
+                case 2:
+                    val = reader.string();
+                    break;
+                default: throw new globalThis.Error("unknown map entry field for field ada.AddNotifyConfReq.metadata");
+            }
+        }
+        map[key ?? ""] = val ?? "";
+    }
+    internalBinaryWrite(message: AddNotifyConfReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string moduleName = 1; */
+        if (message.moduleName !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.moduleName);
+        /* string notifyType = 2; */
+        if (message.notifyType !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.notifyType);
+        /* string endpoint = 3; */
+        if (message.endpoint !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.endpoint);
+        /* string enable = 4; */
+        if (message.enable !== "")
+            writer.tag(4, WireType.LengthDelimited).string(message.enable);
+        /* repeated int32 level = 5; */
+        if (message.level.length) {
+            writer.tag(5, WireType.LengthDelimited).fork();
+            for (let i = 0; i < message.level.length; i++)
+                writer.int32(message.level[i]);
+            writer.join();
+        }
+        /* map<string, string> metadata = 6; */
+        for (let k of globalThis.Object.keys(message.metadata))
+            writer.tag(6, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k).tag(2, WireType.LengthDelimited).string(message.metadata[k]).join();
+        /* string remark = 7; */
+        if (message.remark !== "")
+            writer.tag(7, WireType.LengthDelimited).string(message.remark);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.AddNotifyConfReq
+ */
+export const AddNotifyConfReq = new AddNotifyConfReq$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class AddNotifyConfReply$Type extends MessageType<AddNotifyConfReply> {
+    constructor() {
+        super("ada.AddNotifyConfReply", [
+            { no: 1, name: "result", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<AddNotifyConfReply>): AddNotifyConfReply {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.result = "";
+        message.id = "";
+        if (value !== undefined)
+            reflectionMergePartial<AddNotifyConfReply>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: AddNotifyConfReply): AddNotifyConfReply {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string result */ 1:
+                    message.result = reader.string();
+                    break;
+                case /* string id */ 2:
+                    message.id = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: AddNotifyConfReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string result = 1; */
+        if (message.result !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.result);
+        /* string id = 2; */
+        if (message.id !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.id);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.AddNotifyConfReply
+ */
+export const AddNotifyConfReply = new AddNotifyConfReply$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class DeleteNotifyConfReq$Type extends MessageType<DeleteNotifyConfReq> {
+    constructor() {
+        super("ada.DeleteNotifyConfReq", [
+            { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<DeleteNotifyConfReq>): DeleteNotifyConfReq {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.id = "";
+        if (value !== undefined)
+            reflectionMergePartial<DeleteNotifyConfReq>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: DeleteNotifyConfReq): DeleteNotifyConfReq {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string id */ 1:
+                    message.id = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: DeleteNotifyConfReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string id = 1; */
+        if (message.id !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.id);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.DeleteNotifyConfReq
+ */
+export const DeleteNotifyConfReq = new DeleteNotifyConfReq$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class DeleteNotifyConfReply$Type extends MessageType<DeleteNotifyConfReply> {
+    constructor() {
+        super("ada.DeleteNotifyConfReply", [
+            { no: 1, name: "result", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<DeleteNotifyConfReply>): DeleteNotifyConfReply {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.result = "";
+        if (value !== undefined)
+            reflectionMergePartial<DeleteNotifyConfReply>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: DeleteNotifyConfReply): DeleteNotifyConfReply {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string result */ 1:
+                    message.result = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: DeleteNotifyConfReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string result = 1; */
+        if (message.result !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.result);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ada.DeleteNotifyConfReply
+ */
+export const DeleteNotifyConfReply = new DeleteNotifyConfReply$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class ListExportTaskReq$Type extends MessageType<ListExportTaskReq> {
     constructor() {
@@ -24280,7 +24646,9 @@ export const ADA = new ServiceType("ada.ADA", [
     { name: "UpdateLicense", options: {}, I: UpdateLicenseReq, O: UpdateLicenseReply },
     { name: "NetworkDebug", options: {}, I: NetworkDebugReq, O: NetworkDebugReply },
     { name: "ListNotifyConf", options: {}, I: ListNotifyConfReq, O: ListNotifyConfReply },
+    { name: "AddNotifyConf", options: {}, I: AddNotifyConfReq, O: AddNotifyConfReply },
     { name: "UpdateNotifyConf", options: {}, I: UpdateNotifyConfReq, O: UpdateNotifyConfReply },
+    { name: "DeleteNotifyConf", options: {}, I: DeleteNotifyConfReq, O: DeleteNotifyConfReply },
     { name: "EnableNotifyConf", options: {}, I: EnableNotifyConfReq, O: EnableNotifyConfReply },
     { name: "TestNotifyConf", options: {}, I: TestNotifyConfReq, O: TestNotifyConfReply },
     { name: "ListExportTask", options: {}, I: ListExportTaskReq, O: ListExportTaskReply },

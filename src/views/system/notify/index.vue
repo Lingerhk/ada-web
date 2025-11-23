@@ -4,6 +4,9 @@
             <el-row justify="space-between">
                 <!-- 搜索 -->
                 <el-form :inline="true">
+                    <el-form-item>
+                        <el-button type="primary" @click="handleNew">{{ T('new') }}</el-button>
+                    </el-form-item>
                     <el-form-item :label="$t('message.system.notify.moduleName')">
                         <el-select v-model="state.req.moduleName" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.system.notify.selectModule')" popper-class="custom-header">
                             <template #header>
@@ -66,6 +69,7 @@
                             <el-space spacer="|" size="small">
                                 <el-button type="text" @click="handleDetail(prop.row)">{{ T('detail') }}</el-button>
                                 <el-button type="text" @click="handleEdit(prop.row)">{{ T('edit') }}</el-button>
+    <el-button type="text" style="color: #f56c6c" @click="confirmDelete(prop.row)">{{ T('delete') }}</el-button>
                             </el-space>
                         </template>
                     </el-table-column>
@@ -81,12 +85,14 @@
             </el-row>
         </el-card>
         <Drawer :model-value="dstate.open" @update:model-value="(val: boolean) => dstate.open = val" :data="dstate.data" :ro="dstate.ro"/>
+        <NewDialog v-model="newDialogVisible" @success="refresh"/>
     </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, reactive, ref, watch } from 'vue';
-import { EnableNotifyConfReq, ListNotifyConfReply, ListNotifyConfReply_Details, ListNotifyConfReq } from '/@/api/grpc/ada';
+import { ElMessageBox } from 'element-plus';
+import { DeleteNotifyConfReq, EnableNotifyConfReq, ListNotifyConfReply, ListNotifyConfReply_Details, ListNotifyConfReq } from '/@/api/grpc/ada';
 import api from '/@/api/grpc';
 import { alertApiError, alertResult } from '/@/utils/error';
 import { getNotifyEnableOptions, getNotifyNotifyOptions, getNotifyModuleOptions } from '/@/utils/constant';
@@ -94,6 +100,7 @@ import { useI18n } from 'vue-i18n';
 import { formatApiTime } from '/@/utils/formatTime';
 import { transNotify as T } from '/@/utils/translator';
 import Drawer from './drawer.vue';
+import NewDialog from './newDialog.vue';
 import { formatNotifyType } from './constant';
 
 const { t } = useI18n();
@@ -129,6 +136,39 @@ const dstate = reactive({
     ro: false,
     data: {} as ListNotifyConfReply_Details,
 });
+
+const newDialogVisible = ref(false);
+
+const handleNew = () => {
+    newDialogVisible.value = true;
+};
+
+const confirmDelete = (data: ListNotifyConfReply_Details) => {
+    ElMessageBox.confirm(T('deleteConfirm'), T('deleteTitle'), {
+        confirmButtonText: t('message.dialog.confirm'),
+        cancelButtonText: t('message.dialog.cancel'),
+        type: 'warning',
+    }).then(() => {
+        handleDelete(data);
+    }).catch(() => {
+        // User cancelled
+    });
+};
+
+const handleDelete = (data: ListNotifyConfReply_Details) => {
+    const req: DeleteNotifyConfReq = {
+        id: data.id,
+    };
+    console.log("deleteNotifyConf", req);
+
+    api.deleteNotifyConf(req)
+    .then(resp => resp.response)
+    .then(data => {
+        alertResult(data.result, t('message.system.notify.deleteNotifyConfSucc'), t('message.system.notify.deleteNotifyConfFail'));
+    })
+    .catch(err => alertApiError(err))
+    .finally(() => refresh());
+};
 
 const switchNotification = (data: ListNotifyConfReply_Details, v: string) => {
     const req: EnableNotifyConfReq = {

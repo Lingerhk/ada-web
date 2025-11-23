@@ -6,8 +6,20 @@
                 <span class="form-item-label">{{ T('alertInterval') }}</span>
             </template>
             <template #default>
-                <span>{{ T('alertIntervalHint') }}</span><el-input-number v-model="model.alert_interval" :width="100"
-                    size="default" :disabled="props.ro" :min="0"/>
+                <div class="alert-interval-container">
+                    <div class="alert-interval-hint">
+                        <el-tag type="danger" size="small">{{ T('alertIntervalCritical') }}</el-tag>
+                        <el-tag type="warning" size="small">{{ T('alertIntervalHigh') }}</el-tag>
+                        <span class="hint-text">{{ T('alertIntervalRealtime') }}</span>
+                    </div>
+                    <div class="alert-interval-input">
+                        <el-tag type="info" size="small">{{ T('alertIntervalMedium') }}</el-tag>
+                        <el-tag size="small">{{ T('alertIntervalLow') }}</el-tag>
+                        <el-input-number v-model="model.alert_interval" :width="100"
+                            size="default" :disabled="props.ro" :min="1" />
+                        <span class="hint-text">{{ T('alertIntervalUnit') }}</span>
+                    </div>
+                </div>
             </template>
         </el-form-item>
         <!-- server ip -->

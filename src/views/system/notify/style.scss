@@ -2,3 +2,31 @@
     font-size: 14px;
     font-weight: bold;
 }
+
+.alert-interval-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .alert-interval-hint,
+    .alert-interval-input {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .hint-text {
+        color: #606266;
+        font-size: 13px;
+        margin-left: 4px;
+    }
+
+    .el-tag {
+        font-weight: 500;
+    }
+
+    .el-input-number {
+        width: 120px;
+    }
+}

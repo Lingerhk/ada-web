@@ -5,7 +5,10 @@
                 <!-- 搜索 -->
                 <el-form :inline="true">
                     <el-form-item>
-                        <el-button type="primary" @click="handleNew">{{ T('new') }}</el-button>
+                        <el-button size="default" type="primary" @click="handleNew">
+                            <el-icon><Plus /></el-icon>
+                            {{ $t('message.tableCommon.new') }}
+                        </el-button>
                     </el-form-item>
                     <el-form-item :label="$t('message.system.notify.moduleName')">
                         <el-select v-model="state.req.moduleName" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.system.notify.selectModule')" popper-class="custom-header">
@@ -102,6 +105,7 @@ import { transNotify as T } from '/@/utils/translator';
 import Drawer from './drawer.vue';
 import NewDialog from './newDialog.vue';
 import { formatNotifyType } from './constant';
+import { Plus } from '@element-plus/icons-vue';
 
 const { t } = useI18n();
 

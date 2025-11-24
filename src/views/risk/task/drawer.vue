@@ -1,21 +1,24 @@
 <template>
     <el-drawer v-model="model" :size="1200">
         <template #header>
-            <h3>{{ T(`title_${state.reply.headType}`) }}</h3>
+            <h3>{{ t(`message.risk.task.title_${state.reply.headType}`) }}</h3>
         </template>
         <template #default>
             <el-row style="padding: 20px;">
                 <el-table :data="state.reply.list" v-loading="state.loading" :border="true">
                     <template v-for="field in state.reply.headField">
-                        <el-table-column v-if="T(field) !== 'iD'" :label="field" :key="field" show-overflow-tooltip
-                            :width="getWidth(T(field))">
+                        <el-table-column v-if="field !== 'ID'" :label="translateFieldLabel(field)" :key="field" show-overflow-tooltip
+                            :width="getWidth(field)">
                             <template #default="prop">
-                                <LevelImage v-if="T(field) === 'level'" :level="prop.row[T(field)]" />
-                                <span v-else-if="T(field) === 'result' || T(field) === 'params.locked'"
-                                    :class="`${T(field)}-${prop.row.result}`">{{
-                                    T(`${T(field)}_${_.get(prop.row, T(field))}`) }}</span>
-                                <span v-else-if="T(field) === 'updateTm'">{{ formatApiTime(prop.row[T(field)]) }}</span>
-                                <span v-else>{{ _.get(prop.row, T(field)) }}</span>
+                                <LevelImage v-if="field === 'level'" :level="getFieldValue(prop.row, field)" />
+                                <span v-else-if="field === 'result'"
+                                    :class="`result-${prop.row.result}`">{{
+                                    T(`result_${getFieldValue(prop.row, field)}`) }}</span>
+                                <span v-else-if="field === 'locked'"
+                                    :class="`locked-${_.get(prop.row.params, 'locked')}`">{{
+                                    T(`locked_${_.get(prop.row.params, 'locked')}`) }}</span>
+                                <span v-else-if="field === 'updateTm'">{{ formatApiTime(getFieldValue(prop.row, field)) }}</span>
+                                <span v-else>{{ getFieldValue(prop.row, field) }}</span>
                             </template>
                         </el-table-column>
                     </template>
@@ -41,6 +44,9 @@ import { transTask as T } from '/@/utils/translator';
 import LevelImage from '/@/components/level/image.vue';
 import { formatApiTime } from '/@/utils/formatTime';
 import { _ } from 'lodash';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const model = defineModel({
     type: Boolean,
@@ -59,17 +65,54 @@ const state = reactive({
     loading: false,
 });
 
+// Translate field labels from Chinese to proper i18n keys
+const translateFieldLabel = (field: string): string => {
+    // Direct i18n key mapping for field labels
+    return t(`message.risk.task.${field}`, field);
+};
+
+// Get field value from row data based on field name
+const getFieldValue = (row: any, field: string): any => {
+    // Map field names to actual data paths
+    const fieldMap: Record<string, string> = {
+        'name': 'name',
+        'domain': 'domain',
+        'subType': 'subType',
+        'level': 'level',
+        'result': 'result',
+        'dcHostname': 'dcHostname',
+        'tmplName': 'tmplName',
+        'updateTm': 'updateTm',
+        // Weakpwd specific fields from params
+        'username': 'params.username',
+        'samName': 'params.sam_name',
+        'password': 'params.password',
+        'expirationTm': 'params.expiration_tm',
+        'lastUpdateTm': 'params.last_update_tm',
+        'locked': 'params.locked',
+        // Baseline specific fields from params
+        'entries': 'params.entries',
+    };
+
+    const path = fieldMap[field] || field;
+    return _.get(row, path, '');
+};
+
 const getWidth = (field: string): string | number => {
-    const width = {
+    const width: Record<string, number> = {
         updateTm: 160,
-        'params.expiration_tm': 160,
-        'params.last_update_tm': 160,
-        'tmplName': 160,
-        'params.username': 160,
-        'params.sam_name': 160,
+        expirationTm: 160,
+        lastUpdateTm: 160,
+        tmplName: 160,
+        username: 160,
+        samName: 160,
         name: 250,
         subType: 200,
         domain: 140,
+        dcHostname: 200,
+        password: 120,
+        locked: 100,
+        entries: 140,
     };
 
     return width[field] ?? '';

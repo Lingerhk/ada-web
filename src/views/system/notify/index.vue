@@ -46,7 +46,7 @@
             <el-row style="margin-top: 10px">
                 <el-table :data="state.reply.list" v-loading="state.loading" :border="true"
                     row-class-name="pointer-cursor" style="width: 100%">
-                    <el-table-column type="index" width="50" />
+                    <el-table-column type="index" width="80" :label="$t('message.tableCommon.index')" />
                     <el-table-column prop="moduleName" :label="$t('message.system.notify.moduleName')">
                         <template #default="prop">
                             {{ $t(`message.system.notify.module_${prop.row.moduleName}`) }}

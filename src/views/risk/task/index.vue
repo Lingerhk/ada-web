@@ -35,7 +35,7 @@
             <!-- 下方显示列表 -->
             <el-row style="margin-top: 10px">
                 <el-table :data="state.reply.list" :border="true" row-class-name="pointer-cursor" style="width: 100%">
-                    <el-table-column type="index" width="50" />
+                    <el-table-column type="index" width="80" :label="$t('message.tableCommon.index')" />
                     <el-table-column prop="type" :label="$t('message.risk.task.type')">
                         <template #default="props">
                             {{ $t(`message.router.${props.row.type}Index`) }}

@@ -50,7 +50,7 @@
                 </el-form-item>
             </el-form>
             <el-table :data="state.table.data" v-loading="state.table.loading" style="width: 100%">
-                <el-table-column type="index" width="80px" />
+                <el-table-column type="index" width="80px" :label="$t('message.tableCommon.index')" />
                 <el-table-column prop="username" :label="T('username')"></el-table-column>
                 <el-table-column prop="role" :label="T('role')" width="110">
                     <template #default="prop">

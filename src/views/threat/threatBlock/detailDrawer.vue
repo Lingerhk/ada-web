@@ -51,7 +51,7 @@
                 </el-form>
                 <el-row style="font-size: 14px; font-weight: bold; margin-top: 10px;">{{ T('result') }}</el-row>
                 <el-table :data="state.showResults" style="margin-top: 10px">
-                    <el-table-column type="index"></el-table-column>
+                    <el-table-column type="index" width="80" :label="$t('message.tableCommon.index')"></el-table-column>
                     <el-table-column prop="info.dc_hostname" :label="T('dcHost')"></el-table-column>
                     <el-table-column prop="info.msg" :label="T('resultInfo')"></el-table-column>
                     <el-table-column prop="info.time" :label="T('resultTime')"></el-table-column>

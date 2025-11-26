@@ -863,6 +863,10 @@ export default {
 			},
 		},
 		ruleConfig: {
+			// Tab titles
+			ruleTemplateTab: 'Rule Template',
+			ruleConfigTab: 'Rule Configuration',
+			// Template fields
 			templateName: 'Name',
 			templateType: 'Type',
 			all: 'All Detections',
@@ -871,6 +875,30 @@ export default {
 			weakpwd: 'Weak Password Detection',
 			updateTm: 'Update Time',
 			selectType: 'Select Template Type',
+			// Config fields
+			confId: 'ID',
+			confName: 'Config Name',
+			confType: 'Type',
+			confEnabled: 'Enabled',
+			confCycleType: 'Cycle Type',
+			confUpdateTm: 'Update Time',
+			confUpdateSucc: 'Configuration updated successfully',
+			confUpdateFail: 'Failed to update configuration',
+			// Cycle types
+			cycleTypeDay: 'Daily',
+			cycleTypeWeek: 'Weekly',
+			cycleTypeMonth: 'Monthly',
+			cycleTypeTooltip: 'Daily detection at 2:00 AM every day, Weekly detection at 2:00 AM every Monday, Monthly detection at 2:00 AM on the 1st of each month',
+			// Edit drawer
+			editScanConfig: 'Edit Scan Configuration',
+			domainTmplMapping: 'Domain-Template Mapping',
+			domain: 'Domain',
+			selectDomain: 'Select Domain',
+			scanTemplate: 'Scan Template',
+			selectTemplate: 'Select Scan Template',
+			addDomainMapping: 'Add Domain',
+			duplicateMapping: 'Duplicate domain-template combination',
+			duplicateMappingError: 'Duplicate domain-template combinations exist, please remove duplicates',
 			detailDrawerTitle: 'Template Details',
 			detailWeakpwd: 'Weak Password',
 			detailWeakpwdTooltip: 'Weak password detection will match user passwords against all configured weak passwords.',

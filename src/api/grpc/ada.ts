@@ -4169,14 +4169,6 @@ export interface scanConfDetail {
      */
     cycleType: number; // 1是day，2是week，3是month
     /**
-     * @generated from protobuf field: int32 rate = 6;
-     */
-    rate: number; // 扫描速率
-    /**
-     * @generated from protobuf field: string desc = 7;
-     */
-    desc: string;
-    /**
      * @generated from protobuf field: map<string, string> plans = 8;
      */
     plans: {
@@ -4207,10 +4199,6 @@ export interface SetScanConfReq {
      * @generated from protobuf field: int32 cycleType = 3;
      */
     cycleType: number; // [(validator.field) = {int_gt: 0, int_lt: 4}]; // 1是day，2是week，3是month, 若无修改需将原值返回
-    /**
-     * @generated from protobuf field: int32 rate = 4;
-     */
-    rate: number; // 若无修改需将原值返回
 }
 /**
  * @generated from protobuf message ada.SetScanConfReply
@@ -19922,8 +19910,6 @@ class scanConfDetail$Type extends MessageType<scanConfDetail> {
             { no: 3, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "isEnable", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
             { no: 5, name: "cycleType", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
-            { no: 6, name: "rate", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
-            { no: 7, name: "desc", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 8, name: "plans", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 9 /*ScalarType.STRING*/ } },
             { no: 9, name: "createTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 10, name: "updateTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
@@ -19936,8 +19922,6 @@ class scanConfDetail$Type extends MessageType<scanConfDetail> {
         message.type = "";
         message.isEnable = false;
         message.cycleType = 0;
-        message.rate = 0;
-        message.desc = "";
         message.plans = {};
         message.createTm = "";
         message.updateTm = "";
@@ -19964,12 +19948,6 @@ class scanConfDetail$Type extends MessageType<scanConfDetail> {
                     break;
                 case /* int32 cycleType */ 5:
                     message.cycleType = reader.int32();
-                    break;
-                case /* int32 rate */ 6:
-                    message.rate = reader.int32();
-                    break;
-                case /* string desc */ 7:
-                    message.desc = reader.string();
                     break;
                 case /* map<string, string> plans */ 8:
                     this.binaryReadMap8(message.plans, reader, options);
@@ -20023,12 +20001,6 @@ class scanConfDetail$Type extends MessageType<scanConfDetail> {
         /* int32 cycleType = 5; */
         if (message.cycleType !== 0)
             writer.tag(5, WireType.Varint).int32(message.cycleType);
-        /* int32 rate = 6; */
-        if (message.rate !== 0)
-            writer.tag(6, WireType.Varint).int32(message.rate);
-        /* string desc = 7; */
-        if (message.desc !== "")
-            writer.tag(7, WireType.LengthDelimited).string(message.desc);
         /* map<string, string> plans = 8; */
         for (let k of globalThis.Object.keys(message.plans))
             writer.tag(8, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k).tag(2, WireType.LengthDelimited).string(message.plans[k]).join();
@@ -20054,8 +20026,7 @@ class SetScanConfReq$Type extends MessageType<SetScanConfReq> {
         super("ada.SetScanConfReq", [
             { no: 1, name: "ID", kind: "scalar", jsonName: "ID", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "isEnable", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
-            { no: 3, name: "cycleType", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
-            { no: 4, name: "rate", kind: "scalar", T: 5 /*ScalarType.INT32*/ }
+            { no: 3, name: "cycleType", kind: "scalar", T: 5 /*ScalarType.INT32*/ }
         ]);
     }
     create(value?: PartialMessage<SetScanConfReq>): SetScanConfReq {
@@ -20063,7 +20034,6 @@ class SetScanConfReq$Type extends MessageType<SetScanConfReq> {
         message.iD = "";
         message.isEnable = false;
         message.cycleType = 0;
-        message.rate = 0;
         if (value !== undefined)
             reflectionMergePartial<SetScanConfReq>(this, message, value);
         return message;
@@ -20081,9 +20051,6 @@ class SetScanConfReq$Type extends MessageType<SetScanConfReq> {
                     break;
                 case /* int32 cycleType */ 3:
                     message.cycleType = reader.int32();
-                    break;
-                case /* int32 rate */ 4:
-                    message.rate = reader.int32();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -20106,9 +20073,6 @@ class SetScanConfReq$Type extends MessageType<SetScanConfReq> {
         /* int32 cycleType = 3; */
         if (message.cycleType !== 0)
             writer.tag(3, WireType.Varint).int32(message.cycleType);
-        /* int32 rate = 4; */
-        if (message.rate !== 0)
-            writer.tag(4, WireType.Varint).int32(message.rate);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

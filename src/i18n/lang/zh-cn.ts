@@ -853,6 +853,10 @@ export default {
 			},
 		},
 		ruleConfig: {
+			// Tab titles
+			ruleTemplateTab: '规则模板',
+			ruleConfigTab: '规则配置',
+			// Template fields
 			templateName: '名称',
 			templateType: '类型',
 			all: '所有检测',
@@ -861,6 +865,30 @@ export default {
 			weakpwd: '弱口令检测',
 			updateTm: '更新时间',
 			selectType: '选择模板类型',
+			// Config fields
+			confId: 'ID',
+			confName: '配置名称',
+			confType: '类型',
+			confEnabled: '启用状态',
+			confCycleType: '周期类型',
+			confUpdateTm: '更新时间',
+			confUpdateSucc: '更新配置成功',
+			confUpdateFail: '更新配置失败',
+			// Cycle types
+			cycleTypeDay: '每天',
+			cycleTypeWeek: '每周',
+			cycleTypeMonth: '每月',
+			cycleTypeTooltip: '每日检测时间为每日凌晨两点，每周检测时间为周一凌晨两点，每月检测时间为每月1号凌晨两点',
+			// Edit drawer
+			editScanConfig: '编辑扫描配置',
+			domainTmplMapping: '域-模板映射',
+			domain: '域',
+			selectDomain: '选择域',
+			scanTemplate: '扫描模板',
+			selectTemplate: '选择扫描模板',
+			addDomainMapping: '添加域映射',
+			duplicateMapping: '重复的域-模板组合',
+			duplicateMappingError: '存在重复的域-模板组合，请删除重复项',
 			detailDrawerTitle: '检测模板详情',
 			detailWeakpwd: '弱口令',
 			detailWeakpwdTooltip: '弱口令检测时将按照所有已配置弱口令对用户密码值进行精确匹配。',

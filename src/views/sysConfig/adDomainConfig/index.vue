@@ -37,7 +37,7 @@
 				</el-form>
 			</div>
 			<el-table :data="state.data" v-loading="state.loading" style="width: 100%">
-				<el-table-column type="index" width="50" />
+				<el-table-column type="index" width="80" :label="$t('message.tableCommon.index')" />
 				<el-table-column prop="dcHostname" :label="$t('message.adDomain.dcHostname')">
 				</el-table-column>
 				<el-table-column prop="name" :label="$t('message.adDomain.name')"></el-table-column>

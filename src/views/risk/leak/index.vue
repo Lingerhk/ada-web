@@ -67,7 +67,7 @@
             <el-row style="margin-top: 10px">
                 <el-table :data="state.data" v-loading="state.loading" :border="true" row-class-name="pointer-cursor"
                     style="width: 100%">
-                    <el-table-column type="index" width="50" />
+                    <el-table-column type="index" width="80" :label="$t('message.tableCommon.index')" />
                     <el-table-column prop="name" :label="$t('message.risk.leak.name')" />
                     <el-table-column prop="domain" :label="$t('message.tableCommon.domain')" />
                     <el-table-column prop="dcHostname" :label="$t('message.tableCommon.dcHostname')" />

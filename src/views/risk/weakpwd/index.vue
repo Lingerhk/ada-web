@@ -44,7 +44,7 @@
             <el-row style="margin-top: 10px">
                 <el-table :data="state.data" v-loading="state.loading" :border="true" row-class-name="pointer-cursor"
                     style="width: 100%">
-                    <el-table-column type="index" width="50" />
+                    <el-table-column type="index" width="80" :label="$t('message.tableCommon.index')" />
                     <el-table-column prop="username" :label="$t('message.risk.weakpwd.username')" />
                     <el-table-column prop="samName" :label="$t('message.risk.weakpwd.samName')" />
                     <el-table-column prop="password" :label="$t('message.risk.weakpwd.password')" />

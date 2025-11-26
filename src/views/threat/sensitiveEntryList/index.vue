@@ -64,9 +64,9 @@
                                     {{ formatApiTime(scope.row.updateTm) }}
                                 </template>
                             </el-table-column>
-                            <el-table-column :label="$t('message.tableCommon.operation')">
+                            <el-table-column :label="$t('message.tableCommon.operation')" width="100" fixed="right" align="center">
                                 <template #default="scope">
-                                    <el-button text size="default" type="danger" style="color: red"
+                                    <el-button size="small" type="danger"
                                         @click="() => handleClose(scope.row)">
                                         {{ $t('message.tableCommon.delete') }}
                                     </el-button>

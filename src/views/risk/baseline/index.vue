@@ -82,11 +82,11 @@
                     <el-table-column :label="$t('message.risk.updateTm')">
                         <template #default="scope">{{ formatApiTime(scope.row.updateTm) }}</template>
                     </el-table-column>
-                    <el-table-column :label="$t('message.tableCommon.operation')">
+                    <el-table-column :label="$t('message.tableCommon.operation')" width="160" fixed="right" align="center">
                         <template #default="scope">
-                            <el-button size="large" text type="primary" @click="handleDetail(scope.row)">{{
+                            <el-button size="small" @click="handleDetail(scope.row)">{{
                                 $t('message.tableCommon.detail') }}</el-button>
-                            <el-button size="large" text type="primary" @click="handleScan(scope.row)">{{
+                            <el-button size="small" @click="handleScan(scope.row)">{{
                                 $t('message.tableCommon.scanNow') }}</el-button>
                         </template>
                     </el-table-column>

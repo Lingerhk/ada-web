@@ -64,16 +64,14 @@
                     <el-table-column :min-width="200" :label="T('updateTm')" prop="updateTm"
                         :formatter="(row: any, column: any, cellValue: any, index: number) => formatApiTime(cellValue)" />
                     <el-table-column :width="200" :label="T('remark')" prop="remark" show-overflow-tooltip />
-                    <el-table-column :min-width="200" :label="T('operation')">
+                    <el-table-column :label="T('operation')" width="160" fixed="right" align="center">
                         <template #default="prop">
-                            <el-space spacer="|" size="small">
-                                <el-button text size="small" type="primary" @click="handleUpdate(prop.row)">{{
-                                    T('updateRule')
-                                    }}</el-button>
-                                <el-button text size="small" type="danger" @click="handleDelete(prop.row)">{{
-                                    T('deleteRule')
-                                    }}</el-button>
-                            </el-space>
+                            <el-button size="small" @click="handleUpdate(prop.row)">{{
+                                T('updateRule')
+                                }}</el-button>
+                            <el-button size="small" type="danger" @click="handleDelete(prop.row)">{{
+                                T('deleteRule')
+                                }}</el-button>
                         </template>
                     </el-table-column>
                 </el-table>

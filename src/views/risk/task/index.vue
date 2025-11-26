@@ -73,16 +73,14 @@
                             {{ $t(`message.risk.task.cycle_${props.row.cycle}`) }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="operation" :label="$t('message.tableCommon.operation')">
+                    <el-table-column prop="operation" :label="$t('message.tableCommon.operation')" width="140" fixed="right" align="center">
                         <template #default="prop">
-                            <el-space size="small" spacer="|">
-                                <el-button size="small" type="primary" text @click="handleDetail(prop.row)">
-                                    {{ $t('message.tableCommon.detail') }}
-                                </el-button>
-                                <el-button size="small" type="danger" text @click="handleDelete(prop.row)">
-                                    {{ $t('message.tableCommon.delete') }}
-                                </el-button>
-                            </el-space>
+                            <el-button size="small" @click="handleDetail(prop.row)">
+                                {{ $t('message.tableCommon.detail') }}
+                            </el-button>
+                            <el-button size="small" type="danger" @click="handleDelete(prop.row)">
+                                {{ $t('message.tableCommon.delete') }}
+                            </el-button>
                         </template>
                     </el-table-column>
                 </el-table>

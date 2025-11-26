@@ -56,7 +56,7 @@
 				</el-tooltip>
 			</template>
 		</el-table-column>
-		<el-table-column :label="$t('message.tableCommon.operation')" width="240">
+		<el-table-column :label="$t('message.tableCommon.operation')" width="210" fixed="right" align="center">
 			<template #default="scope">
 				<el-button size="small" @click="onOpenDetailDialog(scope.row)">{{
 					$t('message.tableCommon.detail') }}</el-button>

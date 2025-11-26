@@ -162,7 +162,7 @@
                             {{ formatApiTime(scope.row.activeTm) || '-' }}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('message.tableCommon.operation')" width="100">
+                    <el-table-column :label="$t('message.tableCommon.operation')" width="100" fixed="right" align="center">
                         <template #default="scope">
                             <el-button
                                 size="small"

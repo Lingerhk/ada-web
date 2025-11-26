@@ -57,13 +57,13 @@
 						</el-tooltip>
 					</template>
 				</el-table-column>
-				<el-table-column :label="$t('message.tableCommon.operation')" width="240">
+				<el-table-column :label="$t('message.tableCommon.operation')" width="210" fixed="right" align="center">
 					<template #default="scope">
-						<el-button size="large" text type="primary" @click="onOpenDetailDialog(scope.row)">{{
+						<el-button size="small" @click="onOpenDetailDialog(scope.row)">{{
 							$t('message.tableCommon.detail') }}</el-button>
-						<el-button size="large" text type="primary" @click="handleEdit(scope.row)">{{
+						<el-button size="small" @click="handleEdit(scope.row)">{{
 							$t('message.tableCommon.edit') }}</el-button>
-						<el-button size="large" text type="danger" @click="onTabelRowDel(scope.row)">{{
+						<el-button size="small" type="danger" @click="onTabelRowDel(scope.row)">{{
 							$t('message.tableCommon.delete') }}</el-button>
 					</template>
 				</el-table-column>

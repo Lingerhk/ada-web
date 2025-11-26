@@ -61,7 +61,7 @@
 				{{ formatApiTime(scope.row.lastOnlineTm) }}
 			</template>
 		</el-table-column>
-		<el-table-column :label="$t('message.tableCommon.operation')" width="210">
+		<el-table-column :label="$t('message.tableCommon.operation')" width="210" fixed="right" align="center">
 			<template #default="scope">
 				<el-button size="small" @click="onDetail(scope.row)">{{
 					$t('message.tableCommon.detail') }}</el-button>

@@ -67,13 +67,11 @@
                             {{ formatApiTime(prop.row.updateTm) }}
                         </template>
                     </el-table-column>
-                    <el-table-column>
+                    <el-table-column :label="$t('message.tableCommon.operation')" width="210" fixed="right" align="center">
                         <template #default="prop">
-                            <el-space spacer="|" size="small">
-                                <el-button type="text" @click="handleDetail(prop.row)">{{ T('detail') }}</el-button>
-                                <el-button type="text" @click="handleEdit(prop.row)">{{ T('edit') }}</el-button>
-    <el-button type="text" style="color: #f56c6c" @click="confirmDelete(prop.row)">{{ T('delete') }}</el-button>
-                            </el-space>
+                            <el-button size="small" @click="handleDetail(prop.row)">{{ T('detail') }}</el-button>
+                            <el-button size="small" @click="handleEdit(prop.row)">{{ T('edit') }}</el-button>
+                            <el-button size="small" type="danger" @click="confirmDelete(prop.row)">{{ T('delete') }}</el-button>
                         </template>
                     </el-table-column>
                 </el-table>

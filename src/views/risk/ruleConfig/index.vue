@@ -36,14 +36,14 @@
                             <el-table-column prop="updateTm" :label="$t('message.risk.ruleConfig.updateTm')">
                                 <template #default="scope">{{ formatApiTime(scope.row.updateTm) }}</template>
                             </el-table-column>
-                            <el-table-column :label="$t('message.tableCommon.operation')">
+                            <el-table-column :label="$t('message.tableCommon.operation')" width="210" fixed="right" align="center">
                                 <template #default="scope">
-                                    <el-button size="large" text type="primary" @click="handleEdit(scope.row)"
+                                    <el-button size="small" @click="handleEdit(scope.row)"
                                         :disabled="scope.row.tmplType !== 2">{{
                                             $t('message.tableCommon.edit') }}</el-button>
-                                    <el-button size="large" text type="primary" @click="handleDetail(scope.row)">{{
+                                    <el-button size="small" @click="handleDetail(scope.row)">{{
                                         $t('message.tableCommon.detail') }}</el-button>
-                                    <el-button size="large" text type="danger" @click="handleDelete(scope.row)"
+                                    <el-button size="small" type="danger" @click="handleDelete(scope.row)"
                                         :disabled="scope.row.tmplType !== 2">{{
                                             $t('message.tableCommon.delete') }}</el-button>
                                 </template>
@@ -94,9 +94,9 @@
                             <el-table-column prop="updateTm" :label="$t('message.risk.ruleConfig.confUpdateTm')">
                                 <template #default="scope">{{ formatApiTime(scope.row.updateTm) }}</template>
                             </el-table-column>
-                            <el-table-column :label="$t('message.tableCommon.operation')" width="100">
+                            <el-table-column :label="$t('message.tableCommon.operation')" width="100" fixed="right" align="center">
                                 <template #default="scope">
-                                    <el-button size="large" text type="primary" @click="handleConfigEdit(scope.row)">{{
+                                    <el-button size="small" @click="handleConfigEdit(scope.row)">{{
                                         $t('message.tableCommon.edit') }}</el-button>
                                 </template>
                             </el-table-column>

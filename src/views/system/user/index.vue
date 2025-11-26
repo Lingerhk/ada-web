@@ -32,12 +32,12 @@
 				</el-table-column>
 				<el-table-column prop="describe" :label="$t('message.system.user.describe')" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="createTime" :label="$t('message.system.user.createTime')" show-overflow-tooltip></el-table-column>
-				<el-table-column :label="$t('message.system.user.operation')" width="100">
+				<el-table-column :label="$t('message.system.user.operation')" width="140" fixed="right" align="center">
 					<template #default="scope">
-						<el-button :disabled="scope.row.userName === 'admin'" size="small" text type="primary" @click="onOpenEditUser('edit', scope.row)"
+						<el-button :disabled="scope.row.userName === 'admin'" size="small" @click="onOpenEditUser('edit', scope.row)"
 							>{{ $t('message.system.user.edit') }}</el-button
 						>
-						<el-button :disabled="scope.row.userName === 'admin'" size="small" text type="primary" @click="onRowDel(scope.row)">{{ $t('message.system.user.delete') }}</el-button>
+						<el-button :disabled="scope.row.userName === 'admin'" size="small" type="danger" @click="onRowDel(scope.row)">{{ $t('message.system.user.delete') }}</el-button>
 					</template>
 				</el-table-column>
 			</el-table>

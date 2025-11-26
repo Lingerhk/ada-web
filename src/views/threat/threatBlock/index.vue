@@ -55,16 +55,14 @@
                         :formatter="(_: any, __: any, value: string, ___: any) => formatApiTime(value)" />
                     <el-table-column prop="origin" :label="T('origin')"
                         :formatter="(_: any, __: any, value: string, ___: any) => T(`origin_${value}`)" />
-                    <el-table-column :label="T('operation')">
+                    <el-table-column :label="T('operation')" width="210" fixed="right" align="center">
                         <template #default="scope">
-                            <el-space size="small" spacer="|">
-                                <el-button text type="primary" @click="handleDetail(scope.row)">{{ T('detail')
-                                    }}</el-button>
-                                <el-button text type="primary" @click="handleEdit(scope.row)">{{ T('edit')
-                                    }}</el-button>
-                                <el-button text type="danger" @click="handleDelete(scope.row)">{{ T('delete')
-                                    }}</el-button>
-                            </el-space>
+                            <el-button size="small" @click="handleDetail(scope.row)">{{ T('detail')
+                                }}</el-button>
+                            <el-button size="small" @click="handleEdit(scope.row)">{{ T('edit')
+                                }}</el-button>
+                            <el-button size="small" type="danger" @click="handleDelete(scope.row)">{{ T('delete')
+                                }}</el-button>
                         </template>
                     </el-table-column>
                 </el-table>

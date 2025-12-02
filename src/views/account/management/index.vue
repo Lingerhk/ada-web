@@ -86,7 +86,7 @@
                     <template #default="scope">
                         <el-button size="small" @click="onViewAccount(scope.row)">{{ T('view') }}</el-button>
                         <el-button size="small" :disabled="priv > scope.row.priv" @click="onEditAccount(scope.row)">{{ T('edit') }}</el-button>
-                        <el-button size="small" type="danger" :disabled="priv > scope.row.priv" @click="onDelete(scope.row)">{{ T('delete') }}</el-button>
+                        <el-button size="small" type="danger" :disabled="priv > scope.row.priv || currentUser === scope.row.username" @click="onDelete(scope.row)">{{ T('delete') }}</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -322,6 +322,7 @@ onMounted(() => {
 
     const user = Local.get('user');
     priv.value = user['priv'] ?? 99;
+    currentUser.value = user['username'] ?? '';
 
     console.log(priv.value, user.priv, user);
 });

@@ -21,11 +21,6 @@ export const buildConfig = {
 					path: 'dist/vue.global.js',
 				},
 				{
-					name: 'vue-demi',
-					var: 'VueDemi',
-					path: 'lib/index.iife.js',
-				},
-				{
 					name: 'vue-router',
 					var: 'VueRouter',
 					path: 'dist/vue-router.global.js',
@@ -44,11 +39,6 @@ export const buildConfig = {
 				// 	name: 'echarts',
 				// 	var: 'echarts',
 				// 	path: 'dist/echarts.min.js',
-				// },
-				// {
-				// 	name: 'echarts-gl',
-				// 	var: 'echarts-gl',
-				// 	path: 'dist/echarts-gl.min.js',
 				// },
 				// {
 				// 	name: 'echarts-wordcloud',
@@ -95,11 +85,6 @@ export const buildConfig = {
 				// 	var: 'WangEditorForVue',
 				// 	path: 'dist/index.min.js',
 				// },
-				// {
-				// 	name: 'vue-grid-layout',
-				// 	var: 'VueGridLayout',
-				// 	path: 'https://cdn.jsdelivr.net/npm/vue-grid-layout@3.0.0-beta1/dist/vue-grid-layout.umd.min.js',
-				// },
 			],
 		});
 	},
@@ -110,7 +95,6 @@ export const buildConfig = {
 		'element-plus',
 		// '@element-plus/icons-vue',
 		// 'echarts',
-		// 'echarts-gl',
 		// 'echarts-wordcloud',
 		// 'vue-i18n',
 		// 'jsplumb',
@@ -120,6 +104,5 @@ export const buildConfig = {
 		// 'print-js',
 		// '@wangeditor/editor',
 		// '@wangeditor/editor-for-vue',
-		// 'vue-grid-layout',
 	],
 };

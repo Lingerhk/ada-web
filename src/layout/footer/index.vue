@@ -6,15 +6,6 @@
 	</div>
 </template>
 
-<script setup lang="ts" name="layoutFooter">
-import { onMounted } from 'vue';
-
-// Debug info
-onMounted(() => {
-	console.log('Footer component mounted!');
-});
-</script>
-
 <style scoped lang="scss">
 .layout-footer {
 	width: 100%;

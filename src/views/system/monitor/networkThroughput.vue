@@ -158,12 +158,9 @@ const fetch = async (t: string) => {
         scope: state.form.rangeSelected,
     };
 
-    console.log("getSystemStats", req);
-
     return api.getSystemStats(req)
     .then(resp => resp.response)
     .then(arr => {
-        console.log(arr);
         return arr.stats
     })
     .catch(err => {
@@ -198,7 +195,6 @@ const enableHistoryChart = async () => {
 watch(
     () => state.form,
     () => {
-        // console.log(state.form, "changed");
         enableHistoryChart();
         // if (state.form.rangeSelected === 'rt') {
         //     enableRtChart();

@@ -133,13 +133,10 @@ const state = reactive({
 const refresh = () => {
     state.loading = true;
 
-    console.log("listThreatBlock", JSON.stringify(state.req));
-
     api.listThreatBlock(state.req)
     .then(resp => resp.response)
     .then(data => {
         state.reply = data;
-        console.log(data);
     })
     .catch(err => alertApiError(err))
     .finally(() => state.loading = false);

@@ -119,12 +119,9 @@ const state = reactive({
 const refresh = () => {
     state.loading = true;
 
-    console.log('listAuditLog', state.req);
-
     api.listAuditLog(state.req)
     .then(resp => resp.response)
     .then(data => {
-        console.log(data);
         state.reply = data;
     })
     .catch(err => alertApiError(err))

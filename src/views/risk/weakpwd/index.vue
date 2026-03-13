@@ -137,8 +137,6 @@ const handleScan = (data: ListWeakPwdReply_Details) => {
 };
 
 const refresh = () => {
-    console.log('listWeakPwd', state.req);
-
     state.loading = true;
 
     api.listWeakPwd(state.req)
@@ -146,7 +144,6 @@ const refresh = () => {
     .then((data: ListWeakPwdReply) => {
         state.data = data.list;
         state.exhausted = data.exhausted;
-        console.log(data);
     })
     .catch(err => alertApiError(err))
     .finally(() => state.loading = false);

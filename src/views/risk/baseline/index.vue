@@ -179,13 +179,11 @@ const state = reactive({
 });
 
 const refresh = () => {
-    console.log("listBaseline", JSON.stringify(state.req));
     state.loading = true;
 
     api.listBaseline(state.req)
     .then(resp => resp.response)
     .then((data: ListBaselineReply) => {
-        console.log(data);
         state.exhausted = data.exhausted;
         state.data = data.list;
         state.total = data.page?.total ?? 0;

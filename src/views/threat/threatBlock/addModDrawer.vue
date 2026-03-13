@@ -146,7 +146,6 @@ const open = (data: ListThreatBlockReply_Details | null, onClose: () => void) =>
         const { iD, ...form } = data;
         state.form = { ...form }
         state.form.userList = [...form.userList];
-        console.log('form', form.userList)
     }
 
     state.onClose = onClose;
@@ -186,9 +185,6 @@ const nextStep = async (formEl: FormInstance | undefined) => {
         await formEl.validate((valid, fields) => {
             if (valid) {
                 state.active++;
-                console.log('form', state.form);
-            } else {
-                console.log('error submit!', fields);
             }
         });
     } else {
@@ -229,7 +225,6 @@ const search = (type: string, queryString: string, cb: any) => {
         search: queryString,
     };
 
-    console.log('listDomainEntry request', req);
     api.listDomainEntry(req)
     .then(resp => resp.response)
     .then(data => {

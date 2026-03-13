@@ -51,7 +51,6 @@ export const listDomainOptions = async (): Promise<OptionType[]> => {
 		.listDomain(req)
 		.then((response) => response.response)
 		.then((data: ListDomainReply) => {
-			// console.log("ListDomainReply", data);
 			ret = data.list.map((_) => ({ label: _.name, value: _.name }));
 		})
 		.catch((err) => {
@@ -237,8 +236,6 @@ export const updateSysLanguage = async (lang: string) => {
 		language: lang === 'en' ? 'EN' : 'ZH',
 	};
 
-	console.log('updateSystemLanguage', req);
-
 	return api.updateSystemLanguage(req).then((resp) => resp.response);
 };
 
@@ -248,8 +245,6 @@ export const getScanTask = async (iD: string, pageIdx: number = 1, pageSize: num
 		pageIdx,
 		pageSize,
 	};
-
-	console.log('GetScanTaskReq', req);
 
 	return api.getScanTask(req).then((resp) => resp.response);
 };

@@ -162,12 +162,9 @@ const testNotifyConf = () => {
         metadata: rest,
     };
 
-    console.log('testNotifyConf', req);
-
     api.testNotifyConf(req)
     .then(resp => resp.response)
     .then(data => {
-        console.log("testNotifyConf return", data);
         alertResult(data.result, data.msg, data.msg);
     })
     .catch(err => alertApiError(err))
@@ -206,8 +203,6 @@ const nextStep = async () => {
             metadata,
             remark: form.value.remark,
         };
-
-        console.log('addNotifyConf', req);
 
         api.addNotifyConf(req)
         .then(resp => resp.response)

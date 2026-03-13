@@ -177,7 +177,6 @@ const markReaded = () => {
         iDs: state.selected.map(v => v.iD),
     };
 
-    console.log("updateNotify", req);
     ElMessageBox.confirm(
         t('message.system.message.markReadedTitle', [req.iDs.length]),
         t('message.system.message.markReadedPrompt')
@@ -202,13 +201,10 @@ const markAllReaded = () => {
 const refresh = () => {
     state.loading = true;
 
-    console.log('listNotify', state.req);
-
     api.listNotify(state.req)
     .then(resp => resp.response)
     .then(data => {
         state.reply = data;
-        console.log(data);
     })
     .catch(err => alertApiError(err))
     .finally(() => state.loading = false);
@@ -270,7 +266,6 @@ watch(() => state.req.msgType, (val) => {
     } else {
         msgTypeIndeterminate.value = true;
     }
-    console.log('MsgType changed, refreshing. New:', val);
     state.req.pageIdx = 1;
     refresh();
 }, { deep: true });
@@ -285,7 +280,6 @@ watch(() => state.req.status, (val) => {
     } else {
         statusIndeterminate.value = true;
     }
-    console.log('Status changed, refreshing. New:', val);
     state.req.pageIdx = 1;
     refresh();
 }, { deep: true });

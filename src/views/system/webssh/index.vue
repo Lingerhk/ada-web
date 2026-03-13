@@ -84,7 +84,6 @@ const runRealTerminal = () => {
 const closeRealTerminal = (e) => {
   state.value = TerminalStateEnum.INIT;
   ElMessageBox.alert(t('message.system.webssh.connectionClosed', [e.code]), t('message.system.webssh.connectionClosedTitle'));
-  console.log(e);
   if (term.value) {
     // No explicit close needed here. Error reference: `Could not dispose an addon that has not been loaded`
     // term.value.dispose();

@@ -231,10 +231,7 @@ const handleResetPassword = async () => {
             center: true,
             beforeClose: async (action, instance, done) => {
                 if (action === 'confirm') {
-                    const copyOk = await toClipboard(newPassword).then(() => true).catch(err => {
-                        console.log(err);
-                        return false;
-                    });
+                    const copyOk = await toClipboard(newPassword).then(() => true).catch(() => false);
                     ElMessage({
                         message: copyOk ? T('copySucc', [username, newPassword]) : T('copyFail'),
                         type: copyOk ? 'success' : 'warning',
@@ -242,12 +239,8 @@ const handleResetPassword = async () => {
                 }
                 done();
             },
-        }).catch(err => {
-            console.log(err);
-        });
-    }).catch(err => {
-        console.log(err);
-    });
+        }).catch(() => {});
+    }).catch(() => {});
 };
 
 const nextStep = () => {

@@ -161,7 +161,6 @@ const handleDelete = (data: ListNotifyConfReply_Details) => {
     const req: DeleteNotifyConfReq = {
         id: data.id,
     };
-    console.log("deleteNotifyConf", req);
 
     api.deleteNotifyConf(req)
     .then(resp => resp.response)
@@ -177,7 +176,6 @@ const switchNotification = (data: ListNotifyConfReply_Details, v: string) => {
         id: data.id,
         enable: v,
     };
-    console.log("enableNotifyConf", req);
 
     api.enableNotifyConf(req)
     .then(resp => resp.response)
@@ -201,13 +199,10 @@ const handleEdit = (data: ListNotifyConfReply_Details) => {
 };
 
 const refresh = () => {
-    console.log("listNotifyConf", state.req);
-
     api.listNotifyConf(state.req)
     .then(resp => resp.response)
     .then(data => {
         state.reply = data;
-        console.log(data);
     })
     .catch(err => alertApiError(err))
     .finally(() => state.loading = false);

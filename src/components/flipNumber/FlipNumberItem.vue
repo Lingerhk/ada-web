@@ -30,7 +30,6 @@
     methods: {
       async flipDown (newVal, oldVal) {
         while (newVal > oldVal) {
-          // console.log(new Date().toTimeString())
           await this.flipDownOne(oldVal)
           oldVal++
         }

@@ -191,11 +191,9 @@ watch(() => state.req.pageSize, () => {
 // Refresh the list
 const refresh = () => {
 	state.loading = true;
-	console.log('listSensor', state.req)
 	api.listSensor(state.req)
 	.then(resp => resp.response)
 	.then(data => {
-		console.log(data);
 		state.data = data.list;
 		state.exhausted = data.exhausted;
 		state.total = data.page?.total ?? data.list.length; // Update total from API response
@@ -221,8 +219,6 @@ const changePktStatus = (row: ListSensorReply_Details) => {
 	let req = getUpdateSensorReq(row);
 	req.pktPluginSwitch = row.pktPluginSwitch === 'true' ? 'false' : 'true';
 
-	console.log('updateSensor', req);
-
 	api.updateSensor(req)
 	.then(resp => resp.response)
 	.then(data => {
@@ -235,8 +231,6 @@ const changePktStatus = (row: ListSensorReply_Details) => {
 const changeLogStatus = (row: ListSensorReply_Details) => {
 	let req = getUpdateSensorReq(row);
 	req.logPluginSwitch = row.logPluginSwitch === 'true' ? 'false' : 'true';
-
-	console.log('updateSensor', req);
 
 	api.updateSensor(req)
 	.then(resp => resp.response)
@@ -279,7 +273,6 @@ const onDelete = (row: ListSensorReply_Details) => {
 				checked: uninstallOnServer, // Use checked prop
 				onChange: (val: CheckboxValueType) => {
 					uninstallOnServer = !!val;
-					console.log('Checkbox(uninstallOnServer) changed to:', uninstallOnServer);
 				},
 				label: t('message.sysConfig.sensorConfig.deleteSensorOnADServer'),
 			}),
@@ -294,15 +287,12 @@ const onDelete = (row: ListSensorReply_Details) => {
 			cmd: uninstallOnServer ? 'uninstall' : 'delete',
 		};
 
-		console.log('cmdSensor request:', req);
 		api.cmdSensor(req)
 			.then(resp => resp.response)
 			.then(data => alertResult(data.result, t('message.sysConfig.sensorConfig.deleteSucc'), t('message.sysConfig.sensorConfig.deleteFail')))
 			.catch(err => alertApiError(err))
 			.finally(() => refresh());
-	}).catch(() => {
-		console.log('Delete cancelled');
-	});
+	}).catch(() => {});
 }
 
 // Pagination handlers

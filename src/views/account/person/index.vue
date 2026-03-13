@@ -329,7 +329,6 @@ const refresh = () => {
     api.listUser(req)
     .then(response => response.response)
     .then(data => {
-        console.log(data);
         if (data.list.length > 0) {
             state.me = data.list[0];
             state.form = {
@@ -350,7 +349,6 @@ const refresh = () => {
     .catch(err => {
         const message = decodeURIComponent(err.message);
         ElMessage.error(message);
-        console.log(err.code, message);
     })
     .finally(() => {
         state.reloading = false;
@@ -363,7 +361,6 @@ const saveUserInfo = async (formEl: FormInstance) => {
         return valid;
     });
 
-    console.log(valid, state.form);
     if (!valid) {
         return;
     }

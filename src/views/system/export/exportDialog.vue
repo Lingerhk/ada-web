@@ -105,7 +105,6 @@ const confirm = async (formEl: FormInstance) => {
     state.req.type = props.type;
     state.loading = false;
 
-    console.log(state.req);
 
     api.addExportTask(state.req)
     .then(resp => resp.response)

@@ -194,8 +194,6 @@ const handleScan = (data: ListLeakReply_Details) => {
 };
 
 const refresh = () => {
-    console.log('listLeak', state.req);
-
     state.loading = true;
 
     api.listLeak(state.req)
@@ -203,7 +201,6 @@ const refresh = () => {
     .then((data: ListLeakReply) => {
         state.data = data.list;
         state.exhausted = data.exhausted;
-        console.log(data);
     })
     .catch(err => alertApiError(err))
     .finally(() => state.loading = false);

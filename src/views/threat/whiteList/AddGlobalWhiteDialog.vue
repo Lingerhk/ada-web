@@ -200,7 +200,6 @@ const confirm = async () => {
 
     const found = input.addReqRules.findIndex(rule => rule.info.value === '');
     if (found !== -1) {
-        console.log(found);
         return;
     }
 
@@ -221,7 +220,6 @@ const confirm = async () => {
             // }
             return result.result.toUpperCase() === 'SUCCESS';
         } catch (err) {
-            console.log(err);
             return false;
         }
     });
@@ -241,5 +239,4 @@ watch(isVisible, (newVal) => {
 </script>
 
 <style scoped>
-/* Add styles here if necessary */
 </style>

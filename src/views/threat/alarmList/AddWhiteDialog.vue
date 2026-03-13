@@ -189,7 +189,6 @@ function confirm() {
         remark: remark.value, // Remark
     }
 
-    console.log("addThreatWhitelist:", req);
     api.addThreatWhitelist(req)
     .then(resp => resp.response)
     .then(data => {
@@ -208,5 +207,4 @@ watch(isVisible, (newVal) => {
 </script>
 
 <style scoped>
-/* Add styles here if necessary */
 </style>

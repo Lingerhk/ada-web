@@ -161,12 +161,9 @@ const fetch = () => {
         scope: state.form.rangeSelected,
     };
 
-    console.log("getSystemStats", req);
-
     api.getSystemStats(req)
     .then(resp => resp.response)
     .then(arr => {
-        console.log(arr);
         data = [];
         arr.stats.sort().forEach(d => data.push([formatApiTime(Number(d.timestamp) * 1000), Number(d.value)]));
 
@@ -190,7 +187,6 @@ const enableHistoryChart = () => {
 watch(
     () => state.form,
     () => {
-        // console.log(state.form, "changed");
         enableHistoryChart();
         // if (state.form.rangeSelected === 'rt') {
         //     enableRtChart();
@@ -222,4 +218,3 @@ onUnmounted(() => {
     justify-content: space-between;
 }
 </style>
-

@@ -1,17 +1,5 @@
 <template>
 	<div class="layout-navbars-breadcrumb-user pr15" :style="{ flex: layoutUserFlexNum }">
-		<!-- <el-dropdown :show-timeout="70" :hide-timeout="50" trigger="click" @command="onComponentSizeChange">
-			<div class="layout-navbars-breadcrumb-user-icon">
-				<i class="iconfont icon-ziti" :title="$t('message.user.title0')"></i>
-			</div>
-			<template #dropdown>
-				<el-dropdown-menu>
-					<el-dropdown-item command="large" :disabled="state.disabledSize === 'large'">{{ $t('message.user.dropdownLarge') }}</el-dropdown-item>
-					<el-dropdown-item command="default" :disabled="state.disabledSize === 'default'">{{ $t('message.user.dropdownDefault') }}</el-dropdown-item>
-					<el-dropdown-item command="small" :disabled="state.disabledSize === 'small'">{{ $t('message.user.dropdownSmall') }}</el-dropdown-item>
-				</el-dropdown-menu>
-			</template>
-		</el-dropdown> -->
 		<el-dropdown :show-timeout="70" :hide-timeout="50" trigger="click" @command="(lang: any) => onLanguageChange(lang, true)">
 			<div class="layout-navbars-breadcrumb-user-icon">
 				<i
@@ -27,14 +15,6 @@
 				</el-dropdown-menu>
 			</template>
 		</el-dropdown>
-		<!-- <div class="layout-navbars-breadcrumb-user-icon" @click="onSearchClick">
-			<el-icon :title="$t('message.user.title2')">
-				<ele-Search />
-			</el-icon>
-		</div> -->
-		<!-- <div class="layout-navbars-breadcrumb-user-icon" @click="onLayoutSetingClick">
-			<i class="icon-skin iconfont" :title="$t('message.user.title3')"></i>
-		</div> -->
 		<div class="layout-navbars-breadcrumb-user-icon" ref="userNewsBadgeRef" v-click-outside="onUserNewsClick">
 			<el-badge :is-dot="news.length > 0">
 				<el-icon :title="$t('message.user.title4')">
@@ -54,17 +34,8 @@
 		>
 			<UserNews v-model="news" />
 		</el-popover>
-		<!-- <div class="layout-navbars-breadcrumb-user-icon mr10" @click="onScreenfullClick">
-			<i
-				class="iconfont"
-				:title="state.isScreenfull ? $t('message.user.title6') : $t('message.user.title5')"
-				:class="!state.isScreenfull ? 'icon-fullscreen' : 'icon-tuichuquanping'"
-			></i>
-		</div> -->
 		<el-dropdown :show-timeout="70" :hide-timeout="50" @command="onHandleCommandClick">
 			<span class="layout-navbars-breadcrumb-user-link">
-				<!-- <img :src="userInfos.photo" class="layout-navbars-breadcrumb-user-link-photo mr5" />
-				{{ userInfos.userName === '' ? 'common' : userInfos.userName }} -->
 				{{ state.userName }}
 				<el-icon class="el-icon--right">
 					<ele-ArrowDown />
@@ -78,29 +49,25 @@
 				</el-dropdown-menu>
 			</template>
 		</el-dropdown>
-		<Search ref="searchRef" />
 		<ChangePasswordDialog v-model="needChangePassword" />
 	</div>
 </template>
 
 <script setup lang="ts" name="layoutBreadcrumbUser">
-import { defineAsyncComponent, ref, unref, computed, reactive, onMounted, onUnmounted, h } from 'vue';
+import { defineAsyncComponent, ref, unref, computed, reactive, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { ElMessageBox, ElMessage, ClickOutside as vClickOutside, ElNotification } from 'element-plus';
-import screenfull from 'screenfull';
+import { ElMessageBox, ClickOutside as vClickOutside, ElNotification } from 'element-plus';
 import { useI18n } from 'vue-i18n';
 import { storeToRefs } from 'pinia';
 import { useUserInfo } from '/@/stores/userInfo';
 import { useThemeConfig } from '/@/stores/themeConfig';
 import other from '/@/utils/other';
-import mittBus from '/@/utils/mitt';
 import { Session, Local } from '/@/utils/storage';
 import { getSysLanguage, getUnreadNotification, updateSysLanguage } from '/@/api/grpc/method';
 import { formatApiTime } from '/@/utils/formatTime';
 
 // Import components
 const UserNews = defineAsyncComponent(() => import('/@/layout/navBars/topBar/userNews.vue'));
-const Search = defineAsyncComponent(() => import('/@/layout/navBars/topBar/search.vue'));
 const ChangePasswordDialog = defineAsyncComponent(() => import('/@/components/secret/ChangePasswordDialog.vue'));
 
 // Define reactive state and refs
@@ -110,11 +77,8 @@ const { locale, t } = useI18n();
 const router = useRouter();
 const stores = useUserInfo();
 const storesThemeConfig = useThemeConfig();
-const { userInfos } = storeToRefs(stores);
 const { themeConfig } = storeToRefs(storesThemeConfig);
-const searchRef = ref();
 const state = reactive({
-	isScreenfull: false,
 	disabledLocale: 'zh-cn',
 	disabledSize: 'large',
 	userName: '',
@@ -131,25 +95,9 @@ const layoutUserFlexNum = computed(() => {
 	else num = '';
 	return num;
 });
-// Handle full-screen clicks
-const onScreenfullClick = () => {
-	if (!screenfull.isEnabled) {
-		ElMessage.warning(t('message.user.fullscreenUnavailable'));
-		return false;
-	}
-	screenfull.toggle();
-	screenfull.on('change', () => {
-		if (screenfull.isFullscreen) state.isScreenfull = true;
-		else state.isScreenfull = false;
-	});
-};
 // Handle notification clicks
 const onUserNewsClick = () => {
 	unref(userNewsRef).popperRef?.delayHide?.();
-};
-// Handle clicks on the layout-settings icon
-const onLayoutSetingClick = () => {
-	mittBus.emit('openSettingsDrawer');
 };
 // Handle dropdown-menu clicks
 const onHandleCommandClick = (path: string) => {
@@ -190,20 +138,6 @@ const onHandleCommandClick = (path: string) => {
 	} else {
 		router.push(path);
 	}
-};
-
-// Handle menu-search clicks
-const onSearchClick = () => {
-	searchRef.value.openSearch();
-};
-
-// Handle component-size changes
-const onComponentSizeChange = (size: string) => {
-	Local.remove('themeConfig');
-	themeConfig.value.globalComponentSize = size;
-	Local.set('themeConfig', themeConfig.value);
-	initI18nOrSize('globalComponentSize', 'disabledSize');
-	window.location.reload();
 };
 
 // Handle language changes
@@ -283,13 +217,12 @@ const refreshMessage = () => {
 
 		news.value = _news;
 	})
-	.catch(err => console.log("refresh message catch error:", err));
+	.catch(() => {});
 };
 
 const initI18n = () => {
 	getSysLanguage().then(sysLang => {
 		const localLang = sysLang === 'EN' ? 'en' : 'zh-cn';
-		// console.log(sysLang, localLang);
 		onLanguageChange(localLang, false);
 	});
 };
@@ -312,8 +245,6 @@ onMounted(() => {
 	}, 5000);
 
 	initI18n();
-
-	// TODO: notify
 });
 
 onUnmounted(() => {

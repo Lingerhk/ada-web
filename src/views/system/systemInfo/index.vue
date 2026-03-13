@@ -777,13 +777,10 @@ const handleModuleCheckAll = (val: boolean) => {
 const refreshSystemLogs = () => {
     systemLogsState.loading = true;
 
-    console.log('listSystemLogs', systemLogsState.req);
-
     api.listSystemLogs(systemLogsState.req)
     .then(resp => resp.response)
     .then(data => {
         systemLogsState.reply = data;
-        console.log(data);
     })
     .catch(err => alertApiError(err))
     .finally(() => systemLogsState.loading = false);
@@ -824,7 +821,6 @@ watch(() => systemLogsState.req.level, (val) => {
     } else {
         levelIndeterminate.value = true;
     }
-    console.log('Level changed, refreshing. New:', val);
     systemLogsState.req.pageIdx = 1;
     refreshSystemLogs();
 }, { deep: true });
@@ -839,7 +835,6 @@ watch(() => systemLogsState.req.module, (val) => {
     } else {
         moduleIndeterminate.value = true;
     }
-    console.log('Module changed, refreshing. New:', val);
     systemLogsState.req.pageIdx = 1;
     refreshSystemLogs();
 }, { deep: true });

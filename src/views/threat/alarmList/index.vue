@@ -369,7 +369,6 @@ onUnmounted(() => {
 
 watch(advancedSearchRef,
     (newValue, oldValue) => {
-        // console.log('ref to', newValue);
         refreshThreatTable();
     }, { deep: true }
 );

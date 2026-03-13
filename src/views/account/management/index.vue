@@ -213,13 +213,9 @@ const refreshUser = () => {
     .then(data => {
         state.table.data = data.list;
         state.total = data.page?.total ?? 0;
-        console.log(data.list);
     })
     .catch(err => {
         alertApiError(err);
-        // const msg = decodeURIComponent(err.message);
-        // ElMessage.error(msg);
-        // console.log(err.code, msg);
     })
     .finally(() => state.table.loading = false);
 };
@@ -323,8 +319,6 @@ onMounted(() => {
     const user = Local.get('user');
     priv.value = user['priv'] ?? 99;
     currentUser.value = user['username'] ?? '';
-
-    console.log(priv.value, user.priv, user);
 });
 
 </script>

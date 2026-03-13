@@ -1,7 +1,7 @@
 /**
  * mitt event type definitions
  *
- * @method openSetingsDrawer Open the layout settings drawer
+ * @method openSettingsDrawer Open the layout settings drawer
  * @method restoreDefault Columns layout hover state updates
  * @method setSendColumnsChildren Pass columns-layout hover menu data into the `navMenu` menu
  * @method setSendClassicChildren Pass classic-layout split-menu data into the `navMenu` menu
@@ -13,7 +13,7 @@
  * @method onCurrentContextmenuClick Handle each tagsView context-menu click
  */
 declare type MittType<T = any> = {
-	openSetingsDrawer?: string;
+	openSettingsDrawer?: string;
 	restoreDefault?: string;
 	setSendColumnsChildren: T;
 	setSendClassicChildren: T;

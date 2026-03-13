@@ -2,7 +2,7 @@
 	<el-config-provider :size="getGlobalComponentSize" :locale="getGlobalI18n">
 		<router-view v-show="setLockScreen" />
 		<LockScreen v-if="themeConfig.isLockScreen" />
-		<Setings ref="setingsRef" v-show="setLockScreen" />
+		<Settings ref="settingsRef" v-show="setLockScreen" />
 		<CloseFull v-if="!themeConfig.isLockScreen" />
 		<ChangePasswordDialog v-model="needChangePassword" />
 	</el-config-provider>
@@ -22,13 +22,13 @@ import setIntroduction from '/@/utils/setIconfont';
 
 // Import components
 const LockScreen = defineAsyncComponent(() => import('/@/layout/lockScreen/index.vue'));
-const Setings = defineAsyncComponent(() => import('/@/layout/navBars/topBar/setings.vue'));
+const Settings = defineAsyncComponent(() => import('/@/layout/navBars/topBar/settings.vue'));
 const CloseFull = defineAsyncComponent(() => import('/@/layout/navBars/topBar/closeFull.vue'));
 const ChangePasswordDialog = defineAsyncComponent(() => import('/@/components/secret/ChangePasswordDialog.vue'));
 
 // Define reactive state and refs
 const { messages, locale } = useI18n();
-const setingsRef = ref();
+const settingsRef = ref();
 const route = useRoute();
 const stores = useTagsViewRoutes();
 const storesThemeConfig = useThemeConfig();
@@ -72,8 +72,8 @@ onBeforeMount(() => {
 onMounted(() => {
 	nextTick(() => {
 		// Watch the layout settings drawer opening
-		mittBus.on('openSetingsDrawer', () => {
-			setingsRef.value.openDrawer();
+		mittBus.on('openSettingsDrawer', () => {
+			settingsRef.value.openDrawer();
 		});
 		// Get the cached layout settings
 		if (Local.get('themeConfig')) {
@@ -88,7 +88,7 @@ onMounted(() => {
 });
 // Remove the layout-settings and i18n watchers when the page is destroyed
 onUnmounted(() => {
-	mittBus.off('openSetingsDrawer', () => {});
+	mittBus.off('openSettingsDrawer', () => {});
 });
 // Watch route changes and update the document title
 watch(

@@ -149,7 +149,7 @@ const onUserNewsClick = () => {
 };
 // Handle clicks on the layout-settings icon
 const onLayoutSetingClick = () => {
-	mittBus.emit('openSetingsDrawer');
+	mittBus.emit('openSettingsDrawer');
 };
 // Handle dropdown-menu clicks
 const onHandleCommandClick = (path: string) => {

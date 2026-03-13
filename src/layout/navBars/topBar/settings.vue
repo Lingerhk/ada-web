@@ -274,15 +274,15 @@
 					</div>
 				</div>
 				<div class="layout-breadcrumb-seting-bar-flex mt15">
-					<div class="layout-breadcrumb-seting-bar-flex-label">{{ $t('message.layout.fourIsWartermark') }}</div>
+					<div class="layout-breadcrumb-seting-bar-flex-label">{{ $t('message.layout.fourIsWatermark') }}</div>
 					<div class="layout-breadcrumb-seting-bar-flex-value">
-						<el-switch v-model="getThemeConfig.isWartermark" size="small" @change="onWartermarkChange"></el-switch>
+						<el-switch v-model="getThemeConfig.isWatermark" size="small" @change="onWatermarkChange"></el-switch>
 					</div>
 				</div>
 				<div class="layout-breadcrumb-seting-bar-flex mt14">
-					<div class="layout-breadcrumb-seting-bar-flex-label">{{ $t('message.layout.fourWartermarkText') }}</div>
+					<div class="layout-breadcrumb-seting-bar-flex-label">{{ $t('message.layout.fourWatermarkText') }}</div>
 					<div class="layout-breadcrumb-seting-bar-flex-value">
-						<el-input v-model="getThemeConfig.wartermarkText" size="default" style="width: 90px" @input="onWartermarkTextInput"></el-input>
+						<el-input v-model="getThemeConfig.watermarkText" size="default" style="width: 90px" @input="onWatermarkTextInput"></el-input>
 					</div>
 				</div>
 
@@ -429,7 +429,7 @@
 	</div>
 </template>
 
-<script setup lang="ts" name="layoutBreadcrumbSeting">
+<script setup lang="ts" name="layoutBreadcrumbSetting">
 import { nextTick, onUnmounted, onMounted, computed, reactive } from 'vue';
 import { ElMessage } from 'element-plus';
 import { useI18n } from 'vue-i18n';
@@ -566,15 +566,15 @@ const onAddDarkChange = () => {
 	else body.setAttribute('data-theme', '');
 };
 // 4. Visible UI features -> watermark
-const onWartermarkChange = () => {
-	getThemeConfig.value.isWartermark ? Watermark.set(getThemeConfig.value.wartermarkText) : Watermark.del();
+const onWatermarkChange = () => {
+	getThemeConfig.value.isWatermark ? Watermark.set(getThemeConfig.value.watermarkText) : Watermark.del();
 	setLocalThemeConfig();
 };
 // 4. Visible UI features -> watermark text
-const onWartermarkTextInput = (val: string) => {
-	getThemeConfig.value.wartermarkText = verifyAndSpace(val);
-	if (getThemeConfig.value.wartermarkText === '') return false;
-	if (getThemeConfig.value.isWartermark) Watermark.set(getThemeConfig.value.wartermarkText);
+const onWatermarkTextInput = (val: string) => {
+	getThemeConfig.value.watermarkText = verifyAndSpace(val);
+	if (getThemeConfig.value.watermarkText === '') return false;
+	if (getThemeConfig.value.isWatermark) Watermark.set(getThemeConfig.value.watermarkText);
 	setLocalThemeConfig();
 };
 // 5. Layout mode
@@ -667,7 +667,7 @@ onMounted(() => {
 			// Dark mode
 			if (getThemeConfig.value.isIsDark) onAddDarkChange();
 			// Enable watermark
-			onWartermarkChange();
+			onWatermarkChange();
 			// Internationalization
 			if (Local.get('themeConfig')) locale.value = Local.get('themeConfig').globalI18n;
 			// Initialize menu styles and related state

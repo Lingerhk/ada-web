@@ -205,7 +205,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 				path: '/risk',
 				name: 'riskIndex',
 				component: () => import('/@/layout/routerView/parent.vue'),
-				redirect: '/dectectionOverview',
+				redirect: '/riskOverview',
 				meta: {
 					title: 'message.router.riskIndex',
 					isLink: '',

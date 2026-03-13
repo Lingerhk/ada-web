@@ -102,9 +102,9 @@ export const useThemeConfig = defineStore('themeConfig', {
 			// Whether high-contrast inverted mode is enabled.
 			isInvert: false,
 			// Whether the watermark overlay is enabled.
-			isWartermark: false,
+			isWatermark: false,
 			// Watermark text.
-			wartermarkText: '',
+			watermarkText: '',
 
 			/**
 			 * Other settings
@@ -122,7 +122,7 @@ export const useThemeConfig = defineStore('themeConfig', {
 			/**
 			 * Layout mode
 			 * For demo purposes, switching layouts resets theme colors to their defaults.
-			 * See `initSetLayoutChange()` in `/@/layout/navBars/topBar/setings.vue`.
+			 * See `initSetLayoutChange()` in `/@/layout/navBars/topBar/settings.vue`.
 			 */
 			// Layout mode. Supported values: "<defaults|classic|transverse|columns>". Default: `defaults`.
 			layout: 'defaults',

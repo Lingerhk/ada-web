@@ -63,7 +63,7 @@ export function verifyNumberIntegerAndFloat(val: string) {
  * @param val current value string
  * @returns returns the processed string
  */
-export function verifiyNumberInteger(val: string) {
+export function verifyNumberInteger(val: string) {
 	// Match spaces
 	let v = val.replace(/(^\s*)|(\s*$)/g, '');
 	// Remove pasted dots such as in `0.1.12.12`.
@@ -77,6 +77,8 @@ export function verifiyNumberInteger(val: string) {
 	// Response payload
 	return v;
 }
+
+export const verifiyNumberInteger = verifyNumberInteger;
 
 /**
  * Remove Chinese characters and spaces

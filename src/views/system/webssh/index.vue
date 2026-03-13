@@ -3,36 +3,29 @@
     <div v-if="state === TerminalStateEnum.INIT" class="modal">
       <div class="modal-content">
         <el-form :inline="true">
-          <el-form-item label="请输入验证码">
-            <el-input v-model="inviteCode" placeholder="验证码" size="default" />
+          <el-form-item :label="t('message.system.webssh.inviteCodeLabel')">
+            <el-input v-model="inviteCode" :placeholder="t('message.system.webssh.inviteCodePlaceholder')" size="default" />
           </el-form-item>
-          <!-- <el-form-item>
-            <template #label>
-              <span>使能子协议</span>
-            </template>
-            <el-tooltip class="box-item" placement="top-start"
-              content="使能：new WebSocket(url, [token])；去使能：new WebSocket(url)">
-              <el-switch v-model="enableProtocols" size="small"></el-switch>
-            </el-tooltip>
-          </el-form-item> -->
           <el-form-item>
-            <el-button @click="verifyCode" size="default" type="primary">提交</el-button>
+            <el-button @click="verifyCode" size="default" type="primary">{{ t('message.system.webssh.submit') }}</el-button>
           </el-form-item>
         </el-form>
       </div>
     </div>
     <div v-if="state !== TerminalStateEnum.INIT" ref="terminal" v-loading="state === TerminalStateEnum.LOADING"
-      class="terminal" element-loading-text="拼命连接中"></div>
+      class="terminal" :element-loading-text="t('message.system.webssh.connecting')"></div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { debounce } from 'lodash';
+import { ElMessageBox } from 'element-plus';
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
 import 'xterm/css/xterm.css';
 import { AttachAddon } from 'xterm-addon-attach';
+import { useI18n } from 'vue-i18n';
 import { Local } from '/@/utils/storage';
 
 enum TerminalStateEnum {
@@ -44,7 +37,7 @@ enum TerminalStateEnum {
 const terminal = ref(null);
 const fitAddon = new FitAddon();
 const inviteCode = ref('') // Verification code entered by the user
-const enableProtocols = ref(false);
+const { t } = useI18n();
 
 const state = ref(TerminalStateEnum.INIT);
 
@@ -90,7 +83,7 @@ const runRealTerminal = () => {
 // WebSocket connection closed
 const closeRealTerminal = (e) => {
   state.value = TerminalStateEnum.INIT;
-  alert(`连接关闭，事件代码：${e.code}。`);
+  ElMessageBox.alert(t('message.system.webssh.connectionClosed', [e.code]), t('message.system.webssh.connectionClosedTitle'));
   console.log(e);
   if (term.value) {
     // No explicit close needed here. Error reference: `Could not dispose an addon that has not been loaded`

@@ -240,7 +240,6 @@ import { formatDate } from '/@/utils/formatTime';
 const { t } = useI18n();
 
 // Import components
-const DashboardHead = defineAsyncComponent(() => import('/@/views/dashboard/head.vue'));
 const FilpNumber = defineAsyncComponent(() => import('/@/components/flipNumber/FlipNumber.vue'))
 
 // Define reactive state and refs
@@ -421,14 +420,14 @@ const initBaseLinePie = (high: number, medium: number, low: number) => {
 		],
 		series: [
 			{
-				name: '高危基线事件数量',
+				name: T('highRiskBaseline'),
 				type: 'pie',
 				radius, // Set the pie-chart radius
 				left: xOffset[0],
 				top: '-20%',
 				data: [
-					{ value: high, name: '直达1' },
-					{ value: total - high, name: '邮件营销1' },
+					{ value: high, name: T('filledPortion') },
+					{ value: total - high, name: T('remainingPortion') },
 					// ... additional data fields
 				],
 
@@ -441,14 +440,14 @@ const initBaseLinePie = (high: number, medium: number, low: number) => {
 				},
 			},
 			{
-				name: '中危基线事件数量',
+				name: T('mediumRiskBaseline'),
 				type: 'pie',
 				radius,
 				left: xOffset[1],
 				top: '-20%',
 				data: [
-					{ value: medium, name: '直达2' },
-					{ value: total - medium, name: '邮件营销2' },
+					{ value: medium, name: T('filledPortion') },
+					{ value: total - medium, name: T('remainingPortion') },
 					// ... additional data fields
 				],
 				label: {
@@ -461,14 +460,14 @@ const initBaseLinePie = (high: number, medium: number, low: number) => {
 				// ... other options
 			},
 			{
-				name: '低危基线事件数量',
+				name: T('lowRiskBaseline'),
 				type: 'pie',
 				radius,
 				left: xOffset[2],
 				top: '-20%',
 				data: [
-					{ value: low, name: '直达3' },
-					{ value: total - low, name: '邮件营销3' },
+					{ value: low, name: T('filledPortion') },
+					{ value: total - low, name: T('remainingPortion') },
 					// ... additional data fields
 				],
 				label: {
@@ -487,7 +486,7 @@ const initBaseLinePie = (high: number, medium: number, low: number) => {
 				left: '7%',
 				top: '80%',
 				style: {
-					text: '高危基线事件数量',
+					text: T('highRiskBaseline'),
 					textAlign: 'center',
 					fill: '#333', // Text color
 					fontSize: 14
@@ -498,7 +497,7 @@ const initBaseLinePie = (high: number, medium: number, low: number) => {
 				top: '80%',
 				left: '40%',
 				style: {
-					text: '中危基线事件数量',
+					text: T('mediumRiskBaseline'),
 					textAlign: 'center',
 					fill: '#333', // Text color
 					fontSize: 14
@@ -509,7 +508,7 @@ const initBaseLinePie = (high: number, medium: number, low: number) => {
 				top: '80%',
 				left: '74%',
 				style: {
-					text: '低危基线事件数量',
+					text: T('lowRiskBaseline'),
 					textAlign: 'center',
 					fill: '#333', // Text color
 					fontSize: 14

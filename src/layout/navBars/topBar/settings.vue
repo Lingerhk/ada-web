@@ -291,17 +291,29 @@
 				<div class="layout-breadcrumb-seting-bar-flex mt15">
 					<div class="layout-breadcrumb-seting-bar-flex-label">{{ $t('message.layout.fiveTagsStyle') }}</div>
 					<div class="layout-breadcrumb-seting-bar-flex-value">
-						<el-select v-model="getThemeConfig.tagsStyle" placeholder="请选择" size="default" style="width: 90px" @change="setLocalThemeConfig">
-							<el-option label="风格1" value="tags-style-one"></el-option>
-							<el-option label="风格4" value="tags-style-four"></el-option>
-							<el-option label="风格5" value="tags-style-five"></el-option>
+						<el-select
+							v-model="getThemeConfig.tagsStyle"
+							:placeholder="$t('message.layout.selectPlaceholder')"
+							size="default"
+							style="width: 90px"
+							@change="setLocalThemeConfig"
+						>
+							<el-option :label="$t('message.layout.tagsStyleOne')" value="tags-style-one"></el-option>
+							<el-option :label="$t('message.layout.tagsStyleFour')" value="tags-style-four"></el-option>
+							<el-option :label="$t('message.layout.tagsStyleFive')" value="tags-style-five"></el-option>
 						</el-select>
 					</div>
 				</div>
 				<div class="layout-breadcrumb-seting-bar-flex mt15">
 					<div class="layout-breadcrumb-seting-bar-flex-label">{{ $t('message.layout.fiveAnimation') }}</div>
 					<div class="layout-breadcrumb-seting-bar-flex-value">
-						<el-select v-model="getThemeConfig.animation" placeholder="请选择" size="default" style="width: 90px" @change="setLocalThemeConfig">
+						<el-select
+							v-model="getThemeConfig.animation"
+							:placeholder="$t('message.layout.selectPlaceholder')"
+							size="default"
+							style="width: 90px"
+							@change="setLocalThemeConfig"
+						>
 							<el-option label="slide-right" value="slide-right"></el-option>
 							<el-option label="slide-left" value="slide-left"></el-option>
 							<el-option label="opacitys" value="opacitys"></el-option>
@@ -313,14 +325,14 @@
 					<div class="layout-breadcrumb-seting-bar-flex-value">
 						<el-select
 							v-model="getThemeConfig.columnsAsideStyle"
-							placeholder="请选择"
+							:placeholder="$t('message.layout.selectPlaceholder')"
 							size="default"
 							style="width: 90px"
 							:disabled="getThemeConfig.layout !== 'columns' ? true : false"
 							@change="setLocalThemeConfig"
 						>
-							<el-option label="圆角" value="columns-round"></el-option>
-							<el-option label="卡片" value="columns-card"></el-option>
+							<el-option :label="$t('message.layout.columnsRound')" value="columns-round"></el-option>
+							<el-option :label="$t('message.layout.columnsCard')" value="columns-card"></el-option>
 						</el-select>
 					</div>
 				</div>
@@ -329,14 +341,14 @@
 					<div class="layout-breadcrumb-seting-bar-flex-value">
 						<el-select
 							v-model="getThemeConfig.columnsAsideLayout"
-							placeholder="请选择"
+							:placeholder="$t('message.layout.selectPlaceholder')"
 							size="default"
 							style="width: 90px"
 							:disabled="getThemeConfig.layout !== 'columns' ? true : false"
 							@change="setLocalThemeConfig"
 						>
-							<el-option label="水平" value="columns-horizontal"></el-option>
-							<el-option label="垂直" value="columns-vertical"></el-option>
+							<el-option :label="$t('message.layout.columnsHorizontal')" value="columns-horizontal"></el-option>
+							<el-option :label="$t('message.layout.columnsVertical')" value="columns-vertical"></el-option>
 						</el-select>
 					</div>
 				</div>
@@ -444,7 +456,7 @@ import other from '/@/utils/other';
 import mittBus from '/@/utils/mitt';
 
 // Define reactive state and refs
-const { locale } = useI18n();
+const { locale, t } = useI18n();
 const storesThemeConfig = useThemeConfig();
 const { themeConfig } = storeToRefs(storesThemeConfig);
 const { copyText } = commonFunction();
@@ -459,7 +471,7 @@ const getThemeConfig = computed(() => {
 });
 // 1. Global theme
 const onColorPickerChange = () => {
-	if (!getThemeConfig.value.primary) return ElMessage.warning('全局主题 primary 颜色值不能为空');
+	if (!getThemeConfig.value.primary) return ElMessage.warning(t('message.layout.primaryRequired'));
 	// Darken the color
 	document.documentElement.style.setProperty('--el-color-primary-dark-2', `${getDarkColor(getThemeConfig.value.primary, 0.1)}`);
 	document.documentElement.style.setProperty('--el-color-primary', getThemeConfig.value.primary);

@@ -42,7 +42,7 @@
 	.layout-drawer-content-flex {
 		position: relative;
 		&::after {
-			content: '手机版不支持切换布局';
+			content: 'Layout switching is unavailable on mobile';
 			position: absolute;
 			top: 0;
 			right: 0;

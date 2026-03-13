@@ -49,7 +49,7 @@ const auditEventOptions = [
 
 export const getAuditEventOptions = (t: any) => auditEventOptions.map(({ value, key }) => ({ value, label: t(`message.system.audit.event_${key}`) }));
 
-export const getAddWhiteOpeartionOptins = () => ['==', '!=', '>', '<', '>=', '<=', 'contain', 'not_contain', 'in', 'not_in','regex'].map(l => ({ value: l, label: transAlarmList(l) }));
+export const getAddWhiteOperationOptions = () => ['==', '!=', '>', '<', '>=', '<=', 'contain', 'not_contain', 'in', 'not_in','regex'].map(l => ({ value: l, label: transAlarmList(l) }));
 
 export const getThreatRuleEnableOptions = () => [true, false].map(l => ({value: l, label: transThreatRule(`is_enable_${l}`)}));
 
@@ -57,6 +57,6 @@ export const getWhiteListOriginOptions = () => [1, 2].map(l => ({value: l, label
 
 export const getExportTaskTypeOptions = () => ['alert_event', 'alert_activity', 'baseline', 'leak', 'weakpwd', 'system', 'audit'].map(value => ({value, label: transExport(`type_${value}`)}));
 
-export const getExportTaskStatusOpitions = () => ['padding', 'doing', 'finish', 'failed'].map(value => ({value, label: transExport(`status_${value}`)}));
+export const getExportTaskStatusOptions = () => ['padding', 'doing', 'finish', 'failed'].map(value => ({value, label: transExport(`status_${value}`)}));
 
 export const getThreatBlockOriginOptions = () => [1, 2].map(l => ({value: l, label: transThreatBlock(`origin_${l}`)}));

@@ -16,14 +16,14 @@
 			<div class="layout-navbars-breadcrumb-user-icon">
 				<i
 					class="iconfont"
-					:class="state.disabledI18n === 'en' ? 'icon-fuhao-yingwen' : 'icon-fuhao-zhongwen'"
+					:class="state.disabledLocale === 'en' ? 'icon-fuhao-yingwen' : 'icon-fuhao-zhongwen'"
 					:title="$t('message.user.title1')"
 				></i>
 			</div>
 			<template #dropdown>
 				<el-dropdown-menu>
-					<el-dropdown-item command="zh-cn" :disabled="state.disabledI18n === 'zh-cn'">{{ $t('message.user.languageZhCn') }}</el-dropdown-item>
-					<el-dropdown-item command="en" :disabled="state.disabledI18n === 'en'">{{ $t('message.user.languageEn') }}</el-dropdown-item>
+					<el-dropdown-item command="zh-cn" :disabled="state.disabledLocale === 'zh-cn'">{{ $t('message.user.languageZhCn') }}</el-dropdown-item>
+					<el-dropdown-item command="en" :disabled="state.disabledLocale === 'en'">{{ $t('message.user.languageEn') }}</el-dropdown-item>
 				</el-dropdown-menu>
 			</template>
 		</el-dropdown>
@@ -115,7 +115,7 @@ const { themeConfig } = storeToRefs(storesThemeConfig);
 const searchRef = ref();
 const state = reactive({
 	isScreenfull: false,
-	disabledI18n: 'zh-cn',
+	disabledLocale: 'zh-cn',
 	disabledSize: 'large',
 	userName: '',
 });
@@ -213,7 +213,7 @@ const onLanguageChange = (lang: string, sync: boolean = false) => {
 	Local.set('themeConfig', themeConfig.value);
 	locale.value = lang;
 	other.useTitle();
-	initI18nOrSize('globalI18n', 'disabledI18n');
+	initI18nOrSize('globalI18n', 'disabledLocale');
 	if (sync === true) {
 		updateSysLanguage(lang).then(data => {
 			window.location.reload();
@@ -298,7 +298,7 @@ const initI18n = () => {
 onMounted(() => {
 	if (Local.get('themeConfig')) {
 		initI18nOrSize('globalComponentSize', 'disabledSize');
-		initI18nOrSize('globalI18n', 'disabledI18n');
+		initI18nOrSize('globalI18n', 'disabledLocale');
 	}
 	const userName = Local.get('userName');
 	if (userName) {

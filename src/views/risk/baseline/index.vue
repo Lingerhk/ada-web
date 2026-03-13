@@ -45,7 +45,7 @@
                                     {{ $t('message.tableCommon.checkAll') }}
                                 </el-checkbox>
                             </template>
-                            <el-option v-for="option in ResultOpitions" :key="option.value" :label="option.label" :value="option.value" />
+                            <el-option v-for="option in resultOptions" :key="option.value" :label="option.label" :value="option.value" />
                         </el-select>
                     </el-form-item>
                     <el-form-item>
@@ -129,7 +129,7 @@ const AddDrawer = defineAsyncComponent(() => import('./addDrawer.vue'));
 
 const SubTypeOptions = getSubTypeOptions(t);
 const LevelOptions = getLevelOptions(t);
-const ResultOpitions = getResultOptions();
+const resultOptions = getResultOptions();
 
 // Checkbox states for "Check All"
 const domainCheckAll = ref(false);
@@ -228,7 +228,7 @@ const handleLevelCheckAll = (val: boolean) => {
 const handleResultCheckAll = (val: boolean) => {
     resultIndeterminate.value = false;
     if (val) {
-        state.req.result = ResultOpitions.map(opt => opt.value);
+        state.req.result = resultOptions.map(opt => opt.value);
     } else {
         state.req.result = [];
     }
@@ -278,7 +278,7 @@ watch(() => state.req.result, (val) => {
     resultIndeterminate.value = false;
     if (val.length === 0) {
         resultCheckAll.value = false;
-    } else if (val.length === ResultOpitions.length) {
+    } else if (val.length === resultOptions.length) {
         resultCheckAll.value = true;
     } else {
         resultIndeterminate.value = true;

@@ -1,7 +1,7 @@
 <template>
 	<div v-show="state.isShowLockScreen">
 		<div class="layout-lock-screen-mask"></div>
-		<div class="layout-lock-screen-img" :class="{ 'layout-lock-screen-filter': state.isShowLoockLogin }"></div>
+		<div class="layout-lock-screen-img" :class="{ 'layout-lock-screen-filter': state.isShowLockLogin }"></div>
 		<div class="layout-lock-screen">
 			<div
 				class="layout-lock-screen-date"
@@ -25,7 +25,7 @@
 				</div>
 			</div>
 			<transition name="el-zoom-in-center">
-				<div v-show="state.isShowLoockLogin" class="layout-lock-screen-login">
+				<div v-show="state.isShowLockLogin" class="layout-lock-screen-login">
 					<div class="layout-lock-screen-login-box">
 						<div class="layout-lock-screen-login-box-img">
 							<img src="https://img2.baidu.com/it/u=1978192862,2048448374&fm=253&fmt=auto&app=138&f=JPEG?w=504&h=500" />
@@ -77,9 +77,9 @@ const state = reactive({
 	transparency: 1,
 	downClientY: 0,
 	moveDifference: 0,
-	isShowLoockLogin: false,
-	isFlags: false,
-	querySelectorEl: '' as HtmlType,
+	isShowLockLogin: false,
+	isDragging: false,
+	dragTargetEl: '' as HtmlType,
 	time: {
 		hm: '',
 		s: '',
@@ -93,12 +93,12 @@ const state = reactive({
 
 // Mouse down on desktop
 const onDownPc = (down: MouseEvent) => {
-	state.isFlags = true;
+	state.isDragging = true;
 	state.downClientY = down.clientY;
 };
 // Touch start on mobile
 const onDownApp = (down: TouchEvent) => {
-	state.isFlags = true;
+	state.isDragging = true;
 	state.downClientY = down.touches[0].clientY;
 };
 // Mouse move on desktop
@@ -113,8 +113,8 @@ const onMoveApp = (move: TouchEvent) => {
 };
 // Shared pointer-move handler
 const onMove = () => {
-	if (state.isFlags) {
-		const el = <HTMLElement>state.querySelectorEl;
+	if (state.isDragging) {
+		const el = <HTMLElement>state.dragTargetEl;
 		const opacitys = (state.transparency -= 1 / 200);
 		if (state.moveDifference >= 0) return false;
 		el.setAttribute('style', `top:${state.moveDifference}px;cursor:pointer;opacity:${opacitys};`);
@@ -126,23 +126,23 @@ const onMove = () => {
 			}, 300);
 		}
 		if (state.moveDifference === -el.clientHeight) {
-			state.isShowLoockLogin = true;
+			state.isShowLockLogin = true;
 			layoutLockScreenInputRef.value.focus();
 		}
 	}
 };
 // Pointer release
 const onEnd = () => {
-	state.isFlags = false;
+	state.isDragging = false;
 	state.transparency = 1;
 	if (state.moveDifference >= -400) {
-		(<HTMLElement>state.querySelectorEl).setAttribute('style', `top:0px;opacity:1;transition:all 0.3s ease;`);
+		(<HTMLElement>state.dragTargetEl).setAttribute('style', `top:0px;opacity:1;transition:all 0.3s ease;`);
 	}
 };
 // Get the initial draggable element
 const initGetElement = () => {
 	nextTick(() => {
-		state.querySelectorEl = layoutLockScreenDateRef.value;
+		state.dragTargetEl = layoutLockScreenDateRef.value;
 	});
 };
 // TimeInitialize

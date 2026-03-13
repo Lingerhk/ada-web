@@ -52,7 +52,7 @@ import { ref, watch } from 'vue'
 import { ElDialog, ElButton } from 'element-plus'
 import { transAlarmList as T } from '/@/utils/translator';
 import { AddThreatWhitelistReq, AttackFlowReply_Field, AddThreatWhitelistReq_ruleInfo, GetThreatWhitelistFieldReq } from '/@/api/grpc/ada';
-import { getAddWhiteOpeartionOptins, OptionType } from '/@/utils/constant';
+import { getAddWhiteOperationOptions, OptionType } from '/@/utils/constant';
 import { Delete, Plus } from '@element-plus/icons-vue';
 import api from '/@/api/grpc';
 import { alertApiError, alertResult } from '/@/utils/error';
@@ -78,7 +78,7 @@ const remark = ref('');
 
 // options
 const candicateFields = ref<Array<OptionType>>([]);
-const operOptions = getAddWhiteOpeartionOptins();
+const operOptions = getAddWhiteOperationOptions();
 
 const getCandicateField = (name: null | string) => {
     const otherOptions = candicateFields.value.filter(f => -1 === addReqRules.value.findIndex(addRule => addRule.info.field === f.value));

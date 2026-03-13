@@ -92,7 +92,7 @@ export default {
 		systemProxyIndex: 'System Proxy',
 		monitorIndex: 'Monitor',
 		threatIndex: 'Threat Detection',
-		saftyOverviewIndex: 'Overview',
+		safetyOverviewIndex: 'Overview',
 		alarmListIndex: 'Event List',
 		activityListIndex: 'Activity List',
 		threatKibana: 'Kibana Board',
@@ -322,7 +322,7 @@ export default {
 		},
 		remarkPlaceholder: 'Please enter remark (max 128 characters)',
 		remarkLimitWarning: 'Remark limit reached (max 10 entries), cannot add more',
-		saftyOverview: {
+		safetyOverview: {
 			topEvent: 'Top Event',
 			topActivity: 'Top Activity',
 			trendTitle: 'Event Risk Trend',

@@ -66,7 +66,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 				path: '/threat',
 				name: 'threatIndex',
 				component: () => import('/@/layout/routerView/parent.vue'),
-				redirect: '/saftyOverview',
+				redirect: '/safetyOverview',
 				meta: {
 					title: 'message.router.threatIndex',
 					isLink: '',
@@ -79,11 +79,11 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 				},
 				children: [
 					{
-						path: '/saftyOverview',
-						name: 'saftyOverviewIndex',
-						component: () => import('/@/views/threat/saftyOverview/index.vue'),
+						path: '/safetyOverview',
+						name: 'safetyOverviewIndex',
+						component: () => import('/@/views/threat/safetyOverview/index.vue'),
 						meta: {
-							title: 'message.router.saftyOverviewIndex',
+							title: 'message.router.safetyOverviewIndex',
 							isLink: '',
 							isHide: false,
 							isKeepAlive: true,
@@ -91,6 +91,14 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 							isIframe: false,
 							roles: ['admin', 'common'],
 							icon: 'iconfont icon-shuju',
+						},
+					},
+					{
+						path: '/saftyOverview',
+						name: 'legacySafetyOverviewIndex',
+						redirect: '/safetyOverview',
+						meta: {
+							isHide: true,
 						},
 					},
 					{

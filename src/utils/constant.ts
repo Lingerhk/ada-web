@@ -35,7 +35,7 @@ export const getMessageTypeOptions = (t: any) => ['alert', 'baseline', 'leak', '
 
 export const getMessageStatusOptions = (t: any) => [0, 1].map(l => ({ value: l, label: t(`message.system.message.status_${l}`) }));
 
-export const getSaftyOverviewDayOptions = (t: any) => [1, 7, 30].map(l => ({ value: l, label: t(`message.threat.saftyOverview.duration${l}`) }));
+export const getSafetyOverviewDayOptions = (t: any) => [1, 7, 30].map(l => ({ value: l, label: t(`message.threat.safetyOverview.duration${l}`) }));
 
 export const getAuditEventOptions = (t: any) => ['上传Logo', '删除域控', '测试域连接', '添加域控', '添加子用户', '登录', '编辑域控信息'].map(l => ({ value: l, label: t(`message.system.audit.event_${l}`) }));
 

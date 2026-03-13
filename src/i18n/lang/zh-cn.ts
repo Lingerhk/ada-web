@@ -92,7 +92,7 @@ export default {
 		systemProxyIndex: '系统代理',
 		monitorIndex: '系统监控',
 		threatIndex: '威胁检测',
-		saftyOverviewIndex: '攻击态势',
+		safetyOverviewIndex: '攻击态势',
 		alarmListIndex: '攻击事件',
 		activityListIndex: '行为分析',
 		threatKibana: '日志检索',
@@ -322,7 +322,7 @@ export default {
 		},
 		remarkPlaceholder: '请输入备注内容（最多128个字符）',
 		remarkLimitWarning: '备注已达上限（最多10条），无法继续添加',
-		saftyOverview: {
+		safetyOverview: {
 			topEvent: 'TOP10告警事件',
 			topActivity: 'TOP10威胁行为',
 			trendTitle: '告警事件风险趋势',

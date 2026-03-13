@@ -71,7 +71,7 @@
                         :key="plugin.iD" />
                 </template>
             </el-row>
-            <!-- 分页 -->
+            <!-- Pagination -->
             <el-row style="margin-top: 10px; padding: 0 20px;" justify="space-between">
                 <div></div>
                 <el-pagination v-if="state.data?.type !== 'weakpwd'" v-model:current-page="state.pageIdx"

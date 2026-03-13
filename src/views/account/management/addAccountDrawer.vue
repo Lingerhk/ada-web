@@ -242,7 +242,7 @@ const nextStep = async () => {
             mobile: state.data.mobile,
             email: state.data.email,
             remark: '',
-            department: '', // 部门
+            department: '', // Department
         } as AddUserReq)
         .then(resp => resp.response)
         .then(result => {

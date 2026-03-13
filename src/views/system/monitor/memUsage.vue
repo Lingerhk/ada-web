@@ -102,14 +102,14 @@ const initChart = () => {
         yAxis: {
             type: 'value',
             boundaryGap: [0, '25%'],
-            // name: '%', // 在这里添加单位
-            nameLocation: 'end',    // 单位显示在轴的顶部
+            // name: '%', // Add the unit here
+            nameLocation: 'end',    // Render the unit label at the top of the axis
             nameTextStyle: {
                 fontSize: 12,
                 padding: [0, 0, 20, -20]  // Adjust text padding for better positioning
             },
             // axisLabel: {
-            //   formatter: '{value} °C' // 添加单位 '°C'，你可以根据需要更换单位
+            // formatter: '{value} °C' // Add the unit '°C' here, or change it as needed
             // }
             axisLabel: {
                 formatter: (value) => {
@@ -127,10 +127,10 @@ const initChart = () => {
             }
         ],
         grid: {
-            left: '8%',   // 减少左侧填充
-            right: '4%',  // 减少右侧填充
-            // top: '10%',   // 可以根据需求调整
-            // bottom: '10%' // 可以根据需求调整
+            left: '8%',   // Reduce left padding
+            right: '4%',  // Reduce right padding
+            // top: '10%',   // Adjust as needed
+            // bottom: '10%' // Adjust as needed
         },
     };
 

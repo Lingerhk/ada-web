@@ -73,9 +73,9 @@ const dayOptions = getSaftyOverviewDayOptions(t);
 
 const state = reactive({
     req: {
-        domain: 'all', // 必选，all|domainX
-        type: 'activity', // [(validator.field) = {regex: "activity|event"}]; // 必选，activity|event
-        duration: 30, // 必选，时间范围/天， 可选值: 1/7/30 （默认为7）
+        domain: 'all', // Required: `all` or `domainX`
+        type: 'activity', // [(validator.field) = {regex: "activity|event"}]; // Required: `activity` or `event`
+        duration: 30, // Required time range in days. Allowed values: 1, 7, or 30. Default: 7.
     } as ThreatTopsReq,
 
     activityReply: {

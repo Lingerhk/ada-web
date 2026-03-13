@@ -27,9 +27,9 @@ const initChart = () => {
                 text: '',
             },
             tooltip: {
-                trigger: 'axis',  // 设置 tooltip 按照坐标轴显示
+                trigger: 'axis',  // Configure the tooltip to track the axis
                 axisPointer: {
-                    type: 'shadow'  // 使用阴影指示器
+                    type: 'shadow'  // Use a shadow pointer
                 }
             },
             legend: {

@@ -1,4 +1,4 @@
-/* 初始化样式
+/* Global reset styles
 ------------------------------- */
 * {
 	margin: 0;
@@ -41,7 +41,7 @@ body,
 	position: relative;
 }
 
-/* 主布局样式
+/* Main layout styles
 ------------------------------- */
 .layout-container {
 	width: 100%;
@@ -78,7 +78,7 @@ body,
 		background-color: var(--next-bg-main-color);
 		display: flex;
 		flex-direction: column;
-		// 内层 el-scrollbar样式，用于界面高度自适应（main.vue）
+		// Inner `el-scrollbar` styles used for adaptive page height (`main.vue`)
 		.layout-main-scroll {
 			@extend .layout-flex;
 			.layout-parent {
@@ -87,7 +87,7 @@ body,
 			}
 		}
 	}
-	// 用于界面高度自适应
+	// Used for adaptive page height
 	.layout-padding {
 		@extend .layout-pd;
 		position: absolute;
@@ -109,7 +109,7 @@ body,
 			overflow: hidden;
 		}
 	}
-	// 用于界面高度自适应，主视图区 main 的内边距，用于 iframe
+	// Padding for the main content area in adaptive-height layouts, especially for iframes
 	.layout-padding-unset {
 		padding: 0 !important;
 		&-view {
@@ -117,7 +117,7 @@ body,
 			border: none !important;
 		}
 	}
-	// 用于设置 iframe loading 时的高度（loading 垂直居中显示）
+	// Height used while iframe content is loading so the loader stays vertically centered
 	.layout-iframe {
 		.el-loading-parent--relative {
 			height: 100%;
@@ -129,7 +129,7 @@ body,
 	.layout-el-aside-br-color {
 		border-right: 1px solid var(--el-border-color-light, #ebeef5);
 	}
-	// pc端左侧导航样式
+	// Desktop sidebar styles
 	.layout-aside-pc-220 {
 		width: 220px !important;
 		transition: width 0.3s ease;
@@ -144,7 +144,7 @@ body,
 		position: relative;
 		left: -1px;
 	}
-	// 手机端左侧导航样式
+	// Mobile sidebar styles
 	.layout-aside-mobile {
 		position: fixed;
 		top: 0;
@@ -184,7 +184,7 @@ body,
 	}
 }
 
-/* element plus 全局样式
+/* Global Element Plus styles
 ------------------------------- */
 .layout-breadcrumb-seting {
 	.el-divider {
@@ -192,7 +192,7 @@ body,
 	}
 }
 
-/* nprogress 进度条跟随主题颜色
+/* Match the NProgress bar color to the theme
 ------------------------------- */
 #nprogress {
 	.bar {
@@ -201,7 +201,7 @@ body,
 	}
 }
 
-/* flex 弹性布局
+/* Flex layout utilities
 ------------------------------- */
 .flex {
 	display: flex;
@@ -233,26 +233,26 @@ body,
 	}
 }
 
-/* cursor 鼠标形状
+/* Cursor utilities
 ------------------------------- */
-// 默认
+// Default
 .cursor-default {
 	cursor: default !important;
 }
-// 帮助
+// Help
 .cursor-help {
 	cursor: help !important;
 }
-// 手指
+// Pointer
 .cursor-pointer {
 	cursor: pointer !important;
 }
-// 移动
+// Move
 .cursor-move {
 	cursor: move !important;
 }
 
-/* 宽高 100%
+/* Full width and height utilities
 ------------------------------- */
 .w100 {
 	width: 100% !important;
@@ -270,7 +270,7 @@ body,
 	min-height: 100vh !important;
 }
 
-/* 颜色值
+/* Color utilities
 ------------------------------- */
 .color-primary {
 	color: var(--el-color-primary);
@@ -288,7 +288,7 @@ body,
 	color: var(--el-color-info);
 }
 
-/* 字体大小全局样式
+/* Global font-size utilities
 ------------------------------- */
 @for $i from 10 through 32 {
 	.font#{$i} {
@@ -296,7 +296,7 @@ body,
 	}
 }
 
-/* 外边距、内边距全局样式
+/* Global margin and padding utilities
 ------------------------------- */
 @for $i from 1 through 35 {
 	.mt#{$i} {

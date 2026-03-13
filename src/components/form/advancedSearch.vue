@@ -1,18 +1,18 @@
-<!-- 扩展：1.更新searchCandidates；2. 扩展el-space中的v-if组件；3. watch(() => model.value.name, ...)中添加默认值。 -->
+<!-- Extension guide: 1. update `searchCandidates`; 2. extend the `v-if` branches inside `el-space`; 3. add the default value in `watch(() => model.value.name, ...)`. -->
 <template>
     <el-space wrap size="small">
-        <!-- 字段类型 -->
+        <!-- Field type -->
         <el-select v-model="model.name" style="width: 160px;" size="default" :placeholder="model.name">
             <el-option v-for="option in searchCandidates" :value="option.name"
                 :label="$t(`message.advancedSearch.${option.name}`)" :key="option.name"></el-option>
         </el-select>
-        <!-- 操作类型 -->
+        <!-- Operator type -->
         <el-select v-if="model.name !== ''" v-model="model.type" style="width: 160px;" size="default"
             :placeholder="model.type">
             <el-option v-for="option in getTypeOptions()" :value="option.value"
                 :label="$t(`message.advancedSearch.${option.label}`)" :key="option.value"></el-option>
         </el-select>
-        <!-- 输入 -->
+        <!-- Input -->
         <!-- 1. level -->
         <MultiSelector v-if="model.name === 'level'" v-model:selected="model.value" :options="getSelectOptions()" />
         <!-- 2. status -->
@@ -22,18 +22,18 @@
             :type="model.type === 'bt' ? 'datetimerange' : 'datetime'" :range-separator="$t('message.time.to')"
             :start-placeholder="$t('message.time.start')" :end-placeholder="$t('message.time.end')"
             :style="model.type !== 'bt' ? { width: '240px' } : {}" />
-        <!-- 4. 用户 -->
+        <!-- 4. User -->
         <el-input v-if="model.name === 'username'" size="default" v-model="model.value[0]"></el-input>
         <!-- 5. eventStatus -->
         <el-radio-group v-if="model.name === 'eventStatus'" v-model="model.value[0]">
             <el-radio-button v-for="opt in getSelectOptions()" :key="opt.value" :value="opt.value" :label="opt.label">
             </el-radio-button>
         </el-radio-group>
-        <!-- 6. 威胁名称 -->
+        <!-- 6. Threat name -->
         <MultiSelector v-if="model.name === 'title'" v-model:selected="model.value" :options="getSelectOptions()" />
-        <!-- 7. 所在域 -->
+        <!-- 7. Domain -->
         <MultiSelector v-if="model.name === 'dcHostname'" v-model:selected="model.value" :options="getSelectOptions()" />
-        <!-- 8. 计算机IP -->
+        <!-- 8. Computer IP -->
         <el-input v-if="model.name === 'ip'" size="default" v-model="model.value[0]"></el-input>
     </el-space>
 </template>
@@ -129,7 +129,7 @@ onMounted(() => {
     listDomainOptions().then(options => domainOptions.value = options);
 });
 
-// 初始化
+// Initialize
 watch(() => model.value.name, (value) => {
         if (value === 'level') {
             model.value.type = 'eq';
@@ -147,7 +147,7 @@ watch(() => model.value.name, (value) => {
             model.value.type = 'eq';
             model.value.value = [];
         } else {
-            // 字符串默认
+            // Default string value
             model.value.type = 'eq';
             model.value.value = [''];
         }

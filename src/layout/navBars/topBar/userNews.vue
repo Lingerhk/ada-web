@@ -43,7 +43,7 @@ const props = defineProps({
 const news = ref(props.modelValue ?? []);
 const router = useRouter();
 
-// 全部已读点击
+// Handle the mark-all-as-read action
 const onAllReadClick = () => {
 	const ids = news.value.map(n => n.id);
 	setNotificationRead(ids)
@@ -56,7 +56,7 @@ const onAllReadClick = () => {
 		.catch(err => alertApiError(err))
 };
 
-// 前往通知中心点击
+// Handle navigation to the notification center
 const onGotoMessageCenter = () => {
 	router.push('/message');
 };

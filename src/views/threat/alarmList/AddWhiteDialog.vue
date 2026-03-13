@@ -185,8 +185,8 @@ function confirm() {
     const req: AddThreatWhitelistReq = {
         ruleId: props.flowId,
         domain: props.domain,
-        rules: addReqRules.value,// 规则信息
-        remark: remark.value, // 备注
+        rules: addReqRules.value,// Rule details
+        remark: remark.value, // Remark
     }
 
     console.log("addThreatWhitelist:", req);

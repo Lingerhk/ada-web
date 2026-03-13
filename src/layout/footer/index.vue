@@ -9,7 +9,7 @@
 <script setup lang="ts" name="layoutFooter">
 import { onMounted } from 'vue';
 
-// 调试信息
+// Debug info
 onMounted(() => {
 	console.log('Footer component mounted!');
 });

@@ -123,13 +123,13 @@ const state = reactive({
     req: {
         pageIdx: 1, // [(validator.field) = {int_gt: 0}];
         pageSize: 10,
-        ruleId: '', // 可选,如果不为空则只返回该规则ID对应的白名单规则
-        domain: [], // 可选,为空则查询所有域
-        origin: [], // 可选，来源，手动添加: 1 自动添加:2
-        startTm: '', //  可选，开始时间
-        endTm: '', //  可选，结束时间
-        search: '', // 可选，搜索关键字（规则名称）
-        orderUpdateTm: -1, // 更新时间排序 1升序 -1降序, 默认-1
+        ruleId: '', // Optional. If not empty, only return whitelist rules for this rule ID
+        domain: [], // Optional. If empty, query all domains
+        origin: [], // Optional source filter: 1 for manual add, 2 for automatic add
+        startTm: '', // Optional start time
+        endTm: '', // Optional end time
+        search: '', // Optional search keyword (rule name)
+        orderUpdateTm: -1, // Sort by updated time: 1 ascending, -1 descending. Default: -1.
     } as ListThreatWhitelistReq,
     loading: false,
     reply: {} as ListThreatWhitelistReply,

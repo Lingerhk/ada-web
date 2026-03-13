@@ -5,7 +5,7 @@
 			<span>{{ state.time.txt }}</span>
 		</div>
 		<div class="up-right">
-			<!-- TODO: i18n & 对接后端 -->
+			<!-- TODO: add i18n and connect to the backend -->
 			<el-form :model="state.form" style="width: 200px">
 				<el-form-item>
 					<el-select v-model="state.form.domain" placeholder="所有域">
@@ -23,7 +23,7 @@
 import { reactive, onBeforeMount, onUnmounted } from 'vue';
 import { formatDate } from '/@/utils/formatTime';
 
-// 定义变量内容
+// Define reactive state and refs
 const state = reactive({
 	time: {
 		txt: '',
@@ -34,18 +34,18 @@ const state = reactive({
 	}
 });
 
-// 初始化时间
+// Initialize the time display
 const initTime = () => {
 	state.time.txt = formatDate(new Date(), 'YYYY-mm-dd HH:MM:SS WWW QQQQ');
 	state.time.fun = window.setInterval(() => {
 		state.time.txt = formatDate(new Date(), 'YYYY-mm-dd HH:MM:SS WWW QQQQ');
 	}, 1000);
 };
-// 页面加载前
+// Before mount
 onBeforeMount(() => {
 	initTime();
 });
-// 页面卸载时
+// On unmount
 onUnmounted(() => {
 	window.clearInterval(state.time.fun);
 });

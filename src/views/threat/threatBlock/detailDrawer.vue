@@ -15,11 +15,11 @@
                             style="width: 100%;">
                         </el-select>
                     </el-form-item>
-                    <!-- 阻断用户 -->
+                    <!-- Blocked users -->
                     <el-form-item prop="userBlock" :label="T('userBlock')">
                         <el-switch v-model="state.form.userBlock" />
                     </el-form-item>
-                    <!-- 阻断用户列表 -->
+                    <!-- Blocked user list -->
                     <template v-if="state.form.userBlock">
                         <el-form-item v-for="(_, idx) in state.form.userList" :key="idx"
                             :rules="[{ required: true, message: T('addBlockUserPlaceholder') }]">
@@ -29,11 +29,11 @@
                             </el-space>
                         </el-form-item>
                     </template>
-                    <!-- 阻断IP -->
+                    <!-- Blocked IPs -->
                     <el-form-item prop="ipBlock" :label="T('ipBlock')">
                         <el-switch v-model="state.form.ipBlock" />
                     </el-form-item>
-                    <!-- 阻断IP列表 -->
+                    <!-- Blocked IP list -->
                     <template v-if="state.form.ipBlock">
                         <el-form-item v-for="(_, idx) in state.form.ipList" :key="idx"
                             :rules="[{ required: true, validator: validateIp, message: T('addBlockIpPlaceholder') }]">

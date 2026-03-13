@@ -1,16 +1,16 @@
 /**
- * mitt 事件类型定义
+ * mitt event type definitions
  *
- * @method openSetingsDrawer 打开布局设置弹窗
- * @method restoreDefault 分栏布局，鼠标移入、移出数据显示
- * @method setSendColumnsChildren 分栏布局，鼠标移入、移出菜单数据传入到 navMenu 下的菜单中
- * @method setSendClassicChildren 经典布局，开启切割菜单时，菜单数据传入到 navMenu 下的菜单中
- * @method getBreadcrumbIndexSetFilterRoutes 布局设置弹窗，开启切割菜单时，菜单数据传入到 navMenu 下的菜单中
- * @method layoutMobileResize 浏览器窗口改变时，用于适配移动端界面显示
- * @method openOrCloseSortable 布局设置弹窗，开启 TagsView 拖拽
- * @method openShareTagsView 布局设置弹窗，开启 TagsView 共用
- * @method onTagsViewRefreshRouterView tagsview 刷新界面
- * @method onCurrentContextmenuClick tagsview 右键菜单每项点击时
+ * @method openSetingsDrawer Open the layout settings drawer
+ * @method restoreDefault Columns layout hover state updates
+ * @method setSendColumnsChildren Pass columns-layout hover menu data into the `navMenu` menu
+ * @method setSendClassicChildren Pass classic-layout split-menu data into the `navMenu` menu
+ * @method getBreadcrumbIndexSetFilterRoutes When split menus are enabled from layout settings, pass the menu data into `navMenu`
+ * @method layoutMobileResize Used when the browser window changes size to adapt the mobile layout
+ * @method openOrCloseSortable Enable tagsView dragging from the layout settings drawer
+ * @method openShareTagsView Enable shared tagsView from the layout settings drawer
+ * @method onTagsViewRefreshRouterView Refresh the tagsView page
+ * @method onCurrentContextmenuClick Handle each tagsView context-menu click
  */
 declare type MittType<T = any> = {
 	openSetingsDrawer?: string;
@@ -25,13 +25,13 @@ declare type MittType<T = any> = {
 	onCurrentContextmenuClick?: T;
 };
 
-// mitt 参数类型定义
+// mitt payload type definitions
 declare type LayoutMobileResize = {
 	layout: string;
 	clientWidth: number;
 };
 
-// mitt 参数菜单类型
+// mitt menu payload type
 declare type MittMenu = {
 	children: RouteRecordRaw[];
 	item?: RouteItem;

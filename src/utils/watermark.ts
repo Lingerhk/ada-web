@@ -1,4 +1,4 @@
-// 页面添加水印效果
+// Add a watermark overlay to the page
 const setWatermark = (str: string) => {
 	const id = '1.23452384164.123412416';
 	if (document.getElementById(id) !== null) document.body.removeChild(<HTMLElement>document.getElementById(id));
@@ -26,22 +26,22 @@ const setWatermark = (str: string) => {
 };
 
 /**
- * 页面添加水印效果
- * @method set 设置水印
- * @method del 删除水印
+ * Add a watermark overlay to the page
+ * @method set Set the watermark
+ * @method del Remove the watermark
  */
 const watermark = {
-	// 设置水印
+	// Set the watermark
 	set: (str: string) => {
 		let id = setWatermark(str);
 		if (document.getElementById(id) === null) id = setWatermark(str);
 	},
-	// 删除水印
+	// Remove the watermark
 	del: () => {
 		let id = '1.23452384164.123412416';
 		if (document.getElementById(id) !== null) document.body.removeChild(<HTMLElement>document.getElementById(id));
 	},
 };
 
-// 导出方法
+// Export the helper
 export default watermark;

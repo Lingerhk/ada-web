@@ -2,7 +2,7 @@
     <div class="layout-pd">
         <el-card shadow="hover">
             <el-row justify="space-between">
-                <!-- 搜索 -->
+                <!-- Search controls -->
                 <el-form :inline="true">
                     <el-form-item :label="$t('message.system.audit.event')">
                         <el-select v-model="state.req.filterEvent" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 250px" :placeholder="$t('message.system.audit.selectEvent')" popper-class="custom-header">
@@ -29,7 +29,7 @@
                     </el-space>
                 </el-form>
             </el-row>
-            <!-- 下方显示列表 -->
+            <!-- Result list below -->
             <el-row style="margin-top: 10px">
                 <el-table ref="tableRef" :data="state.reply.list" v-loading="state.loading" :border="true"
                     row-class-name="pointer-cursor" style="width: 100%" @row-click="handleRowClick"
@@ -60,7 +60,7 @@
                     </el-table-column>
                 </el-table>
             </el-row>
-            <!-- 分页 -->
+            <!-- Pagination -->
             <el-row style="margin-top: 10px" justify="space-between">
                 <div>
                 </div>
@@ -104,11 +104,11 @@ const state = reactive({
     req: {
         pageIdx: 1, // [(validator.field) = {int_gt: 0}];
         pageSize: 10,
-        startTm: '', // 开始时间
-        endTm: '', // 结束时间
+        startTm: '', // Start time
+        endTm: '', // End time
         keyword: '',
-        filterEvent: [], // 事件
-        createSort: -1, // 审计时间 1升级 -1降序
+        filterEvent: [], // Events
+        createSort: -1, // Sort by audit time: `1` asc, `-1` desc
     } as proto.ListAuditLogReq,
     reply: {} as proto.ListAuditLogReply,
     exhausted: false,

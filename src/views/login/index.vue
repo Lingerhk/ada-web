@@ -16,10 +16,10 @@ import { useThemeConfig } from '/@/stores/themeConfig';
 import { NextLoading } from '/@/utils/loading';
 import BackgroundImage from '/@/assets/logo-bg.png'
 
-// 引入组件
+// Import components
 const Account = defineAsyncComponent(() => import('/@/views/login/component/account.vue'));
 
-// 定义变量内容
+// Define reactive state and refs
 const { t } = useI18n(); // Initialize t function
 const storesThemeConfig = useThemeConfig();
 const { themeConfig } = storeToRefs(storesThemeConfig);
@@ -28,11 +28,11 @@ const state = reactive({
 	isScan: false,
 });
 
-// 获取布局配置信息
+// Read layout settings
 const getThemeConfig = computed(() => {
 	return themeConfig.value;
 });
-// 页面加载时
+// On mount
 onMounted(() => {
 	NextLoading.done();
 });
@@ -41,8 +41,8 @@ onMounted(() => {
 <style scoped lang="scss">
 .login-container {
 	height: 100%;
-	justify-content: center; // 水平居中
-	align-items: center; // 垂直居中
+	justify-content: center; // Center horizontally
+	align-items: center; // Center vertically
 	background: var(--el-color-white);
 	background-size: cover;
 	background-repeat: no-repeat;

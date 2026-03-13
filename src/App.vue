@@ -20,13 +20,13 @@ import { Local, Session } from '/@/utils/storage';
 import mittBus from '/@/utils/mitt';
 import setIntroduction from '/@/utils/setIconfont';
 
-// 引入组件
+// Import components
 const LockScreen = defineAsyncComponent(() => import('/@/layout/lockScreen/index.vue'));
 const Setings = defineAsyncComponent(() => import('/@/layout/navBars/topBar/setings.vue'));
 const CloseFull = defineAsyncComponent(() => import('/@/layout/navBars/topBar/closeFull.vue'));
 const ChangePasswordDialog = defineAsyncComponent(() => import('/@/components/secret/ChangePasswordDialog.vue'));
 
-// 定义变量内容
+// Define reactive state and refs
 const { messages, locale } = useI18n();
 const setingsRef = ref();
 const route = useRoute();
@@ -34,14 +34,14 @@ const stores = useTagsViewRoutes();
 const storesThemeConfig = useThemeConfig();
 const { themeConfig } = storeToRefs(storesThemeConfig);
 
-// 设置锁屏时组件显示隐藏
+// Control component visibility while the screen is locked
 const setLockScreen = computed(() => {
-	// 防止锁屏后，刷新出现不相关界面
+	// Prevent unrelated pages from showing after refresh while locked
 	// https://gitee.com/lyt-top/vue-next-admin/issues/I6AF8P
 	return themeConfig.value.isLockScreen ? themeConfig.value.lockScreenTime > 1 : themeConfig.value.lockScreenTime >= 0;
 });
 
-// 获取版本号
+// Get the version number
 const getVersion = computed(() => {
 	let isVersion = false;
 	if (route.path !== '/login') {
@@ -53,44 +53,44 @@ const getVersion = computed(() => {
 
 const needChangePassword = ref(false);
 
-// 获取全局组件大小
+// Get the global component size
 const getGlobalComponentSize = computed(() => {
 	return other.globalComponentSize();
 });
-// 获取全局 i18n
+// Get the global i18n instance
 const getGlobalI18n = computed(() => {
 	return messages.value[locale.value];
 });
-// 设置初始化，防止刷新时恢复默认
+// Apply cached settings on startup so refreshes do not restore defaults
 onBeforeMount(() => {
-	// 设置批量第三方 icon 图标
+	// Register third-party icon assets
 	setIntroduction.cssCdn();
-	// 设置批量第三方 js
+	// Register third-party scripts
 	setIntroduction.jsCdn();
 });
-// 页面加载时
+// On mount
 onMounted(() => {
 	nextTick(() => {
-		// 监听布局配'置弹窗点击打开
+		// Watch the layout settings drawer opening
 		mittBus.on('openSetingsDrawer', () => {
 			setingsRef.value.openDrawer();
 		});
-		// 获取缓存中的布局配置
+		// Get the cached layout settings
 		if (Local.get('themeConfig')) {
 			storesThemeConfig.setThemeConfig({ themeConfig: Local.get('themeConfig') });
 			document.documentElement.style.cssText = Local.get('themeConfigStyle');
 		}
-		// 获取缓存中的全屏配置
+		// Get the cached full-screen configuration
 		if (Session.get('isTagsViewCurrenFull')) {
 			stores.setCurrenFullscreen(Session.get('isTagsViewCurrenFull'));
 		}
 	});
 });
-// 页面销毁时，关闭监听布局配置/i18n监听
+// Remove the layout-settings and i18n watchers when the page is destroyed
 onUnmounted(() => {
 	mittBus.off('openSetingsDrawer', () => {});
 });
-// 监听路由的变化，设置网站标题
+// Watch route changes and update the document title
 watch(
 	() => route.path,
 	() => {

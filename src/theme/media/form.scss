@@ -1,29 +1,29 @@
 @import './index.scss';
 
-/* 页面宽度小于576px
+/* Viewport width below 576px
 ------------------------------- */
 @media screen and (max-width: $xs) {
 	.el-form-item__label {
 		width: 100% !important;
 		text-align: left !important;
-		// 移动端 label 右对齐问题
+		// Fix right-aligned labels on mobile
 		justify-content: flex-start !important;
 	}
 	.el-form-item__content {
 		margin-left: 0 !important;
 	}
 	.el-form-item {
-		// 响应式表单时，登录页需要重新处理
+		// The login page needs custom handling in responsive form layouts
 		display: unset !important;
 	}
-	// 表格演示中的表单筛选
+	// Form filters in the table demo
 	.table-form-btn {
 		display: flex !important;
 		.el-form-item__label {
 			width: auto !important;
 		}
 	}
-	// 表格演示中的表单筛选最大高度，适配移动端
+	// Maximum height for table-demo filters on mobile
 	.table-search-container {
 		max-height: 160px;
 		overflow: auto;

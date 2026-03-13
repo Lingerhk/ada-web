@@ -1,7 +1,7 @@
 import { nextTick } from 'vue';
 import * as svg from '@element-plus/icons-vue';
 
-// 获取阿里字体图标
+// Get Alibaba iconfont icons
 const getAlicdnIconfont = () => {
 	return new Promise((resolve, reject) => {
 		nextTick(() => {
@@ -28,7 +28,7 @@ const getAlicdnIconfont = () => {
 	});
 };
 
-// 初始化获取 css 样式，获取 element plus 自带 svg 图标，增加了 ele- 前缀，使用时：ele-Aim
+// Read stylesheets and collect built-in Element Plus SVG icons with the `ele-` prefix, for example `ele-Aim`
 const getElementPlusIconfont = () => {
 	return new Promise((resolve, reject) => {
 		nextTick(() => {
@@ -43,7 +43,7 @@ const getElementPlusIconfont = () => {
 	});
 };
 
-// 初始化获取 css 样式，这里使用 fontawesome 的图标
+// Read stylesheets and collect Font Awesome icons
 const getAwesomeIconfont = () => {
 	return new Promise((resolve, reject) => {
 		nextTick(() => {
@@ -77,10 +77,10 @@ const getAwesomeIconfont = () => {
 };
 
 /**
- * 获取字体图标 `document.styleSheets`
- * @method ali 获取阿里字体图标 `<i class="iconfont 图标类名"></i>`
- * @method ele 获取 element plus 自带图标 `<i class="图标类名"></i>`
- * @method ali 获取 fontawesome 的图标 `<i class="fa 图标类名"></i>`
+ * Read icon fonts from `document.styleSheets`
+ * @method ali Get Alibaba iconfont icons such as `<i class="iconfont icon-name"></i>`
+ * @method ele Get built-in Element Plus icons such as `<i class="icon-name"></i>`
+ * @method fa Get Font Awesome icons such as `<i class="fa icon-name"></i>`
  */
 const initIconfont = {
 	// iconfont
@@ -97,5 +97,5 @@ const initIconfont = {
 	},
 };
 
-// 导出方法
+// Export the helper
 export default initIconfont;

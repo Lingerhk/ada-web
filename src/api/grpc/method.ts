@@ -206,11 +206,11 @@ export const getUnreadNotification = async () => {
 	const req: ListNotifyReq = {
 		pageIdx: 1, // [(validator.field) = {int_gt: 0}];
 		pageSize: 5,
-		msgType: [], // 消息类型,Leak漏洞监测，Baseline主动检测，Alert告警事件,System系统告警
-		status: [0], // 消息状态: 0未读，1已读
-		startTm: formatApiTime(dayRange[0].toString()), //  可选，开始时间
-		endTm: formatApiTime(dayRange[1].toString()), //  可选，结束时间
-		orderCreateTm: -1, // 创建时间排序 1升序 -1降序, 默认-1
+		msgType: [], // Message types: Leak vulnerability checks, Baseline scans, Alert events, and System alerts
+		status: [0], // Message status: 0 unread, 1 read
+		startTm: formatApiTime(dayRange[0].toString()), // Optional start time
+		endTm: formatApiTime(dayRange[1].toString()), // Optional end time
+		orderCreateTm: -1, // Sort by created time: 1 ascending, -1 descending. Default: -1.
 	};
 
 	return api.listNotify(req).then((resp) => resp.response);

@@ -2,7 +2,7 @@
     <div class="layout-pd">
         <el-card shadow="hover">
             <el-row justify="space-between">
-                <!-- 搜索 -->
+                <!-- Search controls -->
                 <el-form :inline="true">
                     <el-form-item :label="transExport('type')">
                         <el-select v-model="state.req.type" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="transExport('selectType')" popper-class="custom-header">
@@ -30,7 +30,7 @@
                             :end-placeholder="$t('message.time.end')" :shortcuts="shortcuts" />
                     </el-form-item>
                 </el-form>
-                <!-- 右侧按钮 -->
+                <!-- Actions on the right -->
                 <el-space wrap size="default"
                     style="min-width: 450px; justify-content:right; align-items: flex-start; padding-top: 5px;">
                 </el-space>
@@ -115,10 +115,10 @@ const state = reactive({
         pageIdx: 1, // start index with 1
         pageSize: 10, // if pageSize is -1, we will return all nodes
         type: [], // [(validator.field) = {regex: "all|alert|baseline|leak|weakpwd|system|audit"}];  // alert/baseline/leak/weakpwd/system/audit
-        status: [], // [(validator.field) = {regex: "all|padding|doing|finish|failed"}]; // 任务状态: padding,doing,finish,failed
-        startTm: '', //  可选，开始时间
-        endTm: '', //  可选，结束时间
-        sortTime: -1, // 根据时间排序，1升序，-1降序,0为默认顺序
+        status: [], // [(validator.field) = {regex: "all|padding|doing|finish|failed"}]; // Task status: padding|doing|finish|failed
+        startTm: '', // Optional start time
+        endTm: '', // Optional end time
+        sortTime: -1, // Sort by time: 1 ascending, -1 descending, 0 for the default order
     } as ListExportTaskReq,
     reply: {} as ListExportTaskReply,
     loading: false,

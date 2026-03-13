@@ -247,7 +247,7 @@ import type { RpcOptions } from "@protobuf-ts/runtime-rpc";
  */
 export interface IADAClient {
     /**
-     * User 账户管理
+     * User account management
      *
      * @generated from protobuf rpc: Login(ada.LoginReq) returns (ada.LoginReply);
      */
@@ -281,7 +281,7 @@ export interface IADAClient {
      */
     userExists(input: UserExistsReq, options?: RpcOptions): UnaryCall<UserExistsReq, UserExistsReply>;
     /**
-     * Authority 二次验证相关接口
+     * Authority and MFA-related APIs
      *
      * @generated from protobuf rpc: CheckMfa(ada.CheckMfaReq) returns (ada.CheckMfaReply);
      */
@@ -303,7 +303,7 @@ export interface IADAClient {
      */
     resetPassword(input: ResetPasswordReq, options?: RpcOptions): UnaryCall<ResetPasswordReq, ResetPasswordReply>;
     /**
-     * AccessKey API密钥管理
+     * AccessKey API key management
      *
      * @generated from protobuf rpc: ListAccessKey(ada.ListAccessKeyReq) returns (ada.ListAccessKeyReply);
      */
@@ -369,8 +369,8 @@ export interface IADAClient {
      */
     updateSensorVersion(input: UpdateSensorVersionReq, options?: RpcOptions): UnaryCall<UpdateSensorVersionReq, UpdateSensorVersionReply>;
     /**
-     * 系统信息
-     * 1.基本信息
+     * System information
+     * 1. Basic information
      *
      * @generated from protobuf rpc: GetSystemInfo(ada.GetSystemInfoReq) returns (ada.GetSystemInfoReply);
      */
@@ -396,7 +396,7 @@ export interface IADAClient {
      */
     updateSystemProxy(input: UpdateSystemProxyReq, options?: RpcOptions): UnaryCall<UpdateSystemProxyReq, UpdateSystemProxyReply>;
     /**
-     * 2.系统监控: load|cpu|mem|net_rx|net_tx
+     * 2. System metrics: load|cpu|mem|net_rx|net_tx
      *
      * @generated from protobuf rpc: GetSystemStats(ada.GetSystemStatsReq) returns (ada.GetSystemStatsReply);
      */
@@ -406,7 +406,7 @@ export interface IADAClient {
      */
     setSystemStatsCfg(input: SetSystemStatsCfgReq, options?: RpcOptions): UnaryCall<SetSystemStatsCfgReq, SetSystemStatsCfgReply>;
     /**
-     * 3.授权管理
+     * 3. License management
      *
      * @generated from protobuf rpc: GetLicense(ada.GetLicenseReq) returns (ada.GetLicenseReply);
      */
@@ -416,13 +416,13 @@ export interface IADAClient {
      */
     updateLicense(input: UpdateLicenseReq, options?: RpcOptions): UnaryCall<UpdateLicenseReq, UpdateLicenseReply>;
     /**
-     * 4.调试工具
+     * 4. Diagnostic tools
      *
      * @generated from protobuf rpc: NetworkDebug(ada.NetworkDebugReq) returns (ada.NetworkDebugReply);
      */
     networkDebug(input: NetworkDebugReq, options?: RpcOptions): UnaryCall<NetworkDebugReq, NetworkDebugReply>;
     /**
-     * 告警配置
+     * Alert configuration
      *
      * @generated from protobuf rpc: ListNotifyConf(ada.ListNotifyConfReq) returns (ada.ListNotifyConfReply);
      */
@@ -448,7 +448,7 @@ export interface IADAClient {
      */
     testNotifyConf(input: TestNotifyConfReq, options?: RpcOptions): UnaryCall<TestNotifyConfReq, TestNotifyConfReply>;
     /**
-     * 导出管理
+     * Export management
      *
      * @generated from protobuf rpc: ListExportTask(ada.ListExportTaskReq) returns (ada.ListExportTaskReply);
      */
@@ -462,7 +462,7 @@ export interface IADAClient {
      */
     deleteExportTask(input: DeleteExportTaskReq, options?: RpcOptions): UnaryCall<DeleteExportTaskReq, DeleteExportTaskReply>;
     /**
-     * 消息中心
+     * Message center
      *
      * @generated from protobuf rpc: ListNotify(ada.ListNotifyReq) returns (ada.ListNotifyReply);
      */
@@ -476,20 +476,20 @@ export interface IADAClient {
      */
     statsNotify(input: StatsNotifyReq, options?: RpcOptions): UnaryCall<StatsNotifyReq, StatsNotifyReply>;
     /**
-     * 日志审计
+     * Audit logs
      *
      * @generated from protobuf rpc: ListAuditLog(ada.ListAuditLogReq) returns (ada.ListAuditLogReply);
      */
     listAuditLog(input: ListAuditLogReq, options?: RpcOptions): UnaryCall<ListAuditLogReq, ListAuditLogReply>;
     /**
-     * 系统日志
+     * System logs
      *
      * @generated from protobuf rpc: ListSystemLogs(ada.ListSystemLogsReq) returns (ada.ListSystemLogsReply);
      */
     listSystemLogs(input: ListSystemLogsReq, options?: RpcOptions): UnaryCall<ListSystemLogsReq, ListSystemLogsReply>;
     /**
      * //////////////////////////////
-     * threat威胁检测dashboard
+     * Threat detection dashboard
      *
      * @generated from protobuf rpc: ThreatTops(ada.ThreatTopsReq) returns (ada.ThreatTopsReply);
      */
@@ -499,7 +499,7 @@ export interface IADAClient {
      */
     threatTrends(input: ThreatTrendsReq, options?: RpcOptions): UnaryCall<ThreatTrendsReq, ThreatTrendsReply>;
     /**
-     * threat威胁检测
+     * Threat detection
      *
      * @generated from protobuf rpc: ListThreat(ada.ListThreatReq) returns (ada.ListThreatReply);
      */
@@ -640,13 +640,13 @@ export interface IADAClient {
     getActivityRuleUniqueFields(input: GetActivityRuleUniqueFieldsReq, options?: RpcOptions): UnaryCall<GetActivityRuleUniqueFieldsReq, GetActivityRuleUniqueFieldsReply>;
     /**
      * //////////////////////////////
-     * scanrisk主动检测dashboard
+     * Scan-risk dashboard
      *
      * @generated from protobuf rpc: ScanRiskStats(ada.ScanRiskStatsReq) returns (ada.ScanRiskStatsReply);
      */
     scanRiskStats(input: ScanRiskStatsReq, options?: RpcOptions): UnaryCall<ScanRiskStatsReq, ScanRiskStatsReply>;
     /**
-     * scanrisk主动检测
+     * Active scan detection
      *
      * @generated from protobuf rpc: ListBaseline(ada.ListBaselineReq) returns (ada.ListBaselineReply);
      */
@@ -664,7 +664,7 @@ export interface IADAClient {
      */
     listWeakPwd(input: ListWeakPwdReq, options?: RpcOptions): UnaryCall<ListWeakPwdReq, ListWeakPwdReply>;
     /**
-     * 任务管理
+     * Task management
      *
      * @generated from protobuf rpc: ListScanTask(ada.ListScanTaskReq) returns (ada.ListScanTaskReply);
      */
@@ -686,7 +686,7 @@ export interface IADAClient {
      */
     deleteScanTask(input: DeleteScanTaskReq, options?: RpcOptions): UnaryCall<DeleteScanTaskReq, DeleteScanTaskReply>;
     /**
-     * 扫描配置
+     * Scan configuration
      *
      * @generated from protobuf rpc: ListScanConf(ada.ListScanConfReq) returns (ada.ListScanConfReply);
      */
@@ -708,7 +708,7 @@ export interface IADAClient {
      */
     updateScanConf(input: UpdateScanConfReq, options?: RpcOptions): UnaryCall<UpdateScanConfReq, UpdateScanConfReply>;
     /**
-     * 扫描模板
+     * Scan templates
      *
      * @generated from protobuf rpc: ListScanTmpl(ada.ListScanTmplReq) returns (ada.ListScanTmplReply);
      */
@@ -734,7 +734,7 @@ export interface IADAClient {
      */
     listScanPlugin(input: ListScanPluginReq, options?: RpcOptions): UnaryCall<ListScanPluginReq, ListScanPluginReply>;
     /**
-     * 安全大盘
+     * Security dashboard
      *
      * @generated from protobuf rpc: DashboardStats(ada.DashboardStatsReq) returns (ada.DashboardStatsReply);
      */
@@ -760,7 +760,7 @@ export class ADAClient implements IADAClient, ServiceInfo {
     constructor(private readonly _transport: RpcTransport) {
     }
     /**
-     * User 账户管理
+     * User account management
      *
      * @generated from protobuf rpc: Login(ada.LoginReq) returns (ada.LoginReply);
      */
@@ -818,7 +818,7 @@ export class ADAClient implements IADAClient, ServiceInfo {
         return stackIntercept<UserExistsReq, UserExistsReply>("unary", this._transport, method, opt, input);
     }
     /**
-     * Authority 二次验证相关接口
+     * Authority and MFA-related APIs
      *
      * @generated from protobuf rpc: CheckMfa(ada.CheckMfaReq) returns (ada.CheckMfaReply);
      */
@@ -855,7 +855,7 @@ export class ADAClient implements IADAClient, ServiceInfo {
         return stackIntercept<ResetPasswordReq, ResetPasswordReply>("unary", this._transport, method, opt, input);
     }
     /**
-     * AccessKey API密钥管理
+     * AccessKey API key management
      *
      * @generated from protobuf rpc: ListAccessKey(ada.ListAccessKeyReq) returns (ada.ListAccessKeyReply);
      */
@@ -966,8 +966,8 @@ export class ADAClient implements IADAClient, ServiceInfo {
         return stackIntercept<UpdateSensorVersionReq, UpdateSensorVersionReply>("unary", this._transport, method, opt, input);
     }
     /**
-     * 系统信息
-     * 1.基本信息
+     * System information
+     * 1. Basic information
      *
      * @generated from protobuf rpc: GetSystemInfo(ada.GetSystemInfoReq) returns (ada.GetSystemInfoReply);
      */
@@ -1011,7 +1011,7 @@ export class ADAClient implements IADAClient, ServiceInfo {
         return stackIntercept<UpdateSystemProxyReq, UpdateSystemProxyReply>("unary", this._transport, method, opt, input);
     }
     /**
-     * 2.系统监控: load|cpu|mem|net_rx|net_tx
+     * 2. System metrics: load|cpu|mem|net_rx|net_tx
      *
      * @generated from protobuf rpc: GetSystemStats(ada.GetSystemStatsReq) returns (ada.GetSystemStatsReply);
      */
@@ -1027,7 +1027,7 @@ export class ADAClient implements IADAClient, ServiceInfo {
         return stackIntercept<SetSystemStatsCfgReq, SetSystemStatsCfgReply>("unary", this._transport, method, opt, input);
     }
     /**
-     * 3.授权管理
+     * 3. License management
      *
      * @generated from protobuf rpc: GetLicense(ada.GetLicenseReq) returns (ada.GetLicenseReply);
      */
@@ -1043,7 +1043,7 @@ export class ADAClient implements IADAClient, ServiceInfo {
         return stackIntercept<UpdateLicenseReq, UpdateLicenseReply>("unary", this._transport, method, opt, input);
     }
     /**
-     * 4.调试工具
+     * 4. Diagnostic tools
      *
      * @generated from protobuf rpc: NetworkDebug(ada.NetworkDebugReq) returns (ada.NetworkDebugReply);
      */
@@ -1052,7 +1052,7 @@ export class ADAClient implements IADAClient, ServiceInfo {
         return stackIntercept<NetworkDebugReq, NetworkDebugReply>("unary", this._transport, method, opt, input);
     }
     /**
-     * 告警配置
+     * Alert configuration
      *
      * @generated from protobuf rpc: ListNotifyConf(ada.ListNotifyConfReq) returns (ada.ListNotifyConfReply);
      */
@@ -1096,7 +1096,7 @@ export class ADAClient implements IADAClient, ServiceInfo {
         return stackIntercept<TestNotifyConfReq, TestNotifyConfReply>("unary", this._transport, method, opt, input);
     }
     /**
-     * 导出管理
+     * Export management
      *
      * @generated from protobuf rpc: ListExportTask(ada.ListExportTaskReq) returns (ada.ListExportTaskReply);
      */
@@ -1119,7 +1119,7 @@ export class ADAClient implements IADAClient, ServiceInfo {
         return stackIntercept<DeleteExportTaskReq, DeleteExportTaskReply>("unary", this._transport, method, opt, input);
     }
     /**
-     * 消息中心
+     * Message center
      *
      * @generated from protobuf rpc: ListNotify(ada.ListNotifyReq) returns (ada.ListNotifyReply);
      */
@@ -1142,7 +1142,7 @@ export class ADAClient implements IADAClient, ServiceInfo {
         return stackIntercept<StatsNotifyReq, StatsNotifyReply>("unary", this._transport, method, opt, input);
     }
     /**
-     * 日志审计
+     * Audit logs
      *
      * @generated from protobuf rpc: ListAuditLog(ada.ListAuditLogReq) returns (ada.ListAuditLogReply);
      */
@@ -1151,7 +1151,7 @@ export class ADAClient implements IADAClient, ServiceInfo {
         return stackIntercept<ListAuditLogReq, ListAuditLogReply>("unary", this._transport, method, opt, input);
     }
     /**
-     * 系统日志
+     * System logs
      *
      * @generated from protobuf rpc: ListSystemLogs(ada.ListSystemLogsReq) returns (ada.ListSystemLogsReply);
      */
@@ -1161,7 +1161,7 @@ export class ADAClient implements IADAClient, ServiceInfo {
     }
     /**
      * //////////////////////////////
-     * threat威胁检测dashboard
+     * Threat detection dashboard
      *
      * @generated from protobuf rpc: ThreatTops(ada.ThreatTopsReq) returns (ada.ThreatTopsReply);
      */
@@ -1177,7 +1177,7 @@ export class ADAClient implements IADAClient, ServiceInfo {
         return stackIntercept<ThreatTrendsReq, ThreatTrendsReply>("unary", this._transport, method, opt, input);
     }
     /**
-     * threat威胁检测
+     * Threat detection
      *
      * @generated from protobuf rpc: ListThreat(ada.ListThreatReq) returns (ada.ListThreatReply);
      */
@@ -1420,7 +1420,7 @@ export class ADAClient implements IADAClient, ServiceInfo {
     }
     /**
      * //////////////////////////////
-     * scanrisk主动检测dashboard
+     * Scan-risk dashboard
      *
      * @generated from protobuf rpc: ScanRiskStats(ada.ScanRiskStatsReq) returns (ada.ScanRiskStatsReply);
      */
@@ -1429,7 +1429,7 @@ export class ADAClient implements IADAClient, ServiceInfo {
         return stackIntercept<ScanRiskStatsReq, ScanRiskStatsReply>("unary", this._transport, method, opt, input);
     }
     /**
-     * scanrisk主动检测
+     * Active scan detection
      *
      * @generated from protobuf rpc: ListBaseline(ada.ListBaselineReq) returns (ada.ListBaselineReply);
      */
@@ -1459,7 +1459,7 @@ export class ADAClient implements IADAClient, ServiceInfo {
         return stackIntercept<ListWeakPwdReq, ListWeakPwdReply>("unary", this._transport, method, opt, input);
     }
     /**
-     * 任务管理
+     * Task management
      *
      * @generated from protobuf rpc: ListScanTask(ada.ListScanTaskReq) returns (ada.ListScanTaskReply);
      */
@@ -1496,7 +1496,7 @@ export class ADAClient implements IADAClient, ServiceInfo {
         return stackIntercept<DeleteScanTaskReq, DeleteScanTaskReply>("unary", this._transport, method, opt, input);
     }
     /**
-     * 扫描配置
+     * Scan configuration
      *
      * @generated from protobuf rpc: ListScanConf(ada.ListScanConfReq) returns (ada.ListScanConfReply);
      */
@@ -1533,7 +1533,7 @@ export class ADAClient implements IADAClient, ServiceInfo {
         return stackIntercept<UpdateScanConfReq, UpdateScanConfReply>("unary", this._transport, method, opt, input);
     }
     /**
-     * 扫描模板
+     * Scan templates
      *
      * @generated from protobuf rpc: ListScanTmpl(ada.ListScanTmplReq) returns (ada.ListScanTmplReply);
      */
@@ -1577,7 +1577,7 @@ export class ADAClient implements IADAClient, ServiceInfo {
         return stackIntercept<ListScanPluginReq, ListScanPluginReply>("unary", this._transport, method, opt, input);
     }
     /**
-     * 安全大盘
+     * Security dashboard
      *
      * @generated from protobuf rpc: DashboardStats(ada.DashboardStatsReq) returns (ada.DashboardStatsReply);
      */

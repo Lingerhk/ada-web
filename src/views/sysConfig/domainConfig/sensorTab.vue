@@ -119,7 +119,7 @@ const state = reactive({
 		domain: [],
 		status: [], // filter: Init|Running|Stopped
 		keyword: '', // for search
-		tmSort: -1, // 最后在线时间排序，1为升序，-1为降序
+		tmSort: -1, // Sort by last online time: `1` asc, `-1` desc
 	} as ListSensorReq,
 	data: [] as ListSensorReply_Details[],
 	loading: false,
@@ -188,7 +188,7 @@ watch(() => state.req.pageSize, () => {
 	refresh();
 });
 
-// 刷新列表
+// Refresh the list
 const refresh = () => {
 	state.loading = true;
 	console.log('listSensor', state.req)
@@ -259,7 +259,7 @@ const handleConfirm = (title: string, row: ListSensorReply_Details, done: (row: 
 		});
 }
 
-// 操作按钮
+// Action buttons
 const onDetail = (row: ListSensorReply_Details) => {
 	detailDrawerRef.value.open('传感器详情', row, refresh);
 }

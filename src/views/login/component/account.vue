@@ -73,7 +73,7 @@ import api from '/@/api/grpc/index';
 import * as proto from '/@/api/grpc/ada';
 import { alertApiError } from '/@/utils/error';
 
-// 定义变量内容
+// Define reactive state and refs
 const { t } = useI18n();
 const storesThemeConfig = useThemeConfig();
 const { themeConfig } = storeToRefs(storesThemeConfig);
@@ -101,7 +101,7 @@ const state = reactive({
 	},
 });
 
-// 时间获取
+// Get the current time
 const currentTime = computed(() => {
 	return formatAxis(new Date());
 });
@@ -116,7 +116,7 @@ const loginAda = async () => {
 	state.loading.signIn = true;
 	try {
 		const { response } = await api.login(req);	
-		// 存储 token 到浏览器缓存
+		// Store the token in browser storage
 		Session.set('token', response.token);
 		Cookies.set('userName', response.username);
 		
@@ -133,11 +133,11 @@ const loginAda = async () => {
 	}
 }
 
-// 登录
+// Login
 const onSignIn = async () => {
 	if (!loginFormRef.value) return;
 
-	// 验证表单
+	// Validate the form
 	await loginFormRef.value.validate(async (valid) => {
 		if (valid) {
 			await loginAda();
@@ -146,16 +146,16 @@ const onSignIn = async () => {
 		}
 	});
 };
-// 登录成功后的跳转
+// Handle the post-login redirect
 const signInSuccess = (isNoPower: boolean | undefined) => {
 	if (isNoPower) {
 		ElMessage.warning('抱歉，您没有登录权限');
 		Session.clear();
 	} else {
-		// 初始化登录成功时间问候语
+		// Initialize the greeting shown after login
 		let currentTimeInfo = currentTime.value;
-		// 登录成功，跳到转首页
-		// 如果是复制粘贴的路径，非首页/登录页，那么登录成功后重定向到对应的路径中
+		// After login, navigate to the default landing page
+		// If the user pasted a non-home, non-login path, redirect back to that path after login
 		if (route.query?.redirect) {
 			router.push({
 				path: <string>route.query?.redirect,
@@ -164,16 +164,16 @@ const signInSuccess = (isNoPower: boolean | undefined) => {
 		} else {
 			router.push('/');
 		}
-		// 登录成功提示
+		// Show the login success message
 		const signInText = t('message.signInText');
 		ElMessage.success(`${currentTimeInfo}，${signInText}`);
-		// 添加 loading，防止第一次进入界面时出现短暂空白
+		// Show the loading animation to avoid a brief blank screen on first load
 		NextLoading.start();
 	}
 	state.loading.signIn = false;
 };
 
-// 页面加载时
+// On mount
 onMounted(async () => {
 	const errmsg = Local.get("errmsg");
 	const msg = Local.get("msg");

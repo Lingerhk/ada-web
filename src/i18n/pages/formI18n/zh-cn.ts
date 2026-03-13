@@ -1,4 +1,4 @@
-// 定义内容
+// Define local state
 export default {
 	formI18nLabel: {
 		name: '姓名',

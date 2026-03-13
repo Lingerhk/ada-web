@@ -11,55 +11,55 @@ import { useRoutesList } from '/@/stores/routesList';
 import { useTagsViewRoutes } from '/@/stores/tagsViewRoutes';
 import { useMenuApi } from '/@/api/menu/index';
 
-// 后端控制路由
+// Backend-controlled routing
 
-// 引入 api 请求接口
+// Import the API client
 const menuApi = useMenuApi();
 
 /**
- * 获取目录下的 .vue、.tsx 全部文件
+ * Load all .vue and .tsx files under the target directories
  * @method import.meta.glob
- * @link 参考：https://cn.vitejs.dev/guide/features.html#json
+ * @link Reference: https://cn.vitejs.dev/guide/features.html#json
  */
 const layouModules: any = import.meta.glob('../layout/routerView/*.{vue,tsx}');
 const viewsModules: any = import.meta.glob('../views/**/*.{vue,tsx}');
 const dynamicViewsModules: Record<string, Function> = Object.assign({}, { ...layouModules }, { ...viewsModules });
 
 /**
- * 后端控制路由：初始化方法，防止刷新时路由丢失
- * @method NextLoading 界面 loading 动画开始执行
- * @method useUserInfo().setUserInfos() 触发初始化用户信息 pinia
- * @method useRequestOldRoutes().setRequestOldRoutes() 存储接口原始路由（未处理component），根据需求选择使用
- * @method setAddRoute 添加动态路由
- * @method setFilterMenuAndCacheTagsViewRoutes 设置路由到 pinia routesList 中（已处理成多级嵌套路由）及缓存多级嵌套数组处理后的一维数组
+ * Initialize backend-controlled routing so server routes survive a page refresh
+ * @method NextLoading.start Start the page loading animation
+ * @method useUserInfo().setUserInfos Initialize the Pinia user store
+ * @method useRequestOldRoutes().setRequestOldRoutes Persist the raw backend route payload before component normalization
+ * @method setAddRoute Register dynamic routes
+ * @method setFilterMenuAndCacheTagsViewRoutes Store routes in Pinia and cache the flattened result
  */
 export async function initBackEndControlRoutes() {
-	// 界面 loading 动画开始执行
+	// start the page loading animation
 	if (window.nextLoading === undefined) NextLoading.start();
-	// 无 token 停止执行下一步
+	// stop here if no token is present
 	if (!Session.get('token')) return false;
-	// 触发初始化用户信息 pinia
+	// initialize the Pinia user store
 	// https://gitee.com/lyt-top/vue-next-admin/issues/I5F1HP
 	await useUserInfo().setUserInfos();
-	// 获取路由菜单数据
+	// Fetch the route menu payload from the backend.
 	const res = await getBackEndControlRoutes();
-	// 无登录权限时，添加判断
+	// guard against users without login permissions
 	// https://gitee.com/lyt-top/vue-next-admin/issues/I64HVO
 	if (res.data.length <= 0) return Promise.resolve(true);
-	// 存储接口原始路由（未处理component），根据需求选择使用
+	// Preserve the raw backend response before mapping component imports.
 	useRequestOldRoutes().setRequestOldRoutes(JSON.parse(JSON.stringify(res.data)));
-	// 处理路由（component），替换 dynamicRoutes（/@/router/route）第一个顶级 children 的路由
+	// Replace the first top-level `children` array with component-aware backend routes.
 	dynamicRoutes[0].children = await backEndComponent(res.data);
-	// 添加动态路由
+	// Add dynamic routes
 	await setAddRoute();
-	// 设置路由到 pinia routesList 中（已处理成多级嵌套路由）及缓存多级嵌套数组处理后的一维数组
+	// store routes in Pinia routesList and cache the flattened route array
 	setFilterMenuAndCacheTagsViewRoutes();
 }
 
 /**
- * 设置路由到 pinia routesList 中（已处理成多级嵌套路由）及缓存多级嵌套数组处理后的一维数组
- * @description 用于左侧菜单、横向菜单的显示
- * @description 用于 tagsView、菜单搜索中：未过滤隐藏的(isHide)
+ * store routes in Pinia routesList and cache the flattened route array
+ * @description Used by the sidebar and top navigation menus
+ * @description Used by tagsView and menu search, including hidden routes
  */
 export async function setFilterMenuAndCacheTagsViewRoutes() {
 	const storesRoutesList = useRoutesList(pinia);
@@ -68,8 +68,8 @@ export async function setFilterMenuAndCacheTagsViewRoutes() {
 }
 
 /**
- * 缓存多级嵌套数组处理后的一维数组
- * @description 用于 tagsView、菜单搜索中：未过滤隐藏的(isHide)
+ * Cache the flattened route array generated from a nested route tree
+ * @description Used by tagsView and menu search, including hidden routes
  */
 export function setCacheTagsViewRoutes() {
 	const storesTagsView = useTagsViewRoutes(pinia);
@@ -77,23 +77,23 @@ export function setCacheTagsViewRoutes() {
 }
 
 /**
- * 处理路由格式及添加捕获所有路由或 404 Not found 路由
- * @description 替换 dynamicRoutes（/@/router/route）第一个顶级 children 的路由
- * @returns 返回替换后的路由数组
+ * Normalize routes and append the 404 and 401 pages
+ * @description Replaces the first top-level `children` array in `dynamicRoutes`
+ * @returns The normalized route array with fallback pages appended
  */
 export function setFilterRouteEnd() {
 	let filterRouteEnd: any = formatTwoStageRoutes(formatFlatteningRoutes(dynamicRoutes));
-	// notFoundAndNoPower 防止 404、401 不在 layout 布局中，不设置的话，404、401 界面将全屏显示
-	// 关联问题 No match found for location with path 'xxx'
+	// notFoundAndNoPower Keep the 404 and 401 pages inside the layout; otherwise they render full screen
+	// Related issue: "No match found for location with path xxx"
 	filterRouteEnd[0].children = [...filterRouteEnd[0].children, ...notFoundAndNoPower];
 	return filterRouteEnd;
 }
 
 /**
- * 添加动态路由
+ * Add dynamic routes
  * @method router.addRoute
- * @description 此处循环为 dynamicRoutes（/@/router/route）第一个顶级 children 的路由一维数组，非多级嵌套
- * @link 参考：https://next.router.vuejs.org/zh/api/#addroute
+ * @description Iterates over the first top-level `children` array in `dynamicRoutes` from `/@/router/route`, which is kept flat here
+ * @link Reference: https://next.router.vuejs.org/zh/api/#addroute
  */
 export async function setAddRoute() {
 	await setFilterRouteEnd().forEach((route: RouteRecordRaw) => {
@@ -102,34 +102,34 @@ export async function setAddRoute() {
 }
 
 /**
- * 请求后端路由菜单接口
- * @description isRequestRoutes 为 true，则开启后端控制路由
- * @returns 返回后端路由菜单数据
+ * Request backend route menu data
+ * @description Used only when `isRequestRoutes` is `true`
+ * @returns The backend route menu response
  */
 export function getBackEndControlRoutes() {
-	// 模拟 admin 与 test
+	// Mock admin and test roles
 	const stores = useUserInfo(pinia);
 	const { userInfos } = storeToRefs(stores);
 	const auth = userInfos.value.roles[0];
-	// 管理员 admin
+	// Administrator role
 	if (auth === 'admin') return menuApi.getAdminMenu();
-	// 其它用户 test
+	// Other test users
 	else return menuApi.getTestMenu();
 }
 
 /**
- * 重新请求后端路由菜单接口
- * @description 用于菜单管理界面刷新菜单（未进行测试）
- * @description 路径：/src/views/system/menu/component/addMenu.vue
+ * Refresh backend route menu data
+ * @description Intended for menu-management refresh flows and currently not exercised elsewhere
+ * @description Path: `/src/views/system/menu/component/addMenu.vue`
  */
 export async function setBackEndControlRefreshRoutes() {
 	await getBackEndControlRoutes();
 }
 
 /**
- * 后端路由 component 转换
- * @param routes 后端返回的路由表数组
- * @returns 返回处理成函数后的 component
+ * Map backend route component paths to lazy imports
+ * @param routes Route table returned by the backend
+ * @returns Routes whose `component` fields have been converted to lazy imports
  */
 export function backEndComponent(routes: any) {
 	if (!routes) return;
@@ -141,10 +141,10 @@ export function backEndComponent(routes: any) {
 }
 
 /**
- * 后端路由 component 转换函数
- * @param dynamicViewsModules 获取目录下的 .vue、.tsx 全部文件
- * @param component 当前要处理项 component
- * @returns 返回处理成函数后的 component
+ * Resolve a backend component path into a lazy import
+ * @param dynamicViewsModules Every `.vue` and `.tsx` file available under the target directories
+ * @param component The backend component path to resolve
+ * @returns The matched lazy-import factory
  */
 export function dynamicImport(dynamicViewsModules: Record<string, Function>, component: string) {
 	const keys = Object.keys(dynamicViewsModules);

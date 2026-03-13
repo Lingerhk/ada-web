@@ -43,7 +43,7 @@ enum TerminalStateEnum {
 
 const terminal = ref(null);
 const fitAddon = new FitAddon();
-const inviteCode = ref('') // 用户输入的验证码
+const inviteCode = ref('') // Verification code entered by the user
 const enableProtocols = ref(false);
 
 const state = ref(TerminalStateEnum.INIT);
@@ -51,13 +51,13 @@ const state = ref(TerminalStateEnum.INIT);
 let terminalSocket = ref(null)
 let term = ref(null)
 
-// 验证用户输入的验证码
+// Validate the user-entered verification code
 const verifyCode = () => {
     state.value = TerminalStateEnum.LOADING;
     initWS();
 };
 
-// 初始化WS
+// Initialize the WebSocket
 const initWS = () => {
   if (!terminalSocket.value) {
     createWS()
@@ -69,7 +69,7 @@ const initWS = () => {
   }
 }
 
-// 创建WS
+// Create the WebSocket
 const createWS = () => {
   const token = Local.get('token');
   terminalSocket.value = new WebSocket(
@@ -77,29 +77,29 @@ const createWS = () => {
     // , enableProtocols.value ? [token] : undefined
   );
 
-  terminalSocket.value.onopen = runRealTerminal; //WebSocket 连接已建立
-  terminalSocket.value.onclose = closeRealTerminal; //WebSocket 连接已关闭
+  terminalSocket.value.onopen = runRealTerminal; // WebSocket connection established
+  terminalSocket.value.onclose = closeRealTerminal; // WebSocket connection closed
 };
 
-//WebSocket 连接已建立
+// WebSocket connection established
 const runRealTerminal = () => {
   state.value = TerminalStateEnum.READY;
   initTerm();
 };
 
-//WebSocket 连接已关闭
+// WebSocket connection closed
 const closeRealTerminal = (e) => {
   state.value = TerminalStateEnum.INIT;
   alert(`连接关闭，事件代码：${e.code}。`);
   console.log(e);
   if (term.value) {
-    // 不需要关闭？Error: Could not dispose an addon that has not been loaded
+    // No explicit close needed here. Error reference: `Could not dispose an addon that has not been loaded`
     // term.value.dispose();
     term.value = null;
   }
 };
 
-// 初始化Terminal
+// Initialize the terminal
 const initTerm = () => {
   term.value = new Terminal({
     // lineHeight: 1.2,
@@ -108,7 +108,7 @@ const initTerm = () => {
     theme: {
       background: '#181d28',
     },
-    // 光标闪烁
+    // Blinking cursor
     cursorBlink: true,
     cursorStyle: 'underline',
     // scrollback: 100,
@@ -116,13 +116,13 @@ const initTerm = () => {
   });
   const attachAddon = new AttachAddon(terminalSocket.value);
 
-  term.value.open(terminal.value); //挂载dom窗口
-  term.value.loadAddon(fitAddon); //自适应尺寸
+  term.value.open(terminal.value); // Mount to the DOM container
+  term.value.loadAddon(fitAddon); // Fit to the container size
   term.value.loadAddon(attachAddon);
   fitAddon.fit();
 };
 
-// 适应浏览器尺寸变化
+// Adapt to browser-size changes
 const fitTerm = () => {
   fitAddon.fit();
 };

@@ -32,9 +32,9 @@ import { Session } from '/@/utils/storage';
 
 const onSetAuth = () => {
 	// https://gitee.com/lyt-top/vue-next-admin/issues/I5C3JS
-	// 清除缓存/token等
+	// Clear cached state, tokens, and related data
 	Session.clear();
-	// 使用 reload 时，不需要调用 resetRoute() 重置路由
+	// When using reload, you do not need to call resetRoute()
 	window.location.reload();
 };
 </script>

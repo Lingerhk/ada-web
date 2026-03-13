@@ -550,7 +550,7 @@ const open = (title: string, id: string) => {
 
 	state.loading = true;
 
-	// 获取threat详情
+	// Get threat details
 	api
 		.getThreat(req)
 		.then((resp) => resp.response)

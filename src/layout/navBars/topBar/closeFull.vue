@@ -10,11 +10,11 @@
 import { storeToRefs } from 'pinia';
 import { useTagsViewRoutes } from '/@/stores/tagsViewRoutes';
 
-// 定义变量内容
+// Define reactive state and refs
 const stores = useTagsViewRoutes();
 const { isTagsViewCurrenFull } = storeToRefs(stores);
 
-// 关闭当前全屏
+// Close the current full-screen view
 const onCloseFullscreen = () => {
 	stores.setCurrenFullscreen(false);
 };

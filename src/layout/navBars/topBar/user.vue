@@ -98,12 +98,12 @@ import { Session, Local } from '/@/utils/storage';
 import { getSysLanguage, getUnreadNotification, updateSysLanguage } from '/@/api/grpc/method';
 import { formatApiTime } from '/@/utils/formatTime';
 
-// 引入组件
+// Import components
 const UserNews = defineAsyncComponent(() => import('/@/layout/navBars/topBar/userNews.vue'));
 const Search = defineAsyncComponent(() => import('/@/layout/navBars/topBar/search.vue'));
 const ChangePasswordDialog = defineAsyncComponent(() => import('/@/components/secret/ChangePasswordDialog.vue'));
 
-// 定义变量内容
+// Define reactive state and refs
 const userNewsRef = ref();
 const userNewsBadgeRef = ref();
 const { locale, t } = useI18n();
@@ -122,7 +122,7 @@ const state = reactive({
 
 const needChangePassword = ref(false);
 
-// 设置分割样式
+// Apply the divider styles
 const layoutUserFlexNum = computed(() => {
 	let num: string | number = '';
 	const { layout, isClassicSplitMenu } = themeConfig.value;
@@ -131,7 +131,7 @@ const layoutUserFlexNum = computed(() => {
 	else num = '';
 	return num;
 });
-// 全屏点击时
+// Handle full-screen clicks
 const onScreenfullClick = () => {
 	if (!screenfull.isEnabled) {
 		ElMessage.warning('暂不不支持全屏');
@@ -143,15 +143,15 @@ const onScreenfullClick = () => {
 		else state.isScreenfull = false;
 	});
 };
-// 消息通知点击时
+// Handle notification clicks
 const onUserNewsClick = () => {
 	unref(userNewsRef).popperRef?.delayHide?.();
 };
-// 布局配置 icon 点击时
+// Handle clicks on the layout-settings icon
 const onLayoutSetingClick = () => {
 	mittBus.emit('openSetingsDrawer');
 };
-// 下拉菜单点击时
+// Handle dropdown-menu clicks
 const onHandleCommandClick = (path: string) => {
 	if (path === 'logOut') {
 		ElMessageBox({
@@ -179,9 +179,9 @@ const onHandleCommandClick = (path: string) => {
 			},
 		})
 			.then(async () => {
-				// 清除缓存/token等
+				// Clear cached state, tokens, and related data
 				Session.clear();
-				// 使用 reload 时，不需要调用 resetRoute() 重置路由
+				// When using reload, you do not need to call resetRoute()
 				window.location.reload();
 			})
 			.catch(() => {});
@@ -192,12 +192,12 @@ const onHandleCommandClick = (path: string) => {
 	}
 };
 
-// 菜单搜索点击
+// Handle menu-search clicks
 const onSearchClick = () => {
 	searchRef.value.openSearch();
 };
 
-// 组件大小改变
+// Handle component-size changes
 const onComponentSizeChange = (size: string) => {
 	Local.remove('themeConfig');
 	themeConfig.value.globalComponentSize = size;
@@ -206,7 +206,7 @@ const onComponentSizeChange = (size: string) => {
 	window.location.reload();
 };
 
-// 语言切换
+// Handle language changes
 const onLanguageChange = (lang: string, sync: boolean = false) => {
 	Local.remove('themeConfig');
 	themeConfig.value.globalI18n = lang;
@@ -221,7 +221,7 @@ const onLanguageChange = (lang: string, sync: boolean = false) => {
 	}
 };
 
-// 初始化组件大小/i18n
+// Initialize component size and i18n settings
 const initI18nOrSize = (value: string, attr: string) => {
 	(<any>state)[attr] = Local.get('themeConfig')[value];
 };
@@ -265,7 +265,7 @@ const refreshMessage = () => {
 			// Mark this notification as shown
 			newShownIds.push(d.iD);
 
-			// 用timeout避免样式重叠
+			// Use a timeout to avoid style overlap
 			setTimeout(() => {
 				ElNotification.warning({
 					title: t('message.system.message.message'),
@@ -294,7 +294,7 @@ const initI18n = () => {
 	});
 };
 
-// 页面加载时
+// On mount
 onMounted(() => {
 	if (Local.get('themeConfig')) {
 		initI18nOrSize('globalComponentSize', 'disabledSize');

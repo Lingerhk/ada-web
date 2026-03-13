@@ -18,20 +18,20 @@ import { reactive, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { verifyUrl } from '/@/utils/toolsValidate';
 
-// 定义变量内容
+// Define reactive state and refs
 const route = useRoute();
 const state = reactive<LinkViewState>({
 	title: '',
 	isLink: '',
 });
 
-// 立即前往
+// Navigate immediately
 const onGotoFullPage = () => {
 	const { origin, pathname } = window.location;
 	if (verifyUrl(<string>state.isLink)) window.open(state.isLink);
 	else window.open(`${origin}${pathname}#${state.isLink}`);
 };
-// 监听路由的变化，设置内容
+// Watch route changes and update the content
 watch(
 	() => route.path,
 	() => {

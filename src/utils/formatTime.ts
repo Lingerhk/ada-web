@@ -1,28 +1,28 @@
 /**
- * 时间日期转换
- * @param date 当前时间，new Date() 格式
- * @param format 需要转换的时间格式字符串
- * @description format 字符串随意，如 `YYYY-mm、YYYY-mm-dd`
- * @description format 季度："YYYY-mm-dd HH:MM:SS QQQQ"
- * @description format 星期："YYYY-mm-dd HH:MM:SS WWW"
- * @description format 几周："YYYY-mm-dd HH:MM:SS ZZZ"
- * @description format 季度 + 星期 + 几周："YYYY-mm-dd HH:MM:SS WWW QQQQ ZZZ"
- * @returns 返回拼接后的时间字符串
+ * Format a `Date` instance into a custom string
+ * @param date Current date, typically a `new Date()` instance
+ * @param format Target format string
+ * @description Example patterns: `YYYY-mm`, `YYYY-mm-dd`
+ * @description Quarter token: `YYYY-mm-dd HH:MM:SS QQQQ`
+ * @description Weekday token: `YYYY-mm-dd HH:MM:SS WWW`
+ * @description Week-of-year token: `YYYY-mm-dd HH:MM:SS ZZZ`
+ * @description Combined example: `YYYY-mm-dd HH:MM:SS WWW QQQQ ZZZ`
+ * @returns Returns the formatted time string
  */
 export function formatDate(date: Date, format: string): string {
-	let we = date.getDay(); // 星期
-	let z = getWeek(date); // 周
-	let qut = Math.floor((date.getMonth() + 3) / 3).toString(); // 季度
+	let we = date.getDay(); // Weekday index.
+	let z = getWeek(date); // Week number.
+	let qut = Math.floor((date.getMonth() + 3) / 3).toString(); // Quarter index.
 	const opt: { [key: string]: string } = {
-		'Y+': date.getFullYear().toString(), // 年
-		'm+': (date.getMonth() + 1).toString(), // 月(月份从0开始，要+1)
-		'd+': date.getDate().toString(), // 日
-		'H+': date.getHours().toString(), // 时
-		'M+': date.getMinutes().toString(), // 分
-		'S+': date.getSeconds().toString(), // 秒
-		'q+': qut, // 季度
+		'Y+': date.getFullYear().toString(), // Year.
+		'm+': (date.getMonth() + 1).toString(), // Month; `getMonth()` is zero-based.
+		'd+': date.getDate().toString(), // Day of month.
+		'H+': date.getHours().toString(), // Hour.
+		'M+': date.getMinutes().toString(), // Minute.
+		'S+': date.getSeconds().toString(), // Second.
+		'q+': qut, // Quarter.
 	};
-	// 中文数字 (星期)
+	// Chinese numerals used when formatting weekdays.
 	const week: { [key: string]: string } = {
 		'0': '日',
 		'1': '一',
@@ -32,7 +32,7 @@ export function formatDate(date: Date, format: string): string {
 		'5': '五',
 		'6': '六',
 	};
-	// 中文数字（季度）
+	// Chinese numerals used when formatting quarters.
 	const quarter: { [key: string]: string } = {
 		'1': '一',
 		'2': '二',
@@ -45,22 +45,22 @@ export function formatDate(date: Date, format: string): string {
 	if (/(Z+)/.test(format)) format = format.replace(RegExp.$1, RegExp.$1.length == 3 ? '第' + z + '周' : z + '');
 	for (let k in opt) {
 		let r = new RegExp('(' + k + ')').exec(format);
-		// 若输入的长度不为1，则前面补零
+		// Pad multi-character tokens with leading zeroes.
 		if (r) format = format.replace(r[1], RegExp.$1.length == 1 ? opt[k] : opt[k].padStart(RegExp.$1.length, '0'));
 	}
 	return format;
 }
 
 /**
- * 获取当前日期是第几周
- * @param dateTime 当前传入的日期值
- * @returns 返回第几周数字值
+ * Get the ISO-like week number for a date
+ * @param dateTime The input date
+ * @returns The week number
  */
 export function getWeek(dateTime: Date): number {
 	let temptTime = new Date(dateTime.getTime());
-	// 周几
+	// Weekday index, treating Sunday as 7.
 	let weekday = temptTime.getDay() || 7;
-	// 周1+5天=周六
+	// Shift to Saturday of the current week so year boundaries are handled consistently.
 	temptTime.setDate(temptTime.getDate() - weekday + 1 + 5);
 	let firstDay = new Date(temptTime.getFullYear(), 0, 1);
 	let dayOfWeek = firstDay.getDay();
@@ -73,56 +73,56 @@ export function getWeek(dateTime: Date): number {
 }
 
 /**
- * 将时间转换为 `几秒前`、`几分钟前`、`几小时前`、`几天前`
- * @param param 当前时间，new Date() 格式或者字符串时间格式
- * @param format 需要转换的时间格式字符串
- * @description param 10秒：  10 * 1000
- * @description param 1分：   60 * 1000
- * @description param 1小时： 60 * 60 * 1000
- * @description param 24小时：60 * 60 * 24 * 1000
- * @description param 3天：   60 * 60* 24 * 1000 * 3
- * @returns 返回拼接后的时间字符串
+ * Convert a timestamp into a relative time label such as "seconds ago" or "days ago"
+ * @param param Current time as a `Date` instance or date string
+ * @param format Fallback format for older timestamps
+ * @description 10 seconds: `10 * 1000`
+ * @description 1 minute: `60 * 1000`
+ * @description 1 hour: `60 * 60 * 1000`
+ * @description 24 hours: `60 * 60 * 24 * 1000`
+ * @description 3 days: `60 * 60 * 24 * 1000 * 3`
+ * @returns A relative time string or a formatted date
  */
 export function formatPast(param: string | Date, format: string = 'YYYY-mm-dd'): string {
-	// 传入格式处理、存储转换值
+	// Normalize the incoming time value.
 	let t: any, s: number;
-	// 获取js 时间戳
+	// Current JavaScript timestamp.
 	let time: number = new Date().getTime();
-	// 是否是对象
+	// Accept either a string or `Date` object.
 	typeof param === 'string' || 'object' ? (t = new Date(param).getTime()) : (t = param);
-	// 当前时间戳 - 传入时间戳
+	// Difference between now and the target timestamp.
 	time = Number.parseInt(`${time - t}`);
 	if (time < 10000) {
-		// 10秒内
+		// Within 10 seconds.
 		return '刚刚';
 	} else if (time < 60000 && time >= 10000) {
-		// 超过10秒少于1分钟内
+		// Between 10 seconds and 1 minute.
 		s = Math.floor(time / 1000);
 		return `${s}秒前`;
 	} else if (time < 3600000 && time >= 60000) {
-		// 超过1分钟少于1小时
+		// Between 1 minute and 1 hour.
 		s = Math.floor(time / 60000);
 		return `${s}分钟前`;
 	} else if (time < 86400000 && time >= 3600000) {
-		// 超过1小时少于24小时
+		// Between 1 hour and 24 hours.
 		s = Math.floor(time / 3600000);
 		return `${s}小时前`;
 	} else if (time < 259200000 && time >= 86400000) {
-		// 超过1天少于3天内
+		// Between 1 day and 3 days.
 		s = Math.floor(time / 86400000);
 		return `${s}天前`;
 	} else {
-		// 超过3天
+		// Older than 3 days.
 		let date = typeof param === 'string' || 'object' ? new Date(param) : param;
 		return formatDate(date, format);
 	}
 }
 
 /**
- * 时间问候语
- * @param param 当前时间，new Date() 格式
- * @description param 调用 `formatAxis(new Date())` 输出 `上午好`
- * @returns 返回拼接后的时间字符串
+ * Return a greeting based on the current hour
+ * @param param Current time, usually a `new Date()` instance
+ * @description Example: `formatAxis(new Date())` returns the morning greeting
+ * @returns Returns the formatted time string
  */
 export function formatAxis(param: Date): string {
 	let hour: number = new Date(param).getHours();

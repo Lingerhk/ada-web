@@ -1,4 +1,4 @@
-// 定义内容
+// Define local state
 export default {
 	router: {
 		home: '首页',
@@ -1102,9 +1102,9 @@ export default {
 		systemProxy: {
 			title: '系统代理',
 			httpProxy: 'HTTP代理',
-			httpProxyPlaceholder: '请输入HTTP代理地址（如：http://proxy:port）',
+			httpProxyPlaceholder: '请输入HTTP代理地址（如：http:// proxy:port）',
 			httpsProxy: 'HTTPS代理',
-			httpsProxyPlaceholder: '请输入HTTPS代理地址（如：https://proxy:port）',
+			httpsProxyPlaceholder: '请输入HTTPS代理地址（如：https:// proxy:port）',
 			upgradeProxy: '升级时使用代理',
 			upgradeProxyDesc: '启用系统升级时使用代理',
 			notifyProxy: '通知时使用代理',
@@ -1375,7 +1375,7 @@ export default {
 		updateTm: '更新时间',
 		pwdUpdateTm: '密码最后修改时间',
 		activeTm: '活跃时间',
-		passwordStrength: '密码强度', // 密码强度: high/middle/low
+		passwordStrength: '密码强度', // Password strength: high/middle/low
 		passwordStrength_high: '高',
 		passwordStrength_middle: '中',
 		passwordStrength_low: '低',

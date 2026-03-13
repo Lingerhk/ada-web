@@ -2,7 +2,7 @@
     <div class="layout-pd">
         <el-card shadow="hover">
             <el-row justify="space-between" style="flex-wrap: nowrap;">
-                <!-- 搜索 -->
+                <!-- Search controls -->
                 <el-form :inline="true" class="filter-form" style="flex: 1;">
                     <el-form-item :label="$t('message.threat.levelName')">
                         <el-select v-model="threatLevel" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 130px" :placeholder="$t('message.threat.alarmList.selectLevel')" popper-class="custom-header">
@@ -40,7 +40,7 @@
                             :end-placeholder="$t('message.time.end')" :shortcuts="shortcuts" />
                     </el-form-item>
                 </el-form>
-                <!-- 右侧按钮 -->
+                <!-- Actions on the right -->
                 <el-space wrap size="default"
                     style="min-width: 450px; justify-content: flex-end; align-items: flex-start; padding-top: 5px; flex-shrink: 0;">
                     <el-input v-model="idInput" size="default" :placeholder="$t('message.threat.idInput')"
@@ -52,7 +52,7 @@
                     <!-- <el-button type="primary" size="default">{{ $t('message.threat.print') }}</el-button> -->
                 </el-space>
             </el-row>
-            <!-- 下方显示列表 -->
+            <!-- Result list below -->
             <el-row style="margin-top: 10px">
                 <div style="width: 100%; overflow-x: auto;">
                     <el-table :data="data" v-loading="loading" :border="true" row-class-name="pointer-cursor"
@@ -99,7 +99,7 @@
                 </el-table>
                 </div>
             </el-row>
-            <!-- 分页 -->
+            <!-- Pagination -->
             <el-row style="margin-top: 10px" justify="space-between">
                 <div></div>
                 <el-pagination v-model:current-page="pageIdx" v-model:page-size="pageSize"
@@ -176,11 +176,11 @@ const refreshActivity = () => {
     const req: ListActivityReq = {
         pageIdx: pageIdx.value,
         pageSize: pageSize.value,
-        level: threatLevel.value, // 威胁等级,严重性
-        iD: '', // 可选，如果存在查询对应activityID的威胁活动
-        startTm: '', //  可选，开始时间
-        endTm: '', //  可选，结束时间
-        orderCreateTm: -1, // 可选，排序 1|-1
+        level: threatLevel.value, // Threat levels and severity
+        iD: '', // Optional. If provided, query the threat activity that matches the given activity ID
+        startTm: '', // Optional start time
+        endTm: '', // Optional end time
+        orderCreateTm: -1, // Optional sort order: 1 or -1
         dcHostname: dchostSelected.value,
         title: [],
     };

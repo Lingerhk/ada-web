@@ -118,7 +118,7 @@
     line-height: 0;
   }
   
-  /*向下翻*/
+  /* Flip downward*/
   .flip.down .front:before {
     z-index: 3;
   }
@@ -145,7 +145,7 @@
     animation: backFlipDown 0.3s ease-in-out both;
   }
   
-  /*向上翻*/
+  /* Flip upward*/
   .flip.up .front:after {
     z-index: 3;
   }

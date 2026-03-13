@@ -41,7 +41,7 @@
                         style="width: 250px;" />
                 </el-form>
             </el-row>
-            <!-- 列表 -->
+            <!-- List -->
             <el-row>
                 <el-table :data="state.reply.list" v-loading="state.loading" :border="true" style="width: 100%">
                     <!-- @selection-change="(val) => tableRowsSelected.value = val" -->
@@ -67,7 +67,7 @@
                     </el-table-column>
                 </el-table>
             </el-row>
-            <!-- 分页 -->
+            <!-- Pagination -->
             <el-row style="margin-top: 10px" justify="space-between">
                 <div>
                 </div>
@@ -114,11 +114,11 @@ const state = reactive({
     req: {
         pageIdx: 1, // [(validator.field) = {int_gt: 0}];
         pageSize: 10,
-        domain: [], // 可选,为空则查询所有域
-        origin: [], // 可选，来源，1:手动, 2:自动
-        startTm: '', //  可选，开始时间
-        endTm: '', //  可选，结束时间
-        search: '', // 可选，搜索关键字（阻断用户/IP）
+        domain: [], // Optional. If empty, query all domains
+        origin: [], // Optional source filter: 1 for manual, 2 for automatic
+        startTm: '', // Optional start time
+        endTm: '', // Optional end time
+        search: '', // Optional search keyword (blocked user or IP)
     } as ListThreatBlockReq,
 
     reply: {

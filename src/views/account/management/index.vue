@@ -198,13 +198,13 @@ const refreshUser = () => {
         search: '',
         isSelf: false,
         filterRole: state.filter.role,
-        filterMfaStatus: state.filter.mfa, // 二次认证状态 开启enable|禁用disable|关闭stop
-        filterPassStrength: state.filter.passwordStrength, // 密码强度 high/middle/low
-        filterStartCreateTm: state.filter.createTm.length === 2 ? state.filter.createTm[0] : '', // 创建开始时间
-        filterEndCreateTm: state.filter.createTm.length === 2 ? state.filter.createTm[1] : '', // 创建结束时间
-        filterStartPassTm: state.filter.passTm.length === 2 ? state.filter.passTm[0] : '', // 密码最后修改开始时间
-        filterEndPassTm: state.filter.passTm.length === 2 ? state.filter.passTm[1] : '', // 密码最后修改结束时间
-        sort: -1, // 创建时间排序，1为升序，-1为降序| 密码修改时间 2为升序，-2为降序
+        filterMfaStatus: state.filter.mfa, // MFA status: enable|disable|stop
+        filterPassStrength: state.filter.passwordStrength, // Password strength: high/middle/low
+        filterStartCreateTm: state.filter.createTm.length === 2 ? state.filter.createTm[0] : '', // Creation start time
+        filterEndCreateTm: state.filter.createTm.length === 2 ? state.filter.createTm[1] : '', // Creation end time
+        filterStartPassTm: state.filter.passTm.length === 2 ? state.filter.passTm[0] : '', // Password update start time
+        filterEndPassTm: state.filter.passTm.length === 2 ? state.filter.passTm[1] : '', // Password update end time
+        sort: -1, // Sort by creation time (`1` asc, `-1` desc) or password update time (`2` asc, `-2` desc)
     };
 
     state.table.loading = true;

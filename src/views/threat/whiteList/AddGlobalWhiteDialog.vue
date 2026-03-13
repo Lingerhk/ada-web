@@ -209,8 +209,8 @@ const confirm = async () => {
         const req: AddThreatWhitelistReq = {
             ruleId: ruleId,
             domain: input.domainSelected,
-            rules: input.addReqRules,// 规则信息
-            remark: remark.value, // 备注
+            rules: input.addReqRules,// Rule details
+            remark: remark.value, // Remark
             origin: 2,
         };
 

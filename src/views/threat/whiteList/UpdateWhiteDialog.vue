@@ -164,8 +164,8 @@ function confirm() {
 
     const req: UpdateThreatWhitelistReq = {
         iD: props.id,
-        rules: addReqRules.value,// 规则信息
-        remark: remark.value, // 备注
+        rules: addReqRules.value,// Rule details
+        remark: remark.value, // Remark
     }
 
     console.log("updateThreatWhitelist:", req)

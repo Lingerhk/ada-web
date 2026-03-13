@@ -1,6 +1,6 @@
 @import './index.scss';
 
-/* 页面宽度小于768px
+/* Viewport width below 768px
 ------------------------------- */
 @media screen and (max-width: $sm) {
 	.tags-view-form {

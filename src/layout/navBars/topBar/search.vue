@@ -34,7 +34,7 @@ import { useI18n } from 'vue-i18n';
 import { storeToRefs } from 'pinia';
 import { useTagsViewRoutes } from '/@/stores/tagsViewRoutes';
 
-// 定义变量内容
+// Define reactive state and refs
 const storesTagsViewRoutes = useTagsViewRoutes();
 const { tagsViewRoutes } = storeToRefs(storesTagsViewRoutes);
 const layoutMenuAutocompleteRef = ref();
@@ -46,7 +46,7 @@ const state = reactive<SearchState>({
 	tagsViewList: [],
 });
 
-// 搜索弹窗打开
+// Open the search dialog
 const openSearch = () => {
 	state.menuQuery = '';
 	state.isShowSearch = true;
@@ -57,16 +57,16 @@ const openSearch = () => {
 		});
 	});
 };
-// 搜索弹窗关闭
+// Close the search dialog
 const closeSearch = () => {
 	state.isShowSearch = false;
 };
-// 菜单搜索数据过滤
+// Filter the menu-search source data
 const menuSearch = (queryString: string, cb: Function) => {
 	let results = queryString ? state.tagsViewList.filter(createFilter(queryString)) : state.tagsViewList;
 	cb(results);
 };
-// 菜单搜索过滤
+// Apply the menu-search filter
 const createFilter = (queryString: string) => {
 	return (restaurant: RouteItem) => {
 		return (
@@ -76,14 +76,14 @@ const createFilter = (queryString: string) => {
 		);
 	};
 };
-// 初始化菜单数据
+// Initialize the menu data
 const initTageView = () => {
 	if (state.tagsViewList.length > 0) return false;
 	tagsViewRoutes.value.map((v: RouteItem) => {
 		if (!v.meta?.isHide) state.tagsViewList.push({ ...v });
 	});
 };
-// 当前菜单选中时
+// Handle the current menu selection
 const onHandleSelect = (item: RouteItem) => {
 	let { path, redirect } = item;
 	if (item.meta?.isLink && !item.meta?.isIframe) window.open(item.meta?.isLink);
@@ -92,7 +92,7 @@ const onHandleSelect = (item: RouteItem) => {
 	closeSearch();
 };
 
-// 暴露变量
+// Expose methods and state
 defineExpose({
 	openSearch,
 });

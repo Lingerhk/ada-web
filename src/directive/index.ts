@@ -3,16 +3,16 @@ import { authDirective } from '/@/directive/authDirective';
 import { wavesDirective, dragDirective } from '/@/directive/customDirective';
 
 /**
- * 导出指令方法：v-xxx
- * @methods authDirective 用户权限指令，用法：v-auth
- * @methods wavesDirective 按钮波浪指令，用法：v-waves
- * @methods dragDirective 自定义拖动指令，用法：v-drag
+ * Export directive helpers such as `v-xxx`
+ * @methods authDirective User-permission directive, used as `v-auth`
+ * @methods wavesDirective Button wave directive, used as `v-waves`
+ * @methods dragDirective Custom drag directive, used as `v-drag`
  */
 export function directive(app: App) {
-	// 用户权限指令
+	// User-permission directive
 	authDirective(app);
-	// 按钮波浪指令
+	// Button wave directive
 	wavesDirective(app);
-	// 自定义拖动指令
+	// Custom drag directive
 	dragDirective(app);
 }

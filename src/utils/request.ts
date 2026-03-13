@@ -1,5 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 import { ElMessage, ElMessageBox } from 'element-plus';
+import { i18n } from '/@/i18n';
 import { Session } from '/@/utils/storage';
 import qs from 'qs';
 
@@ -40,7 +41,7 @@ service.interceptors.response.use(
 			if (res.code === 401 || res.code === 4001) {
 				Session.clear(); // Clear all temporary browser storage
 				window.location.href = '/'; // Redirect to the login page
-				ElMessageBox.alert('你已被登出，请重新登录', '提示', {})
+				ElMessageBox.alert(i18n.global.t('message.api.loggedOutMessage'), i18n.global.t('message.api.loggedOutTitle'), {})
 					.then(() => {})
 					.catch(() => {});
 			}
@@ -52,12 +53,12 @@ service.interceptors.response.use(
 	(error) => {
 		// Handle response errors
 		if (error.message.indexOf('timeout') != -1) {
-			ElMessage.error('网络超时');
+			ElMessage.error(i18n.global.t('message.api.networkTimeout'));
 		} else if (error.message == 'Network Error') {
-			ElMessage.error('网络连接错误');
+			ElMessage.error(i18n.global.t('message.api.networkError'));
 		} else {
 			if (error.response.data) ElMessage.error(error.response.statusText);
-			else ElMessage.error('接口路径找不到');
+			else ElMessage.error(i18n.global.t('message.api.missingEndpoint'));
 		}
 		return Promise.reject(error);
 	}

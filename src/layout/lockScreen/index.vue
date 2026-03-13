@@ -21,7 +21,7 @@
 				</div>
 				<div class="layout-lock-screen-date-top">
 					<SvgIcon name="ele-Top" />
-					<div class="layout-lock-screen-date-top-text">上滑解锁</div>
+					<div class="layout-lock-screen-date-top-text">{{ t('message.lockScreen.slideToUnlock') }}</div>
 				</div>
 			</div>
 			<transition name="el-zoom-in-center">
@@ -33,7 +33,7 @@
 						<div class="layout-lock-screen-login-box-name">Administrator</div>
 						<div class="layout-lock-screen-login-box-value">
 							<el-input
-								placeholder="请输入密码"
+								:placeholder="t('message.lockScreen.passwordPlaceholder')"
 								ref="layoutLockScreenInputRef"
 								v-model="state.lockScreenPassword"
 								@keyup.enter.native.stop="onLockScreenSubmit()"
@@ -61,6 +61,7 @@
 
 <script setup lang="ts" name="layoutLockScreen">
 import { nextTick, onMounted, reactive, ref, onUnmounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { formatDate } from '/@/utils/formatTime';
 import { Local } from '/@/utils/storage';
 import { storeToRefs } from 'pinia';
@@ -69,6 +70,7 @@ import { useThemeConfig } from '/@/stores/themeConfig';
 // Define reactive state and refs
 const layoutLockScreenDateRef = ref<HtmlType>();
 const layoutLockScreenInputRef = ref();
+const { locale, t } = useI18n();
 const storesThemeConfig = useThemeConfig();
 const { themeConfig } = storeToRefs(storesThemeConfig);
 const state = reactive({
@@ -145,9 +147,13 @@ const initGetElement = () => {
 };
 // TimeInitialize
 const initTime = () => {
-	state.time.hm = formatDate(new Date(), 'HH:MM');
-	state.time.s = formatDate(new Date(), 'SS');
-	state.time.mdq = formatDate(new Date(), 'mm月dd日，WWW');
+	const now = new Date();
+	state.time.hm = formatDate(now, 'HH:MM');
+	state.time.s = formatDate(now, 'SS');
+	state.time.mdq =
+		locale.value === 'en'
+			? new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', weekday: 'long' }).format(now)
+			: formatDate(now, 'mm月dd日，WWW');
 };
 // Initialize the time timer
 const initSetTime = () => {

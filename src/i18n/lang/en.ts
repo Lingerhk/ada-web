@@ -116,7 +116,7 @@ export default {
 		threatBlockIndex: 'Auto Block',
 	},
 	staticRoutes: {
-		signIn: 'signIn',
+		signIn: 'Sign In',
 		notFound: 'notFound',
 		noPower: 'noPower',
 		canUpgrade: 'Can Be Upgraded',
@@ -148,6 +148,7 @@ export default {
 		logOutConfirm: 'Confirm',
 		logOutCancel: 'Cancel',
 		logOutExit: 'Exiting',
+		fullscreenUnavailable: 'Fullscreen is not supported on this device',
 	},
 	tagsView: {
 		refresh: 'Refresh',
@@ -1513,9 +1514,22 @@ export default {
 		responseError: 'Response Error',
 	},
 	api: {
+		loggedOutTitle: 'Session Expired',
+		loggedOutMessage: 'You have been signed out. Please sign in again.',
+		networkTimeout: 'Network timeout',
+		networkError: 'Network connection error',
+		missingEndpoint: 'API endpoint not found',
 		alertMessage: 'Server is busy, please try again later',
 		alertDefaultSuccess: 'Operation Successful',
 		alertDefaultFail: 'Server is busy, please try again later',
+	},
+	theme: {
+		invalidHex: 'Invalid hex value',
+		invalidRgb: 'Invalid RGB value',
+		invalidHexColor: 'Invalid hex color value',
+	},
+	styleSheets: {
+		loadFailed: 'Unable to load icon data. Refresh and try again.',
 	},
 	dashboard: {
 		todayAlarmStats: 'Today Alarm Statistics',
@@ -1565,5 +1579,13 @@ export default {
 		subtitle: 'AD Aegis For Threat Protection',
 		usernameRequired: 'Please enter username',
 		passwordRequired: 'Please enter password',
+	},
+	linkView: {
+		openedInNewWindow: 'Page "{0}" has opened in a new window',
+		openNow: 'Open now',
+	},
+	lockScreen: {
+		slideToUnlock: 'Slide up to unlock',
+		passwordPlaceholder: 'Enter password',
 	},
 };

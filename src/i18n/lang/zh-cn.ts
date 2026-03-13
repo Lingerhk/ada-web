@@ -148,6 +148,7 @@ export default {
 		logOutConfirm: '确定',
 		logOutCancel: '取消',
 		logOutExit: '退出中',
+		fullscreenUnavailable: '当前设备不支持全屏',
 	},
 	tagsView: {
 		refresh: '刷新',
@@ -1512,9 +1513,22 @@ export default {
 		responseError: '网络响应错误',
 	},
 	api: {
+		loggedOutTitle: '提示',
+		loggedOutMessage: '你已被登出，请重新登录',
+		networkTimeout: '网络超时',
+		networkError: '网络连接错误',
+		missingEndpoint: '接口路径找不到',
 		alertMessage: '服务器忙，请稍后重试',
 		alertDefaultSuccess: '操作成功',
 		alertDefaultFail: '服务器忙，请稍后重试',
+	},
+	theme: {
+		invalidHex: '十六进制值无效',
+		invalidRgb: 'RGB 颜色值无效',
+		invalidHexColor: '十六进制颜色值无效',
+	},
+	styleSheets: {
+		loadFailed: '未获取到图标数据，请刷新重试',
 	},
 	dashboard: {
 		todayAlarmStats: '今日告警统计',
@@ -1555,5 +1569,13 @@ export default {
 		events: '事件',
 		alertEvents: '告警事件',
 		activities: '活动',
+	},
+	linkView: {
+		openedInNewWindow: '页面 "{0}" 已在新窗口中打开',
+		openNow: '立即前往',
+	},
+	lockScreen: {
+		slideToUnlock: '上滑解锁',
+		passwordPlaceholder: '请输入密码',
 	},
 };

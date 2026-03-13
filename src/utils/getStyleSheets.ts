@@ -1,5 +1,6 @@
 import { nextTick } from 'vue';
 import * as svg from '@element-plus/icons-vue';
+import { i18n } from '/@/i18n';
 
 // Get Alibaba iconfont icons
 const getAlicdnIconfont = () => {
@@ -23,7 +24,7 @@ const getAlicdnIconfont = () => {
 				}
 			}
 			if (sheetsIconList.length > 0) resolve(sheetsIconList);
-			else reject('未获取到值，请刷新重试');
+			else reject(i18n.global.t('message.styleSheets.loadFailed'));
 		});
 	});
 };
@@ -38,7 +39,7 @@ const getElementPlusIconfont = () => {
 				sheetsIconList.push(`ele-${icons[i].name}`);
 			}
 			if (sheetsIconList.length > 0) resolve(sheetsIconList);
-			else reject('未获取到值，请刷新重试');
+			else reject(i18n.global.t('message.styleSheets.loadFailed'));
 		});
 	});
 };
@@ -71,7 +72,7 @@ const getAwesomeIconfont = () => {
 				}
 			}
 			if (sheetsIconList.length > 0) resolve(sheetsIconList.reverse());
-			else reject('未获取到值，请刷新重试');
+			else reject(i18n.global.t('message.styleSheets.loadFailed'));
 		});
 	});
 };

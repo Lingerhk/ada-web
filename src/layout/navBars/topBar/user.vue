@@ -134,7 +134,7 @@ const layoutUserFlexNum = computed(() => {
 // Handle full-screen clicks
 const onScreenfullClick = () => {
 	if (!screenfull.isEnabled) {
-		ElMessage.warning('暂不不支持全屏');
+		ElMessage.warning(t('message.user.fullscreenUnavailable'));
 		return false;
 	}
 	screenfull.toggle();

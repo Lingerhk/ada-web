@@ -157,6 +157,7 @@ export default {
 		closeAll: '全部关闭',
 		fullscreen: '当前页全屏',
 		closeFullscreen: '关闭全屏',
+		invalidRoutePath: '请正确输入路径及完整参数（query、params）',
 	},
 	notFound: {
 		foundTitle: '地址输入错误，请重新输入地址~',
@@ -1008,6 +1009,8 @@ export default {
 	sysConfig: {
 		sensorConfig: {
 			searchPlaceholder: '请输入关键词搜索传感器IP或域控',
+			detailTitle: '传感器详情',
+			editTitle: '编辑域控传感器',
 			iD: '传感器ID',
 			iP: '传感器IP',
 			status_Init: '待配置',
@@ -1596,5 +1599,12 @@ export default {
 	lockScreen: {
 		slideToUnlock: '上滑解锁',
 		passwordPlaceholder: '请输入密码',
+	},
+	validator: {
+		ipRequired: '请输入IP地址',
+		ipInvalid: '请输入有效的IPv4或IPv6地址',
+		numberRequired: '请输入数字',
+		listSizeMin: '列表项数量不能少于 {0}',
+		listSizeMax: '列表项数量不能多于 {0}',
 	},
 };

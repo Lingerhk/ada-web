@@ -157,6 +157,7 @@ export default {
 		closeAll: 'Close All',
 		fullscreen: 'Fullscreen',
 		closeFullscreen: 'Close Fullscreen',
+		invalidRoutePath: 'Please enter a valid path with complete query and params.',
 	},
 	notFound: {
 		foundTitle: 'Wrong address input, please re-enter the address~',
@@ -1018,6 +1019,8 @@ export default {
 	sysConfig: {
 		sensorConfig: {
 			searchPlaceholder: 'Search by Sensor IP or DC',
+			detailTitle: 'Sensor Details',
+			editTitle: 'Edit DC Sensor',
 			iD: 'ID',
 			iP: 'IP',
 			status_Init: 'Initializing',
@@ -1606,5 +1609,12 @@ export default {
 	lockScreen: {
 		slideToUnlock: 'Slide up to unlock',
 		passwordPlaceholder: 'Enter password',
+	},
+	validator: {
+		ipRequired: 'Please enter an IP address',
+		ipInvalid: 'Please enter a valid IPv4 or IPv6 address',
+		numberRequired: 'Please enter a number',
+		listSizeMin: 'The list must contain at least {0} item(s)',
+		listSizeMax: 'The list must contain at most {0} item(s)',
 	},
 };

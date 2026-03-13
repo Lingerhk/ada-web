@@ -1130,8 +1130,8 @@ const handleSaveAlertRule = async () => {
 const handleDeleteAlertRule = async (row: AlertRuleInfo) => {
     try {
         await ElMessageBox.confirm(t('message.ruleManage.confirmDeleteRule', { title: row.title }), t('message.ruleManage.confirmTitle'), {
-            confirmButtonText: '确认',
-            cancelButtonText: '取消',
+            confirmButtonText: t('message.dialog.confirm'),
+            cancelButtonText: t('message.dialog.cancel'),
             type: 'warning',
         });
 
@@ -1494,8 +1494,8 @@ const handleSaveActivityRule = async () => {
 const handleDeleteActivityRule = async (row: ActivityRuleInfo) => {
     try {
         await ElMessageBox.confirm(t('message.ruleManage.confirmDeleteRule', { title: row.title }), t('message.ruleManage.confirmTitle'), {
-            confirmButtonText: '确认',
-            cancelButtonText: '取消',
+            confirmButtonText: t('message.dialog.confirm'),
+            cancelButtonText: t('message.dialog.cancel'),
             type: 'warning',
         });
 

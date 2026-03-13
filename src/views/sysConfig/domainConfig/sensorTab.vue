@@ -261,11 +261,11 @@ const handleConfirm = (title: string, row: ListSensorReply_Details, done: (row: 
 
 // Action buttons
 const onDetail = (row: ListSensorReply_Details) => {
-	detailDrawerRef.value.open('传感器详情', row, refresh);
+	detailDrawerRef.value.open(t('message.sysConfig.sensorConfig.detailTitle'), row, refresh);
 }
 
 const onEdit = (row: ListSensorReply_Details) => {
-	editDrawerRef.value.open('编辑域控传感器', row, refresh);
+	editDrawerRef.value.open(t('message.sysConfig.sensorConfig.editTitle'), row, refresh);
 }
 
 const onDelete = (row: ListSensorReply_Details) => {

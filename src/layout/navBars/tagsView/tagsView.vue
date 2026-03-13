@@ -51,6 +51,7 @@ import { defineAsyncComponent, reactive, onMounted, computed, ref, nextTick, onB
 import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router';
 import Sortable from 'sortablejs';
 import { ElMessage } from 'element-plus';
+import { useI18n } from 'vue-i18n';
 import { storeToRefs } from 'pinia';
 import { useTagsViewRoutes } from '/@/stores/tagsViewRoutes';
 import { useThemeConfig } from '/@/stores/themeConfig';
@@ -78,6 +79,7 @@ const { tagsViewRoutes } = storeToRefs(storesTagsViewRoutes);
 const { routesList } = storeToRefs(storesRoutesList);
 const storesKeepALiveNames = useKeepALiveNames();
 const route = useRoute();
+const { t } = useI18n();
 const router = useRouter();
 const state = reactive<TagsViewState>({
 	routeActive: '',
@@ -337,7 +339,7 @@ const getCurrentRouteItem = (item: RouteItem): any => {
 // Handle right-clicks on the current tagsView item
 const onCurrentContextmenuClick = async (item: RouteItem) => {
 	item.commonUrl = transUrlParams(item);
-	if (!getCurrentRouteItem(item)) return ElMessage({ type: 'warning', message: '请正确输入路径及完整参数（query、params）' });
+	if (!getCurrentRouteItem(item)) return ElMessage({ type: 'warning', message: t('message.tagsView.invalidRoutePath') });
 	const { path, name, params, query, meta, url } = getCurrentRouteItem(item);
 	switch (item.contextMenuClickId) {
 		case 0:

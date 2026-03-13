@@ -15,9 +15,57 @@ const alias: Record<string, string> = {
 	'vue-i18n': 'vue-i18n/dist/vue-i18n.cjs.js',
 };
 
+const chunkGroups: Record<string, string[]> = {
+	'vendor-vue': ['vue', 'vue-router', 'pinia', 'vue-i18n', '@vue', '@intlify', 'mitt', 'nprogress'],
+	'vendor-ui': [
+		'element-plus',
+		'@element-plus/icons-vue',
+		'@element-plus',
+		'@ctrl',
+		'@floating-ui',
+		'@popperjs',
+		'async-validator',
+		'dayjs',
+		'lodash',
+		'lodash-es',
+		'lodash-unified',
+	],
+	'vendor-charts': ['echarts', 'echarts-wordcloud', 'zrender'],
+	'vendor-editor': ['codemirror', 'codemirror-editor-vue3', 'diff-match-patch', 'js-yaml', 'marked', 'marked-highlight', 'highlight.js'],
+	'vendor-terminal': ['xterm', 'xterm-addon-attach', 'xterm-addon-fit'],
+	'vendor-grpc': ['@protobuf-ts', '@grpc'],
+	'vendor-utils': ['axios', 'file-saver', 'js-cookie', 'qs', 'qrcode.vue', 'screenfull', 'sortablejs', 'vue-clipboard3', 'vue3-json-viewer'],
+};
+
 const parseEnvBoolean = (value: string | undefined, defaultValue = false) => {
 	if (value === undefined) return defaultValue;
 	return value === 'true';
+};
+
+const getPackageName = (id: string) => {
+	const parts = id.split('node_modules/');
+	if (parts.length < 2) return null;
+	const packagePath = parts.at(-1);
+	if (!packagePath) return null;
+	const segments = packagePath.split('/');
+	if (segments[0].startsWith('@') && segments.length > 1) {
+		return `${segments[0]}/${segments[1]}`;
+	}
+	return segments[0];
+};
+
+const getManualChunk = (id: string) => {
+	if (!id.includes('node_modules')) return undefined;
+	const packageName = getPackageName(id);
+	if (!packageName) return 'vendor-misc';
+
+	for (const [chunkName, packages] of Object.entries(chunkGroups)) {
+		if (packages.some((name) => packageName === name || packageName.startsWith(`${name}/`))) {
+			return chunkName;
+		}
+	}
+
+	return 'vendor-misc';
 };
 
 const viteConfig = defineConfig((mode: ConfigEnv) => {
@@ -51,12 +99,8 @@ const viteConfig = defineConfig((mode: ConfigEnv) => {
 					chunkFileNames: 'assets/js/[name]-[hash].js',
 					entryFileNames: 'assets/js/[name]-[hash].js',
 					assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
-					manualChunks(id) {
-						if (id.includes('node_modules')) {
-							return id.toString().match(/\/node_modules\/(?!.pnpm)(?<moduleName>[^\/]*)\//)?.groups!.moduleName ?? 'vender';
-						}
-					},
-					},
+					manualChunks: getManualChunk,
+				},
 				...(isOpenCdn ? { external: buildConfig.external } : {}),
 			},
 		},

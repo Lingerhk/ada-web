@@ -251,17 +251,17 @@ export function verifyPasswordPowerful(val: string) {
  * @description Weak: digits only, letters only, or symbols only
  * @description Medium: letters+digits, letters+symbols, or digits+symbols
  * @description Strong: letters+digits+symbols
- * @returns One of the Chinese labels for weak, medium, or strong
+ * @returns One of the stable keys `low`, `middle`, or `high`
  */
 export function verifyPasswordStrength(val: string) {
 	let v = '';
 	// Weak: digits only, letters only, or symbols only.
-	if (/^(?:\d+|[a-zA-Z]+|[!@#$%^&\.* ]+){6,16}$/.test(val)) v = '弱';
+	if (/^(?:\d+|[a-zA-Z]+|[!@#$%^&\.* ]+){6,16}$/.test(val)) v = 'low';
 	// Medium: letters+digits, letters+symbols, or digits+symbols.
-	if (/^(?![a-zA-z]+$)(?!\d+$)(?![!@#$%^&\.* ]+$)[a-zA-Z\d!@#$%^&\.*]{6,16}$/.test(val)) v = '中';
+	if (/^(?![a-zA-z]+$)(?!\d+$)(?![!@#$%^&\.* ]+$)[a-zA-Z\d!@#$%^&\.*]{6,16}$/.test(val)) v = 'middle';
 	// Strong: letters+digits+symbols.
 	if (/^(?![a-zA-z]+$)(?!\d+$)(?![!@#$%^&\.*]+$)(?![a-zA-z\d]+$)(?![a-zA-z!@#$%^&\.*]+$)(?![\d!@#$%^&\.*]+$)[a-zA-Z\d!@#$%^&\.*]{6,16}$/.test(val))
-		v = '强';
+		v = 'high';
 	// Response payload
 	return v;
 }

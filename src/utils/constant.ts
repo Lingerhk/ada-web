@@ -37,7 +37,17 @@ export const getMessageStatusOptions = (t: any) => [0, 1].map(l => ({ value: l, 
 
 export const getSafetyOverviewDayOptions = (t: any) => [1, 7, 30].map(l => ({ value: l, label: t(`message.threat.safetyOverview.duration${l}`) }));
 
-export const getAuditEventOptions = (t: any) => ['上传Logo', '删除域控', '测试域连接', '添加域控', '添加子用户', '登录', '编辑域控信息'].map(l => ({ value: l, label: t(`message.system.audit.event_${l}`) }));
+const auditEventOptions = [
+	{ value: '上传Logo', key: 'uploadLogo' },
+	{ value: '删除域控', key: 'deleteDomainController' },
+	{ value: '测试域连接', key: 'testDomainConnection' },
+	{ value: '添加域控', key: 'addDomainController' },
+	{ value: '添加子用户', key: 'addSubUser' },
+	{ value: '登录', key: 'login' },
+	{ value: '编辑域控信息', key: 'editDomainControllerInfo' },
+];
+
+export const getAuditEventOptions = (t: any) => auditEventOptions.map(({ value, key }) => ({ value, label: t(`message.system.audit.event_${key}`) }));
 
 export const getAddWhiteOpeartionOptins = () => ['==', '!=', '>', '<', '>=', '<=', 'contain', 'not_contain', 'in', 'not_in','regex'].map(l => ({ value: l, label: transAlarmList(l) }));
 

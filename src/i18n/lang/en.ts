@@ -149,6 +149,8 @@ export default {
 		logOutCancel: 'Cancel',
 		logOutExit: 'Exiting',
 		fullscreenUnavailable: 'Fullscreen is not supported on this device',
+		languageZhCn: 'Simplified Chinese',
+		languageEn: 'English',
 	},
 	tagsView: {
 		refresh: 'Refresh',
@@ -1626,6 +1628,7 @@ export default {
 		subtitle: 'AD Aegis For Threat Protection',
 		usernameRequired: 'Please enter username',
 		passwordRequired: 'Please enter password',
+		noPermission: 'Sorry, you do not have permission to log in',
 	},
 	linkView: {
 		openedInNewWindow: 'Page "{0}" has opened in a new window',
@@ -1634,6 +1637,7 @@ export default {
 	lockScreen: {
 		slideToUnlock: 'Slide up to unlock',
 		passwordPlaceholder: 'Enter password',
+		dateLabel: '{0}, {1}',
 	},
 	validator: {
 		ipRequired: 'Please enter an IP address',

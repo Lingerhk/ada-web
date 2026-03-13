@@ -150,10 +150,13 @@ const initTime = () => {
 	const now = new Date();
 	state.time.hm = formatDate(now, 'HH:MM');
 	state.time.s = formatDate(now, 'SS');
-	state.time.mdq =
-		locale.value === 'en'
-			? new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', weekday: 'long' }).format(now)
-			: formatDate(now, 'mm月dd日，WWW');
+	const localeName = locale.value === 'en' ? 'en-US' : 'zh-CN';
+	const monthDay = new Intl.DateTimeFormat(localeName, {
+		month: locale.value === 'en' ? 'short' : 'long',
+		day: 'numeric',
+	}).format(now);
+	const weekday = new Intl.DateTimeFormat(localeName, { weekday: 'long' }).format(now);
+	state.time.mdq = t('message.lockScreen.dateLabel', [monthDay, weekday]);
 };
 // Initialize the time timer
 const initSetTime = () => {

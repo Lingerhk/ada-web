@@ -149,7 +149,7 @@ const onSignIn = async () => {
 // Handle the post-login redirect
 const signInSuccess = (isNoPower: boolean | undefined) => {
 	if (isNoPower) {
-		ElMessage.warning('抱歉，您没有登录权限');
+		ElMessage.warning(t('message.login.noPermission'));
 		Session.clear();
 	} else {
 		// Initialize the greeting shown after login

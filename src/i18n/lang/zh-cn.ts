@@ -149,6 +149,8 @@ export default {
 		logOutCancel: '取消',
 		logOutExit: '退出中',
 		fullscreenUnavailable: '当前设备不支持全屏',
+		languageZhCn: '简体中文',
+		languageEn: 'English',
 	},
 	tagsView: {
 		refresh: '刷新',
@@ -1553,6 +1555,7 @@ export default {
 		subtitle: 'AD Aegis For Threat Protection',
 		usernameRequired: '请输入用户名',
 		passwordRequired: '请输入密码',
+		noPermission: '抱歉，您没有登录权限',
 	},
 	download: {
 		responseError: '网络响应错误',
@@ -1624,6 +1627,7 @@ export default {
 	lockScreen: {
 		slideToUnlock: '上滑解锁',
 		passwordPlaceholder: '请输入密码',
+		dateLabel: '{0}，{1}',
 	},
 	validator: {
 		ipRequired: '请输入IP地址',

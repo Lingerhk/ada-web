@@ -96,12 +96,8 @@
 		background: var(--next-color-primary-lighter);
 	}
 
-	// alert / notice-bar
-	.home-card-item {
-		border: 1px solid var(--next-border-color-light) !important;
-	}
-	.el-alert,
-	.notice-bar {
+	// alert
+	.el-alert {
 		border: 1px solid var(--next-border-color) !important;
 		background-color: var(--next-color-disabled) !important;
 	}

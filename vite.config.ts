@@ -15,18 +15,25 @@ const alias: Record<string, string> = {
 	'vue-i18n': 'vue-i18n/dist/vue-i18n.cjs.js',
 };
 
+const parseEnvBoolean = (value: string | undefined, defaultValue = false) => {
+	if (value === undefined) return defaultValue;
+	return value === 'true';
+};
+
 const viteConfig = defineConfig((mode: ConfigEnv) => {
 	const env = loadEnv(mode.mode, process.cwd());
+	const isOpenCdn = parseEnvBoolean(env.VITE_OPEN_CDN);
+	const isOpenBrowser = parseEnvBoolean(env.VITE_OPEN);
 	return {
-		plugins: [vue(), vueSetupExtend(), viteCompression(), JSON.parse(env.VITE_OPEN_CDN) ? buildConfig.cdn() : null],
+		plugins: [vue(), vueSetupExtend(), viteCompression(), isOpenCdn ? buildConfig.cdn() : null],
 		root: process.cwd(),
 		resolve: { alias },
-		base: mode.command === 'serve' ? './' : env.VITE_PUBLIC_PATH,
+		base: mode.command === 'serve' ? './' : env.VITE_PUBLIC_PATH || './',
 		optimizeDeps: { exclude: ['vue-demi'] },
 		server: {
 			host: '0.0.0.0',
-			port: env.VITE_PORT as unknown as number,
-			open: JSON.parse(env.VITE_OPEN),
+			port: Number(env.VITE_PORT || 8888),
+			open: isOpenBrowser,
 			hmr: true,
 			proxy: {
 				'/kibana': {
@@ -50,8 +57,8 @@ const viteConfig = defineConfig((mode: ConfigEnv) => {
 							return id.toString().match(/\/node_modules\/(?!.pnpm)(?<moduleName>[^\/]*)\//)?.groups!.moduleName ?? 'vender';
 						}
 					},
-				},
-				...(JSON.parse(env.VITE_OPEN_CDN) ? { external: buildConfig.external } : {}),
+					},
+				...(isOpenCdn ? { external: buildConfig.external } : {}),
 			},
 		},
 		css: {},

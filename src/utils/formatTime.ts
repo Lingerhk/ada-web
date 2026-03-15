@@ -139,12 +139,17 @@ export function formatAxis(param: Date): string {
 	else return i18n.global.t('message.time.greetingLateNight');
 }
 
-export function formatApiTime(dt?: string | number): string {
-	if (!dt) {
-		return ''
+export function formatApiTime(dt?: string | number | Date): string {
+	if (dt === undefined || dt === null || dt === '') {
+		return '';
 	}
 
-	return formatDate(new Date(dt), "YYYY-mm-dd HH:MM:SS");
+	const date = dt instanceof Date ? dt : new Date(dt);
+	if (Number.isNaN(date.getTime())) {
+		return '';
+	}
+
+	return formatDate(date, 'YYYY-mm-dd HH:MM:SS');
 }
 
 export function getOvernight() {

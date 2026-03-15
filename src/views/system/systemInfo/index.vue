@@ -92,7 +92,7 @@
                                 <template #label>
                                     <h4>{{ $t('message.system.license.endTime') }}:</h4>
                                 </template>
-                                {{ formatApiTime(new Date(Number(licenseState.data.endTime) * 1000).toLocaleString()) }}
+                                {{ formatLicenseEndTime(licenseState.data.endTime) }}
                             </el-form-item>
                             <el-form-item>
                                 <template #label>
@@ -403,6 +403,15 @@ const licenseState = reactive({
 });
 
 const licenseMethod = ['code', 'file'].map(l => ({ value: l, label: t(`message.system.license.licenseType_${l}`)}));
+
+const formatLicenseEndTime = (endTime?: string | number) => {
+    const seconds = Number(endTime);
+    if (!Number.isFinite(seconds) || seconds <= 0) {
+        return '--';
+    }
+
+    return formatApiTime(new Date(seconds * 1000)) || '--';
+};
 
 // Upgrade State
 const upgradeState = reactive({

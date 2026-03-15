@@ -8,6 +8,14 @@ export function alertApiError(
     subfix: string = '',
 ) {
     const msg = decodeURIComponent(err.message);
+    const isCanceledRequest =
+        err.code === 'CANCELLED' ||
+        /abort|aborted|cancelled|canceled/i.test(msg);
+
+    if (isCanceledRequest) {
+        return;
+    }
+
     ElMessage.error(prefix + msg + subfix);
     //ElMessage.error(i18n.global.t('message.api.alertMessage'));
     console.error(err.code, msg);

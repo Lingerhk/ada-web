@@ -32,6 +32,7 @@ import {
 	AddActivityRuleReq,
 	UpdateActivityRuleReq,
 	DeleteActivityRuleReq,
+	GetActivityRuleFieldsReply,
 } from './ada';
 import { alertApiError } from '/@/utils/error';
 import { OptionType } from '/@/utils/constant';
@@ -268,27 +269,20 @@ export const listThreatRuleOptions = async (): Promise<OptionType[]> => {
 };
 
 export const listAlertRuleNameOptions = async (): Promise<OptionType[]> => {
-	// TODO: After proto regeneration, use GetAlertRuleNamesReq
-	// const req: GetAlertRuleNamesReq = {
-	// 	ruleId: '', // Empty string returns all rule_id to rule_name mappings
-	// };
-
 	try {
-		// TODO: After proto regeneration, replace with:
-		// const response = await api.getAlertRuleNames(req).then((resp) => resp.response);
-		// For now, use ListAlertRule as fallback
 		const req: ListAlertRuleReq = {
 			pageIdx: 1,
 			pageSize: 1000,
 			level: [],
-			enable: [],
-			startTm: '',
-			endTm: '',
-			orderCreateTm: -1,
+			status: [],
+			enable: false,
+			keyword: '',
+			tags: [],
+			sortTm: -1,
 		};
 		const response = await api.listAlertRule(req).then((resp) => resp.response);
-		return response.list.map((rule) => ({
-			label: rule.name,
+		return response.rules.map((rule) => ({
+			label: rule.title,
 			value: rule.iD,
 		}));
 	} catch (err) {
@@ -345,7 +339,17 @@ export const getAlertRuleTags = async () => {
 };
 
 export const getActivityRuleFields = async () => {
-	return api.getActivityRuleFields({}).then((resp) => resp.response);
+	const getActivityRuleFieldsMethod = (
+		api as typeof api & {
+			getActivityRuleFields?: (req: Record<string, never>) => Promise<{ response: GetActivityRuleFieldsReply }>;
+		}
+	).getActivityRuleFields;
+
+	if (!getActivityRuleFieldsMethod) {
+		return { fields: [] } as GetActivityRuleFieldsReply;
+	}
+
+	return getActivityRuleFieldsMethod({}).then((resp) => resp.response);
 };
 
 export const getActivityRuleNames = async () => {

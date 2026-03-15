@@ -115,14 +115,18 @@ const initChart = () => {
                 name: T('ul'),
                 type: 'line',
                 showSymbol: false,
-                hoverAnimation: false,
+                emphasis: {
+                    scale: false,
+                },
                 data: ulData
             },
             {
                 name: T('dl'),
                 type: 'line',
                 showSymbol: false,
-                hoverAnimation: false,
+                emphasis: {
+                    scale: false,
+                },
                 data: dlData
             }
         ],

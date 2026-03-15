@@ -119,7 +119,9 @@ const initChart = () => {
                 name: 'CPU',
                 type: 'line',
                 showSymbol: false,
-                hoverAnimation: false,
+                emphasis: {
+                    scale: false,
+                },
                 data: [],
             }
         ],

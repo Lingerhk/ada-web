@@ -99,7 +99,6 @@ const viteConfig = defineConfig((mode: ConfigEnv) => {
 					chunkFileNames: 'assets/js/[name]-[hash].js',
 					entryFileNames: 'assets/js/[name]-[hash].js',
 					assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
-					manualChunks: getManualChunk,
 				},
 				...(isOpenCdn ? { external: buildConfig.external } : {}),
 			},

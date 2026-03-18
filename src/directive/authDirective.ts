@@ -3,20 +3,20 @@ import { useUserInfo } from '/@/stores/userInfo';
 import { judementSameArr } from '/@/utils/arrayOperation';
 
 /**
- * 用户权限指令
- * @directive 单个权限验证（v-auth="xxx"）
- * @directive 多个权限验证，满足一个则显示（v-auths="[xxx,xxx]"）
- * @directive 多个权限验证，全部满足则显示（v-auth-all="[xxx,xxx]"）
+ * User-permission directive
+ * @directive Single-permission check (`v-auth="xxx"`)
+ * @directive Multi-permission check that shows when any permission matches (`v-auths="[xxx,xxx]"`)
+ * @directive Multi-permission check that shows only when all permissions match (`v-auth-all="[xxx,xxx]"`)
  */
 export function authDirective(app: App) {
-	// 单个权限验证（v-auth="xxx"）
+	// Single-permission check (`v-auth="xxx"`)
 	app.directive('auth', {
 		mounted(el, binding) {
 			const stores = useUserInfo();
 			if (!stores.userInfos.authBtnList.some((v: string) => v === binding.value)) el.parentNode.removeChild(el);
 		},
 	});
-	// 多个权限验证，满足一个则显示（v-auths="[xxx,xxx]"）
+	// Show when any permission matches (`v-auths="[xxx,xxx]"`)
 	app.directive('auths', {
 		mounted(el, binding) {
 			let flag = false;
@@ -29,7 +29,7 @@ export function authDirective(app: App) {
 			if (!flag) el.parentNode.removeChild(el);
 		},
 	});
-	// 多个权限验证，全部满足则显示（v-auth-all="[xxx,xxx]"）
+	// Show only when all permissions match (`v-auth-all="[xxx,xxx]"`)
 	app.directive('auth-all', {
 		mounted(el, binding) {
 			const stores = useUserInfo();

@@ -5,7 +5,7 @@
                 <el-tab-pane v-for="option in typeOptions" :label="$t(option.label)" :name="option.value"
                     :key="option.value">
                     <el-row>
-                        <!-- 搜索 -->
+                        <!-- Search controls -->
                         <el-form :inline="true" class="filter-form">
                             <el-form-item>
                                 <el-button @click="handleNewSensityEntry" type="primary" size="default">
@@ -41,7 +41,7 @@
                             </el-form-item>
                         </el-form>
                     </el-row>
-                    <!-- 列表 -->
+                    <!-- List -->
                     <el-row>
                         <el-table :data="state.data" v-loading="state.loading" :border="true" style="width: 100%">
                             <!-- @selection-change="(val) => tableRowsSelected.value = val" -->
@@ -74,7 +74,7 @@
                             </el-table-column>
                         </el-table>
                     </el-row>
-                    <!-- 分页 -->
+                    <!-- Pagination -->
                     <el-row style="margin-top: 10px" justify="space-between">
                         <div>
                             <!-- <el-button type="primary" size="default" :disabled="!tableRowsSelected.value"

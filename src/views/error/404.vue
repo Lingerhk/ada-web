@@ -28,10 +28,10 @@
 <script setup lang="ts" name="notFound">
 import { useRouter } from 'vue-router';
 
-// 定义变量内容
+// Define reactive state and refs
 const router = useRouter();
 
-// 返回首页
+// Return to the home page
 const onGoHome = () => {
 	router.push('/');
 };

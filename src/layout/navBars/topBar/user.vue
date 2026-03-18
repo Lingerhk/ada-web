@@ -1,40 +1,20 @@
 <template>
 	<div class="layout-navbars-breadcrumb-user pr15" :style="{ flex: layoutUserFlexNum }">
-		<!-- <el-dropdown :show-timeout="70" :hide-timeout="50" trigger="click" @command="onComponentSizeChange">
-			<div class="layout-navbars-breadcrumb-user-icon">
-				<i class="iconfont icon-ziti" :title="$t('message.user.title0')"></i>
-			</div>
-			<template #dropdown>
-				<el-dropdown-menu>
-					<el-dropdown-item command="large" :disabled="state.disabledSize === 'large'">{{ $t('message.user.dropdownLarge') }}</el-dropdown-item>
-					<el-dropdown-item command="default" :disabled="state.disabledSize === 'default'">{{ $t('message.user.dropdownDefault') }}</el-dropdown-item>
-					<el-dropdown-item command="small" :disabled="state.disabledSize === 'small'">{{ $t('message.user.dropdownSmall') }}</el-dropdown-item>
-				</el-dropdown-menu>
-			</template>
-		</el-dropdown> -->
 		<el-dropdown :show-timeout="70" :hide-timeout="50" trigger="click" @command="(lang: any) => onLanguageChange(lang, true)">
 			<div class="layout-navbars-breadcrumb-user-icon">
 				<i
 					class="iconfont"
-					:class="state.disabledI18n === 'en' ? 'icon-fuhao-yingwen' : 'icon-fuhao-zhongwen'"
+					:class="state.disabledLocale === 'en' ? 'icon-fuhao-yingwen' : 'icon-fuhao-zhongwen'"
 					:title="$t('message.user.title1')"
 				></i>
 			</div>
 			<template #dropdown>
 				<el-dropdown-menu>
-					<el-dropdown-item command="zh-cn" :disabled="state.disabledI18n === 'zh-cn'">简体中文</el-dropdown-item>
-					<el-dropdown-item command="en" :disabled="state.disabledI18n === 'en'">English</el-dropdown-item>
+					<el-dropdown-item command="zh-cn" :disabled="state.disabledLocale === 'zh-cn'">{{ $t('message.user.languageZhCn') }}</el-dropdown-item>
+					<el-dropdown-item command="en" :disabled="state.disabledLocale === 'en'">{{ $t('message.user.languageEn') }}</el-dropdown-item>
 				</el-dropdown-menu>
 			</template>
 		</el-dropdown>
-		<!-- <div class="layout-navbars-breadcrumb-user-icon" @click="onSearchClick">
-			<el-icon :title="$t('message.user.title2')">
-				<ele-Search />
-			</el-icon>
-		</div> -->
-		<!-- <div class="layout-navbars-breadcrumb-user-icon" @click="onLayoutSetingClick">
-			<i class="icon-skin iconfont" :title="$t('message.user.title3')"></i>
-		</div> -->
 		<div class="layout-navbars-breadcrumb-user-icon" ref="userNewsBadgeRef" v-click-outside="onUserNewsClick">
 			<el-badge :is-dot="news.length > 0">
 				<el-icon :title="$t('message.user.title4')">
@@ -54,17 +34,8 @@
 		>
 			<UserNews v-model="news" />
 		</el-popover>
-		<!-- <div class="layout-navbars-breadcrumb-user-icon mr10" @click="onScreenfullClick">
-			<i
-				class="iconfont"
-				:title="state.isScreenfull ? $t('message.user.title6') : $t('message.user.title5')"
-				:class="!state.isScreenfull ? 'icon-fullscreen' : 'icon-tuichuquanping'"
-			></i>
-		</div> -->
 		<el-dropdown :show-timeout="70" :hide-timeout="50" @command="onHandleCommandClick">
 			<span class="layout-navbars-breadcrumb-user-link">
-				<!-- <img :src="userInfos.photo" class="layout-navbars-breadcrumb-user-link-photo mr5" />
-				{{ userInfos.userName === '' ? 'common' : userInfos.userName }} -->
 				{{ state.userName }}
 				<el-icon class="el-icon--right">
 					<ele-ArrowDown />
@@ -72,63 +43,50 @@
 			</span>
 			<template #dropdown>
 				<el-dropdown-menu>
-					<!-- <el-dropdown-item command="/home">{{ $t('message.user.dropdown1') }}</el-dropdown-item>
-					<el-dropdown-item command="wareHouse">{{ $t('message.user.dropdown6') }}</el-dropdown-item>
-					<el-dropdown-item command="/personal">{{ $t('message.user.dropdown2') }}</el-dropdown-item>
-					<el-dropdown-item command="/404">{{ $t('message.user.dropdown3') }}</el-dropdown-item>
-					<el-dropdown-item command="/401">{{ $t('message.user.dropdown4') }}</el-dropdown-item>
-					<el-dropdown-item divided command="logOut">{{ $t('message.user.dropdown5') }}</el-dropdown-item> -->
 					<el-dropdown-item command="changePassword">{{ $t('message.accountPerson.changePasswordTitle') }}</el-dropdown-item>
 					<el-dropdown-item command="/person">{{ $t('message.router.accountPersonIndex') }}</el-dropdown-item>
 					<el-dropdown-item divided command="logOut">{{ $t('message.user.dropdown5') }}</el-dropdown-item>
 				</el-dropdown-menu>
 			</template>
 		</el-dropdown>
-		<Search ref="searchRef" />
 		<ChangePasswordDialog v-model="needChangePassword" />
 	</div>
 </template>
 
 <script setup lang="ts" name="layoutBreadcrumbUser">
-import { defineAsyncComponent, ref, unref, computed, reactive, onMounted, onUnmounted, h } from 'vue';
+import { defineAsyncComponent, ref, unref, computed, reactive, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { ElMessageBox, ElMessage, ClickOutside as vClickOutside, ElNotification } from 'element-plus';
-import screenfull from 'screenfull';
+import { ElMessageBox, ClickOutside as vClickOutside, ElNotification } from 'element-plus';
 import { useI18n } from 'vue-i18n';
 import { storeToRefs } from 'pinia';
 import { useUserInfo } from '/@/stores/userInfo';
 import { useThemeConfig } from '/@/stores/themeConfig';
 import other from '/@/utils/other';
-import mittBus from '/@/utils/mitt';
 import { Session, Local } from '/@/utils/storage';
 import { getSysLanguage, getUnreadNotification, updateSysLanguage } from '/@/api/grpc/method';
 import { formatApiTime } from '/@/utils/formatTime';
 
-// 引入组件
+// Import components
 const UserNews = defineAsyncComponent(() => import('/@/layout/navBars/topBar/userNews.vue'));
-const Search = defineAsyncComponent(() => import('/@/layout/navBars/topBar/search.vue'));
 const ChangePasswordDialog = defineAsyncComponent(() => import('/@/components/secret/ChangePasswordDialog.vue'));
 
-// 定义变量内容
+// Define reactive state and refs
 const userNewsRef = ref();
 const userNewsBadgeRef = ref();
 const { locale, t } = useI18n();
 const router = useRouter();
 const stores = useUserInfo();
 const storesThemeConfig = useThemeConfig();
-const { userInfos } = storeToRefs(stores);
 const { themeConfig } = storeToRefs(storesThemeConfig);
-const searchRef = ref();
 const state = reactive({
-	isScreenfull: false,
-	disabledI18n: 'zh-cn',
+	disabledLocale: 'zh-cn',
 	disabledSize: 'large',
 	userName: '',
 });
 
 const needChangePassword = ref(false);
 
-// 设置分割样式
+// Apply the divider styles
 const layoutUserFlexNum = computed(() => {
 	let num: string | number = '';
 	const { layout, isClassicSplitMenu } = themeConfig.value;
@@ -137,27 +95,11 @@ const layoutUserFlexNum = computed(() => {
 	else num = '';
 	return num;
 });
-// 全屏点击时
-const onScreenfullClick = () => {
-	if (!screenfull.isEnabled) {
-		ElMessage.warning('暂不不支持全屏');
-		return false;
-	}
-	screenfull.toggle();
-	screenfull.on('change', () => {
-		if (screenfull.isFullscreen) state.isScreenfull = true;
-		else state.isScreenfull = false;
-	});
-};
-// 消息通知点击时
+// Handle notification clicks
 const onUserNewsClick = () => {
 	unref(userNewsRef).popperRef?.delayHide?.();
 };
-// 布局配置 icon 点击时
-const onLayoutSetingClick = () => {
-	mittBus.emit('openSetingsDrawer');
-};
-// 下拉菜单点击时
+// Handle dropdown-menu clicks
 const onHandleCommandClick = (path: string) => {
 	if (path === 'logOut') {
 		ElMessageBox({
@@ -185,9 +127,9 @@ const onHandleCommandClick = (path: string) => {
 			},
 		})
 			.then(async () => {
-				// 清除缓存/token等
+				// Clear cached state, tokens, and related data
 				Session.clear();
-				// 使用 reload 时，不需要调用 resetRoute() 重置路由
+				// When using reload, you do not need to call resetRoute()
 				window.location.reload();
 			})
 			.catch(() => {});
@@ -198,28 +140,14 @@ const onHandleCommandClick = (path: string) => {
 	}
 };
 
-// 菜单搜索点击
-const onSearchClick = () => {
-	searchRef.value.openSearch();
-};
-
-// 组件大小改变
-const onComponentSizeChange = (size: string) => {
-	Local.remove('themeConfig');
-	themeConfig.value.globalComponentSize = size;
-	Local.set('themeConfig', themeConfig.value);
-	initI18nOrSize('globalComponentSize', 'disabledSize');
-	window.location.reload();
-};
-
-// 语言切换
+// Handle language changes
 const onLanguageChange = (lang: string, sync: boolean = false) => {
 	Local.remove('themeConfig');
 	themeConfig.value.globalI18n = lang;
 	Local.set('themeConfig', themeConfig.value);
 	locale.value = lang;
 	other.useTitle();
-	initI18nOrSize('globalI18n', 'disabledI18n');
+	initI18nOrSize('globalI18n', 'disabledLocale');
 	if (sync === true) {
 		updateSysLanguage(lang).then(data => {
 			window.location.reload();
@@ -227,7 +155,7 @@ const onLanguageChange = (lang: string, sync: boolean = false) => {
 	}
 };
 
-// 初始化组件大小/i18n
+// Initialize component size and i18n settings
 const initI18nOrSize = (value: string, attr: string) => {
 	(<any>state)[attr] = Local.get('themeConfig')[value];
 };
@@ -271,7 +199,7 @@ const refreshMessage = () => {
 			// Mark this notification as shown
 			newShownIds.push(d.iD);
 
-			// 用timeout避免样式重叠
+			// Use a timeout to avoid style overlap
 			setTimeout(() => {
 				ElNotification.warning({
 					title: t('message.system.message.message'),
@@ -289,22 +217,21 @@ const refreshMessage = () => {
 
 		news.value = _news;
 	})
-	.catch(err => console.log("refresh message catch error:", err));
+	.catch(() => {});
 };
 
 const initI18n = () => {
 	getSysLanguage().then(sysLang => {
 		const localLang = sysLang === 'EN' ? 'en' : 'zh-cn';
-		// console.log(sysLang, localLang);
 		onLanguageChange(localLang, false);
 	});
 };
 
-// 页面加载时
+// On mount
 onMounted(() => {
 	if (Local.get('themeConfig')) {
 		initI18nOrSize('globalComponentSize', 'disabledSize');
-		initI18nOrSize('globalI18n', 'disabledI18n');
+		initI18nOrSize('globalI18n', 'disabledLocale');
 	}
 	const userName = Local.get('userName');
 	if (userName) {
@@ -318,8 +245,6 @@ onMounted(() => {
 	}, 5000);
 
 	initI18n();
-
-	// TODO: notify
 });
 
 onUnmounted(() => {

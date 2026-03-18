@@ -69,7 +69,7 @@ export interface LoginReply {
     /**
      * @generated from protobuf field: string passStrength = 3;
      */
-    passStrength: string; // 密码强度: high/middle/low
+    passStrength: string; // Password strength: high/middle/low
     /**
      * @generated from protobuf field: string role = 4;
      */
@@ -97,11 +97,11 @@ export interface LoginReply {
     /**
      * @generated from protobuf field: bool hasMfa = 10;
      */
-    hasMfa: boolean; // 是否需要二次验证
+    hasMfa: boolean; // Whether MFA is required
     /**
      * @generated from protobuf field: bool needChangePwd = 11;
      */
-    needChangePwd: boolean; // 是否需要修改密码
+    needChangePwd: boolean; // Whether the password must be changed
 }
 /**
  * @generated from protobuf message ada.LogoutReq
@@ -146,39 +146,39 @@ export interface ListUserReq {
     /**
      * @generated from protobuf field: bool isSelf = 4;
      */
-    isSelf: boolean; // 查询个人信息true，查询子用户列表false
+    isSelf: boolean; // `true` when querying the current user profile; `false` when listing sub-users
     /**
      * @generated from protobuf field: repeated string filterRole = 5;
      */
-    filterRole: string[]; // 角色
+    filterRole: string[]; // Roles
     /**
      * @generated from protobuf field: repeated string filterMfaStatus = 6;
      */
-    filterMfaStatus: string[]; // 二次认证状态 开启enable|禁用disable|关闭stop
+    filterMfaStatus: string[]; // MFA status: enable|disable|stop
     /**
      * @generated from protobuf field: repeated string filterPassStrength = 7;
      */
-    filterPassStrength: string[]; // 密码强度 high/middle/low
+    filterPassStrength: string[]; // Password strength: high/middle/low
     /**
      * @generated from protobuf field: string filterStartCreateTm = 8;
      */
-    filterStartCreateTm: string; // 创建开始时间
+    filterStartCreateTm: string; // Creation start time
     /**
      * @generated from protobuf field: string filterEndCreateTm = 9;
      */
-    filterEndCreateTm: string; // 创建结束时间
+    filterEndCreateTm: string; // Creation end time
     /**
      * @generated from protobuf field: string filterStartPassTm = 10;
      */
-    filterStartPassTm: string; // 密码最后修改开始时间
+    filterStartPassTm: string; // Password update start time
     /**
      * @generated from protobuf field: string filterEndPassTm = 11;
      */
-    filterEndPassTm: string; // 密码最后修改结束时间
+    filterEndPassTm: string; // Password update end time
     /**
      * @generated from protobuf field: int32 sort = 12;
      */
-    sort: number; // 创建时间排序，1为升序，-1为降序| 密码修改时间 2为升序，-2为降序
+    sort: number; // Sort by creation time (`1` asc, `-1` desc) or password update time (`2` asc, `-2` desc)
 }
 /**
  * @generated from protobuf message ada.ListUserReply
@@ -212,15 +212,15 @@ export interface ListUserReply_Details {
     /**
      * @generated from protobuf field: string passStrength = 3;
      */
-    passStrength: string; // 密码强度: high/middle/low
+    passStrength: string; // Password strength: high/middle/low
     /**
      * @generated from protobuf field: string role = 4;
      */
-    role: string; // 用户角色: mgr 超级管理员|dev 开发|ops 运维|sec 安全
+    role: string; // User role: `mgr` super admin | `dev` development | `ops` operations | `sec` security
     /**
      * @generated from protobuf field: int32 priv = 5;
      */
-    priv: number; // 权限类别: 1:super 2:admin 3:guest
+    priv: number; // Privilege level: `1` super | `2` admin | `3` guest
     /**
      * @generated from protobuf field: string mobile = 6;
      */
@@ -240,27 +240,27 @@ export interface ListUserReply_Details {
     /**
      * @generated from protobuf field: bool hasMfa = 10;
      */
-    hasMfa: boolean; // 是否开启二次验证
+    hasMfa: boolean; // Whether MFA is enabled
     /**
      * @generated from protobuf field: string avatar = 11;
      */
-    avatar: string; // 头像
+    avatar: string; // Avatar
     /**
      * @generated from protobuf field: string pwdUpdateTm = 12;
      */
-    pwdUpdateTm: string; // 密码更新时间
+    pwdUpdateTm: string; // Password update time
     /**
      * @generated from protobuf field: string department = 13;
      */
-    department: string; // 部门
+    department: string; // Department
     /**
      * @generated from protobuf field: string activeTm = 14;
      */
-    activeTm: string; // 活跃时间
+    activeTm: string; // Last active time
     /**
      * @generated from protobuf field: string updateTm = 15;
      */
-    updateTm: string; // 更新时间
+    updateTm: string; // Update time
 }
 /**
  * @generated from protobuf message ada.AddUserReq
@@ -293,7 +293,7 @@ export interface AddUserReq {
     /**
      * @generated from protobuf field: string department = 9;
      */
-    department: string; // 部门
+    department: string; // Department
 }
 /**
  * @generated from protobuf message ada.AddUserReply
@@ -327,11 +327,11 @@ export interface UpdateUserReq {
     /**
      * @generated from protobuf field: string role = 5;
      */
-    role: string; // 可选，super用户可以修改任意username的role
+    role: string; // Optional; a super user can change the role for any username
     /**
      * @generated from protobuf field: string department = 8;
      */
-    department: string; // 部门
+    department: string; // Department
 }
 /**
  * @generated from protobuf message ada.UpdateUserReply
@@ -357,7 +357,7 @@ export interface UpdateUserPasswordReq {
     /**
      * @generated from protobuf field: string username = 3;
      */
-    username: string; // 可选，super用户可以修改任意username的密码
+    username: string; // Optional; a super user can change the password for any username
 }
 /**
  * @generated from protobuf message ada.UpdateUserPasswordReply
@@ -527,7 +527,7 @@ export interface ListAccessKeyReq {
     /**
      * @generated from protobuf field: string username = 1;
      */
-    username: string; // 用户名，留空则列出所有AccessKey（管理员权限）
+    username: string; // Username; leave empty to list all AccessKeys (admin only)
 }
 /**
  * @generated from protobuf message ada.AccessKeyDetails
@@ -540,7 +540,7 @@ export interface AccessKeyDetails {
     /**
      * @generated from protobuf field: string username = 2;
      */
-    username: string; // 所属用户
+    username: string; // Owner username
     /**
      * @generated from protobuf field: string secretKey = 4;
      */
@@ -548,23 +548,23 @@ export interface AccessKeyDetails {
     /**
      * @generated from protobuf field: string remark = 5;
      */
-    remark: string; // 备注
+    remark: string; // Remark
     /**
      * @generated from protobuf field: string status = 6;
      */
-    status: string; // 状态: active|disabled
+    status: string; // Status: active|disabled
     /**
      * @generated from protobuf field: string createTm = 7;
      */
-    createTm: string; // 创建时间
+    createTm: string; // Creation time
     /**
      * @generated from protobuf field: string updateTm = 8;
      */
-    updateTm: string; // 更新时间
+    updateTm: string; // Update time
     /**
      * @generated from protobuf field: string activeTm = 9;
      */
-    activeTm: string; // 最近使用时间
+    activeTm: string; // Last used time
 }
 /**
  * @generated from protobuf message ada.ListAccessKeyReply
@@ -582,11 +582,11 @@ export interface GenerateAccessKeyReq {
     /**
      * @generated from protobuf field: string username = 1;
      */
-    username: string; // [(validator.field) = {length_gt: 0}]; // 用户名
+    username: string; // [(validator.field) = {length_gt: 0}]; // Username
     /**
      * @generated from protobuf field: string remark = 2;
      */
-    remark: string; // 备注
+    remark: string; // Remark
 }
 /**
  * @generated from protobuf message ada.GenerateAccessKeyReply
@@ -599,11 +599,11 @@ export interface GenerateAccessKeyReply {
     /**
      * @generated from protobuf field: string secretKey = 3;
      */
-    secretKey: string; // 生成的SecretKey（明文，仅此时返回）
+    secretKey: string; // Generated secret key in plain text; returned only in this response
     /**
      * @generated from protobuf field: string message = 4;
      */
-    message: string; // 错误信息
+    message: string; // Error message
 }
 /**
  * @generated from protobuf message ada.DeleteAccessKeyReq
@@ -625,7 +625,7 @@ export interface DeleteAccessKeyReply {
     /**
      * @generated from protobuf field: string message = 2;
      */
-    message: string; // 错误信息
+    message: string; // Error message
 }
 /**
  * Domain
@@ -646,15 +646,15 @@ export interface ListDomainReq {
     /**
      * @generated from protobuf field: string filterDomain = 3;
      */
-    filterDomain: string; // 根据所在域筛选
+    filterDomain: string; // Filter by domain
     /**
      * @generated from protobuf field: string filterStatus = 4;
      */
-    filterStatus: string; // 根据域状态筛选
+    filterStatus: string; // Filter by domain status
     /**
      * @generated from protobuf field: string filterKeyword = 5;
      */
-    filterKeyword: string; // 根据关键词搜索
+    filterKeyword: string; // Search by keyword
 }
 /**
  * @generated from protobuf message ada.ListDomainReply
@@ -780,7 +780,7 @@ export interface AddDomainReq {
     /**
      * @generated from protobuf field: string DNS = 4 [json_name = "DNS"];
      */
-    dNS: string; // [(validator.field) = {regex: "^((0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])\\.){3}(0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])$|^(\\s&&[^\\f\\n\\r\\t\\v])*"}]; //可选
+    dNS: string; // [(validator.field) = {regex: "^((0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])\\.){3}(0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])$|^(\\s&&[^\\f\\n\\r\\t\\v])*"}]; //Optional
 }
 /**
  * @generated from protobuf message ada.AddDomainReply
@@ -810,7 +810,7 @@ export interface TestDomainReq {
     /**
      * @generated from protobuf field: string DNS = 4 [json_name = "DNS"];
      */
-    dNS: string; // [(validator.field) = {regex: "^((0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])\\.){3}(0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])$|^(\\s&&[^\\f\\n\\r\\t\\v])*"}]; //可选
+    dNS: string; // [(validator.field) = {regex: "^((0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])\\.){3}(0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])$|^(\\s&&[^\\f\\n\\r\\t\\v])*"}]; //Optional
 }
 /**
  * @generated from protobuf message ada.TestDomainReply
@@ -819,11 +819,11 @@ export interface TestDomainReply {
     /**
      * @generated from protobuf field: int32 status = 1;
      */
-    status: number; // 1为成功，0为失败，
+    status: number; // `1` for success and `0` for failure
     /**
      * @generated from protobuf field: string msg = 2;
      */
-    msg: string; // 错误信息
+    msg: string; // Error message
 }
 /**
  * @generated from protobuf message ada.UpdateDomainReq
@@ -848,7 +848,7 @@ export interface UpdateDomainReq {
     /**
      * @generated from protobuf field: string DNS = 5 [json_name = "DNS"];
      */
-    dNS: string; // [(validator.field) = {regex: "^((0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])\\.){3}(0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])$|^(\\s&&[^\\f\\n\\r\\t\\v])*"}]; //可选
+    dNS: string; // [(validator.field) = {regex: "^((0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])\\.){3}(0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])$|^(\\s&&[^\\f\\n\\r\\t\\v])*"}]; //Optional
 }
 /**
  * @generated from protobuf message ada.UpdateDomainReply
@@ -888,7 +888,7 @@ export interface UpdateDomainDataReq {
     /**
      * @generated from protobuf field: string domainID = 1;
      */
-    domainID: string; // 域的ID
+    domainID: string; // Domain ID
 }
 /**
  * @generated from protobuf message ada.UpdateDomainDataReply
@@ -906,7 +906,7 @@ export interface DeploySensorReq {
     /**
      * @generated from protobuf field: string domainID = 1;
      */
-    domainID: string; // 域的ID
+    domainID: string; // Domain ID
     /**
      * @generated from protobuf field: string dcHostname = 2;
      */
@@ -948,7 +948,7 @@ export interface ListSensorReq {
     /**
      * @generated from protobuf field: int32 tmSort = 6;
      */
-    tmSort: number; // 最后在线时间排序，1为升序，-1为降序
+    tmSort: number; // Sort by last online time: `1` asc, `-1` desc
 }
 /**
  * @generated from protobuf message ada.ListSensorReply
@@ -1001,7 +1001,7 @@ export interface ListSensorReply_Details {
     /**
      * @generated from protobuf field: string status = 5;
      */
-    status: string; // 运行状态
+    status: string; // Runtime status
     /**
      * @generated from protobuf field: string version = 6;
      */
@@ -1009,55 +1009,55 @@ export interface ListSensorReply_Details {
     /**
      * @generated from protobuf field: string newVersion = 7;
      */
-    newVersion: string; // 可更新的sensor版本
+    newVersion: string; // Available sensor version
     /**
      * @generated from protobuf field: string pktStatus = 8;
      */
-    pktStatus: string; // 流量采集状态 Init|Running|Stopped|Error
+    pktStatus: string; // Packet collection status: Init|Running|Stopped|Error
     /**
      * @generated from protobuf field: string logStatus = 9;
      */
-    logStatus: string; // 日志采集状态 Init|Running|Stopped|Error
+    logStatus: string; // Log collection status: Init|Running|Stopped|Error
     /**
      * @generated from protobuf field: string sensorTime = 10;
      */
-    sensorTime: string; // 宿主机的当前时间戳(用作时间校正)
+    sensorTime: string; // Current host timestamp used for time calibration
     /**
      * @generated from protobuf field: string remark = 11;
      */
-    remark: string; // 备注
+    remark: string; // Remark
     /**
      * @generated from protobuf field: string pktPluginSwitch = 12;
      */
-    pktPluginSwitch: string; // 流量插件开关: true|false
+    pktPluginSwitch: string; // Packet plugin switch: true|false
     /**
      * @generated from protobuf field: string logPluginSwitch = 13;
      */
-    logPluginSwitch: string; // 日志插件开关: true|false
+    logPluginSwitch: string; // Log plugin switch: true|false
     /**
      * @generated from protobuf field: string rpcFwPluginSwitch = 14;
      */
-    rpcFwPluginSwitch: string; // rpcfw插件开关: true|false
+    rpcFwPluginSwitch: string; // rpcfw plugin switch: true|false
     /**
      * @generated from protobuf field: string ldapFwPluginSwitch = 15;
      */
-    ldapFwPluginSwitch: string; // ldapfw插件开关: true|false
+    ldapFwPluginSwitch: string; // ldapfw plugin switch: true|false
     /**
      * @generated from protobuf field: string pktPluginStatus = 16;
      */
-    pktPluginStatus: string; // 流量插件状态 Init|Running|Stopped|Error
+    pktPluginStatus: string; // Packet plugin status: Init|Running|Stopped|Error
     /**
      * @generated from protobuf field: string logPluginStatus = 17;
      */
-    logPluginStatus: string; // 日志插件状态 Init|Running|Stopped|Error
+    logPluginStatus: string; // Log plugin status: Init|Running|Stopped|Error
     /**
      * @generated from protobuf field: string rpcFwPluginStatus = 18;
      */
-    rpcFwPluginStatus: string; // rpcfw插件状态 Init|Running|Stopped|Error
+    rpcFwPluginStatus: string; // rpcfw plugin status: Init|Running|Stopped|Error
     /**
      * @generated from protobuf field: string ldapFwPluginStatus = 19;
      */
-    ldapFwPluginStatus: string; // ldapfw插件状态 Init|Running|Stopped|Error
+    ldapFwPluginStatus: string; // ldapfw plugin status: Init|Running|Stopped|Error
     /**
      * @generated from protobuf field: string rpcFWCpuUsed = 20;
      */
@@ -1085,55 +1085,55 @@ export interface ListSensorReply_Details {
     /**
      * @generated from protobuf field: string platform = 26;
      */
-    platform: string; // DC 平台
+    platform: string; // Domain controller platform
     /**
      * @generated from protobuf field: string kernelVer = 27;
      */
-    kernelVer: string; // DC内核版本
+    kernelVer: string; // Domain controller kernel version
     /**
      * @generated from protobuf field: string memTotal = 28;
      */
-    memTotal: string; // 内存大小(DC)
+    memTotal: string; // Domain controller memory size
     /**
      * @generated from protobuf field: string cpuTotal = 29;
      */
-    cpuTotal: string; // CPU核数
+    cpuTotal: string; // CPU core count
     /**
      * @generated from protobuf field: map<string, string> netIface = 30;
      */
     netIface: {
         [key: string]: string;
-    }; // 主机上网口列表 {"eth0":"ip1,ip2"}
+    }; // Host network interfaces, for example `{ "eth0": "ip1,ip2" }`
     /**
      * @generated from protobuf field: repeated string bindNetIface = 31;
      */
-    bindNetIface: string[]; // 绑定的接口list： ["eth0", "eth1"]
+    bindNetIface: string[]; // Bound interface list, for example `["eth0", "eth1"]`
     /**
      * @generated from protobuf field: int32 dcIntervalTm = 32;
      */
-    dcIntervalTm: number; // 域控时间与服务器时间的差值(秒)
+    dcIntervalTm: number; // Difference between domain-controller time and server time in seconds
     /**
      * @generated from protobuf field: map<string, string> perfLimit = 33;
      */
     perfLimit: {
         [key: string]: string;
-    }; // // 资源占用限制
+    }; // Resource usage limits
     /**
      * @generated from protobuf field: repeated ada.ListSensorReply.mapSlice events = 34;
      */
-    events: ListSensorReply_mapSlice[]; //  运行日志
+    events: ListSensorReply_mapSlice[]; // Runtime logs
     /**
      * @generated from protobuf field: string createTm = 35;
      */
-    createTm: string; // 添加时间
+    createTm: string; // Added time
     /**
      * @generated from protobuf field: string lastOnlineTm = 36;
      */
-    lastOnlineTm: string; // 最后在线时间
+    lastOnlineTm: string; // Last online time
     /**
      * @generated from protobuf field: string LastCollectTm = 37 [json_name = "LastCollectTm"];
      */
-    lastCollectTm: string; // 最后采集时间
+    lastCollectTm: string; // Last collection time
 }
 /**
  * @generated from protobuf message ada.UpdateSensorReq
@@ -1146,33 +1146,33 @@ export interface UpdateSensorReq {
     /**
      * @generated from protobuf field: repeated string bindNetIface = 2;
      */
-    bindNetIface: string[]; // 如果没有变化 带原值
+    bindNetIface: string[]; // Return the original value if unchanged
     /**
      * @generated from protobuf field: map<string, string> perfLimit = 3;
      */
     perfLimit: {
         [key: string]: string;
-    }; // 如果没有变化 带原值, {"limit_mem_max":"0.05", "limit_cpu_max":"0.06"}
+    }; // Return the original value if unchanged, {"limit_mem_max":"0.05", "limit_cpu_max":"0.06"}
     /**
      * @generated from protobuf field: string remark = 4;
      */
-    remark: string; // 如果没有变化 带原值
+    remark: string; // Return the original value if unchanged
     /**
      * @generated from protobuf field: string pktPluginSwitch = 5;
      */
-    pktPluginSwitch: string; // [(validator.field) = {regex: "true|false"}]; // 如果没有变化留空
+    pktPluginSwitch: string; // [(validator.field) = {regex: "true|false"}]; // Leave blank if unchanged
     /**
      * @generated from protobuf field: string logPluginSwitch = 6;
      */
-    logPluginSwitch: string; // [(validator.field) = {regex: "true|false"}];  // 如果没有变化留空
+    logPluginSwitch: string; // [(validator.field) = {regex: "true|false"}];  // Leave blank if unchanged
     /**
      * @generated from protobuf field: string rpcFwPluginSwitch = 7;
      */
-    rpcFwPluginSwitch: string; // [(validator.field) = {regex: "true|false"}];  // 如果没有变化留空
+    rpcFwPluginSwitch: string; // [(validator.field) = {regex: "true|false"}];  // Leave blank if unchanged
     /**
      * @generated from protobuf field: string ldapFwPluginSwitch = 8;
      */
-    ldapFwPluginSwitch: string; // [(validator.field) = {regex: "true|false"}];  // 如果没有变化留空
+    ldapFwPluginSwitch: string; // [(validator.field) = {regex: "true|false"}];  // Leave blank if unchanged
 }
 /**
  * @generated from protobuf message ada.UpdateSensorReply
@@ -1261,7 +1261,7 @@ export interface GetSystemInfoReply {
     /**
      * @generated from protobuf field: string systemName = 2;
      */
-    systemName: string; // 系统名称
+    systemName: string; // System name
     /**
      * @generated from protobuf field: string systemIcon = 3;
      */
@@ -1269,15 +1269,15 @@ export interface GetSystemInfoReply {
     /**
      * @generated from protobuf field: string systemVersion = 4;
      */
-    systemVersion: string; // 系统版本
+    systemVersion: string; // System version
     /**
      * @generated from protobuf field: string systemInstallTm = 5;
      */
-    systemInstallTm: string; // 安装时间
+    systemInstallTm: string; // Installation time
     /**
      * @generated from protobuf field: string systemUpgradeTm = 6;
      */
-    systemUpgradeTm: string; // 上次升级时间
+    systemUpgradeTm: string; // Last upgrade time
     /**
      * @generated from protobuf field: string systemCpuTotal = 7;
      */
@@ -1293,53 +1293,53 @@ export interface GetSystemInfoReply {
     /**
      * @generated from protobuf field: string systemLoadAverage = 10;
      */
-    systemLoadAverage: string; // 系统负载, local_15m
+    systemLoadAverage: string; // System load, local_15m
     /**
      * @generated from protobuf field: string systemBootTime = 11;
      */
-    systemBootTime: string; // 开机使用时间
+    systemBootTime: string; // Uptime
     /**
      * @generated from protobuf field: string systemEsHealth = 12;
      */
-    systemEsHealth: string; // ES健康状态: green/yellow/red
+    systemEsHealth: string; // Elasticsearch health: green/yellow/red
     /**
      * @generated from protobuf field: string systemTimestamp = 13;
      */
-    systemTimestamp: string; // 系统时间
+    systemTimestamp: string; // System time
     /**
      * @generated from protobuf field: string systemNtpAddress = 14;
      */
-    systemNtpAddress: string; // NTP服务器地址
+    systemNtpAddress: string; // NTP server address
     /**
      * @generated from protobuf field: string systemLanguage = 15;
      */
-    systemLanguage: string; // 系统语言(EN/ZH)
+    systemLanguage: string; // System language (EN/ZH)
     /**
      * @generated from protobuf field: map<string, string> statsCfg = 16;
      */
     statsCfg: {
         [key: string]: string;
-    }; // 系统监控参数
+    }; // System metrics parameters
     /**
      * @generated from protobuf field: string upgradeSrv = 17;
      */
-    upgradeSrv: string; // 升级服务器地址
+    upgradeSrv: string; // Upgrade server address
     /**
      * @generated from protobuf field: string upgradeRule = 18;
      */
-    upgradeRule: string; // 升级规则开关 "true|false"
+    upgradeRule: string; // Upgrade policy switch: "true|false"
     /**
      * @generated from protobuf field: string currentRuleVer = 19;
      */
-    currentRuleVer: string; // 当前规则版本
+    currentRuleVer: string; // Current rule version
     /**
      * @generated from protobuf field: string cloudRuleVer = 20;
      */
-    cloudRuleVer: string; // 云端规则版本
+    cloudRuleVer: string; // Cloud rule version
     /**
      * @generated from protobuf field: ada.SystemProxyInfo systemProxy = 21;
      */
-    systemProxy?: SystemProxyInfo; // 系统代理配置
+    systemProxy?: SystemProxyInfo; // System proxy configuration
 }
 /**
  * @generated from protobuf message ada.GetSystemIconReq
@@ -1388,11 +1388,11 @@ export interface UpdateSystemCfgReq {
     /**
      * @generated from protobuf field: string file = 3;
      */
-    file: string; // 将文件转为base64字符串传过来
+    file: string; // Send the file as a Base64 string
     /**
      * @generated from protobuf field: string upgradeSrv = 4;
      */
-    upgradeSrv: string; // 更新srv地址
+    upgradeSrv: string; // Upgrade server address
     /**
      * @generated from protobuf field: string upgradeRule = 5;
      */
@@ -1400,11 +1400,11 @@ export interface UpdateSystemCfgReq {
     /**
      * @generated from protobuf field: string currentRuleVer = 6;
      */
-    currentRuleVer: string; // 当前规则版本
+    currentRuleVer: string; // Current rule version
     /**
      * @generated from protobuf field: string cloudRuleVer = 7;
      */
-    cloudRuleVer: string; // 云端规则版本
+    cloudRuleVer: string; // Cloud rule version
 }
 /**
  * @generated from protobuf message ada.UpdateSystemCfgReply
@@ -1424,19 +1424,19 @@ export interface SystemProxyInfo {
     /**
      * @generated from protobuf field: string httpProxy = 1;
      */
-    httpProxy: string; // HTTP代理地址
+    httpProxy: string; // HTTP proxy address
     /**
      * @generated from protobuf field: string httpsProxy = 2;
      */
-    httpsProxy: string; // HTTPS代理地址
+    httpsProxy: string; // HTTPS proxy address
     /**
      * @generated from protobuf field: bool upgradeProxy = 3;
      */
-    upgradeProxy: boolean; // 升级时使用代理
+    upgradeProxy: boolean; // Use a proxy during upgrades
     /**
      * @generated from protobuf field: bool notifyProxy = 4;
      */
-    notifyProxy: boolean; // 告警通知时使用代理
+    notifyProxy: boolean; // Use a proxy for alert notifications
 }
 /**
  * @generated from protobuf message ada.GetSystemProxyReq
@@ -1459,19 +1459,19 @@ export interface UpdateSystemProxyReq {
     /**
      * @generated from protobuf field: string httpProxy = 1;
      */
-    httpProxy: string; // [(validator.field) = {regex: "^http://[^\\s]+|^(\\s&&[^\\f\\n\\r\\t\\v])*"}]; // HTTP代理地址，格式: http://proxy:port
+    httpProxy: string; // [(validator.field) = {regex: "^http://[^\\s]+|^(\\s&&[^\\f\\n\\r\\t\\v])*"}]; // HTTP proxy address, format: `http://proxy:port`
     /**
      * @generated from protobuf field: string httpsProxy = 2;
      */
-    httpsProxy: string; // [(validator.field) = {regex: "^https://[^\\s]+|^(\\s&&[^\\f\\n\\r\\t\\v])*"}]; // HTTPS代理地址，格式: https://proxy:port
+    httpsProxy: string; // [(validator.field) = {regex: "^https://[^\\s]+|^(\\s&&[^\\f\\n\\r\\t\\v])*"}]; // HTTPS proxy address, format: `https://proxy:port`
     /**
      * @generated from protobuf field: bool upgradeProxy = 3;
      */
-    upgradeProxy: boolean; // 升级时使用代理
+    upgradeProxy: boolean; // Use a proxy during upgrades
     /**
      * @generated from protobuf field: bool notifyProxy = 4;
      */
-    notifyProxy: boolean; // 告警通知时使用代理
+    notifyProxy: boolean; // Use a proxy for alert notifications
 }
 /**
  * @generated from protobuf message ada.UpdateSystemProxyReply
@@ -1502,11 +1502,11 @@ export interface StatsInfo {
     /**
      * @generated from protobuf field: string value = 1;
      */
-    value: string; // 值
+    value: string; // Value
     /**
      * @generated from protobuf field: string timestamp = 2;
      */
-    timestamp: string; // 时间戳
+    timestamp: string; // Timestamp
 }
 /**
  * @generated from protobuf message ada.GetSystemStatsReply
@@ -1526,7 +1526,7 @@ export interface SetSystemStatsCfgReq {
      */
     stats: {
         [key: string]: string;
-    }; // 支持:
+    }; // Supported values:
 }
 /**
  * @generated from protobuf message ada.SetSystemStatsCfgReply
@@ -1556,11 +1556,11 @@ export interface ListAuditLogReq {
     /**
      * @generated from protobuf field: string startTm = 3;
      */
-    startTm: string; // 开始时间
+    startTm: string; // Start time
     /**
      * @generated from protobuf field: string endTm = 4;
      */
-    endTm: string; // 结束时间
+    endTm: string; // End time
     /**
      * @generated from protobuf field: string keyword = 5;
      */
@@ -1568,11 +1568,11 @@ export interface ListAuditLogReq {
     /**
      * @generated from protobuf field: repeated string filterEvent = 6;
      */
-    filterEvent: string[]; // 事件
+    filterEvent: string[]; // Events
     /**
      * @generated from protobuf field: int32 createSort = 7;
      */
-    createSort: number; // 审计时间 1升级 -1降序
+    createSort: number; // Sort by audit time: `1` asc, `-1` desc
 }
 /**
  * @generated from protobuf message ada.ListAuditLogReply
@@ -1719,23 +1719,23 @@ export interface GetLicenseReply {
     /**
      * @generated from protobuf field: string trait = 1;
      */
-    trait: string; // 机器指纹
+    trait: string; // Machine fingerprint
     /**
      * @generated from protobuf field: int64 endTime = 3;
      */
-    endTime: bigint; // 许可有效期
+    endTime: bigint; // License expiry time
     /**
      * @generated from protobuf field: int32 assets = 4;
      */
-    assets: number; // 资产数
+    assets: number; // Asset count
     /**
      * @generated from protobuf field: string version = 5;
      */
-    version: string; // 产品版本
+    version: string; // Product version
     /**
      * @generated from protobuf field: string partner = 6;
      */
-    partner: string; // 授权客户
+    partner: string; // Licensed customer
 }
 /**
  * @generated from protobuf message ada.UpdateLicenseReq
@@ -1744,7 +1744,7 @@ export interface UpdateLicenseReq {
     /**
      * @generated from protobuf field: string licenseKey = 1;
      */
-    licenseKey: string; // 激活码
+    licenseKey: string; // Activation code
 }
 /**
  * @generated from protobuf message ada.UpdateLicenseReply
@@ -1766,7 +1766,7 @@ export interface NetworkDebugReq {
     /**
      * @generated from protobuf field: string target = 2;
      */
-    target: string; // [(validator.field) = {regex: "[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\\.?|((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}"}]; // 诊断目标
+    target: string; // [(validator.field) = {regex: "[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\\.?|((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}"}]; // Diagnostic target
 }
 /**
  * @generated from protobuf message ada.NetworkDebugReply
@@ -1775,7 +1775,7 @@ export interface NetworkDebugReply {
     /**
      * @generated from protobuf field: string result = 1;
      */
-    result: string; // 诊断结果
+    result: string; // Diagnostic result
 }
 /**
  * @generated from protobuf message ada.ListNotifyConfReq
@@ -1792,23 +1792,23 @@ export interface ListNotifyConfReq {
     /**
      * @generated from protobuf field: repeated string moduleName = 3;
      */
-    moduleName: string[]; // [(validator.field) = {regex: "all|alert|baseline|leak|system"}]; // 模块类型 alert,baseline,leak,system
+    moduleName: string[]; // [(validator.field) = {regex: "all|alert|baseline|leak|system"}]; // Module type: alert|baseline|leak|system
     /**
      * @generated from protobuf field: repeated string notifyType = 4;
      */
-    notifyType: string[]; // [(validator.field) = {regex: "all|syslog|webhook|email"}]; // 通知类型 syslog,webhook,email
+    notifyType: string[]; // [(validator.field) = {regex: "all|syslog|webhook|email"}]; // Notification type: syslog|webhook|email
     /**
      * @generated from protobuf field: string endpoint = 5;
      */
-    endpoint: string; // 通知目标
+    endpoint: string; // Notification target
     /**
      * @generated from protobuf field: repeated string enable = 6;
      */
-    enable: string[]; // [(validator.field) = {regex: "all|enable|disable"}]; // 启用状态， 开启enable 关闭disable
+    enable: string[]; // [(validator.field) = {regex: "all|enable|disable"}]; // Enable state: `enable` or `disable`
     /**
      * @generated from protobuf field: int32 sortTime = 7;
      */
-    sortTime: number; // 根据时间排序，1升序，-1降序,0为默认顺序
+    sortTime: number; // Sort by time: 1 ascending, -1 descending, 0 for the default order
 }
 /**
  * @generated from protobuf message ada.ListNotifyConfReply
@@ -1834,37 +1834,37 @@ export interface ListNotifyConfReply_Details {
     /**
      * @generated from protobuf field: string moduleName = 2;
      */
-    moduleName: string; // 模块类型 alert,baseline,leak,system
+    moduleName: string; // Module type: alert|baseline|leak|system
     /**
      * @generated from protobuf field: string notifyType = 3;
      */
-    notifyType: string; // 通知类型 syslog,webhook,email
+    notifyType: string; // Notification type: syslog|webhook|email
     /**
      * @generated from protobuf field: string endpoint = 4;
      */
-    endpoint: string; // 通知目标
+    endpoint: string; // Notification target
     /**
      * @generated from protobuf field: string remark = 5;
      */
-    remark: string; // 备注
+    remark: string; // Remark
     /**
      * @generated from protobuf field: string enable = 6;
      */
-    enable: string; // 启用状态， 开启enable 关闭disable
+    enable: string; // Enable state: `enable` or `disable`
     /**
      * @generated from protobuf field: map<string, string> metadata = 7;
      */
     metadata: {
         [key: string]: string;
-    }; // 告警配置信息
+    }; // Alert configuration metadata
     /**
      * @generated from protobuf field: string updateTm = 8;
      */
-    updateTm: string; // 修改时间
+    updateTm: string; // Update time
     /**
      * @generated from protobuf field: repeated int32 level = 9;
      */
-    level: number[]; // 危险等级
+    level: number[]; // Risk levels
 }
 /**
  * @generated from protobuf message ada.UpdateNotifyConfReq
@@ -1877,7 +1877,7 @@ export interface UpdateNotifyConfReq {
     /**
      * @generated from protobuf field: string enable = 2;
      */
-    enable: string; // [(validator.field) = {regex: "enable|disable"}]; //启用状态， 开启enable 关闭disable
+    enable: string; // [(validator.field) = {regex: "enable|disable"}]; //Enable state: `enable` or `disable`
     /**
      * @generated from protobuf field: string endpoint = 3;
      */
@@ -1885,17 +1885,17 @@ export interface UpdateNotifyConfReq {
     /**
      * @generated from protobuf field: repeated int32 level = 4;
      */
-    level: number[]; // 危险等级
+    level: number[]; // Risk levels
     /**
      * @generated from protobuf field: map<string, string> metadata = 5;
      */
     metadata: {
         [key: string]: string;
-    }; // 都有: alert_interval: 20(str), 可选: email类型: server(str),port(str),username,password,receiver; syslog类型; webhook类型: application_type(weixin/feishu/dingtalk/common)
+    }; // Always includes `alert_interval: 20` (string). Optional fields depend on the type: email uses `server`, `port`, `username`, `password`, and `receiver`; webhook uses `application_type` (`weixin`, `feishu`, `dingtalk`, or `common`).
     /**
      * @generated from protobuf field: string remark = 6;
      */
-    remark: string; // 备注
+    remark: string; // Remark
 }
 /**
  * @generated from protobuf message ada.UpdateNotifyConfReply
@@ -1917,7 +1917,7 @@ export interface EnableNotifyConfReq {
     /**
      * @generated from protobuf field: string enable = 2;
      */
-    enable: string; // [(validator.field) = {regex: "enable|disable"}]; //启用状态， 开启enable 关闭disable
+    enable: string; // [(validator.field) = {regex: "enable|disable"}]; //Enable state: `enable` or `disable`
 }
 /**
  * @generated from protobuf message ada.EnableNotifyConfReply
@@ -1935,21 +1935,21 @@ export interface TestNotifyConfReq {
     /**
      * @generated from protobuf field: string moduleName = 1;
      */
-    moduleName: string; // [(validator.field) = {regex: "alert|baseline|leak|system"}]; // 模块类型 alert,baseline,leak,system
+    moduleName: string; // [(validator.field) = {regex: "alert|baseline|leak|system"}]; // Module type: alert|baseline|leak|system
     /**
      * @generated from protobuf field: string notifyType = 2;
      */
-    notifyType: string; // [(validator.field) = {regex: "syslog|webhook|email"}]; // 通知类型 syslog,webhook,email
+    notifyType: string; // [(validator.field) = {regex: "syslog|webhook|email"}]; // Notification type: syslog|webhook|email
     /**
      * @generated from protobuf field: string endpoint = 3;
      */
-    endpoint: string; // 通知目标
+    endpoint: string; // Notification target
     /**
      * @generated from protobuf field: map<string, string> metadata = 4;
      */
     metadata: {
         [key: string]: string;
-    }; // 配置参数
+    }; // Configuration parameters
 }
 /**
  * @generated from protobuf message ada.TestNotifyConfReply
@@ -1971,33 +1971,33 @@ export interface AddNotifyConfReq {
     /**
      * @generated from protobuf field: string moduleName = 1;
      */
-    moduleName: string; // [(validator.field) = {regex: "alert|baseline|leak|system"}]; // 模块类型 alert,baseline,leak,system
+    moduleName: string; // [(validator.field) = {regex: "alert|baseline|leak|system"}]; // Module type: alert|baseline|leak|system
     /**
      * @generated from protobuf field: string notifyType = 2;
      */
-    notifyType: string; // [(validator.field) = {regex: "syslog|webhook|email"}]; // 通知类型 syslog,webhook,email
+    notifyType: string; // [(validator.field) = {regex: "syslog|webhook|email"}]; // Notification type: syslog|webhook|email
     /**
      * @generated from protobuf field: string endpoint = 3;
      */
-    endpoint: string; // 通知目标
+    endpoint: string; // Notification target
     /**
      * @generated from protobuf field: string enable = 4;
      */
-    enable: string; // [(validator.field) = {regex: "enable|disable"}]; // 启用状态， 开启enable 关闭disable
+    enable: string; // [(validator.field) = {regex: "enable|disable"}]; // Enable state: `enable` or `disable`
     /**
      * @generated from protobuf field: repeated int32 level = 5;
      */
-    level: number[]; // 危险等级
+    level: number[]; // Risk levels
     /**
      * @generated from protobuf field: map<string, string> metadata = 6;
      */
     metadata: {
         [key: string]: string;
-    }; // 配置参数
+    }; // Configuration parameters
     /**
      * @generated from protobuf field: string remark = 7;
      */
-    remark: string; // 备注
+    remark: string; // Remark
 }
 /**
  * @generated from protobuf message ada.AddNotifyConfReply
@@ -2010,7 +2010,7 @@ export interface AddNotifyConfReply {
     /**
      * @generated from protobuf field: string id = 2;
      */
-    id: string; // 新增配置的ID
+    id: string; // ID of the newly created configuration
 }
 /**
  * @generated from protobuf message ada.DeleteNotifyConfReq
@@ -2019,7 +2019,7 @@ export interface DeleteNotifyConfReq {
     /**
      * @generated from protobuf field: string id = 1;
      */
-    id: string; // [(validator.field) = {string_not_empty: true}]; // 配置ID
+    id: string; // [(validator.field) = {string_not_empty: true}]; // Configuration ID
 }
 /**
  * @generated from protobuf message ada.DeleteNotifyConfReply
@@ -2049,19 +2049,19 @@ export interface ListExportTaskReq {
     /**
      * @generated from protobuf field: repeated string status = 4;
      */
-    status: string[]; // [(validator.field) = {regex: "all|padding|doing|finish|failed"}]; // 任务状态: padding,doing,finish,failed
+    status: string[]; // [(validator.field) = {regex: "all|padding|doing|finish|failed"}]; // Task status: padding|doing|finish|failed
     /**
      * @generated from protobuf field: string startTm = 5;
      */
-    startTm: string; //  可选，开始时间
+    startTm: string; // Optional start time
     /**
      * @generated from protobuf field: string endTm = 6;
      */
-    endTm: string; //  可选，结束时间
+    endTm: string; // Optional end time
     /**
      * @generated from protobuf field: int32 sortTime = 7;
      */
-    sortTime: number; // 根据时间排序，1升序，-1降序,0为默认顺序
+    sortTime: number; // Sort by time: 1 ascending, -1 descending, 0 for the default order
 }
 /**
  * @generated from protobuf message ada.ListExportTaskReply
@@ -2087,45 +2087,45 @@ export interface ListExportTaskReply_Details {
     /**
      * @generated from protobuf field: string ID = 1 [json_name = "ID"];
      */
-    iD: string; // 报表ID
+    iD: string; // Report ID
     /**
      * @generated from protobuf field: string name = 2;
      */
-    name: string; // 报表名称
+    name: string; // Report name
     /**
      * @generated from protobuf field: string type = 3;
      */
-    type: string; // 报表类型 alert_event/alert_activity/baseline/leak/weakpwd/system/audit
+    type: string; // Report type: alert_event|alert_activity|baseline|leak|weakpwd|system|audit
     /**
      * @generated from protobuf field: map<string, string> params = 4;
      */
     params: {
         [key: string]: string;
-    }; // 配置参数
+    }; // Configuration parameters
     /**
      * @generated from protobuf field: string status = 5;
      */
-    status: string; // 任务状态 padding,doing,finish,failed
+    status: string; // Task status: padding|doing|finish|failed
     /**
      * @generated from protobuf field: string fileType = 6;
      */
-    fileType: string; // 文件类型 csv,excel,pdf
+    fileType: string; // File type: csv|excel|pdf
     /**
      * @generated from protobuf field: string createTm = 7;
      */
-    createTm: string; // 创建时间
+    createTm: string; // Creation time
     /**
      * @generated from protobuf field: string updateTm = 8;
      */
-    updateTm: string; // 报表路径
+    updateTm: string; // Report path
     /**
      * @generated from protobuf field: string errMsg = 9;
      */
-    errMsg: string; // 错误信息
+    errMsg: string; // Error message
     /**
      * @generated from protobuf field: string filePath = 10;
      */
-    filePath: string; // 报表路径
+    filePath: string; // Report path
 }
 /**
  * @generated from protobuf message ada.AddExportTaskReq
@@ -2134,7 +2134,7 @@ export interface AddExportTaskReq {
     /**
      * @generated from protobuf field: string name = 1;
      */
-    name: string; // 报表名称,用户手动输入
+    name: string; // Report name entered manually by the user
     /**
      * @generated from protobuf field: string type = 2;
      */
@@ -2144,7 +2144,7 @@ export interface AddExportTaskReq {
      */
     params: {
         [key: string]: string;
-    }; // 导出参数 {"domain":"domainA,domainB","start_tm":"2021-01-01 00:00:00","end_tm":"2021-01-01 23:59:59","level":"3,4"}
+    }; // Export parameters, for example `{ "domain": "domainA,domainB", "start_tm": "2021-01-01 00:00:00", "end_tm": "2021-01-01 23:59:59", "level": "3,4" }`
 }
 /**
  * @generated from protobuf message ada.AddExportTaskReply
@@ -2188,23 +2188,23 @@ export interface ListNotifyReq {
     /**
      * @generated from protobuf field: repeated string msgType = 3;
      */
-    msgType: string[]; // 消息类型,Leak漏洞监测，Baseline主动检测，Alert告警事件,System系统告警
+    msgType: string[]; // Message types: Leak vulnerability checks, Baseline scans, Alert events, and System alerts
     /**
      * @generated from protobuf field: repeated int32 status = 5;
      */
-    status: number[]; // 消息状态: 0未读，1已读
+    status: number[]; // Message status: 0 unread, 1 read
     /**
      * @generated from protobuf field: string startTm = 6;
      */
-    startTm: string; //  可选，开始时间
+    startTm: string; // Optional start time
     /**
      * @generated from protobuf field: string endTm = 7;
      */
-    endTm: string; //  可选，结束时间
+    endTm: string; // Optional end time
     /**
      * @generated from protobuf field: int32 orderCreateTm = 8;
      */
-    orderCreateTm: number; // 创建时间排序 1升序 -1降序, 默认-1
+    orderCreateTm: number; // Sort by created time: 1 ascending, -1 descending. Default: -1.
 }
 /**
  * @generated from protobuf message ada.ListNotifyReply
@@ -2234,33 +2234,33 @@ export interface ListNotifyReply_Details {
     /**
      * @generated from protobuf field: string title = 2;
      */
-    title: string; // 标题
+    title: string; // Title
     /**
      * @generated from protobuf field: string msgType = 3;
      */
-    msgType: string; // 消息类型
+    msgType: string; // Message type
     /**
      * @generated from protobuf field: string eventType = 4;
      */
-    eventType: string; // 事件类型
+    eventType: string; // Event type
     /**
      * @generated from protobuf field: string createTm = 5;
      */
-    createTm: string; // 时间
+    createTm: string; // Time
     /**
      * @generated from protobuf field: string desc = 6;
      */
-    desc: string; // 告警详情
+    desc: string; // Alert details
     /**
      * @generated from protobuf field: int32 status = 7;
      */
-    status: number; // 消息状态，0未读，1已读
+    status: number; // Message status: `0` unread, `1` read
     /**
      * @generated from protobuf field: map<string, string> params = 8;
      */
     params: {
         [key: string]: string;
-    }; // 属性，预留字段
+    }; // Reserved attribute field
 }
 /**
  * @generated from protobuf message ada.UpdateNotifyReq
@@ -2269,7 +2269,7 @@ export interface UpdateNotifyReq {
     /**
      * @generated from protobuf field: repeated string IDs = 1 [json_name = "IDs"];
      */
-    iDs: string[]; // 修改状态为已读， 事件ID list
+    iDs: string[]; // Mark as read for the given event ID list
 }
 /**
  * @generated from protobuf message ada.UpdateNotifyReply
@@ -2297,15 +2297,15 @@ export interface ThreatTopsReq {
     /**
      * @generated from protobuf field: string domain = 1;
      */
-    domain: string; // 必选，all|domainX
+    domain: string; // Required: `all` or `domainX`
     /**
      * @generated from protobuf field: string type = 2;
      */
-    type: string; // [(validator.field) = {regex: "activity|event"}]; // 必选，activity|event
+    type: string; // [(validator.field) = {regex: "activity|event"}]; // Required: `activity` or `event`
     /**
      * @generated from protobuf field: int32 duration = 3;
      */
-    duration: number; // 必选，时间范围/天， 可选值: 1/7/30 （默认为7）
+    duration: number; // Required time range in days. Allowed values: 1, 7, or 30. Default: 7.
 }
 /**
  * @generated from protobuf message ada.ThreatTopsReply
@@ -2314,7 +2314,7 @@ export interface ThreatTopsReply {
     /**
      * @generated from protobuf field: repeated ada.ThreatTopsReply.Details List = 1 [json_name = "List"];
      */
-    list: ThreatTopsReply_Details[]; // 条目列表
+    list: ThreatTopsReply_Details[]; // Item list
 }
 /**
  * @generated from protobuf message ada.ThreatTopsReply.Details
@@ -2323,11 +2323,11 @@ export interface ThreatTopsReply_Details {
     /**
      * @generated from protobuf field: string name = 1;
      */
-    name: string; // 名称
+    name: string; // Name
     /**
      * @generated from protobuf field: int32 total = 2;
      */
-    total: number; // 数量
+    total: number; // Count
 }
 /**
  * @generated from protobuf message ada.ThreatTrendsReq
@@ -2336,15 +2336,15 @@ export interface ThreatTrendsReq {
     /**
      * @generated from protobuf field: string domain = 1;
      */
-    domain: string; // 必选，all|domainX
+    domain: string; // Required: `all` or `domainX`
     /**
      * @generated from protobuf field: repeated int32 level = 2;
      */
-    level: number[]; // 必选， 风险等级, 5:严重,4:高危,3:中危,2:低危
+    level: number[]; // Required. Risk levels: `5` critical, `4` high, `3` medium, `2` low
     /**
      * @generated from protobuf field: int32 duration = 3;
      */
-    duration: number; // 必选，时间范围/天， 可选值: 1/7/30 （默认为7）
+    duration: number; // Required time range in days. Allowed values: 1, 7, or 30. Default: 7.
 }
 /**
  * @generated from protobuf message ada.ThreatTrendsReply
@@ -2353,7 +2353,7 @@ export interface ThreatTrendsReply {
     /**
      * @generated from protobuf field: repeated ada.ThreatTrendsReply.Item List = 1 [json_name = "List"];
      */
-    list: ThreatTrendsReply_Item[]; // 条目列表
+    list: ThreatTrendsReply_Item[]; // Item list
 }
 /**
  * @generated from protobuf message ada.ThreatTrendsReply.Item
@@ -2362,11 +2362,11 @@ export interface ThreatTrendsReply_Item {
     /**
      * @generated from protobuf field: int64 ts = 1;
      */
-    ts: bigint; // 时间戳
+    ts: bigint; // Timestamp
     /**
      * @generated from protobuf field: int32 total = 2;
      */
-    total: number; // 数量
+    total: number; // Count
 }
 /**
  * @generated from protobuf message ada.ListThreatReq
@@ -2383,35 +2383,35 @@ export interface ListThreatReq {
     /**
      * @generated from protobuf field: repeated string IDs = 3 [json_name = "IDs"];
      */
-    iDs: string[]; // 威胁ID list
+    iDs: string[]; // Threat ID list
     /**
      * @generated from protobuf field: repeated int32 level = 4;
      */
-    level: number[]; // 威胁等级,严重性
+    level: number[]; // Threat levels and severity
     /**
      * @generated from protobuf field: int32 eventStatus = 5;
      */
-    eventStatus: number; // 事件状态, 0:未处理, 1:已处理 (预留: 2:已加白 3:已阻断)
+    eventStatus: number; // Event status: `0` unhandled, `1` handled (reserved: `2` whitelisted, `3` blocked)
     /**
      * @generated from protobuf field: string startTm = 6;
      */
-    startTm: string; // 开始时间
+    startTm: string; // Start time
     /**
      * @generated from protobuf field: string endTm = 7;
      */
-    endTm: string; // 结束时间
+    endTm: string; // End time
     /**
      * @generated from protobuf field: int32 searchType = 8;
      */
-    searchType: number; // 检索类型,0为普通检索，1为高级检索
+    searchType: number; // Search type: `0` basic, `1` advanced
     /**
      * @generated from protobuf field: repeated ada.ListThreatReq.Details advancedSearch = 9;
      */
-    advancedSearch: ListThreatReq_Details[]; // 高级检索
+    advancedSearch: ListThreatReq_Details[]; // Advanced search
     /**
      * @generated from protobuf field: int32 sortTm = 10;
      */
-    sortTm: number; // 时间排序，1为升序，-1为降序
+    sortTm: number; // Sort by time: `1` asc, `-1` desc
 }
 /**
  * @generated from protobuf message ada.ListThreatReq.Details
@@ -2420,11 +2420,11 @@ export interface ListThreatReq_Details {
     /**
      * @generated from protobuf field: string name = 1;
      */
-    name: string; // 检索字段
+    name: string; // Search field
     /**
      * @generated from protobuf field: string type = 2;
      */
-    type: string; // 等于 eq，不等于ne 之前lt，之后gt 两者之间bt，包含contain 不包含 not_contain
+    type: string; // Operators: `eq`, `ne`, `lt`, `gt`, `bt`, `contain`, `not_contain`
     /**
      * @generated from protobuf field: repeated string value = 3;
      */
@@ -2454,19 +2454,19 @@ export interface ListThreatReply_Details {
     /**
      * @generated from protobuf field: string ID = 1 [json_name = "ID"];
      */
-    iD: string; // 请求详情页
+    iD: string; // Request detail page
     /**
      * @generated from protobuf field: string title = 2;
      */
-    title: string; // 告警标题
+    title: string; // Alert title
     /**
      * @generated from protobuf field: string desc = 3;
      */
-    desc: string; // 告警描述
+    desc: string; // Alert description
     /**
      * @generated from protobuf field: string flowId = 4;
      */
-    flowId: string; // 关联规则flowId
+    flowId: string; // Associated rule flowId
     /**
      * @generated from protobuf field: string attckId = 5;
      */
@@ -2474,7 +2474,7 @@ export interface ListThreatReply_Details {
     /**
      * @generated from protobuf field: int32 level = 6;
      */
-    level: number; // 风险等级, 5:严重,4:高危,3:中危,2:低危
+    level: number; // Risk level: `5` critical, `4` high, `3` medium, `2` low
     /**
      * @generated from protobuf field: string dcHostname = 7;
      */
@@ -2486,15 +2486,15 @@ export interface ListThreatReply_Details {
     /**
      * @generated from protobuf field: string status = 9;
      */
-    status: string; // 规则状态，后期会使用
+    status: string; // Rule status reserved for future use
     /**
      * @generated from protobuf field: int32 eventStatus = 10;
      */
-    eventStatus: number; // 事件状态, 0:未处理, 1:已处理 2:已加白 3:已阻断
+    eventStatus: number; // Event status: `0` unhandled, `1` handled, `2` whitelisted, `3` blocked
     /**
      * @generated from protobuf field: string remark = 11;
      */
-    remark: string; // 添加备注说明
+    remark: string; // Additional remark
     /**
      * @generated from protobuf field: repeated string tags = 12;
      */
@@ -2502,19 +2502,19 @@ export interface ListThreatReply_Details {
     /**
      * @generated from protobuf field: ada.AttackFlowReply attackFlow = 13;
      */
-    attackFlow?: AttackFlowReply; // 攻击流图
+    attackFlow?: AttackFlowReply; // Attack flow graph
     /**
      * @generated from protobuf field: int32 duration = 14;
      */
-    duration: number; // 持续时间，单位s
+    duration: number; // Duration in seconds
     /**
      * @generated from protobuf field: string startTm = 16;
      */
-    startTm: string; // 开始时间
+    startTm: string; // Start time
     /**
      * @generated from protobuf field: string endTm = 17;
      */
-    endTm: string; // 结束时间
+    endTm: string; // End time
 }
 /**
  * @generated from protobuf message ada.GetThreatNamesReq
@@ -2523,7 +2523,7 @@ export interface GetThreatNamesReq {
     /**
      * @generated from protobuf field: string flowId = 1;
      */
-    flowId: string; // 可选，为空则返回所有的flow_id与title的map
+    flowId: string; // Optional. If empty, return the mapping of all `flow_id` values to titles
 }
 /**
  * @generated from protobuf message ada.GetThreatNamesReply
@@ -2543,7 +2543,7 @@ export interface GetThreatReq {
     /**
      * @generated from protobuf field: string ID = 1 [json_name = "ID"];
      */
-    iD: string; // 威胁事件ID
+    iD: string; // Threat event ID
 }
 /**
  * @generated from protobuf message ada.GetThreatReply
@@ -2552,23 +2552,23 @@ export interface GetThreatReply {
     /**
      * @generated from protobuf field: string ID = 1 [json_name = "ID"];
      */
-    iD: string; // 请求详情页
+    iD: string; // Request detail page
     /**
      * @generated from protobuf field: string title = 2;
      */
-    title: string; // 告警标题
+    title: string; // Alert title
     /**
      * @generated from protobuf field: string desc = 3;
      */
-    desc: string; // 告警描述
+    desc: string; // Alert description
     /**
      * @generated from protobuf field: string flowId = 4;
      */
-    flowId: string; // 关联规则flowId
+    flowId: string; // Associated rule flowId
     /**
      * @generated from protobuf field: string uniqueId = 5;
      */
-    uniqueId: string; // 确定行为唯一性
+    uniqueId: string; // Used to identify the activity uniquely
     /**
      * @generated from protobuf field: string attckId = 6;
      */
@@ -2576,7 +2576,7 @@ export interface GetThreatReply {
     /**
      * @generated from protobuf field: int32 level = 7;
      */
-    level: number; // 风险等级, 5:严重,4:高危,3:中危,2:低危
+    level: number; // Risk level: `5` critical, `4` high, `3` medium, `2` low
     /**
      * @generated from protobuf field: string dcHostname = 8;
      */
@@ -2588,11 +2588,11 @@ export interface GetThreatReply {
     /**
      * @generated from protobuf field: string status = 10;
      */
-    status: string; // 规则状态，后期会使用
+    status: string; // Rule status reserved for future use
     /**
      * @generated from protobuf field: int32 eventStatus = 11;
      */
-    eventStatus: number; // 事件状态, 0:未处理(默认), 1:已处理 2:已加白 3:已阻断
+    eventStatus: number; // Event status: `0` unhandled by default, `1` handled, `2` whitelisted, `3` blocked
     /**
      * @generated from protobuf field: repeated string tags = 12;
      */
@@ -2600,33 +2600,33 @@ export interface GetThreatReply {
     /**
      * @generated from protobuf field: string source = 13;
      */
-    source: string; // 攻击来源
+    source: string; // Attack source
     /**
      * @generated from protobuf field: string target = 14;
      */
-    target: string; // 攻击目标
+    target: string; // Attack target
     /**
      * @generated from protobuf field: int32 duration = 15;
      */
-    duration: number; // 持续时间，单位s
+    duration: number; // Duration in seconds
     /**
      * @generated from protobuf field: string startTm = 16;
      */
-    startTm: string; // 开始时间
+    startTm: string; // Start time
     /**
      * @generated from protobuf field: string endTm = 17;
      */
-    endTm: string; // 结束时间
+    endTm: string; // End time
     /**
      * @generated from protobuf field: map<string, string> fieldData = 18;
      */
     fieldData: {
         [key: string]: string;
-    }; // fieldData信息
+    }; // fieldData metadata
     /**
      * @generated from protobuf field: ada.AttackFlowReply attackFlow = 19;
      */
-    attackFlow?: AttackFlowReply; // 攻击流图
+    attackFlow?: AttackFlowReply; // Attack flow graph
     /**
      * @generated from protobuf field: repeated ada.ActivityDetails activities = 20;
      */
@@ -2634,15 +2634,15 @@ export interface GetThreatReply {
     /**
      * @generated from protobuf field: string suggestion = 21;
      */
-    suggestion: string; // 修复建议
+    suggestion: string; // Remediation suggestions
     /**
      * @generated from protobuf field: repeated string references = 22;
      */
-    references: string[]; // 误报排查
+    references: string[]; // False-positive investigation references
     /**
      * @generated from protobuf field: string remark = 23;
      */
-    remark: string; // 添加备注说明
+    remark: string; // Additional remark
 }
 /**
  * @generated from protobuf message ada.ActionThreatReq
@@ -2655,11 +2655,11 @@ export interface ActionThreatReq {
     /**
      * @generated from protobuf field: int32 eventStatus = 2;
      */
-    eventStatus: number; // [(validator.field) = {int_gt: -1, int_lt: 4}]; // 事件状态: 0:未处理 1:已处理 2:已加白 3:已阻断
+    eventStatus: number; // [(validator.field) = {int_gt: -1, int_lt: 4}]; // Event status: `0` unhandled, `1` handled, `2` whitelisted, `3` blocked
     /**
      * @generated from protobuf field: string remark = 3;
      */
-    remark: string; // 添加备注说明
+    remark: string; // Additional remark
 }
 /**
  * @generated from protobuf message ada.ActionThreatReply
@@ -2685,31 +2685,31 @@ export interface ListActivityReq {
     /**
      * @generated from protobuf field: repeated int32 level = 3;
      */
-    level: number[]; // 威胁等级,严重性
+    level: number[]; // Threat levels and severity
     /**
      * @generated from protobuf field: repeated string dcHostname = 4;
      */
-    dcHostname: string[]; // 可选，所在域控
+    dcHostname: string[]; // Optional domain controller
     /**
      * @generated from protobuf field: repeated string title = 5;
      */
-    title: string[]; // 可选,行为名称
+    title: string[]; // Optional activity names
     /**
      * @generated from protobuf field: string ID = 6 [json_name = "ID"];
      */
-    iD: string; // 可选，如果存在查询对应activityID的威胁活动
+    iD: string; // Optional. If provided, query the threat activity that matches the given activity ID
     /**
      * @generated from protobuf field: string startTm = 7;
      */
-    startTm: string; //  可选，开始时间
+    startTm: string; // Optional start time
     /**
      * @generated from protobuf field: string endTm = 8;
      */
-    endTm: string; //  可选，结束时间
+    endTm: string; // Optional end time
     /**
      * @generated from protobuf field: int32 orderCreateTm = 9;
      */
-    orderCreateTm: number; // 可选，排序 1|-1
+    orderCreateTm: number; // Optional sort order: 1 or -1
 }
 /**
  * @generated from protobuf message ada.ActivityDetails
@@ -2722,15 +2722,15 @@ export interface ActivityDetails {
     /**
      * @generated from protobuf field: string title = 2;
      */
-    title: string; // 标题
+    title: string; // Title
     /**
      * @generated from protobuf field: string desc = 3;
      */
-    desc: string; // 描述
+    desc: string; // Description
     /**
      * @generated from protobuf field: string ruleId = 4;
      */
-    ruleId: string; // 关联规则ruleId
+    ruleId: string; // Associated rule ID
     /**
      * @generated from protobuf field: string uniqueId = 5;
      */
@@ -2742,7 +2742,7 @@ export interface ActivityDetails {
     /**
      * @generated from protobuf field: int32 level = 7;
      */
-    level: number; // 风险等级, 5:严重,4:高危,3:中危,2:低危
+    level: number; // Risk level: `5` critical, `4` high, `3` medium, `2` low
     /**
      * @generated from protobuf field: string dcHostname = 8;
      */
@@ -2750,7 +2750,7 @@ export interface ActivityDetails {
     /**
      * @generated from protobuf field: string ruleConfidence = 9;
      */
-    ruleConfidence: string; // 规则置信度: experimental(实验), test(测试), stable(稳定)
+    ruleConfidence: string; // Rule confidence: experimental|test|stable
     /**
      * @generated from protobuf field: repeated string tags = 10;
      */
@@ -2760,7 +2760,7 @@ export interface ActivityDetails {
      */
     fieldData: {
         [key: string]: string;
-    }; // metadata信息
+    }; // Metadata
     /**
      * @generated from protobuf field: string rawLog = 12;
      */
@@ -2768,7 +2768,7 @@ export interface ActivityDetails {
     /**
      * @generated from protobuf field: string createTm = 13;
      */
-    createTm: string; // 发生时间
+    createTm: string; // Occurrence time
 }
 /**
  * @generated from protobuf message ada.ListActivityReply
@@ -2794,15 +2794,15 @@ export interface GetActivityNamesReq {
     /**
      * @generated from protobuf field: repeated string dcHostname = 1;
      */
-    dcHostname: string[]; // 可选，为空则返回所有的activity title->total的map
+    dcHostname: string[]; // Optional. If empty, return the mapping of all activity titles to totals
     /**
      * @generated from protobuf field: string startTm = 2;
      */
-    startTm: string; //  可选，开始时间
+    startTm: string; // Optional start time
     /**
      * @generated from protobuf field: string endTm = 3;
      */
-    endTm: string; //  可选，结束时间
+    endTm: string; // Optional end time
 }
 /**
  * @generated from protobuf message ada.GetActivityNamesReply
@@ -2813,7 +2813,7 @@ export interface GetActivityNamesReply {
      */
     names: {
         [key: string]: number;
-    }; // key为act title，val为数量
+    }; // Map of activity title to count
 }
 /**
  * @generated from protobuf message ada.GetActivityReq
@@ -2848,31 +2848,31 @@ export interface ListSensitiveEntryReq {
     /**
      * @generated from protobuf field: string type = 3;
      */
-    type: string; // 必选，user|group|computer|honeyuser
+    type: string; // Required. One of `user`, `group`, `computer`, or `honeyuser`
     /**
      * @generated from protobuf field: repeated string domain = 4;
      */
-    domain: string[]; // 可选，过滤使用
+    domain: string[]; // Optional; used for filtering
     /**
      * @generated from protobuf field: repeated int32 origin = 5;
      */
-    origin: number[]; // 可选， 来源分为自动和手动，0为ldap自动同步，1为页面手动添加
+    origin: number[]; // Optional source filter: `0` LDAP auto-sync, `1` manual UI entry
     /**
      * @generated from protobuf field: string startTm = 6;
      */
-    startTm: string; //  可选，开始时间
+    startTm: string; // Optional start time
     /**
      * @generated from protobuf field: string endTm = 7;
      */
-    endTm: string; //  可选，结束时间
+    endTm: string; // Optional end time
     /**
      * @generated from protobuf field: int32 orderCreateTm = 8;
      */
-    orderCreateTm: number; // 创建时间排序 1升序 -1降序, 默认-1
+    orderCreateTm: number; // Sort by created time: 1 ascending, -1 descending. Default: -1.
     /**
      * @generated from protobuf field: int32 orderUpdateTm = 9;
      */
-    orderUpdateTm: number; // 更新时间排序 1升序 -1降序, 默认无
+    orderUpdateTm: number; // Sort by update time: `1` asc, `-1` desc; default is unsorted
 }
 /**
  * @generated from protobuf message ada.ListSensitiveEntryReply
@@ -2885,7 +2885,7 @@ export interface ListSensitiveEntryReply {
     /**
      * @generated from protobuf field: repeated ada.ListSensitiveEntryReply.Details List = 2 [json_name = "List"];
      */
-    list: ListSensitiveEntryReply_Details[]; // 敏感条目列表
+    list: ListSensitiveEntryReply_Details[]; // Sensitive entry list
     /**
      * @generated from protobuf field: bool exhausted = 3;
      */
@@ -2906,19 +2906,19 @@ export interface ListSensitiveEntryReply_Details {
     /**
      * @generated from protobuf field: string name = 3;
      */
-    name: string; // 条目内容
+    name: string; // Entry value
     /**
      * @generated from protobuf field: int32 origin = 4;
      */
-    origin: number; // 来源，分为自动和手动，0为ldap自动同步，1为页面手动添加
+    origin: number; // Source: `0` LDAP auto-sync, `1` manual UI entry
     /**
      * @generated from protobuf field: string createTm = 5;
      */
-    createTm: string; // 添加时间
+    createTm: string; // Added time
     /**
      * @generated from protobuf field: string updateTm = 6;
      */
-    updateTm: string; // 修改时间
+    updateTm: string; // Update time
 }
 /**
  * @generated from protobuf message ada.AddSensitiveEntryReq
@@ -2961,7 +2961,7 @@ export interface ListDomainEntryReq {
     /**
      * @generated from protobuf field: string search = 3;
      */
-    search: string; // 可选，搜索关键字
+    search: string; // Optional search keyword
 }
 /**
  * @generated from protobuf message ada.ListDomainEntryReply
@@ -2991,7 +2991,7 @@ export interface DeleteSensitiveEntryReply {
     result: string; // SUCCESS||FAILED
 }
 /**
- * 告警规则白名单
+ * Alert rule whitelist
  *
  * @generated from protobuf message ada.ListThreatWhitelistReq
  */
@@ -3007,31 +3007,31 @@ export interface ListThreatWhitelistReq {
     /**
      * @generated from protobuf field: string ruleId = 3;
      */
-    ruleId: string; // 可选,如果不为空则只返回该规则ID对应的白名单规则
+    ruleId: string; // Optional. If not empty, only return whitelist rules for this rule ID
     /**
      * @generated from protobuf field: repeated string domain = 4;
      */
-    domain: string[]; // 可选,为空则查询所有域
+    domain: string[]; // Optional. If empty, query all domains
     /**
      * @generated from protobuf field: repeated int32 origin = 5;
      */
-    origin: number[]; // 可选，来源，手动添加: 1 自动添加:2
+    origin: number[]; // Optional source filter: 1 for manual add, 2 for automatic add
     /**
      * @generated from protobuf field: string startTm = 6;
      */
-    startTm: string; //  可选，开始时间
+    startTm: string; // Optional start time
     /**
      * @generated from protobuf field: string endTm = 7;
      */
-    endTm: string; //  可选，结束时间
+    endTm: string; // Optional end time
     /**
      * @generated from protobuf field: string search = 8;
      */
-    search: string; // 可选，搜索关键字（规则名称）
+    search: string; // Optional search keyword (rule name)
     /**
      * @generated from protobuf field: int32 orderUpdateTm = 9;
      */
-    orderUpdateTm: number; // 更新时间排序 1升序 -1降序, 默认-1
+    orderUpdateTm: number; // Sort by updated time: 1 ascending, -1 descending. Default: -1.
 }
 /**
  * @generated from protobuf message ada.ListThreatWhitelistReply
@@ -3044,7 +3044,7 @@ export interface ListThreatWhitelistReply {
     /**
      * @generated from protobuf field: repeated ada.ListThreatWhitelistReply.Details List = 2 [json_name = "List"];
      */
-    list: ListThreatWhitelistReply_Details[]; // 敏感条目列表
+    list: ListThreatWhitelistReply_Details[]; // Sensitive entry list
     /**
      * @generated from protobuf field: bool exhausted = 3;
      */
@@ -3061,15 +3061,15 @@ export interface ListThreatWhitelistReply_Details {
     /**
      * @generated from protobuf field: string ruleId = 2;
      */
-    ruleId: string; // 规则名称
+    ruleId: string; // Rule name
     /**
      * @generated from protobuf field: string ruleName = 3;
      */
-    ruleName: string; // 规则名称
+    ruleName: string; // Rule name
     /**
      * @generated from protobuf field: string ruleType = 4;
      */
-    ruleType: string; // 告警类型 tag[0]
+    ruleType: string; // Alert type `tag[0]`
     /**
      * @generated from protobuf field: string domain = 5;
      */
@@ -3077,23 +3077,23 @@ export interface ListThreatWhitelistReply_Details {
     /**
      * @generated from protobuf field: repeated ada.ListThreatWhitelistReply.Details.ruleInfo rules = 6;
      */
-    rules: ListThreatWhitelistReply_Details_ruleInfo[]; // 规则信息
+    rules: ListThreatWhitelistReply_Details_ruleInfo[]; // Rule details
     /**
      * @generated from protobuf field: int32 origin = 7;
      */
-    origin: number; // 来源，1:手动添加, 2:手动批量添加，3:自动添加(机器学习)
+    origin: number; // Source: `1` manual, `2` manual batch import, `3` automatic (machine learning)
     /**
      * @generated from protobuf field: string remark = 8;
      */
-    remark: string; // 备注
+    remark: string; // Remark
     /**
      * @generated from protobuf field: string createTm = 9;
      */
-    createTm: string; // 添加时间
+    createTm: string; // Added time
     /**
      * @generated from protobuf field: string updateTm = 10;
      */
-    updateTm: string; // 修改时间
+    updateTm: string; // Update time
 }
 /**
  * @generated from protobuf message ada.ListThreatWhitelistReply.Details.ruleInfo
@@ -3104,10 +3104,10 @@ export interface ListThreatWhitelistReply_Details_ruleInfo {
      */
     info: {
         [key: string]: string;
-    }; // 规则信息
+    }; // Rule details
 }
 /**
- * 获取白名单规则fields描述说明
+ * Get field descriptions for whitelist rules
  *
  * @generated from protobuf message ada.GetThreatWhitelistFieldReq
  */
@@ -3124,11 +3124,11 @@ export interface GetThreatWhitelistFieldReply {
     /**
      * @generated from protobuf field: repeated string fields = 1;
      */
-    fields: string[]; // 敏感条目列表
+    fields: string[]; // Sensitive entry list
 }
 /**
- * 增加白名单
- * 支持的op: ==, !=, >, <, >=, <=, contain, not_contain, in, not_in, regex    in/not_in 多个value按`,`分隔
+ * Add a whitelist entry
+ * Supported operators: `==`, `!=`, `>`, `<`, `>=`, `<=`, `contain`, `not_contain`, `in`, `not_in`, `regex`; for `in`/`not_in`, separate multiple values with commas
  *
  * @generated from protobuf message ada.AddThreatWhitelistReq
  */
@@ -3136,7 +3136,7 @@ export interface AddThreatWhitelistReq {
     /**
      * @generated from protobuf field: string ruleId = 1;
      */
-    ruleId: string; // 规则ID
+    ruleId: string; // Rule ID
     /**
      * @generated from protobuf field: string domain = 2;
      */
@@ -3144,15 +3144,15 @@ export interface AddThreatWhitelistReq {
     /**
      * @generated from protobuf field: repeated ada.AddThreatWhitelistReq.ruleInfo rules = 3;
      */
-    rules: AddThreatWhitelistReq_ruleInfo[]; // 规则信息
+    rules: AddThreatWhitelistReq_ruleInfo[]; // Rule details
     /**
      * @generated from protobuf field: int32 origin = 4;
      */
-    origin: number; // [(validator.field) = {int_gt: 0, int_lt: 3}];  // 来源，1:手动添加, 2:手动批量添加
+    origin: number; // [(validator.field) = {int_gt: 0, int_lt: 3}];  // Source: `1` manual, `2` manual batch import
     /**
      * @generated from protobuf field: string remark = 5;
      */
-    remark: string; // 备注
+    remark: string; // Remark
 }
 /**
  * @generated from protobuf message ada.AddThreatWhitelistReq.ruleInfo
@@ -3163,7 +3163,7 @@ export interface AddThreatWhitelistReq_ruleInfo {
      */
     info: {
         [key: string]: string;
-    }; // 规则信息,eg: {"field":"TargetUsername","op":"==","value":"admin"}
+    }; // Rule details, for example `{ "field": "TargetUsername", "op": "==", "value": "admin" }`
 }
 /**
  * @generated from protobuf message ada.AddThreatWhitelistReply
@@ -3175,7 +3175,7 @@ export interface AddThreatWhitelistReply {
     result: string; // SUCCESS||FAILED
 }
 /**
- * 更新白名单
+ * Update a whitelist entry
  *
  * @generated from protobuf message ada.UpdateThreatWhitelistReq
  */
@@ -3187,11 +3187,11 @@ export interface UpdateThreatWhitelistReq {
     /**
      * @generated from protobuf field: repeated ada.UpdateThreatWhitelistReq.ruleInfo rules = 2;
      */
-    rules: UpdateThreatWhitelistReq_ruleInfo[]; // 规则信息，必须。如果没有变化，带原值
+    rules: UpdateThreatWhitelistReq_ruleInfo[]; // Required rule details; send the original value if unchanged
     /**
      * @generated from protobuf field: string remark = 3;
      */
-    remark: string; // 备注，必须。如果没有变化，带原值
+    remark: string; // Required remark; send the original value if unchanged
 }
 /**
  * @generated from protobuf message ada.UpdateThreatWhitelistReq.ruleInfo
@@ -3202,7 +3202,7 @@ export interface UpdateThreatWhitelistReq_ruleInfo {
      */
     info: {
         [key: string]: string;
-    }; // 规则信息
+    }; // Rule details
 }
 /**
  * @generated from protobuf message ada.UpdateThreatWhitelistReply
@@ -3214,7 +3214,7 @@ export interface UpdateThreatWhitelistReply {
     result: string; // SUCCESS||FAILED
 }
 /**
- * 更新白名单
+ * Update a whitelist entry
  *
  * @generated from protobuf message ada.DeleteThreatWhitelistReq
  */
@@ -3234,7 +3234,7 @@ export interface DeleteThreatWhitelistReply {
     result: string; // SUCCESS||FAILED
 }
 /**
- * 威胁阻挡
+ * Threat blocking
  *
  * @generated from protobuf message ada.ListThreatBlockReq
  */
@@ -3250,23 +3250,23 @@ export interface ListThreatBlockReq {
     /**
      * @generated from protobuf field: repeated string domain = 4;
      */
-    domain: string[]; // 可选,为空则查询所有域
+    domain: string[]; // Optional. If empty, query all domains
     /**
      * @generated from protobuf field: repeated int32 origin = 5;
      */
-    origin: number[]; // 可选，来源，1:手动, 2:自动
+    origin: number[]; // Optional source filter: 1 for manual, 2 for automatic
     /**
      * @generated from protobuf field: string startTm = 6;
      */
-    startTm: string; //  可选，开始时间
+    startTm: string; // Optional start time
     /**
      * @generated from protobuf field: string endTm = 7;
      */
-    endTm: string; //  可选，结束时间
+    endTm: string; // Optional end time
     /**
      * @generated from protobuf field: string search = 8;
      */
-    search: string; // 可选，搜索关键字（阻断用户/IP）
+    search: string; // Optional search keyword (blocked user or IP)
 }
 /**
  * @generated from protobuf message ada.ListThreatBlockReply
@@ -3279,7 +3279,7 @@ export interface ListThreatBlockReply {
     /**
      * @generated from protobuf field: repeated ada.ListThreatBlockReply.Details List = 2 [json_name = "List"];
      */
-    list: ListThreatBlockReply_Details[]; // 敏感条目列表
+    list: ListThreatBlockReply_Details[]; // Sensitive entry list
     /**
      * @generated from protobuf field: bool exhausted = 3;
      */
@@ -3294,7 +3294,7 @@ export interface ListThreatBlockReply_Results {
      */
     info: {
         [key: string]: string;
-    }; // 阻断结果信息
+    }; // Block result details
 }
 /**
  * @generated from protobuf message ada.ListThreatBlockReply.Details
@@ -3307,23 +3307,23 @@ export interface ListThreatBlockReply_Details {
     /**
      * @generated from protobuf field: string Name = 2 [json_name = "Name"];
      */
-    name: string; // 名称
+    name: string; // Name
     /**
      * @generated from protobuf field: string domain = 3;
      */
-    domain: string; // 所在域
+    domain: string; // Domain
     /**
      * @generated from protobuf field: int32 origin = 4;
      */
-    origin: number; // 来源，1:手动, 2:自动
+    origin: number; // Source: `1` manual, `2` automatic
     /**
      * @generated from protobuf field: bool userBlock = 5;
      */
-    userBlock: boolean; // 是否阻断用户
+    userBlock: boolean; // Whether user blocking is enabled
     /**
      * @generated from protobuf field: bool ipBlock = 6;
      */
-    ipBlock: boolean; // 是否阻断IP
+    ipBlock: boolean; // Whether IP blocking is enabled
     /**
      * @generated from protobuf field: repeated string userList = 7;
      */
@@ -3335,19 +3335,19 @@ export interface ListThreatBlockReply_Details {
     /**
      * @generated from protobuf field: repeated ada.ListThreatBlockReply.Results results = 9;
      */
-    results: ListThreatBlockReply_Results[]; // 阻断结果信息
+    results: ListThreatBlockReply_Results[]; // Block result details
     /**
      * @generated from protobuf field: string remark = 10;
      */
-    remark: string; // 备注
+    remark: string; // Remark
     /**
      * @generated from protobuf field: string createTm = 11;
      */
-    createTm: string; // 添加时间
+    createTm: string; // Added time
     /**
      * @generated from protobuf field: string updateTm = 12;
      */
-    updateTm: string; // 修改时间
+    updateTm: string; // Update time
 }
 /**
  * @generated from protobuf message ada.AddThreatBlockReq
@@ -3356,31 +3356,31 @@ export interface AddThreatBlockReq {
     /**
      * @generated from protobuf field: string Name = 1 [json_name = "Name"];
      */
-    name: string; // 名称
+    name: string; // Name
     /**
      * @generated from protobuf field: string domain = 2;
      */
-    domain: string; // 所在域
+    domain: string; // Domain
     /**
      * @generated from protobuf field: bool userBlock = 4;
      */
-    userBlock: boolean; // 是否阻断用户 如果为false, userList为空
+    userBlock: boolean; // If user blocking is disabled, `userList` is empty
     /**
      * @generated from protobuf field: bool ipBlock = 5;
      */
-    ipBlock: boolean; // 是否阻断IP 如果为false, ipList为空
+    ipBlock: boolean; // If IP blocking is disabled, `ipList` is empty
     /**
      * @generated from protobuf field: repeated string userList = 6;
      */
-    userList: string[]; // 阻断用户
+    userList: string[]; // Blocked users
     /**
      * @generated from protobuf field: repeated string ipList = 7;
      */
-    ipList: string[]; // 阻断IP
+    ipList: string[]; // Blocked IPs
     /**
      * @generated from protobuf field: string remark = 8;
      */
-    remark: string; // 备注
+    remark: string; // Remark
 }
 /**
  * @generated from protobuf message ada.AddThreatBlockReply
@@ -3402,27 +3402,27 @@ export interface UpdateThreatBlockReq {
     /**
      * @generated from protobuf field: string Name = 2 [json_name = "Name"];
      */
-    name: string; // 名称
+    name: string; // Name
     /**
      * @generated from protobuf field: bool userBlock = 3;
      */
-    userBlock: boolean; // 是否阻断用户 如果为false, userList为空
+    userBlock: boolean; // If user blocking is disabled, `userList` is empty
     /**
      * @generated from protobuf field: bool ipBlock = 4;
      */
-    ipBlock: boolean; // 是否阻断IP 如果为false, ipList为空
+    ipBlock: boolean; // If IP blocking is disabled, `ipList` is empty
     /**
      * @generated from protobuf field: repeated string userList = 5;
      */
-    userList: string[]; // 阻断用户
+    userList: string[]; // Blocked users
     /**
      * @generated from protobuf field: repeated string ipList = 6;
      */
-    ipList: string[]; // 阻断IP
+    ipList: string[]; // Blocked IPs
     /**
      * @generated from protobuf field: string remark = 7;
      */
-    remark: string; // 备注
+    remark: string; // Remark
 }
 /**
  * @generated from protobuf message ada.UpdateThreatBlockReply
@@ -3452,7 +3452,7 @@ export interface DeleteThreatBlockReply {
     result: string; // SUCCESS||FAILED
 }
 /**
- * 主动扫描
+ * Active scanning
  *
  * @generated from protobuf message ada.ScanRiskStatsReq
  */
@@ -3460,11 +3460,11 @@ export interface ScanRiskStatsReq {
     /**
      * @generated from protobuf field: string domain = 1;
      */
-    domain: string; // 必选，all|domainX
+    domain: string; // Required: `all` or `domainX`
     /**
      * @generated from protobuf field: string type = 2;
      */
-    type: string; // [(validator.field) = {regex: "baseline|leak"}]; // 必选，baseline|leak(无weakpwd)
+    type: string; // [(validator.field) = {regex: "baseline|leak"}]; // Required: `baseline` or `leak` (`weakpwd` is not supported here)
 }
 /**
  * @generated from protobuf message ada.ScanRiskStatsReply
@@ -3473,7 +3473,7 @@ export interface ScanRiskStatsReply {
     /**
      * @generated from protobuf field: repeated ada.ScanRiskStatsReply.Details List = 1 [json_name = "List"];
      */
-    list: ScanRiskStatsReply_Details[]; // 条目列表
+    list: ScanRiskStatsReply_Details[]; // Item list
 }
 /**
  * @generated from protobuf message ada.ScanRiskStatsReply.Details
@@ -3482,19 +3482,19 @@ export interface ScanRiskStatsReply_Details {
     /**
      * @generated from protobuf field: string subType = 1;
      */
-    subType: string; // 类型
+    subType: string; // Type
     /**
      * @generated from protobuf field: string subTypeDesc = 2;
      */
-    subTypeDesc: string; // 类型描述
+    subTypeDesc: string; // Type description
     /**
      * @generated from protobuf field: int32 riskTotal = 3;
      */
-    riskTotal: number; // 风险数量
+    riskTotal: number; // Risk count
     /**
      * @generated from protobuf field: int32 normalTotal = 4;
      */
-    normalTotal: number; // 正常数量
+    normalTotal: number; // Normal count
 }
 /**
  * @generated from protobuf message ada.ListBaselineReq
@@ -3531,7 +3531,7 @@ export interface ListBaselineReq {
     /**
      * @generated from protobuf field: int32 orderUpdateTm = 8;
      */
-    orderUpdateTm: number; // 更新时间排序 1升序 -1降序, 默认-1
+    orderUpdateTm: number; // Sort by updated time: 1 ascending, -1 descending. Default: -1.
 }
 /**
  * @generated from protobuf message ada.ListBaselineReply
@@ -3544,7 +3544,7 @@ export interface ListBaselineReply {
     /**
      * @generated from protobuf field: repeated ada.ListBaselineReply.Details List = 2 [json_name = "List"];
      */
-    list: ListBaselineReply_Details[]; // leak条目列表
+    list: ListBaselineReply_Details[]; // Leak item list
     /**
      * @generated from protobuf field: bool exhausted = 3;
      */
@@ -3561,31 +3561,31 @@ export interface ListBaselineReply_Details {
     /**
      * @generated from protobuf field: string name = 2;
      */
-    name: string; // 基线名称
+    name: string; // Baseline name
     /**
      * @generated from protobuf field: string domain = 3;
      */
-    domain: string; // 所在域
+    domain: string; // Domain
     /**
      * @generated from protobuf field: string subType = 4;
      */
-    subType: string; // 基线类型
+    subType: string; // Baseline type
     /**
      * @generated from protobuf field: int32 level = 5;
      */
-    level: number; // 风险等级
+    level: number; // Risk level
     /**
      * @generated from protobuf field: int32 entries = 6;
      */
-    entries: number; // 影响对象
+    entries: number; // Affected object
     /**
      * @generated from protobuf field: int32 result = 7;
      */
-    result: number; // 检测结果
+    result: number; // Detection result
     /**
      * @generated from protobuf field: string updateTm = 8;
      */
-    updateTm: string; // 结束时间
+    updateTm: string; // End time
 }
 /**
  * @generated from protobuf message ada.GetBaselineReq
@@ -3607,47 +3607,47 @@ export interface GetBaselineReply {
     /**
      * @generated from protobuf field: string name = 2;
      */
-    name: string; // 基线名称
+    name: string; // Baseline name
     /**
      * @generated from protobuf field: string domain = 3;
      */
-    domain: string; // 所在域
+    domain: string; // Domain
     /**
      * @generated from protobuf field: string subType = 4;
      */
-    subType: string; // 基线类型
+    subType: string; // Baseline type
     /**
      * @generated from protobuf field: int32 level = 5;
      */
-    level: number; // 风险等级
+    level: number; // Risk level
     /**
      * @generated from protobuf field: repeated ada.GetBaselineReply.entryInfo entries = 6;
      */
-    entries: GetBaselineReply_entryInfo[]; // 影响对象List
+    entries: GetBaselineReply_entryInfo[]; // Affected object list
     /**
      * @generated from protobuf field: int32 result = 7;
      */
-    result: number; // 检测结果
+    result: number; // Detection result
     /**
      * @generated from protobuf field: string desc = 8;
      */
-    desc: string; // 描述
+    desc: string; // Description
     /**
      * @generated from protobuf field: string verify_desc = 9;
      */
-    verifyDesc: string; // 验证描述
+    verifyDesc: string; // Verification notes
     /**
      * @generated from protobuf field: string suggestion = 10;
      */
-    suggestion: string; // 修复建议
+    suggestion: string; // Remediation suggestions
     /**
      * @generated from protobuf field: string reference = 11;
      */
-    reference: string; // 参考链接
+    reference: string; // Reference links
     /**
      * @generated from protobuf field: string updateTm = 12;
      */
-    updateTm: string; // 结束时间
+    updateTm: string; // End time
 }
 /**
  * @generated from protobuf message ada.GetBaselineReply.entryInfo
@@ -3658,7 +3658,7 @@ export interface GetBaselineReply_entryInfo {
      */
     info: {
         [key: string]: string;
-    }; // 关联对象
+    }; // Related object
 }
 /**
  * @generated from protobuf message ada.ListLeakReq
@@ -3695,15 +3695,15 @@ export interface ListLeakReq {
     /**
      * @generated from protobuf field: string startTm = 8;
      */
-    startTm: string; //  可选，开始时间
+    startTm: string; // Optional start time
     /**
      * @generated from protobuf field: string endTm = 9;
      */
-    endTm: string; //  可选，结束时间
+    endTm: string; // Optional end time
     /**
      * @generated from protobuf field: int32 orderUpdateTm = 10;
      */
-    orderUpdateTm: number; // 更新时间排序 1升序 -1降序, 默认-1
+    orderUpdateTm: number; // Sort by updated time: 1 ascending, -1 descending. Default: -1.
 }
 /**
  * @generated from protobuf message ada.ListLeakReply
@@ -3716,7 +3716,7 @@ export interface ListLeakReply {
     /**
      * @generated from protobuf field: repeated ada.ListLeakReply.Details List = 2 [json_name = "List"];
      */
-    list: ListLeakReply_Details[]; // leak条目列表
+    list: ListLeakReply_Details[]; // Leak item list
     /**
      * @generated from protobuf field: bool exhausted = 3;
      */
@@ -3733,43 +3733,43 @@ export interface ListLeakReply_Details {
     /**
      * @generated from protobuf field: string name = 2;
      */
-    name: string; // 漏洞名称
+    name: string; // Leak name
     /**
      * @generated from protobuf field: string domain = 3;
      */
-    domain: string; // 所在域
+    domain: string; // Domain
     /**
      * @generated from protobuf field: string dcHostname = 4;
      */
-    dcHostname: string; // 所在DC
+    dcHostname: string; // Domain controller
     /**
      * @generated from protobuf field: string subType = 5;
      */
-    subType: string; // 漏洞类型
+    subType: string; // Leak type
     /**
      * @generated from protobuf field: int32 level = 6;
      */
-    level: number; // 风险等级
+    level: number; // Risk level
     /**
      * @generated from protobuf field: int32 result = 7;
      */
-    result: number; // 检测结果
+    result: number; // Detection result
     /**
      * @generated from protobuf field: string suggestion = 8;
      */
-    suggestion: string; // 修复建议
+    suggestion: string; // Remediation suggestions
     /**
      * @generated from protobuf field: string reference = 9;
      */
-    reference: string; // 参考链接
+    reference: string; // Reference links
     /**
      * @generated from protobuf field: string createTm = 10;
      */
-    createTm: string; // 添加时间
+    createTm: string; // Added time
     /**
      * @generated from protobuf field: string updateTm = 11;
      */
-    updateTm: string; // 结束时间
+    updateTm: string; // End time
 }
 /**
  * @generated from protobuf message ada.ListWeakPwdReq
@@ -3790,11 +3790,11 @@ export interface ListWeakPwdReq {
     /**
      * @generated from protobuf field: repeated int32 locked = 4;
      */
-    locked: number[]; // 1:locked, 0:正常
+    locked: number[]; // `1` locked, `0` normal
     /**
      * @generated from protobuf field: bool isPlain = 5;
      */
-    isPlain: boolean; // 是否明文密码
+    isPlain: boolean; // Whether the password is stored in plain text
     /**
      * @generated from protobuf field: string search = 6;
      */
@@ -3802,7 +3802,7 @@ export interface ListWeakPwdReq {
     /**
      * @generated from protobuf field: int32 orderUpdateTm = 7;
      */
-    orderUpdateTm: number; // 更新时间排序 1升序 -1降序, 默认-1
+    orderUpdateTm: number; // Sort by updated time: 1 ascending, -1 descending. Default: -1.
 }
 /**
  * @generated from protobuf message ada.ListWeakPwdReply
@@ -3815,7 +3815,7 @@ export interface ListWeakPwdReply {
     /**
      * @generated from protobuf field: repeated ada.ListWeakPwdReply.Details List = 2 [json_name = "List"];
      */
-    list: ListWeakPwdReply_Details[]; // leak条目列表
+    list: ListWeakPwdReply_Details[]; // Leak item list
     /**
      * @generated from protobuf field: bool exhausted = 3;
      */
@@ -3832,35 +3832,35 @@ export interface ListWeakPwdReply_Details {
     /**
      * @generated from protobuf field: string username = 2;
      */
-    username: string; // 用户名
+    username: string; // Username
     /**
      * @generated from protobuf field: string samName = 3;
      */
-    samName: string; // SAM名
+    samName: string; // SAM account name
     /**
      * @generated from protobuf field: string password = 4;
      */
-    password: string; // 密码
+    password: string; // Password
     /**
      * @generated from protobuf field: string expirationTm = 5;
      */
-    expirationTm: string; // 密码过期时间
+    expirationTm: string; // Password expiry time
     /**
      * @generated from protobuf field: string lastUpdateTm = 6;
      */
-    lastUpdateTm: string; // 密码最近更新时间
+    lastUpdateTm: string; // Password last update time
     /**
      * @generated from protobuf field: string domain = 7;
      */
-    domain: string; // 所在域
+    domain: string; // Domain
     /**
      * @generated from protobuf field: int32 locked = 8;
      */
-    locked: number; // 用户锁定状态 1:locked 0:正常
+    locked: number; // User lock status: `1` locked, `0` normal
     /**
      * @generated from protobuf field: string updateTm = 9;
      */
-    updateTm: string; // 更新时间
+    updateTm: string; // Update time
 }
 /**
  * @generated from protobuf message ada.ListScanTaskReq
@@ -3877,7 +3877,7 @@ export interface ListScanTaskReq {
     /**
      * @generated from protobuf field: string cycle = 3;
      */
-    cycle: string; // [(validator.field) = {regex: "all|cycle|once"}]; // 必选，all|cycle|once
+    cycle: string; // [(validator.field) = {regex: "all|cycle|once"}]; // Required. One of `all`, `cycle`, or `once`
     /**
      * @generated from protobuf field: string type = 4;
      */
@@ -3885,23 +3885,23 @@ export interface ListScanTaskReq {
     /**
      * @generated from protobuf field: string status = 5;
      */
-    status: string; // [(validator.field) = {regex: "all|PENDING|RUNNING|FINISH|FAILURE"}]; // 可选，状态:all|PENDING|RUNNING|FINISH|FAILURE
+    status: string; // [(validator.field) = {regex: "all|PENDING|RUNNING|FINISH|FAILURE"}]; // Optional status: `all|PENDING|RUNNING|FINISH|FAILURE`
     /**
      * @generated from protobuf field: string startTm = 6;
      */
-    startTm: string; //  可选，开始时间
+    startTm: string; // Optional start time
     /**
      * @generated from protobuf field: string endTm = 7;
      */
-    endTm: string; //  可选，结束时间
+    endTm: string; // Optional end time
     /**
      * @generated from protobuf field: int32 orderCreateTm = 8;
      */
-    orderCreateTm: number; // 创建时间排序 1升序 -1降序, 默认-1
+    orderCreateTm: number; // Sort by created time: 1 ascending, -1 descending. Default: -1.
     /**
      * @generated from protobuf field: int32 orderUpdateTm = 9;
      */
-    orderUpdateTm: number; // 结束时间排序 1升序 -1降序, 默认无
+    orderUpdateTm: number; // Sort by end time: `1` asc, `-1` desc; default is unsorted
 }
 /**
  * @generated from protobuf message ada.ListScanTaskReply
@@ -3914,7 +3914,7 @@ export interface ListScanTaskReply {
     /**
      * @generated from protobuf field: repeated ada.ListScanTaskReply.Details List = 2 [json_name = "List"];
      */
-    list: ListScanTaskReply_Details[]; // task条目列表
+    list: ListScanTaskReply_Details[]; // Task item list
     /**
      * @generated from protobuf field: bool exhausted = 3;
      */
@@ -3935,31 +3935,31 @@ export interface ListScanTaskReply_Details {
     /**
      * @generated from protobuf field: string cycle = 3;
      */
-    cycle: string; // 周期任务
+    cycle: string; // Scheduled task
     /**
      * @generated from protobuf field: string status = 4;
      */
-    status: string; // 状态
+    status: string; // Status
     /**
      * @generated from protobuf field: int32 subTasks = 5;
      */
-    subTasks: number; // 子任务数量
+    subTasks: number; // Subtask count
     /**
      * @generated from protobuf field: int32 subtasksFinish = 6;
      */
-    subtasksFinish: number; // 子任务完成数量
+    subtasksFinish: number; // Completed subtask count
     /**
      * @generated from protobuf field: string errorMsg = 7;
      */
-    errorMsg: string; // 错误消息
+    errorMsg: string; // Error message
     /**
      * @generated from protobuf field: string createTm = 8;
      */
-    createTm: string; // 添加时间
+    createTm: string; // Added time
     /**
      * @generated from protobuf field: string updateTm = 9;
      */
-    updateTm: string; // 结束时间
+    updateTm: string; // End time
 }
 /**
  * @generated from protobuf message ada.GetScanTaskReq
@@ -3989,15 +3989,15 @@ export interface GetScanTaskReply {
     /**
      * @generated from protobuf field: string headType = 2;
      */
-    headType: string; // 类型: baseline|leak|weakpwd
+    headType: string; // Type: baseline|leak|weakpwd
     /**
      * @generated from protobuf field: repeated string headField = 3;
      */
-    headField: string[]; // 表头描述
+    headField: string[]; // Header descriptions
     /**
      * @generated from protobuf field: repeated ada.GetScanTaskReply.Details List = 4 [json_name = "List"];
      */
-    list: GetScanTaskReply_Details[]; // task条目列表
+    list: GetScanTaskReply_Details[]; // Task item list
     /**
      * @generated from protobuf field: bool exhausted = 5;
      */
@@ -4014,11 +4014,11 @@ export interface GetScanTaskReply_Details {
     /**
      * @generated from protobuf field: string name = 2;
      */
-    name: string; // 名称
+    name: string; // Name
     /**
      * @generated from protobuf field: string domain = 3;
      */
-    domain: string; // 所在域
+    domain: string; // Domain
     /**
      * @generated from protobuf field: string dcHostname = 4;
      */
@@ -4026,29 +4026,29 @@ export interface GetScanTaskReply_Details {
     /**
      * @generated from protobuf field: string tmplName = 5;
      */
-    tmplName: string; // 模板名称
+    tmplName: string; // Template name
     /**
      * @generated from protobuf field: string subType = 6;
      */
-    subType: string; // (子)任务类型
+    subType: string; // (Sub)task type
     /**
      * @generated from protobuf field: int32 level = 7;
      */
-    level: number; // 风险等级
+    level: number; // Risk level
     /**
      * @generated from protobuf field: int32 result = 8;
      */
-    result: number; // 检测结果
+    result: number; // Detection result
     /**
      * @generated from protobuf field: map<string, string> params = 9;
      */
     params: {
         [key: string]: string;
-    }; // 元数据
+    }; // Metadata
     /**
      * @generated from protobuf field: string updateTm = 10;
      */
-    updateTm: string; // 最后时间
+    updateTm: string; // Last time
 }
 /**
  * @generated from protobuf message ada.AddScanTaskReq
@@ -4138,7 +4138,7 @@ export interface ListScanConfReply {
     /**
      * @generated from protobuf field: repeated ada.scanConfDetail List = 2 [json_name = "List"];
      */
-    list: scanConfDetail[]; // 条目列表
+    list: scanConfDetail[]; // Item list
     /**
      * @generated from protobuf field: bool exhausted = 3;
      */
@@ -4155,7 +4155,7 @@ export interface scanConfDetail {
     /**
      * @generated from protobuf field: string name = 2;
      */
-    name: string; // 条目内容
+    name: string; // Entry value
     /**
      * @generated from protobuf field: string type = 3;
      */
@@ -4163,11 +4163,11 @@ export interface scanConfDetail {
     /**
      * @generated from protobuf field: bool isEnable = 4;
      */
-    isEnable: boolean; // 启用状态
+    isEnable: boolean; // Enable state
     /**
      * @generated from protobuf field: int32 cycleType = 5;
      */
-    cycleType: number; // 1是day，2是week，3是month
+    cycleType: number; // `1` day, `2` week, `3` month
     /**
      * @generated from protobuf field: map<string, string> plans = 8;
      */
@@ -4177,11 +4177,11 @@ export interface scanConfDetail {
     /**
      * @generated from protobuf field: string createTm = 9;
      */
-    createTm: string; // 添加时间
+    createTm: string; // Added time
     /**
      * @generated from protobuf field: string updateTm = 10;
      */
-    updateTm: string; // 修改时间
+    updateTm: string; // Update time
 }
 /**
  * @generated from protobuf message ada.SetScanConfReq
@@ -4194,11 +4194,11 @@ export interface SetScanConfReq {
     /**
      * @generated from protobuf field: bool isEnable = 2;
      */
-    isEnable: boolean; // 启用状态, 若无修改需将原值返回
+    isEnable: boolean; // Enable state; return the original value if unchanged
     /**
      * @generated from protobuf field: int32 cycleType = 3;
      */
-    cycleType: number; // [(validator.field) = {int_gt: 0, int_lt: 4}]; // 1是day，2是week，3是month, 若无修改需将原值返回
+    cycleType: number; // [(validator.field) = {int_gt: 0, int_lt: 4}]; // `1` day, `2` week, `3` month; return the original value if unchanged
 }
 /**
  * @generated from protobuf message ada.SetScanConfReply
@@ -4225,7 +4225,7 @@ export interface GetScanConfReply {
     /**
      * @generated from protobuf field: ada.scanConfDetail Detail = 1 [json_name = "Detail"];
      */
-    detail?: scanConfDetail; // 配置详情
+    detail?: scanConfDetail; // Configuration details
 }
 /**
  * @generated from protobuf message ada.GetScanTmplNamesReq
@@ -4256,7 +4256,7 @@ export interface GetScanTmplNamesReply_tmplNames {
     /**
      * @generated from protobuf field: string name = 2;
      */
-    name: string; // 名称
+    name: string; // Name
 }
 /**
  * @generated from protobuf message ada.UpdateScanConfReq
@@ -4310,7 +4310,7 @@ export interface ListScanTmplReply {
     /**
      * @generated from protobuf field: repeated ada.ListScanTmplReply.Details List = 2 [json_name = "List"];
      */
-    list: ListScanTmplReply_Details[]; // 条目列表
+    list: ListScanTmplReply_Details[]; // Item list
     /**
      * @generated from protobuf field: bool exhausted = 3;
      */
@@ -4327,7 +4327,7 @@ export interface ListScanTmplReply_Details {
     /**
      * @generated from protobuf field: string name = 2;
      */
-    name: string; // 名称
+    name: string; // Name
     /**
      * @generated from protobuf field: string type = 3;
      */
@@ -4335,11 +4335,11 @@ export interface ListScanTmplReply_Details {
     /**
      * @generated from protobuf field: int32 tmplType = 4;
      */
-    tmplType: number; //  模板类型：1:默认, 2:自定义
+    tmplType: number; // Template type: `1` default, `2` custom
     /**
      * @generated from protobuf field: string updateTm = 10;
      */
-    updateTm: string; // 修改时间
+    updateTm: string; // Update time
 }
 /**
  * @generated from protobuf message ada.GetScanTmplReq
@@ -4369,11 +4369,11 @@ export interface pluginInfo {
     /**
      * @generated from protobuf field: string type = 4;
      */
-    type: string; // 按不同类型:
+    type: string; // By type:
     /**
      * @generated from protobuf field: int32 level = 5;
      */
-    level: number; //  1:低危 2:中危 3:高危
+    level: number; // `1` low, `2` medium, `3` high
     /**
      * @generated from protobuf field: map<string, string> metaData = 6;
      */
@@ -4404,7 +4404,7 @@ export interface GetScanTmplReply {
     /**
      * @generated from protobuf field: int32 tmplType = 5;
      */
-    tmplType: number; // 模板类型：1:默认, 2:自定义
+    tmplType: number; // Template type: `1` default, `2` custom
     /**
      * @generated from protobuf field: string createTm = 6;
      */
@@ -4425,7 +4425,7 @@ export interface UpdateScanTmplReq {
     /**
      * @generated from protobuf field: string name = 2;
      */
-    name: string; // Name可以修改
+    name: string; // `Name` can be modified
     /**
      * @generated from protobuf field: repeated ada.pluginInfoV2 Plugins = 3 [json_name = "Plugins"];
      */
@@ -4522,7 +4522,7 @@ export interface ListScanPluginReply {
     plugins: pluginInfo[];
 }
 /**
- * 仪表盘
+ * Dashboard
  *
  * @generated from protobuf message ada.DashboardStatsReq
  */
@@ -4530,7 +4530,7 @@ export interface DashboardStatsReq {
     /**
      * @generated from protobuf field: string domain = 1;
      */
-    domain: string; // 必选，all|domainX
+    domain: string; // Required: `all` or `domainX`
 }
 /**
  * @generated from protobuf message ada.DashboardStatsReply
@@ -4541,49 +4541,49 @@ export interface DashboardStatsReply {
      */
     agent: {
         [key: string]: number;
-    }; // 代理统计: {"domains": 2, "sensors": 5, "dcs": 10}
+    }; // Agent metrics, for example `{ "domains": 2, "sensors": 5, "dcs": 10 }`
     /**
      * @generated from protobuf field: map<string, int32> alert = 2;
      */
     alert: {
         [key: string]: number;
-    }; // 告警数: {"high": 2, "medium ": 3, "low": 1}
+    }; // Alert counts, for example `{ "high": 2, "medium": 3, "low": 1 }`
     /**
      * @generated from protobuf field: map<string, int32> baseline = 3;
      */
     baseline: {
         [key: string]: number;
-    }; // 基线数: {"high": 2, "medium ": 3, "low": 1}
+    }; // Baseline counts, for example `{ "high": 2, "medium": 3, "low": 1 }`
     /**
      * @generated from protobuf field: map<string, int32> leak = 4;
      */
     leak: {
         [key: string]: number;
-    }; // 漏洞数: {"high": 2, "medium ": 3, "low": 1}
+    }; // Leak counts, for example `{ "high": 2, "medium": 3, "low": 1 }`
     /**
      * @generated from protobuf field: map<string, int32> weakpwd = 5;
      */
     weakpwd: {
         [key: string]: number;
-    }; // 弱口令数: {"high": 2, "medium ": 3, "low": 1}
+    }; // Weak-password counts, for example `{ "high": 2, "medium": 3, "low": 1 }`
     /**
      * @generated from protobuf field: map<string, int32> asset = 6;
      */
     asset: {
         [key: string]: number;
-    }; // 资产分布: {"users": 100, "computers": 50, "groups": 20}
+    }; // Asset distribution, for example `{ "users": 100, "computers": 50, "groups": 20 }`
     /**
      * @generated from protobuf field: map<string, int32> rule = 7;
      */
     rule: {
         [key: string]: number;
-    }; // 规则分布: {"alert": 50, "activity": 100}
+    }; // Rule distribution, for example `{ "alert": 50, "activity": 100 }`
     /**
      * @generated from protobuf field: map<string, int32> event = 8;
      */
     event: {
         [key: string]: number;
-    }; // 事件统计: {"events": 200, "activities": 500}
+    }; // Event metrics, for example `{ "events": 200, "activities": 500 }`
 }
 /**
  * @generated from protobuf message ada.DashboardTrendsReq
@@ -4602,11 +4602,11 @@ export interface DashboardLogStatsReq {
     /**
      * @generated from protobuf field: string domain = 1;
      */
-    domain: string; // 必选，all|domainX
+    domain: string; // Required: `all` or `domainX`
     /**
      * @generated from protobuf field: int32 duration = 2;
      */
-    duration: number; // 必选，时间范围/h， 可选值: 1/3/6/12/24 （默认为1hour）
+    duration: number; // Required time range in hours. Allowed values: `1`, `3`, `6`, `12`, `24`; default is `1 hour`
 }
 /**
  * @generated from protobuf message ada.DashboardLogStatsReply
@@ -4615,7 +4615,7 @@ export interface DashboardLogStatsReply {
     /**
      * @generated from protobuf field: repeated ada.DashboardLogStatsReply.logStatsList List = 1 [json_name = "List"];
      */
-    list: DashboardLogStatsReply_logStatsList[]; // winlog/pktlog采集统计
+    list: DashboardLogStatsReply_logStatsList[]; // winlog/pktlog collection metrics
 }
 /**
  * @generated from protobuf message ada.DashboardLogStatsReply.logStatsList
@@ -4651,32 +4651,32 @@ export interface ListAlertRuleReq {
     /**
      * @generated from protobuf field: repeated int32 level = 3;
      */
-    level: number[]; // 规则等级: 5:critical, 4:high, 3:medium, 2:low, 1:info
+    level: number[]; // Rule level: `5` critical, `4` high, `3` medium, `2` low, `1` info
     /**
      * @generated from protobuf field: repeated string status = 4;
      */
-    status: string[]; // 规则状态: test|experimental|stable|deprecated
+    status: string[]; // Rule status: `test|experimental|stable|deprecated`
     /**
      * @generated from protobuf field: bool enable = 5;
      */
-    enable: boolean; // 启用状态
+    enable: boolean; // Enable state
     /**
      * @generated from protobuf field: string keyword = 6;
      */
-    keyword: string; // 关键词搜索(标题/描述)
+    keyword: string; // Keyword search across title and description
     /**
      * @generated from protobuf field: repeated string tags = 7;
      */
-    tags: string[]; // 标签过滤
+    tags: string[]; // Tag filter
     /**
      * @generated from protobuf field: int32 sortTm = 8;
      */
-    sortTm: number; // 时间排序: 1升序, -1降序
+    sortTm: number; // Sort by time: `1` asc, `-1` desc
 }
 /**
  * define AttackFlow
  *
- * 攻击流图定义
+ * Attack flow graph definition
  *
  * @generated from protobuf message ada.AttackFlowReply
  */
@@ -4701,11 +4701,11 @@ export interface AttackFlowReply_Field {
     /**
      * @generated from protobuf field: string obj = 1;
      */
-    obj: string; // 支持:ip/user/computer/dc
+    obj: string; // Supported types: ip|user|computer|dc
     /**
      * @generated from protobuf field: string key = 2;
      */
-    key: string; // 如: $1.TargetUsername
+    key: string; // Example: `$1.TargetUsername`
     /**
      * @generated from protobuf field: string value = 3;
      */
@@ -4722,31 +4722,31 @@ export interface AlertRuleInfo {
     /**
      * @generated from protobuf field: string title = 2;
      */
-    title: string; // 规则标题
+    title: string; // Rule title
     /**
      * @generated from protobuf field: string description = 3;
      */
-    description: string; // 规则描述
+    description: string; // Rule description
     /**
      * @generated from protobuf field: bool enable = 4;
      */
-    enable: boolean; // 启用状态
+    enable: boolean; // Enable state
     /**
      * @generated from protobuf field: int32 level = 5;
      */
-    level: number; // 威胁等级
+    level: number; // Threat level
     /**
      * @generated from protobuf field: string status = 6;
      */
-    status: string; // 规则状态
+    status: string; // Rule status
     /**
      * @generated from protobuf field: repeated string tags = 7;
      */
-    tags: string[]; // 标签
+    tags: string[]; // Tags
     /**
      * @generated from protobuf field: string logsource = 8;
      */
-    logsource: string; // 日志来源
+    logsource: string; // Log source
     /**
      * @generated from protobuf field: string detection = 9;
      */
@@ -4754,23 +4754,23 @@ export interface AlertRuleInfo {
     /**
      * @generated from protobuf field: string type = 10;
      */
-    type: string; // 规则分类
+    type: string; // Rule category
     /**
      * @generated from protobuf field: string author = 11;
      */
-    author: string; // 作者
+    author: string; // Author
     /**
      * @generated from protobuf field: repeated string references = 12;
      */
-    references: string[]; // 参考信息
+    references: string[]; // References
     /**
      * @generated from protobuf field: string suggestion = 13;
      */
-    suggestion: string; // 处置建议
+    suggestion: string; // Handling suggestions
     /**
      * @generated from protobuf field: bool autoBlock = 14;
      */
-    autoBlock: boolean; // 自动阻断
+    autoBlock: boolean; // Automatic blocking
     /**
      * @generated from protobuf field: ada.AttackFlowReply attackFlow = 15;
      */
@@ -4778,7 +4778,7 @@ export interface AlertRuleInfo {
     /**
      * @generated from protobuf field: repeated string uniqueFilter = 16;
      */
-    uniqueFilter: string[]; // 唯一性过滤器
+    uniqueFilter: string[]; // Uniqueness filter
     /**
      * @generated from protobuf field: string createTm = 17;
      */
@@ -4808,23 +4808,23 @@ export interface AlertDetection {
     /**
      * @generated from protobuf field: string eventType = 1;
      */
-    eventType: string; // [(validator.field) = {regex: "count|multi_eve|multi_pkt|multi_eve_pkt"}]; // 事件类型
+    eventType: string; // [(validator.field) = {regex: "count|multi_eve|multi_pkt|multi_eve_pkt"}]; // Event type
     /**
      * @generated from protobuf field: string winSize = 2;
      */
-    winSize: string; // 窗口大小
+    winSize: string; // Window size
     /**
      * @generated from protobuf field: bool sorted = 3;
      */
-    sorted: boolean; // 是否排序
+    sorted: boolean; // Whether sorting is enabled
     /**
      * @generated from protobuf field: repeated string sigmaRules = 4;
      */
-    sigmaRules: string[]; // 关联sigma规则
+    sigmaRules: string[]; // Associated Sigma rules
     /**
      * @generated from protobuf field: string matchBy = 5;
      */
-    matchBy: string; // 匹配条件
+    matchBy: string; // Match condition
 }
 /**
  * @generated from protobuf message ada.AddAlertRuleReq
@@ -4893,7 +4893,7 @@ export interface AddAlertRuleReq {
     /**
      * @generated from protobuf field: repeated string uniqueFilter = 16;
      */
-    uniqueFilter: string[]; // 唯一性过滤器
+    uniqueFilter: string[]; // Uniqueness filter
 }
 /**
  * @generated from protobuf message ada.AddAlertRuleReply
@@ -4975,7 +4975,7 @@ export interface UpdateAlertRuleReq {
     /**
      * @generated from protobuf field: repeated string uniqueFilter = 16;
      */
-    uniqueFilter: string[]; // 唯一性过滤器
+    uniqueFilter: string[]; // Uniqueness filter
 }
 /**
  * @generated from protobuf message ada.UpdateAlertRuleReply
@@ -5027,7 +5027,7 @@ export interface GetAlertRuleNamesReq {
     /**
      * @generated from protobuf field: string ruleId = 1;
      */
-    ruleId: string; // 可选，为空则返回所有的rule_id与name的map
+    ruleId: string; // Optional. If empty, return the mapping of all `rule_id` values to names
 }
 /**
  * @generated from protobuf message ada.GetAlertRuleNamesReply
@@ -5052,7 +5052,7 @@ export interface GetAlertRuleTagsReply {
     /**
      * @generated from protobuf field: repeated string tags = 1;
      */
-    tags: string[]; // 所有规则标签列表
+    tags: string[]; // List of all rule tags
 }
 /**
  * @generated from protobuf message ada.GetActivityRuleFieldsReq
@@ -5066,7 +5066,7 @@ export interface GetActivityRuleFieldsReply {
     /**
      * @generated from protobuf field: repeated string fields = 1;
      */
-    fields: string[]; // 所有行为规则Fields列表
+    fields: string[]; // List of all activity-rule fields
 }
 /**
  * @generated from protobuf message ada.RuleNameItem
@@ -5075,11 +5075,11 @@ export interface RuleNameItem {
     /**
      * @generated from protobuf field: string ruleId = 1;
      */
-    ruleId: string; // 规则ID，如 'winlog-0000-1101'
+    ruleId: string; // Rule ID, for example 'winlog-0000-1101'
     /**
      * @generated from protobuf field: string title = 2;
      */
-    title: string; // 规则名称
+    title: string; // Rule name
 }
 /**
  * @generated from protobuf message ada.GetActivityRuleNamesReq
@@ -5093,7 +5093,7 @@ export interface GetActivityRuleNamesReply {
     /**
      * @generated from protobuf field: repeated ada.RuleNameItem rules = 1;
      */
-    rules: RuleNameItem[]; // 所有行为规则ID和名称列表
+    rules: RuleNameItem[]; // List of all activity rule IDs and names
 }
 /**
  * @generated from protobuf message ada.GetActivityRuleUniqueFieldsReq
@@ -5107,7 +5107,7 @@ export interface GetActivityRuleUniqueFieldsReply {
     /**
      * @generated from protobuf field: repeated string uniqueFields = 1;
      */
-    uniqueFields: string[]; // 所有行为规则UniqueFields列表
+    uniqueFields: string[]; // List of all activity-rule unique fields
 }
 /**
  * Activity Rule (Sigma Rules) Messages
@@ -5126,35 +5126,35 @@ export interface ListActivityRuleReq {
     /**
      * @generated from protobuf field: repeated string IDs = 3 [json_name = "IDs"];
      */
-    iDs: string[]; // 规则ID列表
+    iDs: string[]; // Rule ID list
     /**
      * @generated from protobuf field: repeated int32 level = 4;
      */
-    level: number[]; // 规则等级: 5:critical, 4:high, 3:medium, 2:low, 1:info
+    level: number[]; // Rule level: `5` critical, `4` high, `3` medium, `2` low, `1` info
     /**
      * @generated from protobuf field: repeated string status = 5;
      */
-    status: string[]; // 规则状态: test|experimental|stable|deprecated
+    status: string[]; // Rule status: `test|experimental|stable|deprecated`
     /**
      * @generated from protobuf field: string keyword = 6;
      */
-    keyword: string; // 关键词搜索(标题/描述)
+    keyword: string; // Keyword search across title and description
     /**
      * @generated from protobuf field: repeated string tags = 7;
      */
-    tags: string[]; // 标签过滤 (MITRE ATT&CK)
+    tags: string[]; // Tag filter (MITRE ATT&CK)
     /**
      * @generated from protobuf field: string logsource = 8;
      */
-    logsource: string; // 日志来源: windows/linux/pktlog
+    logsource: string; // Log source: windows/linux/pktlog
     /**
      * @generated from protobuf field: string ruleType = 9;
      */
-    ruleType: string; // 规则类型: winlog/pktlog/flow
+    ruleType: string; // Rule type: winlog|pktlog|flow
     /**
      * @generated from protobuf field: int32 sortTm = 10;
      */
-    sortTm: number; // 时间排序: 1升序, -1降序
+    sortTm: number; // Sort by time: `1` asc, `-1` desc
 }
 /**
  * @generated from protobuf message ada.ActivityRuleInfo
@@ -5167,31 +5167,31 @@ export interface ActivityRuleInfo {
     /**
      * @generated from protobuf field: string title = 2;
      */
-    title: string; // 规则标题
+    title: string; // Rule title
     /**
      * @generated from protobuf field: string description = 3;
      */
-    description: string; // 规则描述
+    description: string; // Rule description
     /**
      * @generated from protobuf field: int32 level = 4;
      */
-    level: number; // 风险等级
+    level: number; // Risk level
     /**
      * @generated from protobuf field: string status = 5;
      */
-    status: string; // 规则状态
+    status: string; // Rule status
     /**
      * @generated from protobuf field: repeated string tags = 6;
      */
-    tags: string[]; // 标签
+    tags: string[]; // Tags
     /**
      * @generated from protobuf field: string logsource = 7;
      */
-    logsource: string; // 日志来源
+    logsource: string; // Log source
     /**
      * @generated from protobuf field: repeated string references = 8;
      */
-    references: string[]; // 参考链接
+    references: string[]; // Reference links
     /**
      * @generated from protobuf field: string detection = 9;
      */
@@ -5199,19 +5199,19 @@ export interface ActivityRuleInfo {
     /**
      * @generated from protobuf field: string rdxKey = 10;
      */
-    rdxKey: string; // Redis缓存key
+    rdxKey: string; // Redis cache key
     /**
      * @generated from protobuf field: repeated string fields = 11;
      */
-    fields: string[]; // 提取字段
+    fields: string[]; // Extracted fields
     /**
      * @generated from protobuf field: repeated string uniqueFields = 12;
      */
-    uniqueFields: string[]; // 唯一字段
+    uniqueFields: string[]; // Unique fields
     /**
      * @generated from protobuf field: string author = 13;
      */
-    author: string; // 作者
+    author: string; // Author
     /**
      * @generated from protobuf field: string createTm = 14;
      */

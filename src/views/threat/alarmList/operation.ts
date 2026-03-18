@@ -4,7 +4,6 @@ import api from "/@/api/grpc";
 import { alertApiError } from "/@/utils/error";
 
 export const closeThreats = (rows: ListThreatReply_Details[], t: any) => {
-    console.log('close', rows)
     if (!rows || rows.length === 0) {
         return
     }

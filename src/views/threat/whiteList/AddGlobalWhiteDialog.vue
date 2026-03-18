@@ -59,7 +59,7 @@ import { reactive, ref, watch } from 'vue'
 import { ElDialog, ElButton, FormInstance, FormRules, ElMessage } from 'element-plus'
 import { transAlarmList as T } from '/@/utils/translator';
 import { AddThreatWhitelistReq, AttackFlowReply_Field, AddThreatWhitelistReq_ruleInfo, GetThreatWhitelistFieldReq } from '/@/api/grpc/ada';
-import { getAddWhiteOpeartionOptins, OptionType } from '/@/utils/constant';
+import { getAddWhiteOperationOptions, OptionType } from '/@/utils/constant';
 import { Delete, Plus } from '@element-plus/icons-vue';
 import api from '/@/api/grpc';
 import { alertApiError, alertResult } from '/@/utils/error';
@@ -110,7 +110,7 @@ const candicateFields = ref<Array<OptionType>>(['IpAddress',
     'TargetDomainName',
 ].map(value => ({ label: value, value })));
 
-const operOptions = getAddWhiteOpeartionOptins();
+const operOptions = getAddWhiteOperationOptions();
 const ruleOptions = ref<Array<OptionType>>([]);
 const domainOptions = ref<Array<OptionType>>([]);
 
@@ -200,7 +200,6 @@ const confirm = async () => {
 
     const found = input.addReqRules.findIndex(rule => rule.info.value === '');
     if (found !== -1) {
-        console.log(found);
         return;
     }
 
@@ -209,8 +208,8 @@ const confirm = async () => {
         const req: AddThreatWhitelistReq = {
             ruleId: ruleId,
             domain: input.domainSelected,
-            rules: input.addReqRules,// 规则信息
-            remark: remark.value, // 备注
+            rules: input.addReqRules,// Rule details
+            remark: remark.value, // Remark
             origin: 2,
         };
 
@@ -221,7 +220,6 @@ const confirm = async () => {
             // }
             return result.result.toUpperCase() === 'SUCCESS';
         } catch (err) {
-            console.log(err);
             return false;
         }
     });
@@ -241,5 +239,4 @@ watch(isVisible, (newVal) => {
 </script>
 
 <style scoped>
-/* Add styles here if necessary */
 </style>

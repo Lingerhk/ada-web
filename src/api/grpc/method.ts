@@ -32,6 +32,7 @@ import {
 	AddActivityRuleReq,
 	UpdateActivityRuleReq,
 	DeleteActivityRuleReq,
+	GetActivityRuleFieldsReply,
 } from './ada';
 import { alertApiError } from '/@/utils/error';
 import { OptionType } from '/@/utils/constant';
@@ -51,7 +52,6 @@ export const listDomainOptions = async (): Promise<OptionType[]> => {
 		.listDomain(req)
 		.then((response) => response.response)
 		.then((data: ListDomainReply) => {
-			// console.log("ListDomainReply", data);
 			ret = data.list.map((_) => ({ label: _.name, value: _.name }));
 		})
 		.catch((err) => {
@@ -206,11 +206,11 @@ export const getUnreadNotification = async () => {
 	const req: ListNotifyReq = {
 		pageIdx: 1, // [(validator.field) = {int_gt: 0}];
 		pageSize: 5,
-		msgType: [], // 消息类型,Leak漏洞监测，Baseline主动检测，Alert告警事件,System系统告警
-		status: [0], // 消息状态: 0未读，1已读
-		startTm: formatApiTime(dayRange[0].toString()), //  可选，开始时间
-		endTm: formatApiTime(dayRange[1].toString()), //  可选，结束时间
-		orderCreateTm: -1, // 创建时间排序 1升序 -1降序, 默认-1
+		msgType: [], // Message types: Leak vulnerability checks, Baseline scans, Alert events, and System alerts
+		status: [0], // Message status: 0 unread, 1 read
+		startTm: formatApiTime(dayRange[0].toString()), // Optional start time
+		endTm: formatApiTime(dayRange[1].toString()), // Optional end time
+		orderCreateTm: -1, // Sort by created time: 1 ascending, -1 descending. Default: -1.
 	};
 
 	return api.listNotify(req).then((resp) => resp.response);
@@ -237,8 +237,6 @@ export const updateSysLanguage = async (lang: string) => {
 		language: lang === 'en' ? 'EN' : 'ZH',
 	};
 
-	console.log('updateSystemLanguage', req);
-
 	return api.updateSystemLanguage(req).then((resp) => resp.response);
 };
 
@@ -248,8 +246,6 @@ export const getScanTask = async (iD: string, pageIdx: number = 1, pageSize: num
 		pageIdx,
 		pageSize,
 	};
-
-	console.log('GetScanTaskReq', req);
 
 	return api.getScanTask(req).then((resp) => resp.response);
 };
@@ -273,27 +269,20 @@ export const listThreatRuleOptions = async (): Promise<OptionType[]> => {
 };
 
 export const listAlertRuleNameOptions = async (): Promise<OptionType[]> => {
-	// TODO: After proto regeneration, use GetAlertRuleNamesReq
-	// const req: GetAlertRuleNamesReq = {
-	// 	ruleId: '', // Empty string returns all rule_id to rule_name mappings
-	// };
-
 	try {
-		// TODO: After proto regeneration, replace with:
-		// const response = await api.getAlertRuleNames(req).then((resp) => resp.response);
-		// For now, use ListAlertRule as fallback
 		const req: ListAlertRuleReq = {
 			pageIdx: 1,
 			pageSize: 1000,
 			level: [],
-			enable: [],
-			startTm: '',
-			endTm: '',
-			orderCreateTm: -1,
+			status: [],
+			enable: false,
+			keyword: '',
+			tags: [],
+			sortTm: -1,
 		};
 		const response = await api.listAlertRule(req).then((resp) => resp.response);
-		return response.list.map((rule) => ({
-			label: rule.name,
+		return response.rules.map((rule) => ({
+			label: rule.title,
 			value: rule.iD,
 		}));
 	} catch (err) {
@@ -350,7 +339,17 @@ export const getAlertRuleTags = async () => {
 };
 
 export const getActivityRuleFields = async () => {
-	return api.getActivityRuleFields({}).then((resp) => resp.response);
+	const getActivityRuleFieldsMethod = (
+		api as typeof api & {
+			getActivityRuleFields?: (req: Record<string, never>) => Promise<{ response: GetActivityRuleFieldsReply }>;
+		}
+	).getActivityRuleFields;
+
+	if (!getActivityRuleFieldsMethod) {
+		return { fields: [] } as GetActivityRuleFieldsReply;
+	}
+
+	return getActivityRuleFieldsMethod({}).then((resp) => resp.response);
 };
 
 export const getActivityRuleNames = async () => {

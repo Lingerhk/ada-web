@@ -12,39 +12,41 @@ import { initFrontEndControlRoutes } from '/@/router/frontEnd';
 import { initBackEndControlRoutes } from '/@/router/backEnd';
 
 /**
- * 1、前端控制路由时：isRequestRoutes 为 false，需要写 roles，需要走 setFilterRoute 方法。
- * 2、后端控制路由时：isRequestRoutes 为 true，不需要写 roles，不需要走 setFilterRoute 方法），
- * 相关方法已拆解到对应的 `backEnd.ts` 与 `frontEnd.ts`（他们互不影响，不需要同时改 2 个文件）。
- * 特别说明：
- * 1、前端控制：路由菜单由前端去写（无菜单管理界面，有角色管理界面），角色管理中有 roles 属性，需返回到 userInfo 中。
- * 2、后端控制：路由菜单由后端返回（有菜单管理界面、有角色管理界面）
+ * Routing modes:
+ * 1. Frontend-controlled routing: set `isRequestRoutes` to `false`, define `meta.roles`, and use `setFilterRoute`.
+ * 2. Backend-controlled routing: set `isRequestRoutes` to `true`; route access then comes from the backend response.
+ * The mode-specific logic lives in `frontEnd.ts` and `backEnd.ts` so each flow can evolve independently.
+ *
+ * Notes:
+ * 1. Frontend-controlled routing keeps the menu tree in the frontend and expects role data in `userInfo`.
+ * 2. Backend-controlled routing gets the menu tree from the server, typically alongside menu-management APIs.
  */
 
-// 读取 `/src/stores/themeConfig.ts` 是否开启后端控制路由配置
+// Read the routing mode from `/src/stores/themeConfig.ts`.
 const storesThemeConfig = useThemeConfig(pinia);
 const { themeConfig } = storeToRefs(storesThemeConfig);
 const { isRequestRoutes } = themeConfig.value;
 
 /**
- * 创建一个可以被 Vue 应用程序使用的路由实例
+ * Create a router instance for the Vue application
  * @method createRouter(options: RouterOptions): Router
- * @link 参考：https://next.router.vuejs.org/zh/api/#createrouter
+ * @link Reference: https://next.router.vuejs.org/zh/api/#createrouter
  */
 export const router = createRouter({
 	history: createWebHashHistory(),
 	/**
-	 * 说明：
-	 * 1、notFoundAndNoPower 默认添加 404、401 界面，防止一直提示 No match found for location with path 'xxx'
-	 * 2、backEnd.ts(后端控制路由)、frontEnd.ts(前端控制路由) 中也需要加 notFoundAndNoPower 404、401 界面。
-	 *    防止 404、401 不在 layout 布局中，不设置的话，404、401 界面将全屏显示
+	 * Notes:
+	 * 1. `notFoundAndNoPower` is included here to avoid repeated router mismatch warnings.
+	 * 2. The same fallback pages also need to be appended in `backEnd.ts` and `frontEnd.ts`.
+	 * Keeping them in the layout prevents the 404 and 401 pages from rendering full-screen.
 	 */
 	routes: [...notFoundAndNoPower, ...staticRoutes],
 });
 
 /**
- * 路由多级嵌套数组处理成一维数组
- * @param arr 传入路由菜单数据数组
- * @returns 返回处理后的一维路由菜单数组
+ * Flatten a nested route tree into a single-level array
+ * @param arr Input route menu array
+ * @returns Returns the flattened route array
  */
 export function formatFlatteningRoutes(arr: any) {
 	if (arr.length <= 0) return false;
@@ -57,11 +59,11 @@ export function formatFlatteningRoutes(arr: any) {
 }
 
 /**
- * 一维数组处理成多级嵌套数组（只保留二级：也就是二级以上全部处理成只有二级，keep-alive 支持二级缓存）
- * @description isKeepAlive 处理 `name` 值，进行缓存。顶级关闭，全部不缓存
- * @link 参考：https://v3.cn.vuejs.org/api/built-in-components.html#keep-alive
- * @param arr 处理后的一维路由菜单数组
- * @returns 返回将一维数组重新处理成 `定义动态路由（dynamicRoutes）` 的格式
+ * Convert a flat route list into a nested route tree while keeping only two levels so keep-alive works as expected
+ * @description When `isKeepAlive` is enabled at the top level, route names are collected for the keep-alive include list
+ * @link Reference: https://v3.cn.vuejs.org/api/built-in-components.html#keep-alive
+ * @param arr The flattened route array
+ * @returns Returns the array reshaped into the `dynamicRoutes` format
  */
 export function formatTwoStageRoutes(arr: any) {
 	if (arr.length <= 0) return false;
@@ -71,15 +73,15 @@ export function formatTwoStageRoutes(arr: any) {
 		if (v.path === '/') {
 			newArr.push({ component: v.component, name: v.name, path: v.path, redirect: v.redirect, meta: v.meta, children: [] });
 		} else {
-			// 判断是否是动态路由（xx/:id/:name），用于 tagsView 等中使用
-			// 修复：https://gitee.com/lyt-top/vue-next-admin/issues/I3YX6G
+			// Detect dynamic routes such as `xx/:id/:name` for tagsView and related features
+			// Fix: https://gitee.com/lyt-top/vue-next-admin/issues/I3YX6G
 			if (v.path.indexOf('/:') > -1) {
 				v.meta['isDynamic'] = true;
 				v.meta['isDynamicPath'] = v.path;
 			}
 			newArr[0].children.push({ ...v });
-			// 存 name 值，keep-alive 中 include 使用，实现路由的缓存
-			// 路径：/@/layout/routerView/parent.vue
+			// Store route names for use in keep-alive include lists
+			// Path: /@/layout/routerView/parent.vue
 			if (newArr[0].meta.isKeepAlive && v.meta.isKeepAlive) {
 				cacheList.push(v.name);
 				const stores = useKeepALiveNames(pinia);
@@ -90,7 +92,7 @@ export function formatTwoStageRoutes(arr: any) {
 	return newArr;
 }
 
-// 路由加载前
+// Before each route navigation
 router.beforeEach(async (to, from, next) => {
 	NProgress.configure({ showSpinner: false });
 	if (to.meta.title) NProgress.start();
@@ -104,17 +106,17 @@ router.beforeEach(async (to, from, next) => {
 			Session.clear();
 			NProgress.done();
 		} else if (token && to.path === '/login') {
-			next('/home');
+			next('/dashboard');
 			NProgress.done();
 		} else {
 			const storesRoutesList = useRoutesList(pinia);
 			const { routesList } = storeToRefs(storesRoutesList);
 			if (routesList.value.length === 0) {
 				if (isRequestRoutes) {
-					// 后端控制路由：路由数据初始化，防止刷新时丢失
+					// Initialize backend-controlled routes on refresh so dynamic routes are restored.
 					await initBackEndControlRoutes();
-					// 解决刷新时，一直跳 404 页面问题，关联问题 No match found for location with path 'xxx'
-					// to.query 防止页面刷新时，普通路由带参数时，参数丢失。动态路由（xxx/:id/:name"）isDynamic 无需处理
+					// Re-enter the current route after dynamic registration to avoid landing on the 404 page after refresh.
+					// Preserve `to.query` on refresh so normal-route parameters are not lost. Dynamic routes marked with `isDynamic` do not need special handling.
 					next({ path: to.path, query: to.query });
 				} else {
 					// https://gitee.com/lyt-top/vue-next-admin/issues/I5F1HP
@@ -128,10 +130,10 @@ router.beforeEach(async (to, from, next) => {
 	}
 });
 
-// 路由加载后
+// After each route navigation
 router.afterEach(() => {
 	NProgress.done();
 });
 
-// 导出路由
+// Export the router
 export default router;

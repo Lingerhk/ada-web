@@ -2,7 +2,7 @@
     <div class="layout-pd">
         <el-card shadow="hover">
             <el-row justify="space-between">
-                <!-- 高级搜索 -->
+                <!-- Advanced search -->
                 <el-form v-if="isAdvanceSearch">
                     <el-form-item v-for="(value, index) in advancedSearchRef" style="margin-bottom: 5px;" size="default"
                         :key="index">
@@ -31,9 +31,9 @@
                     </el-form-item>
                 </el-form>
 
-                <!-- 基础搜索 -->
+                <!-- Basic search -->
                 <el-form v-if="!isAdvanceSearch" :inline="true" class="filter-form">
-                    <!-- 威胁类型 -->
+                    <!-- Threat type -->
                     <el-form-item :label="$t('message.threat.threatName')">
                         <el-select v-model="threatIds" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.threat.alarmList.selectThreatName')" popper-class="custom-header">
                             <template #header>
@@ -44,7 +44,7 @@
                             <el-option v-for="option in threatIdOptions" :key="option.value" :label="option.label" :value="option.value" />
                         </el-select>
                     </el-form-item>
-                    <!-- 威胁等级 -->
+                    <!-- Threat level -->
                     <el-form-item :label="$t('message.threat.levelName')">
                         <el-select v-model="threatLevel" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 130px" :placeholder="$t('message.threat.alarmList.selectLevel')" popper-class="custom-header">
                             <template #header>
@@ -55,7 +55,7 @@
                             <el-option v-for="option in levelOptions" :key="option.value" :label="option.label" :value="option.value" />
                         </el-select>
                     </el-form-item>
-                    <!-- 处理状态 -->
+                    <!-- Handling status -->
                     <el-form-item :label="$t('message.threat.tableTitle.eventStatus')">
                         <el-radio-group v-model="eventStatus" size="default">
                             <el-radio-button v-for="(level, index) in eventStatusOptions" :key="level" :value="index">
@@ -70,7 +70,7 @@
                     </el-form-item>
                 </el-form>
 
-                <!-- 右侧按钮 -->
+                <!-- Actions on the right -->
                 <el-space wrap size="default"
                     style="min-width: 450px; justify-content:right; align-items: flex-start; padding-top: 5px;">
                     <el-switch v-model="isAdvanceSearch" size="default"
@@ -82,7 +82,7 @@
                     <!-- <el-button type="primary" size="default">{{ $t('message.threat.print') }}</el-button> -->
                 </el-space>
             </el-row>
-            <!-- 下方显示列表 -->
+            <!-- Result list below -->
             <el-row style="margin-top: 30px; padding-left: 28px;">
                 <el-col :span="5" class="attackFlow-container-text">
                     {{ $t('message.threat.alarmList.attackName') }}
@@ -161,7 +161,7 @@
                     </el-timeline>
                 </el-row>
             </el-scrollbar>
-            <!-- 分页 -->
+            <!-- Pagination -->
             <el-row style="margin-top: 10px" justify="space-between">
                 <el-button type="primary" size="default" :disabled="tableRowsSelected.length === 0"
                     @click="handleClose(tableRowsSelected)">{{ $t('message.tableCommon.closeBulk') }}</el-button>
@@ -221,7 +221,7 @@ const exhausted = ref(false);
 const advancedSearchRef = ref([] as AdvancedSearchType[]);
 const total = ref(0);
 
-// 加白
+// Add to whitelist
 const addWhiteFields = ref<any[]>([]);
 const addWhiteVisiable = ref<boolean>(false);
 const addWhiteTitle = ref<string>('');
@@ -232,13 +232,13 @@ const refreshThreatTable = () => {
     const req: ListThreatReq = {
         pageIdx: pageIdx.value,
         pageSize: pageSize.value,
-        iDs: threatIds.value, // 威胁ID list
-        level: threatLevel.value, // 威胁等级,严重性
-        startTm: formatDate(lastOccurenceTime.value[0], 'YYYY-mm-dd HH:MM:SS'), // 开始时间
-        endTm: formatDate(lastOccurenceTime.value[1], 'YYYY-mm-dd HH:MM:SS'), // 结束时间
-        searchType: isAdvanceSearch.value ? 1 : 0, // 检索类型,0为普通检索，1为高级检索
-        advancedSearch: isAdvanceSearch.value ? advancedSearchRef.value : [], // 高级检索
-        sortTm: -1, // 时间排序，1为升序，-1为降序
+        iDs: threatIds.value, // Threat ID list
+        level: threatLevel.value, // Threat levels and severity
+        startTm: formatDate(lastOccurenceTime.value[0], 'YYYY-mm-dd HH:MM:SS'), // Start time
+        endTm: formatDate(lastOccurenceTime.value[1], 'YYYY-mm-dd HH:MM:SS'), // End time
+        searchType: isAdvanceSearch.value ? 1 : 0, // Search type: `0` basic, `1` advanced
+        advancedSearch: isAdvanceSearch.value ? advancedSearchRef.value : [], // Advanced search
+        sortTm: -1, // Sort by time: `1` asc, `-1` desc
         eventStatus: eventStatus.value,
     };
     
@@ -369,7 +369,6 @@ onUnmounted(() => {
 
 watch(advancedSearchRef,
     (newValue, oldValue) => {
-        // console.log('ref to', newValue);
         refreshThreatTable();
     }, { deep: true }
 );
@@ -450,34 +449,34 @@ watch([lastOccurenceTime, eventStatus], () => {
 .arrowRight {
     // width: 290px;
     width: calc(100% - 20px);
-    /* 总宽度 */
+    /* Total width */
     height: 20px;
-    /* 总高度，包括边框 */
+    /* Total height, including borders */
     border-top: 1px solid black;
-    /* 顶部边框作为直线 */
+    /* Use the top border as the straight line */
     position: relative;
-    /* 设置相对定位，为伪元素定位提供基准 */
+    /* Use relative positioning so the pseudo-element has an anchor */
     top: 10%;
-    /* 将箭头定位到直线的垂直中心 */
+    /* Place the arrow at the vertical center of the line */
 }
 
 .arrowRight::after {
     content: '';
-    /* 伪元素需要内容来显示 */
+    /* Pseudo-elements require content to render */
     position: absolute;
-    /* 绝对定位 */
+    /* Absolute positioning */
     right: 0;
-    /* 定位到容器的右侧 */
+    /* Position it on the right side of the container */
     top: -15%;
-    /* 将箭头定位到直线的垂直中心 */
+    /* Place the arrow at the vertical center of the line */
     margin-top: -3px;
-    /* 向上调整一半的箭头高度，以确保垂直居中 */
+    /* Shift upward by half the arrow height to keep it centered vertically */
     border-left: 6px solid black;
-    /* 左边黑色边框形成箭头 */
+    /* Use the left black border to form the arrow */
     border-top: 6px solid transparent;
-    /* 上边透明边框 */
+    /* Transparent top border */
     border-bottom: 6px solid transparent;
-    /* 下边透明边框 */
+    /* Transparent bottom border */
 }
 
 .select-button {
@@ -503,8 +502,8 @@ watch([lastOccurenceTime, eventStatus], () => {
   left: 0;
   width: 0;
   height: 0;
-  border-left: 30px solid #409EFF; /* 左侧蓝色边，形成三角形的另一腰与底边 */
-  border-top: 0px solid transparent; /* 顶部透明边，形成等腰三角形的一腰 */
-  border-bottom: 30px solid transparent; /* 底部透明边 */
+  border-left: 30px solid #409EFF; /* Blue left border that forms the other side and base of the triangle */
+  border-top: 0px solid transparent; /* Transparent top border that forms one side of the isosceles triangle */
+  border-bottom: 30px solid transparent; /* Transparent bottom border */
 }
 </style>

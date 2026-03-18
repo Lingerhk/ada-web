@@ -67,7 +67,7 @@
 			</template>
 		</el-table-column>
 	</el-table>
-	<!-- 分页 -->
+	<!-- Pagination -->
 	<el-row style="margin-top: 10px" justify="space-between">
 		<div></div>
 		<el-pagination v-model:current-page="state.req.pageIdx" v-model:page-size="state.req.pageSize"
@@ -89,7 +89,7 @@ import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-// 引入组件
+// Import components
 const AddDrawer = defineAsyncComponent(() => import('../adDomainConfig/addAdDomainDrawer.vue'));
 const DetailDrawer = defineAsyncComponent(() => import('../adDomainConfig/detailAdDomainDrawer.vue'));
 
@@ -99,7 +99,7 @@ const domainIndeterminate = ref(false);
 const statusCheckAll = ref(false);
 const statusIndeterminate = ref(false);
 
-// 定义变量内容
+// Define reactive state and refs
 const addDrawerRef = ref();
 const detailDrawerRef = ref();
 const state = reactive({
@@ -148,17 +148,17 @@ const onOpenDetailDialog = (row: proto.ListDomainReply_Details) => {
 	detailDrawerRef.value.open(row)
 }
 
-// 打开新增菜单弹窗
+// Open the add dialog
 const handleAdd = () => {
 	addDrawerRef.value.open(t('message.adDomain.addTitle'), 'add', null, getListDomain);
 }
 
-// 打开编辑菜单弹窗
+// Open the edit dialog
 const handleEdit = (row: proto.ListDomainReply_Details) => {
 	addDrawerRef.value.open(t('message.adDomain.editTitle'), 'edit', row, getListDomain);
 };
 
-// 删除当前行
+// Delete the current row
 const onTabelRowDel = (row: proto.ListDomainReply_Details) => {
 	ElMessageBox.confirm(t('message.adDomain.delDomainConfirmTitle'), t('message.dialog.prompt'), {
 		confirmButtonText: t('message.dialog.delete'),
@@ -250,7 +250,7 @@ watch(kwInput, (val) => {
 	getListDomain();
 });
 
-// 页面加载时
+// On mount
 onMounted(() => {
 	getListDomain(true);
 });

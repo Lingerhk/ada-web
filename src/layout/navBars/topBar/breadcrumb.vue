@@ -32,7 +32,7 @@ import { storeToRefs } from 'pinia';
 import { useThemeConfig } from '/@/stores/themeConfig';
 import { useRoutesList } from '/@/stores/routesList';
 
-// 定义变量内容
+// Define reactive state and refs
 const stores = useRoutesList();
 const storesThemeConfig = useThemeConfig();
 const { themeConfig } = storeToRefs(storesThemeConfig);
@@ -46,30 +46,30 @@ const state = reactive<BreadcrumbState>({
 	routeSplitIndex: 1,
 });
 
-// 动态设置经典、横向布局不显示
+// Hide breadcrumbs dynamically in classic and transverse layouts
 const isShowBreadcrumb = computed(() => {
 	initRouteSplit(route.path);
 	const { layout, isBreadcrumb } = themeConfig.value;
 	if (layout === 'classic' || layout === 'transverse') return false;
 	else return isBreadcrumb ? true : false;
 });
-// 面包屑点击时
+// Handle breadcrumb clicks
 const onBreadcrumbClick = (v: RouteItem) => {
 	const { redirect, path } = v;
 	if (redirect) router.push(redirect);
 	else router.push(path);
 };
-// 展开/收起左侧菜单点击
+// Handle expand/collapse clicks for the left menu
 const onThemeConfigChange = () => {
 	themeConfig.value.isCollapse = !themeConfig.value.isCollapse;
 	setLocalThemeConfig();
 };
-// 存储布局配置
+// Persist layout settings
 const setLocalThemeConfig = () => {
 	Local.remove('themeConfig');
 	Local.set('themeConfig', themeConfig.value);
 };
-// 处理面包屑数据
+// Process breadcrumb data
 const getBreadcrumbList = (arr: RouteItems) => {
 	arr.forEach((item: RouteItem) => {
 		state.routeSplit.forEach((v: string, k: number, arrs: string[]) => {
@@ -82,7 +82,7 @@ const getBreadcrumbList = (arr: RouteItems) => {
 		});
 	});
 };
-// 当前路由字符串切割成数组，并删除第一项空内容
+// Split the current route string into an array and remove the first empty segment
 const initRouteSplit = (path: string) => {
 	if (!themeConfig.value.isBreadcrumb) return false;
 	state.breadcrumbList = [routesList.value[0]];
@@ -95,11 +95,11 @@ const initRouteSplit = (path: string) => {
 	if (state.breadcrumbList.length > 0)
 		state.breadcrumbList[state.breadcrumbList.length - 1].meta.tagsViewName = other.setTagsViewNameI18n(<RouteToFrom>route);
 };
-// 页面加载时
+// On mount
 onMounted(() => {
 	initRouteSplit(route.path);
 });
-// 路由更新时
+// When the route updates
 onBeforeRouteUpdate((to) => {
 	initRouteSplit(to.path);
 });

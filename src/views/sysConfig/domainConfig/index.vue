@@ -2,12 +2,12 @@
     <div class="layout-pd">
         <el-card shadow="hover">
             <el-tabs v-model="activeTab">
-                <!-- AD域配置 Tab -->
+                <!-- AD domain configuration tab -->
                 <el-tab-pane :label="$t('message.router.adDomainConfigIndex')" name="adDomain">
                     <AdDomainConfig />
                 </el-tab-pane>
 
-                <!-- 传感器配置 Tab -->
+                <!-- Sensor configuration tab -->
                 <el-tab-pane :label="$t('message.router.sensorConfigIndex')" name="sensor">
                     <SensorConfig />
                 </el-tab-pane>

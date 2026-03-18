@@ -25,38 +25,38 @@ import { computed, watch, ref, nextTick } from 'vue';
 import { useRoute } from 'vue-router';
 import { initKibanaSession } from '/@/utils/kibana';
 
-// 定义父组件传过来的值
+// Define props
 const props = defineProps({
-	// 刷新 iframe
+	// Refresh the iframe
 	refreshKey: {
 		type: String,
 		default: () => '',
 	},
-	// 过渡动画 name
+	// Transition animation name
 	name: {
 		type: String,
 		default: () => 'slide-right',
 	},
-	// iframe 列表
+	// Iframe list
 	list: {
 		type: Array,
 		default: () => [],
 	},
 });
 
-// 定义变量内容
+// Define reactive state and refs
 const iframeRef = ref();
 const route = useRoute();
 
-// 处理 list 列表，当打开时，才进行加载
+// Only load iframe entries after they are opened
 const setIframeList = computed(() => {
 	return (<RouteItems>props.list).filter((v: RouteItem) => v.meta?.isIframeOpen);
 });
-// 获取 iframe 当前路由 path
+// Get the current iframe route path
 const getRoutePath = computed(() => {
 	return route.path;
 });
-// 关闭 iframe loading
+// Stop the iframe loading state
 const closeIframeLoading = (val: string, item: RouteItem) => {
 	nextTick(() => {
 		if (!iframeRef.value) return false;
@@ -69,7 +69,7 @@ const closeIframeLoading = (val: string, item: RouteItem) => {
 		});
 	});
 };
-// 监听路由变化，初始化 iframe 数据，防止多个 iframe 时，切换不生效
+// Watch route changes and initialize iframe data so switching between multiple iframes stays consistent
 watch(
 	() => route.fullPath,
 	async (val) => {
@@ -93,7 +93,7 @@ watch(
 		immediate: true,
 	}
 );
-// 监听 iframe refreshKey 变化，用于 tagsview 右键菜单刷新
+// Watch `iframeRefreshKey` for tagsView context-menu refreshes
 watch(
 	() => props.refreshKey,
 	() => {

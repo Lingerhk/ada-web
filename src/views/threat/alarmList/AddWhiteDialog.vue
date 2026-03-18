@@ -52,7 +52,7 @@ import { ref, watch } from 'vue'
 import { ElDialog, ElButton } from 'element-plus'
 import { transAlarmList as T } from '/@/utils/translator';
 import { AddThreatWhitelistReq, AttackFlowReply_Field, AddThreatWhitelistReq_ruleInfo, GetThreatWhitelistFieldReq } from '/@/api/grpc/ada';
-import { getAddWhiteOpeartionOptins, OptionType } from '/@/utils/constant';
+import { getAddWhiteOperationOptions, OptionType } from '/@/utils/constant';
 import { Delete, Plus } from '@element-plus/icons-vue';
 import api from '/@/api/grpc';
 import { alertApiError, alertResult } from '/@/utils/error';
@@ -78,7 +78,7 @@ const remark = ref('');
 
 // options
 const candicateFields = ref<Array<OptionType>>([]);
-const operOptions = getAddWhiteOpeartionOptins();
+const operOptions = getAddWhiteOperationOptions();
 
 const getCandicateField = (name: null | string) => {
     const otherOptions = candicateFields.value.filter(f => -1 === addReqRules.value.findIndex(addRule => addRule.info.field === f.value));
@@ -185,11 +185,10 @@ function confirm() {
     const req: AddThreatWhitelistReq = {
         ruleId: props.flowId,
         domain: props.domain,
-        rules: addReqRules.value,// 规则信息
-        remark: remark.value, // 备注
+        rules: addReqRules.value,// Rule details
+        remark: remark.value, // Remark
     }
 
-    console.log("addThreatWhitelist:", req);
     api.addThreatWhitelist(req)
     .then(resp => resp.response)
     .then(data => {
@@ -208,5 +207,4 @@ watch(isVisible, (newVal) => {
 </script>
 
 <style scoped>
-/* Add styles here if necessary */
 </style>

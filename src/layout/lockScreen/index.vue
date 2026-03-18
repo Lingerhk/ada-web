@@ -1,7 +1,7 @@
 <template>
 	<div v-show="state.isShowLockScreen">
 		<div class="layout-lock-screen-mask"></div>
-		<div class="layout-lock-screen-img" :class="{ 'layout-lock-screen-filter': state.isShowLoockLogin }"></div>
+		<div class="layout-lock-screen-img" :class="{ 'layout-lock-screen-filter': state.isShowLockLogin }"></div>
 		<div class="layout-lock-screen">
 			<div
 				class="layout-lock-screen-date"
@@ -21,11 +21,11 @@
 				</div>
 				<div class="layout-lock-screen-date-top">
 					<SvgIcon name="ele-Top" />
-					<div class="layout-lock-screen-date-top-text">上滑解锁</div>
+					<div class="layout-lock-screen-date-top-text">{{ t('message.lockScreen.slideToUnlock') }}</div>
 				</div>
 			</div>
 			<transition name="el-zoom-in-center">
-				<div v-show="state.isShowLoockLogin" class="layout-lock-screen-login">
+				<div v-show="state.isShowLockLogin" class="layout-lock-screen-login">
 					<div class="layout-lock-screen-login-box">
 						<div class="layout-lock-screen-login-box-img">
 							<img src="https://img2.baidu.com/it/u=1978192862,2048448374&fm=253&fmt=auto&app=138&f=JPEG?w=504&h=500" />
@@ -33,7 +33,7 @@
 						<div class="layout-lock-screen-login-box-name">Administrator</div>
 						<div class="layout-lock-screen-login-box-value">
 							<el-input
-								placeholder="请输入密码"
+								:placeholder="t('message.lockScreen.passwordPlaceholder')"
 								ref="layoutLockScreenInputRef"
 								v-model="state.lockScreenPassword"
 								@keyup.enter.native.stop="onLockScreenSubmit()"
@@ -61,23 +61,25 @@
 
 <script setup lang="ts" name="layoutLockScreen">
 import { nextTick, onMounted, reactive, ref, onUnmounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { formatDate } from '/@/utils/formatTime';
 import { Local } from '/@/utils/storage';
 import { storeToRefs } from 'pinia';
 import { useThemeConfig } from '/@/stores/themeConfig';
 
-// 定义变量内容
+// Define reactive state and refs
 const layoutLockScreenDateRef = ref<HtmlType>();
 const layoutLockScreenInputRef = ref();
+const { locale, t } = useI18n();
 const storesThemeConfig = useThemeConfig();
 const { themeConfig } = storeToRefs(storesThemeConfig);
 const state = reactive({
 	transparency: 1,
 	downClientY: 0,
 	moveDifference: 0,
-	isShowLoockLogin: false,
-	isFlags: false,
-	querySelectorEl: '' as HtmlType,
+	isShowLockLogin: false,
+	isDragging: false,
+	dragTargetEl: '' as HtmlType,
 	time: {
 		hm: '',
 		s: '',
@@ -89,30 +91,30 @@ const state = reactive({
 	lockScreenPassword: '',
 });
 
-// 鼠标按下 pc
+// Mouse down on desktop
 const onDownPc = (down: MouseEvent) => {
-	state.isFlags = true;
+	state.isDragging = true;
 	state.downClientY = down.clientY;
 };
-// 鼠标按下 app
+// Touch start on mobile
 const onDownApp = (down: TouchEvent) => {
-	state.isFlags = true;
+	state.isDragging = true;
 	state.downClientY = down.touches[0].clientY;
 };
-// 鼠标移动 pc
+// Mouse move on desktop
 const onMovePc = (move: MouseEvent) => {
 	state.moveDifference = move.clientY - state.downClientY;
 	onMove();
 };
-// 鼠标移动 app
+// Touch move on mobile
 const onMoveApp = (move: TouchEvent) => {
 	state.moveDifference = move.touches[0].clientY - state.downClientY;
 	onMove();
 };
-// 鼠标移动事件
+// Shared pointer-move handler
 const onMove = () => {
-	if (state.isFlags) {
-		const el = <HTMLElement>state.querySelectorEl;
+	if (state.isDragging) {
+		const el = <HTMLElement>state.dragTargetEl;
 		const opacitys = (state.transparency -= 1 / 200);
 		if (state.moveDifference >= 0) return false;
 		el.setAttribute('style', `top:${state.moveDifference}px;cursor:pointer;opacity:${opacitys};`);
@@ -124,39 +126,46 @@ const onMove = () => {
 			}, 300);
 		}
 		if (state.moveDifference === -el.clientHeight) {
-			state.isShowLoockLogin = true;
+			state.isShowLockLogin = true;
 			layoutLockScreenInputRef.value.focus();
 		}
 	}
 };
-// 鼠标松开
+// Pointer release
 const onEnd = () => {
-	state.isFlags = false;
+	state.isDragging = false;
 	state.transparency = 1;
 	if (state.moveDifference >= -400) {
-		(<HTMLElement>state.querySelectorEl).setAttribute('style', `top:0px;opacity:1;transition:all 0.3s ease;`);
+		(<HTMLElement>state.dragTargetEl).setAttribute('style', `top:0px;opacity:1;transition:all 0.3s ease;`);
 	}
 };
-// 获取要拖拽的初始元素
+// Get the initial draggable element
 const initGetElement = () => {
 	nextTick(() => {
-		state.querySelectorEl = layoutLockScreenDateRef.value;
+		state.dragTargetEl = layoutLockScreenDateRef.value;
 	});
 };
-// 时间初始化
+// TimeInitialize
 const initTime = () => {
-	state.time.hm = formatDate(new Date(), 'HH:MM');
-	state.time.s = formatDate(new Date(), 'SS');
-	state.time.mdq = formatDate(new Date(), 'mm月dd日，WWW');
+	const now = new Date();
+	state.time.hm = formatDate(now, 'HH:MM');
+	state.time.s = formatDate(now, 'SS');
+	const localeName = locale.value === 'en' ? 'en-US' : 'zh-CN';
+	const monthDay = new Intl.DateTimeFormat(localeName, {
+		month: locale.value === 'en' ? 'short' : 'long',
+		day: 'numeric',
+	}).format(now);
+	const weekday = new Intl.DateTimeFormat(localeName, { weekday: 'long' }).format(now);
+	state.time.mdq = t('message.lockScreen.dateLabel', [monthDay, weekday]);
 };
-// 时间初始化定时器
+// Initialize the time timer
 const initSetTime = () => {
 	initTime();
 	state.setIntervalTime = window.setInterval(() => {
 		initTime();
 	}, 1000);
 };
-// 锁屏时间定时器
+// Lock-screen timer
 const initLockScreen = () => {
 	if (themeConfig.value.isLockScreen) {
 		state.isShowLockScreenIntervalTime = window.setInterval(() => {
@@ -171,24 +180,24 @@ const initLockScreen = () => {
 		clearInterval(state.isShowLockScreenIntervalTime);
 	}
 };
-// 存储布局配置
+// Persist layout settings
 const setLocalThemeConfig = () => {
 	themeConfig.value.isDrawer = false;
 	Local.set('themeConfig', themeConfig.value);
 };
-// 密码输入点击事件
+// Handle password-input click events
 const onLockScreenSubmit = () => {
 	themeConfig.value.isLockScreen = false;
 	themeConfig.value.lockScreenTime = 30;
 	setLocalThemeConfig();
 };
-// 页面加载时
+// On mount
 onMounted(() => {
 	initGetElement();
 	initSetTime();
 	initLockScreen();
 });
-// 页面卸载时
+// On unmount
 onUnmounted(() => {
 	window.clearInterval(state.setIntervalTime);
 	window.clearInterval(state.isShowLockScreenIntervalTime);

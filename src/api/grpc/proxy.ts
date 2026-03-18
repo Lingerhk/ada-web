@@ -120,11 +120,11 @@ export class ProxyGrpcWebFetchTransport extends GrpcWebFetchTransport {
 
                 // TODO: don't do this if current url is `/login`
                 if (error.code === 'UNAUTHENTICATED') {
-                    // 清除缓存/token等
+                    // Clear cached state, tokens, and related data
                     Session.clear();
                     Local.clear();
                     Local.set("errmsg", decodeURIComponent(error.message));
-                    // 使用 reload 时，不需要调用 resetRoute() 重置路由
+                    // When using reload, you do not need to call resetRoute()
                     window.location.reload();
                 }
 

@@ -3,27 +3,27 @@ import pinia from '/@/stores/index';
 import { storeToRefs } from 'pinia';
 import { useThemeConfig } from '/@/stores/themeConfig';
 
-// 定义语言国际化内容
+// Define the internationalization content
 
 /**
- * 说明：
- * 须在 pages 下新建文件夹（建议 `要国际化界面目录` 与 `i18n 目录` 相同，方便查找），
- * 注意国际化定义的字段，不要与原有的定义字段相同。
- * 1、/src/i18n/lang 下的 ts 为框架的国际化内容
- * 2、/src/i18n/pages 下的 ts 为各界面的国际化内容
+ * Notes:
+ * Create a folder under `pages` for each i18n-enabled page; matching the page directory and i18n directory names keeps lookup simple
+ * Keep custom i18n keys distinct from the framework-level keys
+ * 1. Files under `/src/i18n/lang` contain framework-level i18n messages
+ * 2. Files under `/src/i18n/pages` contain page-specific i18n messages
  */
 
-// element plus 自带国际化
+// Element Plus built-in i18n messages
 import enLocale from 'element-plus/es/locale/lang/en';
 import zhcnLocale from 'element-plus/es/locale/lang/zh-cn';
 
-// 定义变量内容
+// Define reactive state and refs
 const messages = {};
 const element = { en: enLocale, 'zh-cn': zhcnLocale };
 const itemize = { en: [], 'zh-cn': [] };
 const modules: Record<string, any> = import.meta.glob('./**/*.ts', { eager: true });
 
-// 对自动引入的 modules 进行分类 en、zh-cn
+// Group auto-imported modules by `en` and `zh-cn`
 // https://vitejs.cn/vite3-cn/guide/features.html#glob-import
 for (const path in modules) {
 	const key = path.match(/(\S+)\/(\S+).ts/);
@@ -31,7 +31,7 @@ for (const path in modules) {
 	else itemize[key![2]] = modules[path];
 }
 
-// 合并数组对象（非标准数组对象，数组中对象的每项 key、value 都不同）
+// Merge arrays of objects whose keys differ across items
 function mergeArrObj<T>(list: T, key: string) {
 	let obj = {};
 	list[key].forEach((i: EmptyObjectType) => {
@@ -40,7 +40,7 @@ function mergeArrObj<T>(list: T, key: string) {
 	return obj;
 }
 
-// 处理最终格式
+// Build the final message structure
 for (const key in itemize) {
 	messages[key] = {
 		name: key,
@@ -49,11 +49,11 @@ for (const key in itemize) {
 	};
 }
 
-// 读取 pinia 默认语言
+// Read the default locale from Pinia
 const stores = useThemeConfig(pinia);
 const { themeConfig } = storeToRefs(stores);
 
-// 导出语言国际化
+// Export the i18n instance
 // https://vue-i18n.intlify.dev/guide/essentials/fallback.html#explicit-fallback-with-one-locale
 export const i18n = createI18n({
 	legacy: false,

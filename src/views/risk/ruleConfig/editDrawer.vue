@@ -290,7 +290,7 @@ const nextStep = async (formEl: FormInstance | undefined) => {
                     .catch(err => alertApiError(err));
                 }
             } else {
-                console.log('error submit!', fields);
+                return;
             }
         });
     } else if (state.active < 3) {

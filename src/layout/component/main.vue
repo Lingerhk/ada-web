@@ -21,11 +21,11 @@ import { useTagsViewRoutes } from '/@/stores/tagsViewRoutes';
 import { useThemeConfig } from '/@/stores/themeConfig';
 import { NextLoading } from '/@/utils/loading';
 
-// 引入组件
+// Import components
 const LayoutParentView = defineAsyncComponent(() => import('/@/layout/routerView/parent.vue'));
 const LayoutFooter = defineAsyncComponent(() => import('/@/layout/footer/index.vue'));
 
-// 定义变量内容
+// Define reactive state and refs
 const layoutMainScrollbarRef = ref();
 const route = useRoute();
 const storesTagsViewRoutes = useTagsViewRoutes();
@@ -33,32 +33,32 @@ const storesThemeConfig = useThemeConfig();
 const { themeConfig } = storeToRefs(storesThemeConfig);
 const { isTagsViewCurrenFull } = storeToRefs(storesTagsViewRoutes);
 
-// 设置 footer 显示/隐藏
+// Show or hide the footer
 const isFooter = computed(() => {
 	return themeConfig.value.isFooter && !route.meta.isIframe;
 });
-// 设置 header 固定
+// Toggle fixed header behavior
 const isFixedHeader = computed(() => {
 	return themeConfig.value.isFixedHeader;
 });
-// 设置 Backtop 回到顶部
+// Toggle the Backtop control
 const setBacktopClass = computed(() => {
 	if (themeConfig.value.isFixedHeader) return `.layout-backtop-header-fixed .el-scrollbar__wrap`;
 	else return `.layout-backtop .el-scrollbar__wrap`;
 });
-// 设置主内容区的高度
+// Set the height of the main content area
 const setMainHeight = computed(() => {
 	if (isTagsViewCurrenFull.value) return '0px';
 	const { isTagsview, layout } = themeConfig.value;
 	if (isTagsview && layout !== 'classic') return '85px';
 	else return '51px';
 });
-// 页面加载前
+// Before mount
 onMounted(() => {
 	NextLoading.done(600);
 });
 
-// 暴露变量
+// Expose methods and state
 defineExpose({
 	layoutMainScrollbarRef,
 });

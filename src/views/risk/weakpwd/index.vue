@@ -2,7 +2,7 @@
     <div class="layout-pd">
         <el-card shadow="hover">
             <el-row justify="space-between">
-                <!-- 搜索 -->
+                <!-- Search controls -->
                 <el-form :inline="true">
                     <el-form-item>
                         <el-button size="default" type="primary" @click="handleAdd">{{ $t('message.risk.startScan')
@@ -29,7 +29,7 @@
                         </el-select>
                     </el-form-item>
                 </el-form>
-                <!-- 右侧按钮 -->
+                <!-- Actions on the right -->
                 <el-space wrap size="default"
                     style="min-width: 450px; justify-content:right; align-items: flex-start; padding-top: 5px;">
                     <el-switch size="default" v-model="state.req.isPlain"
@@ -40,7 +40,7 @@
                     <ExportButton type="weakpwd" />
                 </el-space>
             </el-row>
-            <!-- 下方显示列表 -->
+            <!-- Result list below -->
             <el-row style="margin-top: 10px">
                 <el-table :data="state.data" v-loading="state.loading" :border="true" row-class-name="pointer-cursor"
                     style="width: 100%">
@@ -71,7 +71,7 @@
                     </el-table-column>
                 </el-table>
             </el-row>
-            <!-- 分页 -->
+            <!-- Pagination -->
             <el-row style="margin-top: 10px" justify="space-between">
                 <div></div>
                 <el-pagination v-model:current-page="state.req.pageIdx" v-model:page-size="state.req.pageSize"
@@ -117,7 +117,7 @@ const state = reactive({
         pageSize: 10,
         domain: [] as string[],
         locked: [] as number[],
-        isPlain: false, // 是否明文密码
+        isPlain: false, // Whether the password is stored in plain text
         search: '',
         orderUpdateTm: -1,
     } as ListWeakPwdReq,
@@ -137,8 +137,6 @@ const handleScan = (data: ListWeakPwdReply_Details) => {
 };
 
 const refresh = () => {
-    console.log('listWeakPwd', state.req);
-
     state.loading = true;
 
     api.listWeakPwd(state.req)
@@ -146,7 +144,6 @@ const refresh = () => {
     .then((data: ListWeakPwdReply) => {
         state.data = data.list;
         state.exhausted = data.exhausted;
-        console.log(data);
     })
     .catch(err => alertApiError(err))
     .finally(() => state.loading = false);

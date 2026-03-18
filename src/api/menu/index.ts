@@ -1,14 +1,14 @@
 import request from '/@/utils/request';
 
 /**
- * 以下为模拟接口地址，gitee 的不通，就换自己的真实接口地址
+ * The following URLs are mock endpoints. Replace them with real endpoints if the Gitee sources are unavailable
  *
- * （不建议写成 request.post(xxx)，因为这样 post 时，无法 params 与 data 同时传参）
+ * Avoid `request.post(xxx)` here because it makes it harder to send `params` and `data` together
  *
- * 后端控制菜单模拟json，路径在 https://gitee.com/lyt-top/vue-next-admin-images/tree/master/menu
- * 后端控制路由，isRequestRoutes 为 true，则开启后端控制路由
- * @method getAdminMenu 获取后端动态路由菜单(admin)
- * @method getTestMenu 获取后端动态路由菜单(test)
+ * Mock JSON for backend-controlled menus lives at https://gitee.com/lyt-top/vue-next-admin-images/tree/master/menu
+ * Backend-controlled routing is enabled when `isRequestRoutes` is `true`
+ * @method getAdminMenu Get the backend dynamic menu for `admin`
+ * @method getTestMenu Get the backend dynamic menu for `test`
  */
 export function useMenuApi() {
 	return {

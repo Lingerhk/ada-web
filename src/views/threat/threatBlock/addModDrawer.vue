@@ -25,11 +25,11 @@
                                 :value="item.value" />
                         </el-select>
                     </el-form-item>
-                    <!-- 阻断用户 -->
+                    <!-- Blocked users -->
                     <el-form-item prop="userBlock" :label="T('userBlock')">
                         <el-switch v-model="state.form.userBlock" />
                     </el-form-item>
-                    <!-- 阻断用户列表 -->
+                    <!-- Blocked user list -->
                     <template v-if="state.form.userBlock">
                         <el-form-item v-for="(_, idx) in state.form.userList" :key="idx"
                             :rules="[{ required: true, message: T('addBlockUserPlaceholder') }]">
@@ -46,11 +46,11 @@
                                 }}</el-button>
                         </el-form-item>
                     </template>
-                    <!-- 阻断IP -->
+                    <!-- Blocked IPs -->
                     <el-form-item prop="ipBlock" :label="T('ipBlock')">
                         <el-switch v-model="state.form.ipBlock" />
                     </el-form-item>
-                    <!-- 阻断IP列表 -->
+                    <!-- Blocked IP list -->
                     <template v-if="state.form.ipBlock">
                         <el-form-item v-for="(_, idx) in state.form.ipList" :key="idx"
                             :rules="[{ required: true, validator: validateIp, message: T('addBlockIpPlaceholder') }]">
@@ -103,13 +103,13 @@ const { t } = useI18n();
 const ruleFormRef = ref<FormInstance>();
 
 const initForm = {
-    name: '', // 名称
-    domain: '', // 所在域
-    userBlock: false, // 是否阻断用户 如果为false, userList为空
-    ipBlock: false, // 是否阻断IP 如果为false, ipList为空
-    userList: [] as string[], // 阻断用户
-    ipList: [] as string[], // 阻断IP
-    remark: '', // 备注
+    name: '', // Name
+    domain: '', // Domain
+    userBlock: false, // If user blocking is disabled, `userList` is empty
+    ipBlock: false, // If IP blocking is disabled, `ipList` is empty
+    userList: [] as string[], // Blocked users
+    ipList: [] as string[], // Blocked IPs
+    remark: '', // Remark
 };
 
 const rules = reactive<FormRules<typeof initForm>>({
@@ -146,7 +146,6 @@ const open = (data: ListThreatBlockReply_Details | null, onClose: () => void) =>
         const { iD, ...form } = data;
         state.form = { ...form }
         state.form.userList = [...form.userList];
-        console.log('form', form.userList)
     }
 
     state.onClose = onClose;
@@ -186,9 +185,6 @@ const nextStep = async (formEl: FormInstance | undefined) => {
         await formEl.validate((valid, fields) => {
             if (valid) {
                 state.active++;
-                console.log('form', state.form);
-            } else {
-                console.log('error submit!', fields);
             }
         });
     } else {
@@ -229,7 +225,6 @@ const search = (type: string, queryString: string, cb: any) => {
         search: queryString,
     };
 
-    console.log('listDomainEntry request', req);
     api.listDomainEntry(req)
     .then(resp => resp.response)
     .then(data => {

@@ -39,7 +39,7 @@
                         :label="key"></el-table-column>
                 </el-table>
             </el-row>
-            <!-- 分页 -->
+            <!-- Pagination -->
             <el-row style="margin-top: 10px; padding: 0 20px;" justify="space-between">
                 <div></div>
                 <el-pagination v-model:current-page="state.pageIdx" v-model:page-size="state.pageSize"

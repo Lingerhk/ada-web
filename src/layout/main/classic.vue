@@ -17,48 +17,48 @@ import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useThemeConfig } from '/@/stores/themeConfig';
 
-// 引入组件
+// Import components
 const LayoutAside = defineAsyncComponent(() => import('/@/layout/component/aside.vue'));
 const LayoutHeader = defineAsyncComponent(() => import('/@/layout/component/header.vue'));
 const LayoutMain = defineAsyncComponent(() => import('/@/layout/component/main.vue'));
 const LayoutTagsView = defineAsyncComponent(() => import('/@/layout/navBars/tagsView/tagsView.vue'));
 
-// 定义变量内容
+// Define reactive state and refs
 const layoutMainRef = ref<InstanceType<typeof LayoutMain>>();
 const route = useRoute();
 const storesThemeConfig = useThemeConfig();
 const { themeConfig } = storeToRefs(storesThemeConfig);
 
-// 判断是否显示 tasgview
+// Check whether tagsView should be shown
 const isTagsview = computed(() => {
 	return themeConfig.value.isTagsview;
 });
-// 重置滚动条高度，更新子级 scrollbar
+// Reset the scrollbar height and update the child scrollbar
 const updateScrollbar = () => {
 	layoutMainRef.value?.layoutMainScrollbarRef.update();
 };
-// 重置滚动条高度，由于组件是异步引入的
+// Reset the scrollbar height because the component is loaded asynchronously
 const initScrollBarHeight = () => {
 	nextTick(() => {
 		setTimeout(() => {
 			updateScrollbar();
-			// '!' not null 断言操作符，不执行运行时检查
+			// The `!` non-null assertion does not add runtime checks
 			if (layoutMainRef.value) layoutMainRef.value!.layoutMainScrollbarRef.wrapRef.scrollTop = 0;
 		}, 500);
 	});
 };
-// 页面加载时
+// On mount
 onMounted(() => {
 	initScrollBarHeight();
 });
-// 监听路由的变化，切换界面时，滚动条置顶
+// Reset the scrollbar to the top when the route changes
 watch(
 	() => route.path,
 	() => {
 		initScrollBarHeight();
 	}
 );
-// 监听 themeConfig  isTagsview 配置文件的变化，更新菜单 el-scrollbar 的高度
+// Watch `themeConfig.isTagsview` and update the menu `el-scrollbar` height
 watch(
 	() => themeConfig.value.isTagsview,
 	() => {

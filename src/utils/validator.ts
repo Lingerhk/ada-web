@@ -1,11 +1,13 @@
 
+import { i18n } from '/@/i18n';
+
 export const validateIp = (rule, value: string, callback) => {
     const ipv4Regex = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
     const ipv6Regex = /^([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])$/;
     if (!value) {
-        callback(new Error('请输入IP地址'));
+        callback(new Error(i18n.global.t('message.validator.ipRequired')));
     } else if (!ipv4Regex.test(value) && !ipv6Regex.test(value)) {
-        callback(new Error('请输入有效的IPv4或IPv6地址'));
+        callback(new Error(i18n.global.t('message.validator.ipInvalid')));
     } else {
         callback();
     }
@@ -36,10 +38,10 @@ export const validateEmail = (rule, value, callback) => {
 
 export const validateNumeric = (rule, value, callback) => {
     if (!value) {
-        return callback(new Error('请输入数字'));
+        return callback(new Error(i18n.global.t('message.validator.numberRequired')));
     }
     if (!/^\d+$/.test(value)) {
-        callback(new Error('请输入数字'));
+        callback(new Error(i18n.global.t('message.validator.numberRequired')));
     } else {
         callback();
     }
@@ -48,9 +50,9 @@ export const validateNumeric = (rule, value, callback) => {
 export const getArraySizeValidator = (min: number | null, max: number | null) => {
     const validator = (rule, value, callback) => {
         if (min !== null && value.length < min) {
-            callback(new Error('The list size less than', min));
+            callback(new Error(i18n.global.t('message.validator.listSizeMin', [min])));
         } else if (max !== null && value.length > max) {
-            callback(new Error('The list size greater than', max));
+            callback(new Error(i18n.global.t('message.validator.listSizeMax', [max])));
         } else {
             callback();
         }

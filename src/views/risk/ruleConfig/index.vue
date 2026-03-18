@@ -5,7 +5,7 @@
                 <!-- Rule Template Tab -->
                 <el-tab-pane :label="$t('message.risk.ruleConfig.ruleTemplateTab')" name="ruleTemplate">
                     <el-row justify="space-between" style="margin-top: 10px;">
-                        <!-- 搜索 -->
+                        <!-- Search controls -->
                         <el-form :inline="true">
                             <el-form-item>
                                 <el-button size="default" type="primary" @click="handleAdd">
@@ -22,7 +22,7 @@
                             </el-form-item>
                         </el-form>
                     </el-row>
-                    <!-- 下方显示列表 -->
+                    <!-- Result list below -->
                     <el-row style="margin-top: 10px">
                         <el-table :data="templateState.data" v-loading="templateState.loading" :border="true" row-class-name="pointer-cursor"
                             style="width: 100%">

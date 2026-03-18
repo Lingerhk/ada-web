@@ -2,7 +2,7 @@
     <div class="layout-pd">
         <el-card shadow="hover">
             <el-tabs v-model="activeTab">
-                <!-- 基础信息 Tab -->
+                <!-- Basic information tab -->
                 <el-tab-pane :label="$t('message.router.basicInfoIndex')" name="basicInfo">
                         <h3>{{ $t('message.system.basicInfo.title') }}</h3>
                         <el-form style="margin-top: 30px;" label-width="180px">
@@ -46,7 +46,7 @@
                         </el-form>
                 </el-tab-pane>
 
-                <!-- 系统时间 Tab -->
+                <!-- System time Tab -->
                 <el-tab-pane :label="$t('message.router.sysTimeIndex')" name="sysTime">
                         <h3>{{ $t('message.system.sysTime.title') }}</h3>
                         <el-form style="margin-top: 30px;" label-width="180px">
@@ -78,7 +78,7 @@
                         </el-form>
                 </el-tab-pane>
 
-                <!-- 产品许可 Tab -->
+                <!-- Product license tab -->
                 <el-tab-pane :label="$t('message.router.licenseIndex')" name="license">
                         <h3>{{ $t('message.system.license.title') }}</h3>
                         <el-form style="margin-top: 30px;" label-width="180px">
@@ -92,7 +92,7 @@
                                 <template #label>
                                     <h4>{{ $t('message.system.license.endTime') }}:</h4>
                                 </template>
-                                {{ formatApiTime(new Date(Number(licenseState.data.endTime) * 1000).toLocaleString()) }}
+                                {{ formatLicenseEndTime(licenseState.data.endTime) }}
                             </el-form-item>
                             <el-form-item>
                                 <template #label>
@@ -138,7 +138,7 @@
                         </el-form>
                 </el-tab-pane>
 
-                <!-- 系统升级 Tab -->
+                <!-- System upgrade tab -->
                 <el-tab-pane :label="$t('message.router.upgradeIndex')" name="upgrade">
                         <h3>{{ $t('message.system.upgrade.title') }}</h3>
                         <el-form style="margin-top: 30px;" label-width="180px">
@@ -197,7 +197,7 @@
                         </el-form>
                 </el-tab-pane>
 
-                <!-- 系统代理 Tab -->
+                <!-- System proxy tab -->
                 <el-tab-pane :label="$t('message.router.systemProxyIndex')" name="systemProxy">
                         <h3>{{ $t('message.system.systemProxy.title') }}</h3>
                         <el-form style="margin-top: 30px;" label-width="180px">
@@ -255,7 +255,7 @@
                         </el-form>
                 </el-tab-pane>
 
-                <!-- 网络诊断 Tab -->
+                <!-- Network diagnostics tab -->
                 <el-tab-pane :label="$t('message.router.diagnoseIndex')" name="diagnose">
                         <h3>{{ $t('message.system.diagnose.title') }}</h3>
                         <el-form label-width="auto" :inline="true" style="margin-top: 30px;">
@@ -279,7 +279,7 @@
                         </div>
                 </el-tab-pane>
 
-                <!-- 系统日志 Tab -->
+                <!-- System logs Tab -->
                 <el-tab-pane :label="$t('message.router.systemLogsIndex')" name="systemLogs">
                         <el-row justify="space-between" style="margin-bottom: 10px;">
                             <el-col :span="24">
@@ -403,6 +403,15 @@ const licenseState = reactive({
 });
 
 const licenseMethod = ['code', 'file'].map(l => ({ value: l, label: t(`message.system.license.licenseType_${l}`)}));
+
+const formatLicenseEndTime = (endTime?: string | number) => {
+    const seconds = Number(endTime);
+    if (!Number.isFinite(seconds) || seconds <= 0) {
+        return '--';
+    }
+
+    return formatApiTime(new Date(seconds * 1000)) || '--';
+};
 
 // Upgrade State
 const upgradeState = reactive({
@@ -777,13 +786,10 @@ const handleModuleCheckAll = (val: boolean) => {
 const refreshSystemLogs = () => {
     systemLogsState.loading = true;
 
-    console.log('listSystemLogs', systemLogsState.req);
-
     api.listSystemLogs(systemLogsState.req)
     .then(resp => resp.response)
     .then(data => {
         systemLogsState.reply = data;
-        console.log(data);
     })
     .catch(err => alertApiError(err))
     .finally(() => systemLogsState.loading = false);
@@ -824,7 +830,6 @@ watch(() => systemLogsState.req.level, (val) => {
     } else {
         levelIndeterminate.value = true;
     }
-    console.log('Level changed, refreshing. New:', val);
     systemLogsState.req.pageIdx = 1;
     refreshSystemLogs();
 }, { deep: true });
@@ -839,7 +844,6 @@ watch(() => systemLogsState.req.module, (val) => {
     } else {
         moduleIndeterminate.value = true;
     }
-    console.log('Module changed, refreshing. New:', val);
     systemLogsState.req.pageIdx = 1;
     refreshSystemLogs();
 }, { deep: true });

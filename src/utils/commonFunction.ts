@@ -1,4 +1,4 @@
-// 通用函数
+// Common functions
 import useClipboard from 'vue-clipboard3';
 import { ElMessage } from 'element-plus';
 import { formatDate } from '/@/utils/formatTime';
@@ -8,21 +8,21 @@ export default function () {
 	const { t } = useI18n();
 	const { toClipboard } = useClipboard();
 
-	// 百分比格式化
+	// Format percentages
 	const percentFormat = (row: EmptyArrayType, column: number, cellValue: string) => {
 		return cellValue ? `${cellValue}%` : '-';
 	};
-	// 列表日期时间格式化
+	// Format date and time values in lists
 	const dateFormatYMD = (row: EmptyArrayType, column: number, cellValue: string) => {
 		if (!cellValue) return '-';
 		return formatDate(new Date(cellValue), 'YYYY-mm-dd');
 	};
-	// 列表日期时间格式化
+	// Format date and time values in lists
 	const dateFormatYMDHMS = (row: EmptyArrayType, column: number, cellValue: string) => {
 		if (!cellValue) return '-';
 		return formatDate(new Date(cellValue), 'YYYY-mm-dd HH:MM:SS');
 	};
-	// 列表日期时间格式化
+	// Format date and time values in lists
 	const dateFormatHMS = (row: EmptyArrayType, column: number, cellValue: string) => {
 		if (!cellValue) return '-';
 		let time = 0;
@@ -30,25 +30,25 @@ export default function () {
 		if (typeof cellValue === 'number') time = cellValue;
 		return formatDate(new Date(time * 1000), 'HH:MM:SS');
 	};
-	// 小数格式化
+	// Format decimals
 	const scaleFormat = (value: string = '0', scale: number = 4) => {
 		return Number.parseFloat(value).toFixed(scale);
 	};
-	// 小数格式化
+	// Format decimals
 	const scale2Format = (value: string = '0') => {
 		return Number.parseFloat(value).toFixed(2);
 	};
-	// 点击复制文本
+	// Copy text on click
 	const copyText = (text: string) => {
 		return new Promise((resolve, reject) => {
 			try {
-				//复制
+				// Copy
 				toClipboard(text);
-				//下面可以设置复制成功的提示框等操作
+				// You can add a success notification here if needed
 				ElMessage.success(t('message.layout.copyTextSuccess'));
 				resolve(text);
 			} catch (e) {
-				//复制失败
+				// Copy failed
 				ElMessage.error(t('message.layout.copyTextError'));
 				reject(e);
 			}

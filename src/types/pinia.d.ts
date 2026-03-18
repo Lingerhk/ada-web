@@ -1,8 +1,8 @@
 /**
- * pinia 类型定义
+ * Pinia type definitions
  */
 
-// 用户信息
+// User info
 declare interface UserInfos<T = any> {
 	authBtnList: string[];
 	photo: string;
@@ -15,31 +15,31 @@ declare interface UserInfosState {
 	userInfos: UserInfos;
 }
 
-// 路由缓存列表
+// Cached route names
 declare interface KeepAliveNamesState {
 	keepAliveNames: string[];
 	cachedViews: string[];
 }
 
-// 后端返回原始路由(未处理时)
+// Raw backend routes before normalization
 declare interface RequestOldRoutesState {
 	requestOldRoutes: string[];
 }
 
-// TagsView 路由列表
+// TagsView route list
 declare interface TagsViewRoutesState<T = any> {
 	tagsViewRoutes: T[];
 	isTagsViewCurrenFull: Boolean;
 }
 
-// 路由列表
+// Route list
 declare interface RoutesListState<T = any> {
 	routesList: T[];
 	isColumnsMenuHover: Boolean;
 	isColumnsNavHover: Boolean;
 }
 
-// 布局配置
+// Layout settings
 declare interface ThemeConfigState {
 	themeConfig: {
 		isDrawer: boolean;
@@ -75,8 +75,8 @@ declare interface ThemeConfigState {
 		isGrayscale: boolean;
 		isInvert: boolean;
 		isIsDark: boolean;
-		isWartermark: boolean;
-		wartermarkText: string;
+		isWatermark: boolean;
+		watermarkText: string;
 		tagsStyle: string;
 		animation: string;
 		columnsAsideStyle: string;

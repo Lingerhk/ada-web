@@ -19,7 +19,7 @@
             <el-col :span="24" :lg="12">
                 <el-card shadow="hover" class="topThreatCard">
                     <el-row>
-                        <span class="topThreatTitle">{{ $t('message.threat.saftyOverview.topEvent') }}</span>
+                        <span class="topThreatTitle">{{ $t('message.threat.safetyOverview.topEvent') }}</span>
                     </el-row>
                     <el-divider></el-divider>
                     <el-row :gutter="10" v-for="(reply, i) in state.eventReply.list" class="topThreatData">
@@ -32,7 +32,7 @@
             <el-col :span="24" :lg="12">
                 <el-card shadow="hover" class="topThreatCard">
                     <el-row>
-                        <span class="topThreatTitle">{{ $t('message.threat.saftyOverview.topActivity') }}</span>
+                        <span class="topThreatTitle">{{ $t('message.threat.safetyOverview.topActivity') }}</span>
                     </el-row>
                     <el-divider></el-divider>
                     <el-row :gutter="10" v-for="(reply, i) in state.activityReply.list" class="topThreatData">
@@ -46,7 +46,7 @@
         <el-row style="margin-top: 10px">
             <el-card shadow="hover" style="width: 100%">
                 <el-row>
-                    <span class="topThreatTitle">{{ $t('message.threat.saftyOverview.trendTitle') }}</span>
+                    <span class="topThreatTitle">{{ $t('message.threat.safetyOverview.trendTitle') }}</span>
                 </el-row>
                 <el-divider></el-divider>
                 <TrendChart :x-axis="state.trendsChart.xAxis" :series="state.trendsChart.series" />
@@ -61,7 +61,7 @@ import { ThreatTopsReply, ThreatTopsReq, ThreatTrendsReply, ThreatTrendsReq } fr
 import api from '/@/api/grpc';
 import { alertApiError } from '/@/utils/error';
 import { useI18n } from 'vue-i18n';
-import { OptionType, getSaftyOverviewDayOptions } from '/@/utils/constant';
+import { OptionType, getSafetyOverviewDayOptions } from '/@/utils/constant';
 import { listDomainOptions } from '/@/api/grpc/method';
 
 const { t } = useI18n();
@@ -69,13 +69,13 @@ const { t } = useI18n();
 const TrendChart = defineAsyncComponent(() => import('./chart.vue'));
 
 const domainOptions = ref<OptionType[]>([]);
-const dayOptions = getSaftyOverviewDayOptions(t);
+const dayOptions = getSafetyOverviewDayOptions(t);
 
 const state = reactive({
     req: {
-        domain: 'all', // 必选，all|domainX
-        type: 'activity', // [(validator.field) = {regex: "activity|event"}]; // 必选，activity|event
-        duration: 30, // 必选，时间范围/天， 可选值: 1/7/30 （默认为7）
+        domain: 'all', // Required: `all` or `domainX`
+        type: 'activity', // [(validator.field) = {regex: "activity|event"}]; // Required: `activity` or `event`
+        duration: 30, // Required time range in days. Allowed values: 1, 7, or 30. Default: 7.
     } as ThreatTopsReq,
 
     activityReply: {

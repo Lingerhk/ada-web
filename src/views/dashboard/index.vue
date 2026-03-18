@@ -239,11 +239,10 @@ import { formatDate } from '/@/utils/formatTime';
 
 const { t } = useI18n();
 
-// 引入组件
-const DashboardHead = defineAsyncComponent(() => import('/@/views/dashboard/head.vue'));
+// Import components
 const FilpNumber = defineAsyncComponent(() => import('/@/components/flipNumber/FlipNumber.vue'))
 
-// 定义变量内容
+// Define reactive state and refs
 const storesTagsViewRoutes = useTagsViewRoutes();
 const { isTagsViewCurrenFull } = storeToRefs(storesTagsViewRoutes);
 const state = reactive({
@@ -325,7 +324,7 @@ const baseLinePieRef = ref()
 const alarmRiskTrendLineRef = ref()
 const dashboardLogStatsRef = ref()
 
-// 函数定义
+// Function definitions
 const initECharts = (ec: any, ref: any, option: any) => {
 	if (!state.global.dispose.some((b: any) => b === ec)) ec.dispose();
 	ec = markRaw(echarts.init(ref.value, state.charts.theme));
@@ -381,7 +380,7 @@ const initPie = (ref: any) => {
 				name: T('todayAlarmStats'),
 				type: 'pie',
 				radius: ['40%', '70%'],
-				data: [],			// 优化拉出效果，只在上半部分工作
+				data: [],			// Improves the pull-out effect and only applies to the upper half
 				avoidLabelOverlap: false,
 			}
 		],
@@ -421,15 +420,15 @@ const initBaseLinePie = (high: number, medium: number, low: number) => {
 		],
 		series: [
 			{
-				name: '高危基线事件数量',
+				name: T('highRiskBaseline'),
 				type: 'pie',
-				radius, // 设置饼图的半径大小
+				radius, // Set the pie-chart radius
 				left: xOffset[0],
 				top: '-20%',
 				data: [
-					{ value: high, name: '直达1' },
-					{ value: total - high, name: '邮件营销1' },
-					// ... 其他数据项
+					{ value: high, name: T('filledPortion') },
+					{ value: total - high, name: T('remainingPortion') },
+					// ... additional data fields
 				],
 
 				label: {
@@ -441,15 +440,15 @@ const initBaseLinePie = (high: number, medium: number, low: number) => {
 				},
 			},
 			{
-				name: '中危基线事件数量',
+				name: T('mediumRiskBaseline'),
 				type: 'pie',
 				radius,
 				left: xOffset[1],
 				top: '-20%',
 				data: [
-					{ value: medium, name: '直达2' },
-					{ value: total - medium, name: '邮件营销2' },
-					// ... 其他数据项
+					{ value: medium, name: T('filledPortion') },
+					{ value: total - medium, name: T('remainingPortion') },
+					// ... additional data fields
 				],
 				label: {
 					show: false,
@@ -458,18 +457,18 @@ const initBaseLinePie = (high: number, medium: number, low: number) => {
 				labelLine: {
 					show: false
 				},
-				// ... 其他配置项
+				// ... other options
 			},
 			{
-				name: '低危基线事件数量',
+				name: T('lowRiskBaseline'),
 				type: 'pie',
 				radius,
 				left: xOffset[2],
 				top: '-20%',
 				data: [
-					{ value: low, name: '直达3' },
-					{ value: total - low, name: '邮件营销3' },
-					// ... 其他数据项
+					{ value: low, name: T('filledPortion') },
+					{ value: total - low, name: T('remainingPortion') },
+					// ... additional data fields
 				],
 				label: {
 					show: false,
@@ -478,18 +477,18 @@ const initBaseLinePie = (high: number, medium: number, low: number) => {
 				labelLine: {
 					show: false
 				},
-				// ... 其他配置项
+				// ... other options
 			}
 		],
-		graphic: [ // 自定义图形元素组
+		graphic: [ // Custom graphic element group
 			{
 				type: 'text',
 				left: '7%',
 				top: '80%',
 				style: {
-					text: '高危基线事件数量',
+					text: T('highRiskBaseline'),
 					textAlign: 'center',
-					fill: '#333', // 文字颜色
+					fill: '#333', // Text color
 					fontSize: 14
 				}
 			},
@@ -498,9 +497,9 @@ const initBaseLinePie = (high: number, medium: number, low: number) => {
 				top: '80%',
 				left: '40%',
 				style: {
-					text: '中危基线事件数量',
+					text: T('mediumRiskBaseline'),
 					textAlign: 'center',
-					fill: '#333', // 文字颜色
+					fill: '#333', // Text color
 					fontSize: 14
 				}
 			},
@@ -509,9 +508,9 @@ const initBaseLinePie = (high: number, medium: number, low: number) => {
 				top: '80%',
 				left: '74%',
 				style: {
-					text: '低危基线事件数量',
+					text: T('lowRiskBaseline'),
 					textAlign: 'center',
-					fill: '#333', // 文字颜色
+					fill: '#333', // Text color
 					fontSize: 14
 				}
 			}
@@ -540,11 +539,11 @@ const initAlarmRiskTrendLine = () => {
 	state.global.alarmRiskTrendLine = markRaw(echarts.init(alarmRiskTrendLineRef.value, state.charts.theme));
 
 	const option = {
-		// 设置标题
+		// Configure the title
 		title: {
-			// text: '2024年每月数据'
+			// text: 'Monthly data for 2024'
 		},
-		// 设置提示框组件
+		// Configure the tooltip
 		tooltip: {
 			trigger: 'axis'
 		},
@@ -554,24 +553,24 @@ const initAlarmRiskTrendLine = () => {
 			// data: ['2024-01', '2024-02', '2024-03', '2024-04', '2024-05', '2024-06', '2024-07', '2024-08', '2024-09', '2024-10', '2024-11', '2024-12']
 			data: [],
 		},
-		// 设置纵坐标
+		// Configure the y-axis
 		yAxis: {
 			type: 'value'
 		},
-		// 设置系列列表
+		// Configure the series list
 		series: [{
-			// name: '数据',
+			// name: 'Data',
 			type: 'line',
 			data: [],
 			// data: [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			// 设置区域填充样式
+			// Configure the area fill style
 			areaStyle: {
-				color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ // 从上到下的渐变色
+				color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ // Top-to-bottom gradient
 					offset: 0,
-					color: 'rgba(58,77,233,0.8)' // 折线图顶端颜色
+					color: 'rgba(58,77,233,0.8)' // Top line color
 				}, {
 					offset: 1,
-					color: 'rgba(58,77,233,0)' // 折线图底端颜色
+					color: 'rgba(58,77,233,0)' // Bottom line color
 				}])
 			}
 		}]
@@ -794,7 +793,7 @@ const stopLogStatsInterval = () => {
 	}
 };
 
-// 批量设置 echarts resize
+// Resize all ECharts instances
 const initEchartsResizeFun = () => {
 	nextTick(() => {
 		for (let i = 0; i < state.myCharts.length; i++) {
@@ -803,12 +802,12 @@ const initEchartsResizeFun = () => {
 	});
 };
 
-// 批量设置 echarts resize
+// Resize all ECharts instances
 const initEchartsResize = () => {
 	window.addEventListener('resize', initEchartsResizeFun);
 };
 
-// 页面加载时
+// On mount
 onMounted(() => {
 	initPie(alarmTodayPieRef);
 	// initBaseLinePie(5, 10, 15);
@@ -835,13 +834,13 @@ onMounted(() => {
 	startLogStatsInterval();
 });
 
-// 由于页面缓存原因，keep-alive
+// Because the page is cached via keep-alive
 onActivated(() => {
 	initEchartsResizeFun();
 	startLogStatsInterval(); // Restart interval on activation
 });
 
-// 监听 pinia 中的 tagsview 开启全屏变化，重新 resize 图表，防止不出现/大小不变等
+// Watch full-screen changes from Pinia and resize the charts so they render correctly
 watch(
 	() => isTagsViewCurrenFull.value,
 	() => {
@@ -919,11 +918,11 @@ onUnmounted(() => {
 .no-data-img {
 	display: flex;
 	justify-content: center;
-	/* 水平居中 */
+	/* Center horizontally */
 	align-items: center;
-	/* 垂直居中 */
+	/* Center vertically */
 	height: 100%;
-	/* 容器高度 */
+	/* Container height */
 }
 
 .chart-main {

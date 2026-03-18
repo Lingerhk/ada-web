@@ -3,10 +3,10 @@
 		<div class="layout-padding-auto layout-padding-view">
 			<div class="layout-link-warp">
 				<i class="layout-link-icon iconfont icon-xingqiu"></i>
-				<div class="layout-link-msg">页面 "{{ $t(state.title) }}" 已在新窗口中打开</div>
+				<div class="layout-link-msg">{{ t('message.linkView.openedInNewWindow', [$t(state.title)]) }}</div>
 				<el-button class="mt30" round size="default" @click="onGotoFullPage">
 					<i class="iconfont icon-lianjie"></i>
-					<span>立即前往体验</span>
+					<span>{{ t('message.linkView.openNow') }}</span>
 				</el-button>
 			</div>
 		</div>
@@ -16,22 +16,24 @@
 <script setup lang="ts" name="layoutLinkView">
 import { reactive, watch } from 'vue';
 import { useRoute } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { verifyUrl } from '/@/utils/toolsValidate';
 
-// 定义变量内容
+// Define reactive state and refs
 const route = useRoute();
+const { t } = useI18n();
 const state = reactive<LinkViewState>({
 	title: '',
 	isLink: '',
 });
 
-// 立即前往
+// Navigate immediately
 const onGotoFullPage = () => {
 	const { origin, pathname } = window.location;
 	if (verifyUrl(<string>state.isLink)) window.open(state.isLink);
 	else window.open(`${origin}${pathname}#${state.isLink}`);
 };
-// 监听路由的变化，设置内容
+// Watch route changes and update the content
 watch(
 	() => route.path,
 	() => {

@@ -119,7 +119,7 @@ const state = reactive({
 		domain: [],
 		status: [], // filter: Init|Running|Stopped
 		keyword: '', // for search
-		tmSort: -1, // 最后在线时间排序，1为升序，-1为降序
+		tmSort: -1, // Sort by last online time: `1` asc, `-1` desc
 	} as ListSensorReq,
 	data: [] as ListSensorReply_Details[],
 	loading: false,
@@ -188,14 +188,12 @@ watch(() => state.req.pageSize, () => {
 	refresh();
 });
 
-// 刷新列表
+// Refresh the list
 const refresh = () => {
 	state.loading = true;
-	console.log('listSensor', state.req)
 	api.listSensor(state.req)
 	.then(resp => resp.response)
 	.then(data => {
-		console.log(data);
 		state.data = data.list;
 		state.exhausted = data.exhausted;
 		state.total = data.page?.total ?? data.list.length; // Update total from API response
@@ -221,8 +219,6 @@ const changePktStatus = (row: ListSensorReply_Details) => {
 	let req = getUpdateSensorReq(row);
 	req.pktPluginSwitch = row.pktPluginSwitch === 'true' ? 'false' : 'true';
 
-	console.log('updateSensor', req);
-
 	api.updateSensor(req)
 	.then(resp => resp.response)
 	.then(data => {
@@ -235,8 +231,6 @@ const changePktStatus = (row: ListSensorReply_Details) => {
 const changeLogStatus = (row: ListSensorReply_Details) => {
 	let req = getUpdateSensorReq(row);
 	req.logPluginSwitch = row.logPluginSwitch === 'true' ? 'false' : 'true';
-
-	console.log('updateSensor', req);
 
 	api.updateSensor(req)
 	.then(resp => resp.response)
@@ -259,13 +253,13 @@ const handleConfirm = (title: string, row: ListSensorReply_Details, done: (row: 
 		});
 }
 
-// 操作按钮
+// Action buttons
 const onDetail = (row: ListSensorReply_Details) => {
-	detailDrawerRef.value.open('传感器详情', row, refresh);
+	detailDrawerRef.value.open(t('message.sysConfig.sensorConfig.detailTitle'), row, refresh);
 }
 
 const onEdit = (row: ListSensorReply_Details) => {
-	editDrawerRef.value.open('编辑域控传感器', row, refresh);
+	editDrawerRef.value.open(t('message.sysConfig.sensorConfig.editTitle'), row, refresh);
 }
 
 const onDelete = (row: ListSensorReply_Details) => {
@@ -279,7 +273,6 @@ const onDelete = (row: ListSensorReply_Details) => {
 				checked: uninstallOnServer, // Use checked prop
 				onChange: (val: CheckboxValueType) => {
 					uninstallOnServer = !!val;
-					console.log('Checkbox(uninstallOnServer) changed to:', uninstallOnServer);
 				},
 				label: t('message.sysConfig.sensorConfig.deleteSensorOnADServer'),
 			}),
@@ -294,15 +287,12 @@ const onDelete = (row: ListSensorReply_Details) => {
 			cmd: uninstallOnServer ? 'uninstall' : 'delete',
 		};
 
-		console.log('cmdSensor request:', req);
 		api.cmdSensor(req)
 			.then(resp => resp.response)
 			.then(data => alertResult(data.result, t('message.sysConfig.sensorConfig.deleteSucc'), t('message.sysConfig.sensorConfig.deleteFail')))
 			.catch(err => alertApiError(err))
 			.finally(() => refresh());
-	}).catch(() => {
-		console.log('Delete cancelled');
-	});
+	}).catch(() => {});
 }
 
 // Pagination handlers

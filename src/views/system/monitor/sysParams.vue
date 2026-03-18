@@ -2,34 +2,51 @@
     <el-row class="title">{{ T('sysParams') }}</el-row>
     <el-row style="margin-top: 20px;">
         <el-col :span="4">
-            <el-statistic :title="T('systemCpuTotal')" :value="state.info.systemCpuTotal" />
+            <div class="metric-card">
+                <div class="metric-title">{{ T('systemCpuTotal') }}</div>
+                <div class="metric-value">{{ formatMetricValue(state.info.systemCpuTotal) }}</div>
+            </div>
         </el-col>
         <el-col :span="4">
-            <el-statistic :title="T('systemMemTotal')" :value="state.info.systemMemTotal" />
+            <div class="metric-card">
+                <div class="metric-title">{{ T('systemMemTotal') }}</div>
+                <div class="metric-value">{{ formatMetricValue(state.info.systemMemTotal) }}</div>
+            </div>
         </el-col>
         <el-col :span="4">
-            <el-statistic :title="T('systemDiskTotal')" :value="state.info.systemDiskTotal" />
+            <div class="metric-card">
+                <div class="metric-title">{{ T('systemDiskTotal') }}</div>
+                <div class="metric-value">{{ formatMetricValue(state.info.systemDiskTotal) }}</div>
+            </div>
         </el-col>
         <el-col :span="4">
-            <el-statistic :title="T('systemLoadAverage')" :value="state.info.systemLoadAverage" />
+            <div class="metric-card">
+                <div class="metric-title">{{ T('systemLoadAverage') }}</div>
+                <div class="metric-value">{{ formatMetricValue(state.info.systemLoadAverage) }}</div>
+            </div>
         </el-col>
         <el-col :span="4">
-            <el-statistic :title="T('systemBootTime')" :value="formatDuration(Number(state.info.systemBootTime))" />
+            <div class="metric-card">
+                <div class="metric-title">{{ T('systemBootTime') }}</div>
+                <div class="metric-value">{{ formatDuration(Number(state.info.systemBootTime)) }}</div>
+            </div>
         </el-col>
         <el-col :span="4">
-            <el-statistic :title="T('systemEsHealth')" :value="T(`systemEsHealth_${state.info.systemEsHealth}`)">
-                <template #prefix>
+            <div class="metric-card">
+                <div class="metric-title">{{ T('systemEsHealth') }}</div>
+                <div class="metric-value metric-value-health">
                     <el-icon :color="getIconColor(state.info.systemEsHealth)">
                         <component :is="getIcon(state.info.systemEsHealth)" />
                     </el-icon>
-                </template>
-            </el-statistic>
+                    <span>{{ getHealthLabel(state.info.systemEsHealth) }}</span>
+                </div>
+            </div>
         </el-col>
     </el-row>
 </template>
 
 <script setup lang="ts">
-import { h, onMounted, onUnmounted, reactive } from 'vue';
+import { onMounted, onUnmounted, reactive } from 'vue';
 import api from '/@/api/grpc';
 import { alertApiError } from '/@/utils/error';
 import { GetSystemInfoReply } from '/@/api/grpc/ada';
@@ -52,18 +69,22 @@ const getIconColor = (health: string) => {
 const getIcon = (health: string) => {
     switch (health) {
         case 'green':
-            return h(CircleCheck);
+            return CircleCheck;
         case 'yellow':
-            return h(Warning);
+            return Warning;
         default:
-            return h(CircleClose);
+            return CircleClose;
     }
 };
 
 function formatDuration(seconds: number): string {
+    if (!Number.isFinite(seconds) || seconds <= 0) {
+        return `0${T('uHour')}`;
+    }
+
     const units = [
-        { label: T('uDay'), value: 86400 }, // 1 天 = 86400 秒
-        { label: T('uHour'), value: 3600 }  // 1 小时 = 3600 秒
+        { label: T('uDay'), value: 86400 }, // 1 day = 86400 seconds
+        { label: T('uHour'), value: 3600 }  // 1 hour = 3600 seconds
     ];
 
     let result = '';
@@ -72,12 +93,31 @@ function formatDuration(seconds: number): string {
         const unitValue = Math.floor(seconds / unit.value);
         if (unitValue > 0) {
             result += `${unitValue}${unit.label}`;
-            seconds %= unit.value; // 获取剩余的秒数
+            seconds %= unit.value; // Get the remaining seconds
         }
     }
 
-    return result || '0' + T('uHour'); // 如果输入的秒数为 0，则返回 '0小时'
+    return result || '0' + T('uHour'); // Return `0 hours` when the input seconds are `0`.
 }
+
+const formatMetricValue = (value?: string | number) => {
+    if (value === undefined || value === null || value === '') {
+        return '--';
+    }
+
+    return `${value}`;
+};
+
+const getHealthLabel = (health?: string) => {
+    switch (health) {
+        case 'green':
+        case 'yellow':
+        case 'red':
+            return T(`systemEsHealth_${health}`);
+        default:
+            return '--';
+    }
+};
 
 const refresh = () => {
     api.getSystemInfo({})
@@ -113,6 +153,29 @@ onUnmounted(() => {
     color: var(--el-text-color-primary);
     font-size: 16px;
     font-weight: 700;
+}
+
+.metric-card {
+    padding: 8px 0;
+}
+
+.metric-title {
+    color: var(--el-text-color-secondary);
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.metric-value {
+    color: var(--el-text-color-primary);
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.metric-value-health {
+    align-items: center;
+    display: inline-flex;
+    gap: 8px;
 }
 
 .el-col {

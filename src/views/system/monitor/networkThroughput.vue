@@ -103,8 +103,8 @@ const initChart = () => {
         yAxis: {
             type: 'value',
             boundaryGap: [0, '25%'],
-            name: 'Mbps', // 在这里添加单位
-            nameLocation: 'end',    // 单位显示在轴的顶部
+            name: 'Mbps', // Add the unit here
+            nameLocation: 'end',    // Render the unit label at the top of the axis
             nameTextStyle: {
                 fontSize: 12,
                 padding: [0, 0, 20, -20]  // Adjust text padding for better positioning
@@ -115,20 +115,24 @@ const initChart = () => {
                 name: T('ul'),
                 type: 'line',
                 showSymbol: false,
-                hoverAnimation: false,
+                emphasis: {
+                    scale: false,
+                },
                 data: ulData
             },
             {
                 name: T('dl'),
                 type: 'line',
                 showSymbol: false,
-                hoverAnimation: false,
+                emphasis: {
+                    scale: false,
+                },
                 data: dlData
             }
         ],
         grid: {
-            left: '8%',   // 减少左侧填充
-            right: '4%',  // 减少右侧填充
+            left: '8%',   // Reduce left padding
+            right: '4%',  // Reduce right padding
         },
     };
 
@@ -158,12 +162,9 @@ const fetch = async (t: string) => {
         scope: state.form.rangeSelected,
     };
 
-    console.log("getSystemStats", req);
-
     return api.getSystemStats(req)
     .then(resp => resp.response)
     .then(arr => {
-        console.log(arr);
         return arr.stats
     })
     .catch(err => {
@@ -198,7 +199,6 @@ const enableHistoryChart = async () => {
 watch(
     () => state.form,
     () => {
-        // console.log(state.form, "changed");
         enableHistoryChart();
         // if (state.form.rangeSelected === 'rt') {
         //     enableRtChart();

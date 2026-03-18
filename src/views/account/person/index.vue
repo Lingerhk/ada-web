@@ -317,19 +317,18 @@ const refresh = () => {
         search: '',
         isSelf: true,
         filterRole: [],
-        filterMfaStatus: [], // 二次认证状态 开启enable|禁用disable|关闭stop
-        filterPassStrength: [], // 密码强度 high/middle/low
-        filterStartCreateTm: '', // 创建开始时间
-        filterEndCreateTm: '', // 创建结束时间
-        filterStartPassTm: '', // 密码最后修改开始时间
-        filterEndPassTm: '', // 密码最后修改结束时间
-        sort: -1, // 创建时间排序，1为升序，-1为降序| 密码修改时间 2为升序，-2为降序
+        filterMfaStatus: [], // MFA status: enable|disable|stop
+        filterPassStrength: [], // Password strength: high/middle/low
+        filterStartCreateTm: '', // Creation start time
+        filterEndCreateTm: '', // Creation end time
+        filterStartPassTm: '', // Password update start time
+        filterEndPassTm: '', // Password update end time
+        sort: -1, // Sort by creation time (`1` asc, `-1` desc) or password update time (`2` asc, `-2` desc)
     };
 
     api.listUser(req)
     .then(response => response.response)
     .then(data => {
-        console.log(data);
         if (data.list.length > 0) {
             state.me = data.list[0];
             state.form = {
@@ -350,7 +349,6 @@ const refresh = () => {
     .catch(err => {
         const message = decodeURIComponent(err.message);
         ElMessage.error(message);
-        console.log(err.code, message);
     })
     .finally(() => {
         state.reloading = false;
@@ -363,7 +361,6 @@ const saveUserInfo = async (formEl: FormInstance) => {
         return valid;
     });
 
-    console.log(valid, state.form);
     if (!valid) {
         return;
     }

@@ -2,7 +2,7 @@
     <div class="layout-pd">
         <el-card shadow="hover">
             <el-row justify="space-between">
-                <!-- 搜索 -->
+                <!-- Search controls -->
                 <el-form :inline="true">
                     <el-form-item :label="$t('message.system.message.msgType')">
                         <el-select v-model="state.req.msgType" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.system.message.selectMsgType')" popper-class="custom-header">
@@ -31,7 +31,7 @@
                     </el-form-item>
                 </el-form>
             </el-row>
-            <!-- 下方显示列表 -->
+            <!-- Result list below -->
             <el-row style="margin-top: 10px">
                 <el-table :data="state.reply.list" v-loading="state.loading" :border="true"
                     @selection-change="(val: ListNotifyReply_Details[]) => state.selected = val" row-class-name="pointer-cursor"
@@ -75,7 +75,7 @@
                     </el-table-column>
                 </el-table>
             </el-row>
-            <!-- 分页 -->
+            <!-- Pagination -->
             <el-row style="margin-top: 10px" justify="space-between">
                 <div>
                     <el-button type="primary" size="default" :disabled="state.selected.length === 0"
@@ -124,10 +124,10 @@ const state = reactive({
         pageIdx: 1,
         pageSize: 10,
         msgType: MsgTypeOptions.map(opt => opt.value), // Default: select all message types
-        status: [0], // 消息状态: 0未读，1已读
-        startTm: '', //  可选，开始时间
-        endTm: '', //  可选，结束时间
-        orderCreateTm: -1, // 创建时间排序 1升序 -1降序, 默认-1
+        status: [0], // Message status: 0 unread, 1 read
+        startTm: '', // Optional start time
+        endTm: '', // Optional end time
+        orderCreateTm: -1, // Sort by created time: 1 ascending, -1 descending. Default: -1.
     } as ListNotifyReq,
     reply: {
         list: [],
@@ -177,7 +177,6 @@ const markReaded = () => {
         iDs: state.selected.map(v => v.iD),
     };
 
-    console.log("updateNotify", req);
     ElMessageBox.confirm(
         t('message.system.message.markReadedTitle', [req.iDs.length]),
         t('message.system.message.markReadedPrompt')
@@ -202,13 +201,10 @@ const markAllReaded = () => {
 const refresh = () => {
     state.loading = true;
 
-    console.log('listNotify', state.req);
-
     api.listNotify(state.req)
     .then(resp => resp.response)
     .then(data => {
         state.reply = data;
-        console.log(data);
     })
     .catch(err => alertApiError(err))
     .finally(() => state.loading = false);
@@ -270,7 +266,6 @@ watch(() => state.req.msgType, (val) => {
     } else {
         msgTypeIndeterminate.value = true;
     }
-    console.log('MsgType changed, refreshing. New:', val);
     state.req.pageIdx = 1;
     refresh();
 }, { deep: true });
@@ -285,7 +280,6 @@ watch(() => state.req.status, (val) => {
     } else {
         statusIndeterminate.value = true;
     }
-    console.log('Status changed, refreshing. New:', val);
     state.req.pageIdx = 1;
     refresh();
 }, { deep: true });

@@ -1,8 +1,8 @@
 @import 'mixins/index.scss';
 
-/* Button 按钮
+/* Button styles
 ------------------------------- */
-// 第三方字体图标大小
+// Third-party icon font sizing
 .el-button:not(.is-circle) i.el-icon,
 .el-button i.iconfont,
 .el-button i.fa,
@@ -17,21 +17,21 @@
 	margin-right: 5px;
 }
 
-/* Input 输入框、InputNumber 计数器
+/* Input and InputNumber styles
 ------------------------------- */
-// 菜单搜索
+// Menu search
 .el-autocomplete-suggestion__wrap {
 	max-height: 280px !important;
 }
 
-/* Form 表单
+/* Form styles
 ------------------------------- */
 .el-form {
-	// 用于修改弹窗时表单内容间隔太大问题，如系统设置的新增菜单弹窗里的表单内容
+	// Reduce form spacing inside dialogs, such as the add-menu dialog in system settings
 	.el-form-item:last-of-type {
 		margin-bottom: 0 !important;
 	}
-	// 修复行内表单最后一个 el-form-item 位置下移问题
+	// Fix the last inline form item being pushed downward
 	&.el-form--inline {
 		.el-form-item--large.el-form-item:last-of-type {
 			margin-bottom: 22px !important;
@@ -47,7 +47,7 @@
 	}
 }
 
-/* Alert 警告
+/* Alert styles
 ------------------------------- */
 .el-alert {
 	border: 1px solid;
@@ -56,7 +56,7 @@
 	word-break: break-all;
 }
 
-/* Message 消息提示
+/* Message styles
 ------------------------------- */
 .el-message {
 	min-width: unset !important;
@@ -64,13 +64,13 @@
 	box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.02);
 }
 
-/* NavMenu 导航菜单
+/* Navigation menu styles
 ------------------------------- */
-// 鼠标 hover 时颜色
+// Color on hover
 .el-menu-hover-bg-color {
 	background-color: var(--next-bg-menuBarActiveColor) !important;
 }
-// 默认样式修改
+// Default style overrides
 .el-menu {
 	border-right: none !important;
 	width: 220px;
@@ -83,11 +83,11 @@
 .el-sub-menu__title {
 	color: var(--next-bg-menuBarColor);
 }
-// 修复点击左侧菜单折叠再展开时，宽度不跟随问题
+// Fix width sync when the left menu is collapsed and expanded again
 .el-menu--collapse {
 	width: 64px !important;
 }
-// 外部链接时
+// Styles for external links
 .el-menu-item a,
 .el-menu-item a:hover,
 .el-menu-item i,
@@ -95,14 +95,14 @@
 	color: inherit;
 	text-decoration: none;
 }
-// 第三方图标字体间距/大小设置
+// Spacing and sizing for third-party icon fonts
 .el-menu-item .iconfont,
 .el-sub-menu .iconfont,
 .el-menu-item .fa,
 .el-sub-menu .fa {
 	@include generalIcon;
 }
-// 水平菜单、横向菜单高亮 背景色，鼠标 hover 时，有子级菜单的背景色
+// Highlighted background for horizontal menus, including hover states for items with children
 .el-menu-item.is-active,
 .el-sub-menu.is-active .el-sub-menu__title,
 .el-sub-menu:not(.is-opened):hover .el-sub-menu__title {
@@ -114,18 +114,18 @@
 .el-sub-menu.is-active.is-opened .el-sub-menu__title {
 	background-color: unset !important;
 }
-// 子级菜单背景颜色
+// Background color for child menus
 // .el-menu--inline {
 // 	background: var(--next-bg-menuBar-light-1);
 // }
-// 水平菜单、横向菜单折叠 a 标签
+// Anchor styles for collapsed horizontal menus
 .el-popper.is-dark a {
 	color: var(--el-color-white) !important;
 	text-decoration: none;
 }
-// 水平菜单、横向菜单折叠背景色
+// Background color for collapsed horizontal menus
 .el-popper.is-pure.is-light {
-	// 水平菜单
+	// Horizontal menu
 	.el-menu--vertical {
 		background: var(--next-bg-menuBar);
 		.el-sub-menu.is-active .el-sub-menu__title {
@@ -143,7 +143,7 @@
 			}
 		}
 	}
-	// 横向菜单
+	// Transverse menu
 	.el-menu--horizontal {
 		background: var(--next-bg-topBar);
 		.el-menu-item,
@@ -174,7 +174,7 @@
 		}
 	}
 }
-// 横向菜单（经典、横向）布局
+// Styles for horizontal menu layouts (classic and transverse)
 .el-menu.el-menu--horizontal {
 	border-bottom: none !important;
 	width: 100% !important;
@@ -188,7 +188,7 @@
 		color: var(--next-bg-topBarColor);
 	}
 }
-// 菜单收起时，图标不居中问题
+// Keep icons centered when the menu is collapsed
 .el-menu--collapse {
 	.el-menu-item .iconfont,
 	.el-sub-menu .iconfont,
@@ -201,16 +201,16 @@
 	}
 }
 
-/* Tabs 标签页
+/* Tabs styles
 ------------------------------- */
 .el-tabs__nav-wrap::after {
 	height: 1px !important;
 }
 
-/* Dropdown 下拉菜单
+/* Dropdown styles
 ------------------------------- */
 .el-dropdown-menu {
-	list-style: none !important; /*修复 Dropdown 下拉菜单样式问题 2022.03.04*/
+	list-style: none !important; /* Fix dropdown menu styling (2022-03-04)*/
 }
 .el-dropdown-menu .el-dropdown-menu__item {
 	white-space: nowrap;
@@ -220,7 +220,7 @@
 	}
 }
 
-/* Steps 步骤条
+/* Steps styles
 ------------------------------- */
 .el-step__icon-inner {
 	font-size: 30px !important;
@@ -230,7 +230,7 @@
 	font-size: 14px;
 }
 
-/* Dialog 对话框
+/* Dialog styles
 ------------------------------- */
 .el-overlay {
 	overflow: hidden;
@@ -256,13 +256,13 @@
 	overflow-x: hidden;
 }
 
-/* Card 卡片
+/* Card styles
 ------------------------------- */
 .el-card__header {
 	padding: 15px 20px;
 }
 
-/* Table 表格 element plus 2.2.0 版本
+/* Table styles for Element Plus 2.2.0
 ------------------------------- */
 .el-table {
 	.el-button.is-text {
@@ -275,36 +275,36 @@
 .el-scrollbar__bar {
 	z-index: 4;
 }
-/*防止页面切换时，滚动条高度不变的问题（滚动条高度非滚动条滚动高度）*/
+/* Prevent the scrollbar height from becoming stale after page switches*/
 .el-scrollbar__wrap {
 	max-height: 100%;
 }
 .el-select-dropdown .el-scrollbar__wrap {
 	overflow-x: scroll !important;
 }
-/*修复Select 选择器高度问题*/
+/* Fix Select component height*/
 .el-select-dropdown__wrap {
 	max-height: 274px !important;
 }
-/*修复Cascader 级联选择器高度问题*/
+/* Fix Cascader component height*/
 .el-cascader-menu__wrap.el-scrollbar__wrap {
 	height: 204px !important;
 }
-/*用于界面高度自适应（main.vue），区分 scrollbar__view，防止其它使用 scrollbar 的地方出现滚动条消失*/
+/* Support adaptive page height in `main.vue` without breaking other `el-scrollbar` instances*/
 .layout-container-view .el-scrollbar__view {
 	height: 100%;
 }
-/*防止分栏布局二级菜单很多时，滚动条消失问题*/
+/* Keep the scrollbar visible when the columns layout has many nested menu items*/
 .layout-columns-warp .layout-aside .el-scrollbar__view {
 	height: unset !important;
 }
 
-/* Pagination 分页
+/* Pagination styles
 ------------------------------- */
 .el-pagination__editor {
 	margin-right: 8px;
 }
-/*深色模式时分页高亮问题*/
+/* Pagination highlight issue in dark mode*/
 .el-pagination.is-background .btn-next.is-active,
 .el-pagination.is-background .btn-prev.is-active,
 .el-pagination.is-background .el-pager li.is-active {
@@ -312,7 +312,7 @@
 	color: var(--el-color-white) !important;
 }
 
-/* Drawer 抽屉
+/* Drawer styles
 ------------------------------- */
 .el-drawer {
 	--el-drawer-padding-primary: unset !important;

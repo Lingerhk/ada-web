@@ -1,12 +1,12 @@
 import importToCDN from 'vite-plugin-cdn-import';
 
 /**
- * 打包相关
- * 注意 prodUrl：使用的是 jsdelivr 还是 unpkg。它们的 path 可能不一致
- * 文章链接：https://blog.csdn.net/qq_34450741/article/details/129766676，使用的是 jsdelivr
+ * Build-related helpers
+ * Note: `prodUrl` differs between jsDelivr and unpkg because their paths may not match
+ * Reference article: https://blog.csdn.net/qq_34450741/article/details/129766676 (uses jsDelivr)
  * @description importToCDN https://github.com/mmf-fe/vite-plugin-cdn-import
- * @description cdn 在线引入的 cdn 地址配置。path：https://www.jsdelivr.com/ || https://unpkg.com/
- * @description external 打包时，过滤包导入。参考：https://rollupjs.org/configuration-options/#external
+ * @description CDN URL configuration for online assets. Paths come from https://www.jsdelivr.com/ or https://unpkg.com/
+ * @description `external` filters package imports during bundling. Reference: https://rollupjs.org/configuration-options/#external
  */
 export const buildConfig = {
 	cdn() {
@@ -19,11 +19,6 @@ export const buildConfig = {
 					name: 'vue',
 					var: 'Vue',
 					path: 'dist/vue.global.js',
-				},
-				{
-					name: 'vue-demi',
-					var: 'VueDemi',
-					path: 'lib/index.iife.js',
 				},
 				{
 					name: 'vue-router',
@@ -44,11 +39,6 @@ export const buildConfig = {
 				// 	name: 'echarts',
 				// 	var: 'echarts',
 				// 	path: 'dist/echarts.min.js',
-				// },
-				// {
-				// 	name: 'echarts-gl',
-				// 	var: 'echarts-gl',
-				// 	path: 'dist/echarts-gl.min.js',
 				// },
 				// {
 				// 	name: 'echarts-wordcloud',
@@ -95,11 +85,6 @@ export const buildConfig = {
 				// 	var: 'WangEditorForVue',
 				// 	path: 'dist/index.min.js',
 				// },
-				// {
-				// 	name: 'vue-grid-layout',
-				// 	var: 'VueGridLayout',
-				// 	path: 'https://cdn.jsdelivr.net/npm/vue-grid-layout@3.0.0-beta1/dist/vue-grid-layout.umd.min.js',
-				// },
 			],
 		});
 	},
@@ -110,7 +95,6 @@ export const buildConfig = {
 		'element-plus',
 		// '@element-plus/icons-vue',
 		// 'echarts',
-		// 'echarts-gl',
 		// 'echarts-wordcloud',
 		// 'vue-i18n',
 		// 'jsplumb',
@@ -120,6 +104,5 @@ export const buildConfig = {
 		// 'print-js',
 		// '@wangeditor/editor',
 		// '@wangeditor/editor-for-vue',
-		// 'vue-grid-layout',
 	],
 };

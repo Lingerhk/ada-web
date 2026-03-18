@@ -102,8 +102,8 @@ const initChart = () => {
         yAxis: {
             type: 'value',
             boundaryGap: [0, '25%'],
-            // name: '%', // 在这里添加单位
-            nameLocation: 'end',    // 单位显示在轴的顶部
+            // name: '%', // Add the unit here
+            nameLocation: 'end',    // Render the unit label at the top of the axis
             nameTextStyle: {
                 fontSize: 12,
                 padding: [0, 0, 20, -20]  // Adjust text padding for better positioning
@@ -119,15 +119,17 @@ const initChart = () => {
                 name: 'CPU',
                 type: 'line',
                 showSymbol: false,
-                hoverAnimation: false,
+                emphasis: {
+                    scale: false,
+                },
                 data: [],
             }
         ],
         grid: {
-            left: '8%',   // 减少左侧填充
-            right: '4%',  // 减少右侧填充
-            // top: '10%',   // 可以根据需求调整
-            // bottom: '10%' // 可以根据需求调整
+            left: '8%',   // Reduce left padding
+            right: '4%',  // Reduce right padding
+            // top: '10%',   // Adjust as needed
+            // bottom: '10%' // Adjust as needed
         },
     };
 
@@ -158,12 +160,9 @@ const fetch = () => {
         scope: state.form.rangeSelected,
     };
 
-    console.log("getSystemStats", req);
-
     api.getSystemStats(req)
     .then(resp => resp.response)
     .then(arr => {
-        console.log(arr);
         data = [];
         arr.stats.sort().forEach(d => data.push([formatApiTime(Number(d.timestamp) * 1000), Number(d.value) * 100]));
 
@@ -188,7 +187,6 @@ const enableHistoryChart = () => {
 watch(
     () => state.form,
     () => {
-        console.log(state.form, "changed");
         enableHistoryChart();
         // if (state.form.rangeSelected === 'rt') {
         //     enableRtChart();

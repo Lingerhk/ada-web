@@ -3,8 +3,8 @@ import Cookies from 'js-cookie';
 import { Session } from '/@/utils/storage';
 
 /**
- * 用户信息
- * @methods setUserInfos 设置用户信息
+ * User info
+ * @methods setUserInfos Set the user info
  */
 export const useUserInfo = defineStore('userInfo', {
 	state: (): UserInfosState => ({
@@ -18,7 +18,7 @@ export const useUserInfo = defineStore('userInfo', {
 	}),
 	actions: {
 		async setUserInfos() {
-			// 存储用户信息到浏览器缓存
+			// Persist user info to browser storage
 			if (Session.get('userInfo')) {
 				this.userInfos = Session.get('userInfo');
 			} else {
@@ -26,25 +26,25 @@ export const useUserInfo = defineStore('userInfo', {
 				this.userInfos = userInfos;
 			}
 		},
-		// 模拟接口数据
+		// Mock API data
 		// https://gitee.com/lyt-top/vue-next-admin/issues/I5F1HP
 		async getApiUserInfo() {
 			return new Promise((resolve) => {
 				setTimeout(() => {
-					// 模拟数据，请求接口时，记得删除多余代码及对应依赖的引入
+					// Mock data. Remove this block and any related imports when wiring in the real API
 					const userName = Cookies.get('userName');
-					// 模拟数据
+					// Temporary mock values used to build the demo permission payload.
 					let defaultRoles: Array<string> = [];
 					let defaultAuthBtnList: Array<string> = [];
-					// admin 页面权限标识，对应路由 meta.roles，用于控制路由的显示/隐藏
+					// `admin` page permission keys mapped to `route.meta.roles`
 					let adminRoles: Array<string> = ['admin'];
-					// admin 按钮权限标识
+					// `admin` button permission keys
 					let adminAuthBtnList: Array<string> = ['btn.add', 'btn.del', 'btn.edit', 'btn.link'];
-					// test 页面权限标识，对应路由 meta.roles，用于控制路由的显示/隐藏
+					// `test` page permission keys mapped to `route.meta.roles`
 					let testRoles: Array<string> = ['common'];
-					// test 按钮权限标识
+					// `test` button permission keys
 					let testAuthBtnList: Array<string> = ['btn.add', 'btn.link'];
-					// 不同用户模拟不同的用户权限
+					// Simulate different permissions for different users
 					if (userName === 'admin') {
 						defaultRoles = adminRoles;
 						defaultAuthBtnList = adminAuthBtnList;
@@ -52,7 +52,7 @@ export const useUserInfo = defineStore('userInfo', {
 						defaultRoles = testRoles;
 						defaultAuthBtnList = testAuthBtnList;
 					}
-					// 用户信息模拟数据
+					// Mock user-info payload
 					const userInfos = {
 						userName: userName,
 						photo:

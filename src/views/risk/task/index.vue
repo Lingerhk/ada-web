@@ -2,7 +2,7 @@
     <div class="layout-pd">
         <el-card shadow="hover">
             <el-row justify="space-between">
-                <!-- 搜索 -->
+                <!-- Search controls -->
                 <el-form :inline="true">
                     <el-form-item :label="$t('message.risk.task.cycle')">
                         <el-select size="default" v-model="state.req.cycle" collapse-tags popper-class="custom-header"
@@ -32,7 +32,7 @@
                     </el-form-item>
                 </el-form>
             </el-row>
-            <!-- 下方显示列表 -->
+            <!-- Result list below -->
             <el-row style="margin-top: 10px">
                 <el-table :data="state.reply.list" :border="true" row-class-name="pointer-cursor" style="width: 100%">
                     <el-table-column type="index" width="80" :label="$t('message.tableCommon.index')" />
@@ -85,7 +85,7 @@
                     </el-table-column>
                 </el-table>
             </el-row>
-            <!-- 分页 -->
+            <!-- Pagination -->
             <el-row style="margin-top: 10px" justify="space-between">
                 <div></div>
                 <el-pagination v-model:current-page="state.req.pageIdx" v-model:page-size="state.req.pageSize"
@@ -126,13 +126,13 @@ const state = reactive({
     req: {
         pageIdx: 1,
         pageSize: 10,
-        cycle: 'all', // 必选，all|cycle|once
+        cycle: 'all', // Required. One of `all`, `cycle`, or `once`
         type: 'all', // all|baseline|leak|weakpwd
-        status: 'all', // 可选，状态:all|PENDING|RUNNING|FINISH|FAILURE
-        startTm: '', //  可选，开始时间
-        endTm: '', //  可选，结束时间
-        orderCreateTm: -1, // 创建时间排序 1升序 -1降序, 默认-1
-        orderUpdateTm: 0, // 结束时间排序 1升序 -1降序, 默认无
+        status: 'all', // Optional status: `all|PENDING|RUNNING|FINISH|FAILURE`
+        startTm: '', // Optional start time
+        endTm: '', // Optional end time
+        orderCreateTm: -1, // Sort by created time: 1 ascending, -1 descending. Default: -1.
+        orderUpdateTm: 0, // Sort by end time: `1` asc, `-1` desc; default is unsorted
     } as ListScanTaskReq,
     reply: {} as ListScanTaskReply,
 });

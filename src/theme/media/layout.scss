@@ -1,33 +1,33 @@
 @import './index.scss';
 
-/* 页面宽度小于576px
+/* Viewport width below 576px
 ------------------------------- */
 @media screen and (max-width: $xs) {
-	// MessageBox 弹框
+	// MessageBox dialogs
 	.el-message-box {
 		width: 80% !important;
 	}
-	// 锁屏页
+	// Lock-screen page
 	.layout-lock-screen-date-top {
 		display: none;
 	}
 }
 
-/* 页面宽度小于768px
+/* Viewport width below 768px
 ------------------------------- */
 @media screen and (max-width: $sm) {
-	// Breadcrumb 面包屑
+	// Breadcrumb
 	.layout-navbars-breadcrumb-hide {
 		display: none;
 	}
-	// 外链视图
+	// External-link view
 	.layout-view-link {
 		a {
 			max-width: 80%;
 			text-align: center;
 		}
 	}
-	// 菜单搜索
+	// Menu search
 	.layout-search-dialog {
 		.el-autocomplete {
 			width: 80% !important;
@@ -35,14 +35,14 @@
 	}
 }
 
-/* 页面宽度小于1000px
+/* Viewport width below 1000px
 ------------------------------- */
 @media screen and (max-width: 1000px) {
-	// 布局配置
+	// Layout settings
 	.layout-drawer-content-flex {
 		position: relative;
 		&::after {
-			content: '手机版不支持切换布局';
+			content: 'Layout switching is unavailable on mobile';
 			position: absolute;
 			top: 0;
 			right: 0;
@@ -56,7 +56,7 @@
 			color: #666666;
 		}
 	}
-	// pagination 分页中的工具栏
+	// Toolbar inside pagination
 	.table-footer-tool {
 		display: none !important;
 	}

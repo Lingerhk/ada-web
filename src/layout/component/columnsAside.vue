@@ -52,7 +52,7 @@ import { useRoutesList } from '/@/stores/routesList';
 import { useThemeConfig } from '/@/stores/themeConfig';
 import mittBus from '/@/utils/mitt';
 
-// 定义变量内容
+// Define reactive state and refs
 const columnsAsideOffsetTopRefs = ref<RefType>([]);
 const columnsAsideActiveRef = ref();
 const stores = useRoutesList();
@@ -71,13 +71,13 @@ const state = reactive<ColumnsAsideState>({
 	routeSplit: [],
 });
 
-// 设置菜单高亮位置移动
+// Move the menu highlight indicator
 const setColumnsAsideMove = (k: number) => {
 	if (k === undefined) return false;
 	state.liIndex = k;
 	columnsAsideActiveRef.value.style.top = `${columnsAsideOffsetTopRefs.value[k].offsetTop + state.difference}px`;
 };
-// 菜单高亮点击事件
+// Handle menu-highlight click events
 const onColumnsAsideMenuClick = async (v: RouteItem) => {
 	let { path, redirect } = v;
 	if (redirect) {
@@ -88,7 +88,7 @@ const onColumnsAsideMenuClick = async (v: RouteItem) => {
 		if (!v.children) {
 			router.push(path);
 		} else {
-			// 显示子级菜单
+			// Show child menus
 			const resData: MittMenu = setSendChildren(path);
 			if (Object.keys(resData).length <= 0) return false;
 			onColumnsAsideDown(resData.item?.k);
@@ -96,12 +96,12 @@ const onColumnsAsideMenuClick = async (v: RouteItem) => {
 		}
 	}
 
-	// 一个路由设置自动收起菜单
+	// Auto-collapse the menu when only one route is available
 	// https://gitee.com/lyt-top/vue-next-admin/issues/I6HW7H
 	if (!v.children) themeConfig.value.isCollapse = true;
 	else if (v.children.length > 1) themeConfig.value.isCollapse = false;
 };
-// 鼠标移入时，显示当前的子级菜单
+// Show the current child menu on mouse enter
 const onColumnsAsideMenuMouseenter = (v: RouteRecordRaw, k: number) => {
 	if (!themeConfig.value.isColumnsMenuHoverPreload) return false;
 	let { path } = v;
@@ -112,22 +112,22 @@ const onColumnsAsideMenuMouseenter = (v: RouteRecordRaw, k: number) => {
 	stores.setColumnsMenuHover(false);
 	stores.setColumnsNavHover(true);
 };
-// 鼠标移走时，显示原来的子级菜单
+// Restore the previous child menu on mouse leave
 const onColumnsAsideMenuMouseleave = async () => {
 	if (!themeConfig.value.isColumnsMenuHoverPreload) return false;
 	await stores.setColumnsNavHover(false);
-	// 添加延时器，防止拿到的 store.state.routesList 值不是最新的
+	// Delay the update so `store.state.routesList` is already current
 	setTimeout(() => {
 		if (!isColumnsMenuHover && !isColumnsNavHover) mittBus.emit('restoreDefault');
 	}, 100);
 };
-// 设置高亮动态位置
+// Update the dynamic highlight position
 const onColumnsAsideDown = (k: number) => {
 	nextTick(() => {
 		setColumnsAsideMove(k);
 	});
 };
-// 设置只有一个路由时设置自动收起菜单
+// Auto-collapse the menu when there is only one route
 // https://gitee.com/lyt-top/vue-next-admin/issues/I6UW2I
 const setMenuAutoCollaps = (path: string) => {
 	const resData: MittMenu = setSendChildren(path);
@@ -135,17 +135,17 @@ const setMenuAutoCollaps = (path: string) => {
 	resData.children.length <= 1 ? (themeConfig.value.isCollapse = true) : (themeConfig.value.isCollapse = false);
 	return resData;
 };
-// 设置/过滤路由（非静态路由/是否显示在菜单中）
+// Configure and filter routes, including whether they are static and whether they should be shown in the menu
 const setFilterRoutes = () => {
 	state.columnsAsideList = filterRoutesFun(routesList.value);
 	const resData: MittMenu = setMenuAutoCollaps(route.path);
 	onColumnsAsideDown(resData.item?.k);
-	// 延迟 500 毫秒更新，防止 aside.vue 组件 setSendColumnsChildren 还没有注册
+	// Delay for 500ms so `aside.vue` has time to register `setSendColumnsChildren`
 	setTimeout(() => {
 		mittBus.emit('setSendColumnsChildren', resData);
 	}, 500);
 };
-// 传送当前子级数据到菜单中
+// Pass the current child route data into the menu
 const setSendChildren = (path: string) => {
 	const currentPathSplit = path.split('/');
 	let currentData: MittMenu = { children: [] };
@@ -159,7 +159,7 @@ const setSendChildren = (path: string) => {
 	});
 	return currentData;
 };
-// 路由过滤递归函数
+// Recursive route filtering helper
 const filterRoutesFun = <T extends RouteItem>(arr: T[]): T[] => {
 	return arr
 		.filter((item: T) => !item.meta?.isHide)
@@ -169,38 +169,38 @@ const filterRoutesFun = <T extends RouteItem>(arr: T[]): T[] => {
 			return item;
 		});
 };
-// tagsView 点击时，根据路由查找下标 columnsAsideList，实现左侧菜单高亮
+// When a tagsView entry is clicked, find its index in `columnsAsideList` to highlight the left menu
 const setColumnsMenuHighlight = (path: string) => {
 	state.routeSplit = path.split('/');
 	state.routeSplit.shift();
 	const routeFirst = `/${state.routeSplit[0]}`;
 	const currentSplitRoute = state.columnsAsideList.find((v: RouteItem) => v.path === routeFirst);
 	if (!currentSplitRoute) return false;
-	// 延迟拿值，防止取不到
+	// Read the value after a delay so it is available
 	setTimeout(() => {
 		onColumnsAsideDown(currentSplitRoute.k);
 	}, 0);
 };
-// 页面加载时
+// On mount
 onMounted(() => {
 	setFilterRoutes();
-	// 销毁变量，防止鼠标再次移入时，保留了上次的记录
+	// Reset the temporary state so a later hover does not reuse stale data
 	mittBus.on('restoreDefault', () => {
 		state.liOldIndex = null;
 		state.liOldPath = null;
 	});
 });
-// 页面卸载时
+// On unmount
 onUnmounted(() => {
 	mittBus.off('restoreDefault', () => {});
 });
-// 路由更新时
+// When the route updates
 onBeforeRouteUpdate((to) => {
 	const resData = setMenuAutoCollaps(to.path);
 	setColumnsMenuHighlight(to.path);
 	mittBus.emit('setSendColumnsChildren', resData);
 });
-// 监听布局配置信息的变化，动态增加菜单高亮位置移动像素
+// Watch layout-settings changes and adjust the menu highlight offset dynamically
 watch(
 	[() => themeConfig.value.columnsAsideStyle, isColumnsMenuHover, isColumnsNavHover],
 	() => {

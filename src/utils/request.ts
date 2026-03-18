@@ -1,9 +1,10 @@
 import axios, { AxiosInstance } from 'axios';
 import { ElMessage, ElMessageBox } from 'element-plus';
+import { i18n } from '/@/i18n';
 import { Session } from '/@/utils/storage';
 import qs from 'qs';
 
-// 配置新建一个 axios 实例
+// Create a dedicated Axios instance
 const service: AxiosInstance = axios.create({
 	baseURL: import.meta.env.VITE_API_URL,
 	timeout: 50000,
@@ -15,32 +16,32 @@ const service: AxiosInstance = axios.create({
 	},
 });
 
-// 添加请求拦截器
+// Add a request interceptor
 service.interceptors.request.use(
 	(config) => {
-		// 在发送请求之前做些什么 token
+		// Inject the token before sending the request
 		if (Session.get('token')) {
 			config.headers!['Authorization'] = `${Session.get('token')}`;
 		}
 		return config;
 	},
 	(error) => {
-		// 对请求错误做些什么
+		// Handle request errors
 		return Promise.reject(error);
 	}
 );
 
-// 添加响应拦截器
+// Add a response interceptor
 service.interceptors.response.use(
 	(response) => {
-		// 对响应数据做点什么
+		// Handle successful responses
 		const res = response.data;
 		if (res.code && res.code !== 0) {
-			// `token` 过期或者账号已在别处登录
+			// The token expired or the account signed in elsewhere
 			if (res.code === 401 || res.code === 4001) {
-				Session.clear(); // 清除浏览器全部临时缓存
-				window.location.href = '/'; // 去登录页
-				ElMessageBox.alert('你已被登出，请重新登录', '提示', {})
+				Session.clear(); // Clear all temporary browser storage
+				window.location.href = '/'; // Redirect to the login page
+				ElMessageBox.alert(i18n.global.t('message.api.loggedOutMessage'), i18n.global.t('message.api.loggedOutTitle'), {})
 					.then(() => {})
 					.catch(() => {});
 			}
@@ -50,18 +51,18 @@ service.interceptors.response.use(
 		}
 	},
 	(error) => {
-		// 对响应错误做点什么
+		// Handle response errors
 		if (error.message.indexOf('timeout') != -1) {
-			ElMessage.error('网络超时');
+			ElMessage.error(i18n.global.t('message.api.networkTimeout'));
 		} else if (error.message == 'Network Error') {
-			ElMessage.error('网络连接错误');
+			ElMessage.error(i18n.global.t('message.api.networkError'));
 		} else {
 			if (error.response.data) ElMessage.error(error.response.statusText);
-			else ElMessage.error('接口路径找不到');
+			else ElMessage.error(i18n.global.t('message.api.missingEndpoint'));
 		}
 		return Promise.reject(error);
 	}
 );
 
-// 导出 axios 实例
+// Export the Axios instance
 export default service;

@@ -1,150 +1,150 @@
 import { defineStore } from 'pinia';
 
 /**
- * 布局配置
- * 修复：https://gitee.com/lyt-top/vue-next-admin/issues/I567R1，感谢@lanbao123
- * 2020.05.28 by lyt 优化。开发时配置不生效问题
- * 修改配置时：
- * 1、需要每次都清理 `window.localStorage` 浏览器永久缓存
- * 2、或者点击布局配置最底部 `一键恢复默认` 按钮即可看到效果
+ * Layout settings
+ * Fix: https://gitee.com/lyt-top/vue-next-admin/issues/I567R1, thanks to @lanbao123
+ * 2020-05-28 by lyt: improved development-time config reloading.
+ * When changing defaults:
+ * 1. Clear the persistent `window.localStorage` cache.
+ * 2. Or click the `Restore Defaults` action at the bottom of the layout settings drawer.
  */
 export const useThemeConfig = defineStore('themeConfig', {
 	state: (): ThemeConfigState => ({
 		themeConfig: {
-			// 是否开启布局配置抽屉
+			// Whether to show the layout settings drawer.
 			isDrawer: false,
 
 			/**
-			 * 全局主题
+			 * Global theme
 			 */
-			// 默认 primary 主题颜色
+			// Default primary theme color.
 			primary: '#409eff',
-			// 是否开启深色模式
+			// Whether dark mode is enabled.
 			isIsDark: false,
 
 			/**
-			 * 顶栏设置
+			 * Top bar
 			 */
-			// 默认顶栏导航背景颜色
+			// Default top bar background color.
 			topBar: '#ffffff',
-			// 默认顶栏导航字体颜色
+			// Default top bar text color.
 			topBarColor: '#606266',
-			// 是否开启顶栏背景颜色渐变
+			// Whether to apply a gradient to the top bar background.
 			isTopBarColorGradual: false,
 
 			/**
-			 * 菜单设置
+			 * Menu
 			 */
-			// 默认菜单导航背景颜色
+			// Default menu background color.
 			menuBar: '#545c64',
-			// 默认菜单导航字体颜色
+			// Default menu text color.
 			menuBarColor: '#eaeaea',
-			// 默认菜单高亮背景色
+			// Default active menu background color.
 			menuBarActiveColor: 'rgba(0, 0, 0, 0.2)',
-			// 是否开启菜单背景颜色渐变
+			// Whether to apply a gradient to the menu background.
 			isMenuBarColorGradual: false,
 
 			/**
-			 * 分栏设置
+			 * Columns layout
 			 */
-			// 默认分栏菜单背景颜色
+			// Default columns-menu background color.
 			columnsMenuBar: '#545c64',
-			// 默认分栏菜单字体颜色
+			// Default columns-menu text color.
 			columnsMenuBarColor: '#e6e6e6',
-			// 是否开启分栏菜单背景颜色渐变
+			// Whether to apply a gradient to the columns-menu background.
 			isColumnsMenuBarColorGradual: false,
-			// 是否开启分栏菜单鼠标悬停预加载(预览菜单)
+			// Whether hovering a columns-menu item preloads its previewed menu.
 			isColumnsMenuHoverPreload: false,
 
 			/**
-			 * 界面设置
+			 * Layout behavior
 			 */
-			// 是否开启菜单水平折叠效果
+			// Whether the menu can collapse horizontally.
 			isCollapse: false,
-			// 是否开启菜单手风琴效果
+			// Whether the menu uses accordion behavior.
 			isUniqueOpened: true,
-			// 是否开启固定 Header
+			// Whether the header is fixed.
 			isFixedHeader: false,
-			// 初始化变量，用于更新菜单 el-scrollbar 的高度，请勿删除
+			// Internal flag used to recalculate the menu `el-scrollbar` height. Do not remove.
 			isFixedHeaderChange: false,
-			// 是否开启经典布局分割菜单（仅经典布局生效）
+			// Whether classic layout splits the menu; only applies in classic mode.
 			isClassicSplitMenu: false,
-			// 是否开启自动锁屏
+			// Whether auto lock-screen is enabled.
 			isLockScreen: false,
-			// 开启自动锁屏倒计时(s/秒)
+			// Auto lock-screen timeout in seconds.
 			lockScreenTime: 30,
 
 			/**
-			 * 界面显示
+			 * Visible UI features
 			 */
-			// 是否开启侧边栏 Logo
+			// Whether the sidebar logo is shown.
 			isShowLogo: true,
-			// 初始化变量，用于 el-scrollbar 的高度更新，请勿删除
+			// Internal flag used to recalculate `el-scrollbar` height. Do not remove.
 			isShowLogoChange: false,
-			// 是否开启 Breadcrumb，强制经典、横向布局不显示
+			// Whether breadcrumbs are shown. Classic and transverse layouts force this off.
 			isBreadcrumb: true,
-			// 是否开启 Tagsview
+			// Whether tagsView is enabled.
 			isTagsview: true,
-			// 是否开启 Breadcrumb 图标
+			// Whether breadcrumb icons are shown.
 			isBreadcrumbIcon: false,
-			// 是否开启 Tagsview 图标
+			// Whether tagsView icons are shown.
 			isTagsviewIcon: false,
-			// 是否开启 TagsView 缓存
+			// Whether tagsView pages are cached.
 			isCacheTagsView: false,
-			// 是否开启 TagsView 拖拽
+			// Whether tagsView tabs can be reordered by dragging.
 			isSortableTagsView: true,
-			// 是否开启 TagsView 共用
+			// Whether tagsView is shared across layout modes.
 			isShareTagsView: false,
-			// 是否开启 Footer 底部版权信息
+			// Whether the footer copyright block is shown.
 			isFooter: true,
-			// 是否开启灰色模式
+			// Whether grayscale mode is enabled.
 			isGrayscale: false,
-			// 是否开启色弱模式
+			// Whether high-contrast inverted mode is enabled.
 			isInvert: false,
-			// 是否开启水印
-			isWartermark: false,
-			// 水印文案
-			wartermarkText: '',
+			// Whether the watermark overlay is enabled.
+			isWatermark: false,
+			// Watermark text.
+			watermarkText: '',
 
 			/**
-			 * 其它设置
+			 * Other settings
 			 */
-			// Tagsview 风格：可选值"<tags-style-one|tags-style-four|tags-style-five>"，默认 tags-style-five
-			// 定义的值与 `/src/layout/navBars/tagsView/tagsView.vue` 中的 class 同名
+			// tagsView style. Supported values: "<tags-style-one|tags-style-four|tags-style-five>". Default: `tags-style-five`.
+			// The value must match a class defined in `/src/layout/navBars/tagsView/tagsView.vue`.
 			tagsStyle: 'tags-style-five',
-			// 主页面切换动画：可选值"<slide-right|slide-left|opacitys>"，默认 slide-right
+			// Main page transition animation. Supported values: "<slide-right|slide-left|opacitys>". Default: `slide-right`.
 			animation: 'slide-right',
-			// 分栏高亮风格：可选值"<columns-round|columns-card>"，默认 columns-round
+			// Columns-menu highlight style. Supported values: "<columns-round|columns-card>". Default: `columns-round`.
 			columnsAsideStyle: 'columns-round',
-			// 分栏布局风格：可选值"<columns-horizontal|columns-vertical>"，默认 columns-horizontal
+			// Columns-menu layout style. Supported values: "<columns-horizontal|columns-vertical>". Default: `columns-horizontal`.
 			columnsAsideLayout: 'columns-vertical',
 
 			/**
-			 * 布局切换
-			 * 注意：为了演示，切换布局时，颜色会被还原成默认，代码位置：/@/layout/navBars/topBar/setings.vue
-			 * 中的 `initSetLayoutChange(设置布局切换，重置主题样式)` 方法
+			 * Layout mode
+			 * For demo purposes, switching layouts resets theme colors to their defaults.
+			 * See `initSetLayoutChange()` in `/@/layout/navBars/topBar/settings.vue`.
 			 */
-			// 布局切换：可选值"<defaults|classic|transverse|columns>"，默认 defaults
+			// Layout mode. Supported values: "<defaults|classic|transverse|columns>". Default: `defaults`.
 			layout: 'defaults',
 
 			/**
-			 * 后端控制路由
+			 * Backend-controlled routing
 			 */
-			// 是否开启后端控制路由
+			// Whether backend-controlled routing is enabled.
 			isRequestRoutes: false,
 
 			/**
-			 * 全局网站标题 / 副标题
+			 * Global site title and subtitle
 			 */
-			// 网站主标题（菜单导航、浏览器当前网页标题）
+			// Main site title used in navigation and the browser tab.
 			globalTitle: 'ADAegis',
-			// 网站副标题（登录页顶部文字）
+			// Subtitle shown at the top of the login page.
 			globalViceTitle: 'AD Aegis Protection',
-			// 网站副标题（登录页顶部文字）
+			// Supporting login-page subtitle text.
 			globalViceTitleMsg: 'AD Aegis Protection',
-			// 默认初始语言，可选值"<zh-cn|en>"，默认 zh-cn
+			// Default locale. Supported values: "<zh-cn|en>". Default: `zh-cn`.
 			globalI18n: 'zh-cn',
-			// 默认全局组件大小，可选值"<large|'default'|small>"，默认 'large'
+			// Default global component size. Supported values: "<large|'default'|small>". Default: `default`.
 			globalComponentSize: 'default',
 		},
 	}),

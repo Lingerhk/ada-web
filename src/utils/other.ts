@@ -9,13 +9,13 @@ import { i18n } from '/@/i18n/index';
 import { Local } from '/@/utils/storage';
 import { verifyUrl } from '/@/utils/toolsValidate';
 
-// 引入组件
+// Import components
 const SvgIcon = defineAsyncComponent(() => import('/@/components/svgIcon/index.vue'));
 
 /**
- * 导出全局注册 element plus svg 图标
- * @param app vue 实例
- * @description 使用：https://element-plus.gitee.io/zh-CN/component/icon.html
+ * Export globally registered Element Plus SVG icons
+ * @param app Vue application instance
+ * @description Usage reference: https://element-plus.gitee.io/zh-CN/component/icon.html
  */
 export function elSvg(app: App) {
 	const icons = svg as any;
@@ -26,7 +26,7 @@ export function elSvg(app: App) {
 }
 
 /**
- * 设置浏览器标题国际化
+ * Set the browser title with i18n support
  * @method const title = useTitle(); ==> title()
  */
 export function useTitle() {
@@ -46,37 +46,37 @@ export function useTitle() {
 }
 
 /**
- * 设置 自定义 tagsView 名称、 自定义 tagsView 名称国际化
- * @param params 路由 query、params 中的 tagsViewName
- * @returns 返回当前 tagsViewName 名称
+ * Resolve custom tagsView names and their i18n labels
+ * @param params `tagsViewName` from route query or params
+ * @returns The resolved tagsView name
  */
 export function setTagsViewNameI18n(item: any) {
 	let tagsViewName: string = '';
 	const { query, params, meta } = item;
-	// 修复tagsViewName匹配到其他含下列单词的路由
+	// Prevent `tagsViewName` from matching unrelated routes that contain similar words
 	// https://gitee.com/lyt-top/vue-next-admin/pulls/44/files
 	const pattern = /^\{("(zh-cn|en)":"[^,]+",?){1,2}}$/;
 	if (query?.tagsViewName || params?.tagsViewName) {
 		if (pattern.test(query?.tagsViewName) || pattern.test(params?.tagsViewName)) {
-			// 国际化
+			// i18n mode
 			const urlTagsParams = (query?.tagsViewName && JSON.parse(query?.tagsViewName)) || (params?.tagsViewName && JSON.parse(params?.tagsViewName));
 			tagsViewName = urlTagsParams[i18n.global.locale.value];
 		} else {
-			// 非国际化
+			// Non-i18n mode
 			tagsViewName = query?.tagsViewName || params?.tagsViewName;
 		}
 	} else {
-		// 非自定义 tagsView 名称
+		// Non-custom tagsView name
 		tagsViewName = i18n.global.t(meta.title);
 	}
 	return tagsViewName;
 }
 
 /**
- * 图片懒加载
- * @param el dom 目标元素
- * @param arr 列表数据
- * @description data-xxx 属性用于存储页面或应用程序的私有自定义数据
+ * Lazy-load images
+ * @param el Target DOM element
+ * @param arr List data
+ * @description `data-*` attributes store private custom data for the page or application
  */
 export const lazyImg = (el: string, arr: EmptyArrayType) => {
 	const io = new IntersectionObserver((res) => {
@@ -97,8 +97,8 @@ export const lazyImg = (el: string, arr: EmptyArrayType) => {
 };
 
 /**
- * 全局组件大小
- * @returns 返回 `window.localStorage` 中读取的缓存值 `globalComponentSize`
+ * Global component size
+ * @returns The cached `globalComponentSize` value from `window.localStorage`
  */
 export const globalComponentSize = (): string => {
 	const stores = useThemeConfig(pinia);
@@ -107,9 +107,9 @@ export const globalComponentSize = (): string => {
 };
 
 /**
- * 对象深克隆
- * @param obj 源对象
- * @returns 克隆后的对象
+ * Deep-clone an object
+ * @param obj Source object
+ * @returns The cloned object
  */
 export function deepClone(obj: EmptyObjectType) {
 	let newObj: EmptyObjectType;
@@ -129,7 +129,7 @@ export function deepClone(obj: EmptyObjectType) {
 }
 
 /**
- * 判断是否是移动端
+ * Check whether the current device is mobile
  */
 export function isMobile() {
 	if (
@@ -144,10 +144,10 @@ export function isMobile() {
 }
 
 /**
- * 判断数组对象中所有属性是否为空，为空则删除当前行对象
- * @description @感谢大黄
- * @param list 数组对象
- * @returns 删除空值后的数组对象
+ * Remove array rows whose object properties are all empty
+ * @description Thanks to the original contributor for the approach
+ * @param list Array of objects
+ * @returns The array with empty-value rows removed
  */
 export function handleEmpty(list: EmptyArrayType) {
 	const arr = [];
@@ -165,8 +165,8 @@ export function handleEmpty(list: EmptyArrayType) {
 }
 
 /**
- * 打开外部链接
- * @param val 当前点击项菜单
+ * Open an external link
+ * @param val Currently selected menu item
  */
 export function handleOpenLink(val: RouteItem) {
 	const { origin, pathname } = window.location;
@@ -176,16 +176,16 @@ export function handleOpenLink(val: RouteItem) {
 }
 
 /**
- * 统一批量导出
- * @method elSvg 导出全局注册 element plus svg 图标
- * @method useTitle 设置浏览器标题国际化
- * @method setTagsViewNameI18n 设置 自定义 tagsView 名称、 自定义 tagsView 名称国际化
- * @method lazyImg 图片懒加载
- * @method globalComponentSize() element plus 全局组件大小
- * @method deepClone 对象深克隆
- * @method isMobile 判断是否是移动端
- * @method handleEmpty 判断数组对象中所有属性是否为空，为空则删除当前行对象
- * @method handleOpenLink 打开外部链接
+ * Centralized exports
+ * @method elSvg Export globally registered Element Plus SVG icons
+ * @method useTitle Set the browser title with i18n support
+ * @method setTagsViewNameI18n Resolve custom tagsView names and their i18n labels
+ * @method lazyImg Lazy-load images
+ * @method globalComponentSize Get the global Element Plus component size
+ * @method deepClone Deep-clone an object
+ * @method isMobile Check whether the current device is mobile
+ * @method handleEmpty Remove array rows whose object properties are all empty
+ * @method handleOpenLink Open an external link
  */
 const other = {
 	elSvg: (app: App) => {
@@ -217,5 +217,5 @@ const other = {
 	},
 };
 
-// 统一批量导出
+// Centralized exports
 export default other;

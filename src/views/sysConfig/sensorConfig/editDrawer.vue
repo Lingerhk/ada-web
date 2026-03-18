@@ -124,8 +124,8 @@ const state = reactive({
         mem: 0,
         logSwitch: false,
         pktSwitch: false,
-        rpcFwPluginSwitch: false, // rpcfw插件开关: true|false
-        ldapFwPluginSwitch: false, // ldapfw插件开关: true|false
+        rpcFwPluginSwitch: false, // rpcfw plugin switch: true|false
+        ldapFwPluginSwitch: false, // ldapfw plugin switch: true|false
         remark: '',
         selectedIfaces: [] as string[],
     },

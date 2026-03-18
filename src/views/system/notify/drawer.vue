@@ -138,10 +138,10 @@ watch(() => model.value, (val) => {
     state.active = 0;
     form.value = {
         id: props.data.id, // [(validator.field) = {string_not_empty: true}];
-        enable: props.data.enable, // [(validator.field) = {regex: "enable|disable"}]; //启用状态， 开启enable 关闭disable
+        enable: props.data.enable, // [(validator.field) = {regex: "enable|disable"}]; //Enable state: `enable` or `disable`
         endpoint: props.data.endpoint,
         level: props.data.level || [],
-        metadata: { ...props.data.metadata }, // 都有: alert_interval: 20(str), 可选: email类型: server(str),port(str),username,password,receiver; syslog类型; webhook类型: application_type(weixin/feishu/dingtalk/common)
+        metadata: { ...props.data.metadata }, // Always includes `alert_interval: 20` (string). Optional fields depend on the type: email uses `server`, `port`, `username`, `password`, and `receiver`; webhook uses `application_type` (`weixin`, `feishu`, `dingtalk`, or `common`).
         remark: props.data.remark || '',
     }
 });
@@ -197,7 +197,7 @@ const nextStep = async () => {
             enable: form.value.enable,
             endpoint,
             level: form.value.level,
-            metadata, // 都有: alert_interval: 20(str), 可选: email类型: server(str),port(str),username,password,receiver; syslog类型; webhook类型: application_type(weixin/feishu/dingtalk/common)
+            metadata, // Always includes `alert_interval: 20` (string). Optional fields depend on the type: email uses `server`, `port`, `username`, `password`, and `receiver`; webhook uses `application_type` (`weixin`, `feishu`, `dingtalk`, or `common`).
             remark: form.value.remark,
         };
         console.log('updateNotifyConf', req);

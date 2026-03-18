@@ -1,4 +1,4 @@
-/* 页面切换动画
+/* Page transition animations
 ------------------------------- */
 .slide-right-enter-active,
 .slide-right-leave-active,
@@ -34,7 +34,7 @@
 	opacity: 0;
 }
 
-/* Breadcrumb 面包屑过渡动画
+/* Breadcrumb transition animation
 ------------------------------- */
 .breadcrumb-enter-active,
 .breadcrumb-leave-active {
@@ -50,7 +50,7 @@
 	z-index: -1;
 }
 
-/* logo 过渡动画
+/* Logo transition animation
 ------------------------------- */
 @keyframes logoAnimation {
 	0% {
@@ -64,7 +64,7 @@
 	}
 }
 
-/* 404、401 过渡动画
+/* 404 and 401 transition animations
 ------------------------------- */
 @keyframes error-num {
 	0% {
@@ -93,7 +93,7 @@
 	}
 }
 
-/* 登录页动画
+/* Login page animations
 ------------------------------- */
 @keyframes loginLeft {
 	0% {
@@ -132,7 +132,7 @@
 	}
 }
 
-/* 左右左 link.vue
+/* Left-right slide animation for link.vue
 ------------------------------- */
 @keyframes toRight {
 	0% {

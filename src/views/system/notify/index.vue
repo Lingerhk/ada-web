@@ -2,7 +2,7 @@
     <div class="layout-pd">
         <el-card shadow="hover">
             <el-row justify="space-between">
-                <!-- 搜索 -->
+                <!-- Search controls -->
                 <el-form :inline="true">
                     <el-form-item>
                         <el-button size="default" type="primary" @click="handleNew">
@@ -42,7 +42,7 @@
                     </el-form-item>
                 </el-form>
             </el-row>
-            <!-- 下方显示列表 -->
+            <!-- Result list below -->
             <el-row style="margin-top: 10px">
                 <el-table :data="state.reply.list" v-loading="state.loading" :border="true"
                     row-class-name="pointer-cursor" style="width: 100%">
@@ -76,7 +76,7 @@
                     </el-table-column>
                 </el-table>
             </el-row>
-            <!-- 分页 -->
+            <!-- Pagination -->
             <el-row style="margin-top: 10px" justify="space-between">
                 <div></div>
                 <el-pagination v-model:current-page="state.req.pageIdx" v-model:page-size="state.req.pageSize"
@@ -123,11 +123,11 @@ const state = reactive({
     req: {
         pageIdx: 1, // start index with 1
         pageSize: 20, // if pageSize is -1, we will return all nodes
-        moduleName: [], // [(validator.field) = {regex: "all|alert|baseline|leak|system"}]; // 模块类型 alert,baseline,leak,system
-        notifyType: [], // [(validator.field) = {regex: "all|syslog|webhook|email"}]; // 通知类型 syslog,webhook,email
-        endpoint: '', // 通知目标
-        enable: [], // [(validator.field) = {regex: "all|enable|disable"}]; // 启用状态， 开启enable 关闭disable
-        sortTime: 0, // 根据时间排序，1升序，-1降序,0为默认顺序
+        moduleName: [], // [(validator.field) = {regex: "all|alert|baseline|leak|system"}]; // Module type: alert|baseline|leak|system
+        notifyType: [], // [(validator.field) = {regex: "all|syslog|webhook|email"}]; // Notification type: syslog|webhook|email
+        endpoint: '', // Notification target
+        enable: [], // [(validator.field) = {regex: "all|enable|disable"}]; // Enable state: `enable` or `disable`
+        sortTime: 0, // Sort by time: 1 ascending, -1 descending, 0 for the default order
     } as ListNotifyConfReq,
     reply: {} as ListNotifyConfReply,
     loading: false,
@@ -161,7 +161,6 @@ const handleDelete = (data: ListNotifyConfReply_Details) => {
     const req: DeleteNotifyConfReq = {
         id: data.id,
     };
-    console.log("deleteNotifyConf", req);
 
     api.deleteNotifyConf(req)
     .then(resp => resp.response)
@@ -177,7 +176,6 @@ const switchNotification = (data: ListNotifyConfReply_Details, v: string) => {
         id: data.id,
         enable: v,
     };
-    console.log("enableNotifyConf", req);
 
     api.enableNotifyConf(req)
     .then(resp => resp.response)
@@ -201,13 +199,10 @@ const handleEdit = (data: ListNotifyConfReply_Details) => {
 };
 
 const refresh = () => {
-    console.log("listNotifyConf", state.req);
-
     api.listNotifyConf(state.req)
     .then(resp => resp.response)
     .then(data => {
         state.reply = data;
-        console.log(data);
     })
     .catch(err => alertApiError(err))
     .finally(() => state.loading = false);

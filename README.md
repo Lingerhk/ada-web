@@ -1,8 +1,8 @@
 # ADAegis Portal
 
-`ada-web` 是 ADAegis 的前端门户，基于 Vue 3、Vite、TypeScript、Pinia 和 Element Plus。
+`ada-web` is the frontend portal for ADAegis. It is built with Vue 3, Vite, TypeScript, Pinia, and Element Plus.
 
-## 常用命令
+## Common Commands
 
 ```bash
 npm install
@@ -14,34 +14,34 @@ npm run test:unit
 npm run test:e2e
 ```
 
-## 环境变量
+## Environment Variables
 
-创建 `.env` 文件并至少配置：
+Create a `.env` file and configure at least:
 
 ```dotenv
 VITE_ADA_API_URL=http://127.0.0.1:80
 ```
 
-说明：
+Notes:
 
-- 为空时，前端默认请求同源 `/ada.ADA/*`。
-- 非空时，前端直接请求指定的 gRPC-web 代理地址。
+- When left empty, the frontend sends requests to the same-origin `/ada.ADA/*` endpoints.
+- When set, the frontend sends requests directly to the configured gRPC-web proxy endpoint.
 
-## Proto 更新
+## Updating Proto Files
 
-后端 `ada.proto` 更新后执行：
+Run this after backend `ada.proto` changes:
 
 ```bash
 npm run build-proto
 ```
 
-## 相关文档
+## Related Docs
 
-- 仓库总览：[`../README.md`](../README.md)
-- 系统架构：[`../docs/architecture.md`](../docs/architecture.md)
-- 本地开发：[`../docs/local-development.md`](../docs/local-development.md)
+- Repository overview: [`../README.md`](../README.md)
+- Architecture: [`../docs/architecture.md`](../docs/architecture.md)
+- Local development: [`../docs/local-development.md`](../docs/local-development.md)
 
-说明：
+Additional Notes:
 
-- `lint` 与 `typecheck` 当前优先覆盖前端构建配置、分包逻辑和新增测试基线。
-- `test:unit` 与 `test:e2e` 分别提供纯函数校验和登录页最小冒烟。
+- `lint` and `typecheck` currently focus on the frontend build config, chunk splitting logic, and the newly added test baseline.
+- `test:unit` and `test:e2e` provide lightweight function-level validation and a minimal login smoke test.

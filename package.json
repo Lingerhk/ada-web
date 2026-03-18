@@ -2,12 +2,20 @@
   "name": "ada-web",
   "version": "1.0.0",
   "description": "Web Portal for AD Aegis",
+  "private": true,
   "author": "adaegislab",
   "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint-fix": "eslint --fix --ext .js --ext .jsx --ext .vue src/",
+    "preview": "vite preview --host 127.0.0.1 --port 4173",
+    "lint": "eslint --max-warnings=0 vite.config.ts vitest.config.ts playwright.config.ts src/utils/build.ts src/utils/chunks.ts src/utils/chunks.test.ts tests/e2e/login.spec.ts",
+    "lint:fix": "npm run lint -- --fix",
+    "lint-fix": "npm run lint:fix",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.check.json",
+    "test:unit": "vitest run",
+    "test:e2e": "playwright test",
+    "test": "npm run test:unit",
     "download-proto": "cp /home/adadmin/adaegis/ada/backend/apiserver/api/v2/ada.proto proto/ada.proto",
     "format-proto": "bash ./proto/format-proto.sh",
     "build-proto": "grpc_tools_node_protoc --ts_out=./src/api/grpc --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts -I ./proto ./proto/*.proto",
@@ -54,6 +62,7 @@
     "@typescript-eslint/eslint-plugin": "^5.58.0",
     "@typescript-eslint/parser": "^5.58.0",
     "@vitejs/plugin-vue": "^5.2.3",
+    "@playwright/test": "^1.54.2",
     "@vue/compiler-sfc": "^3.4.0",
     "eslint": "^8.38.0",
     "eslint-plugin-vue": "^9.10.0",
@@ -64,31 +73,22 @@
     "vite-plugin-cdn-import": "^0.3.5",
     "vite-plugin-compression": "^0.5.1",
     "vite-plugin-vue-setup-extend-plus": "^0.1.0",
-    "vue-eslint-parser": "^9.1.1"
+    "vitest": "^2.1.9",
+    "vue-eslint-parser": "^9.1.1",
+    "vue-tsc": "^2.2.12"
   },
   "browserslist": [
     "> 1%",
     "last 2 versions",
     "not dead"
   ],
-  "bugs": {
-    "url": "https://gitee.com/lyt-top/vue-next-admin/issues"
-  },
   "engines": {
     "node": ">=16.0.0",
     "npm": ">= 7.0.0"
   },
   "keywords": [
-    "vue",
+    "adaegis",
     "vue3",
-    "vuejs/vue-next",
-    "element-ui",
-    "element-plus",
-    "vue-next-admin",
-    "next-admin"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://gitee.com/lyt-top/vue-next-admin.git"
-  }
+    "security"
+  ]
 }

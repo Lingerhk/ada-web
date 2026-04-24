@@ -26,7 +26,7 @@ const viteConfig = defineConfig((mode: ConfigEnv) => {
 	const isOpenCdn = parseEnvBoolean(env.VITE_OPEN_CDN);
 	const isOpenBrowser = parseEnvBoolean(env.VITE_OPEN);
 	return {
-		plugins: [vue(), vueSetupExtend(), viteCompression(), isOpenCdn ? buildConfig.cdn() : null],
+		plugins: [vue(), vueSetupExtend(), viteCompression({ verbose: false }), isOpenCdn ? buildConfig.cdn() : null],
 		root: process.cwd(),
 		resolve: { alias },
 		base: mode.command === 'serve' ? './' : env.VITE_PUBLIC_PATH || './',
@@ -44,7 +44,7 @@ const viteConfig = defineConfig((mode: ConfigEnv) => {
 				},
 			},
 		},
-			build: {
+		build: {
 			outDir: 'dist',
 			chunkSizeWarningLimit: 1500,
 			rollupOptions: {

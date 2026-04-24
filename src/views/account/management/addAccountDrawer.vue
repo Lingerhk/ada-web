@@ -21,7 +21,7 @@
                             <h4>{{ $t('message.accountPerson.username') }}:</h4>
                         </template>
                         <template #default>
-                            <el-input v-model="state.data.username" size="middle"></el-input>
+                            <el-input v-model="state.data.username" size="default"></el-input>
                         </template>
                     </el-form-item>
                     <el-form-item prop="password">
@@ -29,7 +29,7 @@
                             <h4>{{ $t('message.accountPerson.password') }}:</h4>
                         </template>
                         <template #default>
-                            <el-input v-model="state.data.password" size="middle" show-password></el-input>
+                            <el-input v-model="state.data.password" size="default" show-password></el-input>
                         </template>
                     </el-form-item>
                     <el-form-item prop="confirmPass">
@@ -37,7 +37,7 @@
                             <h4>{{ $t('message.accountPerson.confirmPass') }}:</h4>
                         </template>
                         <template #default>
-                            <el-input v-model="state.data.confirmPass" size="middle" show-password></el-input>
+                            <el-input v-model="state.data.confirmPass" size="default" show-password></el-input>
                         </template>
                     </el-form-item>
                     <el-form-item prop="mobile">
@@ -45,7 +45,7 @@
                             <h4>{{ $t('message.accountPerson.mobile') }}:</h4>
                         </template>
                         <template #default>
-                            <el-input v-model="state.data.mobile" size="middle"></el-input>
+                            <el-input v-model="state.data.mobile" size="default"></el-input>
                         </template>
                     </el-form-item>
                     <el-form-item prop="email">
@@ -53,7 +53,7 @@
                             <h4>{{ $t('message.accountPerson.email') }}:</h4>
                         </template>
                         <template #default>
-                            <el-input v-model="state.data.email" size="middle"></el-input>
+                            <el-input v-model="state.data.email" size="default"></el-input>
                         </template>
                     </el-form-item>
                     <el-form-item>
@@ -61,7 +61,7 @@
                             <h4>{{ $t('message.accountPerson.remark') }}:</h4>
                         </template>
                         <template #default>
-                            <el-input v-model="state.data.remark" size="middle" type="textarea"></el-input>
+                            <el-input v-model="state.data.remark" size="default" type="textarea"></el-input>
                         </template>
                     </el-form-item>
                 </el-form>
@@ -186,7 +186,9 @@ const rules = reactive<FormRules<typeof initData>>({
                 })
                 .catch(err => {
                     callback(new Error(t('message.api.alertMessage')));
-                    console.error(err)
+                    if (import.meta.env.DEV) {
+                        console.debug('[api]', err);
+                    }
                 });
             },
             trigger: 'blur'

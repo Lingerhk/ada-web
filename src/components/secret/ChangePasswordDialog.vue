@@ -22,7 +22,7 @@
         </template>
         <template #footer>
             <el-button @click="cancel">{{ $t('message.accountPerson.cancel') }}</el-button>
-            <el-button type="primary" @click="confirm(formRef)">{{ $t('message.accountPerson.confirm') }}</el-button>
+            <el-button type="primary" @click="confirm">{{ $t('message.accountPerson.confirm') }}</el-button>
         </template>
     </el-dialog>
 </template>
@@ -85,8 +85,12 @@ const cancel = () => {
     visible.value = false;
 };
 
-const confirm = async (formEl: FormInstance) => {
-    const valid = await formEl.validate(v => v);
+const confirm = async () => {
+    if (!formRef.value) {
+        return;
+    }
+
+    const valid = await formRef.value.validate(v => v);
     if (!valid) {
         return;
     }

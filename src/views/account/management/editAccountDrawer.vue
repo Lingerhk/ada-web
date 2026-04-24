@@ -20,7 +20,7 @@
                             <h4>{{ T('username') }}:</h4>
                         </template>
                         <template #default>
-                            <el-input v-model="state.data.username" size="middle" disabled></el-input>
+                            <el-input v-model="state.data.username" size="default" disabled></el-input>
                         </template>
                     </el-form-item>
                     <el-form-item>
@@ -28,7 +28,7 @@
                             <h4>{{ T('mobile') }}:</h4>
                         </template>
                         <template #default>
-                            <el-input v-model="state.data.mobile" size="middle"></el-input>
+                            <el-input v-model="state.data.mobile" size="default"></el-input>
                         </template>
                     </el-form-item>
                     <el-form-item>
@@ -36,7 +36,7 @@
                             <h4>{{ T('email') }}:</h4>
                         </template>
                         <template #default>
-                            <el-input v-model="state.data.email" size="middle"></el-input>
+                            <el-input v-model="state.data.email" size="default"></el-input>
                         </template>
                     </el-form-item>
                     <el-form-item>
@@ -44,7 +44,7 @@
                             <h4>{{ T('department') }}:</h4>
                         </template>
                         <template #default>
-                            <el-input v-model="state.data.department" size="middle"></el-input>
+                            <el-input v-model="state.data.department" size="default"></el-input>
                         </template>
                     </el-form-item>
                     <el-form-item>
@@ -52,7 +52,7 @@
                             <h4>{{ T('remark') }}:</h4>
                         </template>
                         <template #default>
-                            <el-input v-model="state.data.remark" size="middle" type="textarea"></el-input>
+                            <el-input v-model="state.data.remark" size="default" type="textarea"></el-input>
                         </template>
                     </el-form-item>
                     <el-divider />

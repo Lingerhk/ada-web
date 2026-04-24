@@ -13,12 +13,13 @@ describe('chunk helpers', () => {
 		expect(getManualChunk('/tmp/node_modules/@protobuf-ts/runtime-rpc/build/index.js')).toBe('vendor-grpc');
 	});
 
-	it('leaves framework-heavy packages to rollup default splitting to avoid startup cycles', () => {
+	it('keeps framework-heavy packages in vendor-misc to avoid startup cycles', () => {
 		expect(getManualChunk('/tmp/node_modules/vue/dist/vue.runtime.esm-bundler.js')).toBe('vendor-misc');
 		expect(getManualChunk('/tmp/node_modules/element-plus/es/index.mjs')).toBe('vendor-misc');
-		expect(getManualChunk('/tmp/node_modules/axios/index.js')).toBe('vendor-misc');
-		expect(getManualChunk('/tmp/node_modules/codemirror/lib/codemirror.js')).toBe('vendor-misc');
-		expect(getManualChunk('/tmp/node_modules/marked/lib/marked.esm.js')).toBe('vendor-misc');
+		expect(getManualChunk('/tmp/node_modules/codemirror-editor-vue3/dist/index.es.js')).toBe('vendor-misc');
+		expect(getManualChunk('/tmp/node_modules/axios/index.js')).toBe('vendor-utils');
+		expect(getManualChunk('/tmp/node_modules/codemirror/lib/codemirror.js')).toBe('vendor-editor');
+		expect(getManualChunk('/tmp/node_modules/marked/lib/marked.esm.js')).toBe('vendor-markdown');
 	});
 
 	it('returns vendor-misc for unmatched third-party packages', () => {

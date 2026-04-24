@@ -67,7 +67,7 @@ export function setTagsViewNameI18n(item: any) {
 		}
 	} else {
 		// Non-custom tagsView name
-		tagsViewName = i18n.global.t(meta.title);
+		tagsViewName = typeof meta?.title === 'string' ? i18n.global.t(meta.title) : '';
 	}
 	return tagsViewName;
 }

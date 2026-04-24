@@ -6,7 +6,7 @@ import qs from 'qs';
 
 // Create a dedicated Axios instance
 const service: AxiosInstance = axios.create({
-	baseURL: import.meta.env.VITE_API_URL,
+	baseURL: import.meta.env.VITE_ADA_API_URL || '',
 	timeout: 50000,
 	headers: { 'Content-Type': 'application/json' },
 	paramsSerializer: {
@@ -57,7 +57,8 @@ service.interceptors.response.use(
 		} else if (error.message == 'Network Error') {
 			ElMessage.error(i18n.global.t('message.api.networkError'));
 		} else {
-			if (error.response.data) ElMessage.error(error.response.statusText);
+			const response = error.response;
+			if (response?.data) ElMessage.error(response.statusText || i18n.global.t('message.api.alertMessage'));
 			else ElMessage.error(i18n.global.t('message.api.missingEndpoint'));
 		}
 		return Promise.reject(error);

@@ -28,7 +28,7 @@
                 <div></div>
                 <el-pagination v-model:current-page="state.pageIdx" v-model:page-size="state.pageSize"
                     :page-sizes="[10, 20, 30, 40, 50]" layout='sizes, prev, pager, next, jumper'
-                    :total="state.reply.page?.total" @size-change="(val: number) => state.pageSize = val"
+                    :total="state.reply.page?.total ?? 0" @size-change="(val: number) => state.pageSize = val"
                     @current-change="(val: number) => state.pageIdx = val" />
             </el-row>
         </template>

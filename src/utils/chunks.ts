@@ -1,7 +1,23 @@
 const chunkGroups: Record<string, string[]> = {
 	'vendor-charts': ['echarts', 'echarts-wordcloud', 'zrender'],
+	'vendor-editor': ['codemirror'],
+	'vendor-markdown': ['marked', 'marked-highlight', 'highlight.js'],
 	'vendor-terminal': ['xterm', 'xterm-addon-attach', 'xterm-addon-fit'],
 	'vendor-grpc': ['@protobuf-ts', '@grpc'],
+	'vendor-utils': [
+		'axios',
+		'qs',
+		'js-cookie',
+		'js-yaml',
+		'mitt',
+		'nprogress',
+		'screenfull',
+		'sortablejs',
+		'file-saver',
+		'qrcode.vue',
+		'vue-clipboard3',
+		'vue3-json-viewer',
+	],
 };
 
 export const getPackageName = (id: string) => {

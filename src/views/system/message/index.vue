@@ -85,7 +85,7 @@
                 </div>
                 <el-pagination :current-page="state.req.pageIdx" :page-size="state.req.pageSize"
                     :page-sizes="[10, 30, 60, 100]" layout="sizes, prev, pager, next, jumper"
-                    :total="state.reply.page?.total"
+                    :total="state.reply.page?.total ?? 0"
                     @size-change="handlePageSizeChange" 
                     @current-change="handleCurrentPageChange" />
             </el-row>

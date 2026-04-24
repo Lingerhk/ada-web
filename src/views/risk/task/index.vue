@@ -90,7 +90,7 @@
                 <div></div>
                 <el-pagination v-model:current-page="state.req.pageIdx" v-model:page-size="state.req.pageSize"
                     :page-sizes="[10, 20, 30, 40, 50]" layout="sizes, prev, pager, next, jumper"
-                    :total="state.reply.page?.total" @size-change="(val: number) => state.req.pageSize = val"
+                    :total="state.reply.page?.total ?? 0" @size-change="(val: number) => state.req.pageSize = val"
                     @current-change="(val: number) => state.req.pageIdx = val" />
             </el-row>
         </el-card>

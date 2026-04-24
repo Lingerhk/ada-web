@@ -351,7 +351,7 @@
                         <el-row style="margin-top: 10px" justify="end">
                             <el-pagination v-model:current-page="systemLogsState.req.pageIdx" v-model:page-size="systemLogsState.req.pageSize"
                                 :page-sizes="[10, 30, 60, 100]" layout="sizes, prev, pager, next, jumper"
-                                :total="systemLogsState.reply.page?.total"
+                                :total="systemLogsState.reply.page?.total ?? 0"
                                 @size-change="handleLogsPageSizeChange"
                                 @current-change="handleLogsCurrentPageChange" />
                         </el-row>

@@ -6,6 +6,7 @@
 			wrap-class="layout-main-scroll"
 			view-class="layout-main-scroll"
 		>
+			<PageHeader v-if="isPageHeaderVisible" />
 			<LayoutParentView />
 			<LayoutFooter v-if="isFooter" />
 		</el-scrollbar>
@@ -24,6 +25,7 @@ import { NextLoading } from '/@/utils/loading';
 // Import components
 const LayoutParentView = defineAsyncComponent(() => import('/@/layout/routerView/parent.vue'));
 const LayoutFooter = defineAsyncComponent(() => import('/@/layout/footer/index.vue'));
+const PageHeader = defineAsyncComponent(() => import('/@/layout/component/pageHeader.vue'));
 
 // Define reactive state and refs
 const layoutMainScrollbarRef = ref();
@@ -36,6 +38,10 @@ const { isTagsViewCurrenFull } = storeToRefs(storesTagsViewRoutes);
 // Show or hide the footer
 const isFooter = computed(() => {
 	return themeConfig.value.isFooter && !route.meta.isIframe;
+});
+// Show a consistent module header above route content.
+const isPageHeaderVisible = computed(() => {
+	return themeConfig.value.isPageHeader !== false && !route.meta.isIframe && Boolean(route.meta.title) && route.name !== 'notFound' && route.name !== 'noPower';
 });
 // Toggle fixed header behavior
 const isFixedHeader = computed(() => {

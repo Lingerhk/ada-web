@@ -60,7 +60,7 @@
                         <el-table-column type="expand" width="50">
                             <template #default="props">
                                 <div class="json-viewer-wrapper">
-                                    <JsonViewer :value="JSON.parse(props.row.rawLog)" copyable boxed sort></JsonViewer>
+                                    <JsonViewer class="activity-json-viewer" :value="parseRawLog(props.row.rawLog)" copyable sort></JsonViewer>
                                 </div>
                             </template>
                         </el-table-column>
@@ -120,6 +120,7 @@ import { formatApiTime, shortcuts } from '/@/utils/formatTime';
 import { Search } from '@element-plus/icons-vue';
 import { listActivityOptions, listDchostOptions } from '/@/api/grpc/method';
 import { getLevelOptions2 } from '/@/utils/constant';
+import { JsonViewer } from 'vue3-json-viewer';
 
 const pageIdx = ref(1);
 const pageSize = ref(10);
@@ -151,6 +152,16 @@ const titleIndeterminate = ref(false);
 const filterFieldDataKey = (fieldData: Object) => {
     return Object.keys(fieldData).filter(key => key.toLowerCase() !== 'hostname');
 }
+
+const parseRawLog = (rawLog?: string) => {
+    if (!rawLog) return {};
+
+    try {
+        return JSON.parse(rawLog);
+    } catch {
+        return rawLog;
+    }
+};
 
 const resetReqParams = () => {
     threatLevel.value = [];
@@ -190,7 +201,6 @@ const refreshActivity = () => {
     api.listActivity(req)
     .then(resp => resp.response)
     .then((reply: ListActivityReply) => {
-        console.log(reply);
         exhausted.value = reply.exhausted;
         data.value = reply.list;
         total.value = reply.page?.total || total.value;
@@ -290,9 +300,72 @@ watch(() => [lastOccurenceTime.value, idInput.value], refreshActivity);
 
 <style lang="scss" scoped>
 .json-viewer-wrapper {
+    margin: 14px 18px;
     padding: 16px;
-    background: #f5f7fa;
-    border-radius: 8px;
-    margin: 16px;
+    max-height: 520px;
+    overflow: auto;
+    background: linear-gradient(180deg, #f8fbff 0%, #f4f7fb 100%);
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    border-radius: 10px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75);
+
+    :deep(.jv-container) {
+        border-color: rgba(148, 163, 184, 0.26);
+        border-radius: 8px;
+        background: #ffffff;
+        color: #273449;
+        font-family: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+        font-size: 13px;
+        line-height: 1.72;
+        white-space: pre-wrap;
+    }
+
+    :deep(.jv-container:hover) {
+        border-color: rgba(37, 99, 235, 0.22);
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+    }
+
+    :deep(.jv-code) {
+        padding: 18px 20px;
+    }
+
+    :deep(.jv-node) {
+        margin: 2px 0;
+    }
+
+    :deep(.jv-node .jv-node) {
+        margin-left: 28px;
+    }
+
+    :deep(.jv-key) {
+        margin-right: 8px;
+        color: #1d4ed8;
+        font-weight: 600;
+    }
+
+    :deep(.jv-item.jv-string) {
+        color: #047857;
+        word-break: break-word;
+        white-space: pre-wrap;
+    }
+
+    :deep(.jv-item.jv-number),
+    :deep(.jv-item.jv-boolean) {
+        color: #b45309;
+        font-weight: 600;
+    }
+
+    :deep(.jv-toggle) {
+        width: 12px;
+        height: 12px;
+        margin-right: 6px;
+        opacity: 0.72;
+    }
+
+    :deep(.jv-button) {
+        padding: 6px 8px;
+        color: #2563eb;
+        font-size: 12px;
+    }
 }
 </style>

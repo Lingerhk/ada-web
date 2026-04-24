@@ -24,8 +24,8 @@
 </template>
 
 <script setup lang="ts" name="layoutBreadcrumb">
-import { reactive, computed, onMounted } from 'vue';
-import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router';
+import { reactive, computed, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { Local } from '/@/utils/storage';
 import other from '/@/utils/other';
 import { storeToRefs } from 'pinia';
@@ -48,7 +48,6 @@ const state = reactive<BreadcrumbState>({
 
 // Hide breadcrumbs dynamically in classic and transverse layouts
 const isShowBreadcrumb = computed(() => {
-	initRouteSplit(route.path);
 	const { layout, isBreadcrumb } = themeConfig.value;
 	if (layout === 'classic' || layout === 'transverse') return false;
 	else return isBreadcrumb ? true : false;
@@ -75,7 +74,7 @@ const getBreadcrumbList = (arr: RouteItems) => {
 		state.routeSplit.forEach((v: string, k: number, arrs: string[]) => {
 			if (state.routeSplitFirst === item.path) {
 				state.routeSplitFirst += `/${arrs[state.routeSplitIndex]}`;
-				state.breadcrumbList.push(item);
+				state.breadcrumbList.push({ ...item, meta: { ...item.meta } });
 				state.routeSplitIndex++;
 				if (item.children) getBreadcrumbList(item.children);
 			}
@@ -83,26 +82,28 @@ const getBreadcrumbList = (arr: RouteItems) => {
 	});
 };
 // Split the current route string into an array and remove the first empty segment
-const initRouteSplit = (path: string) => {
-	if (!themeConfig.value.isBreadcrumb) return false;
-	state.breadcrumbList = [routesList.value[0]];
+const initRouteSplit = (path: string, currentRoute: RouteToFrom = <RouteToFrom>route) => {
+	if (!themeConfig.value.isBreadcrumb) {
+		state.breadcrumbList = [];
+		return false;
+	}
+	const homeRoute = routesList.value[0];
+	state.breadcrumbList = homeRoute ? [{ ...homeRoute, meta: { ...homeRoute.meta } }] : [];
 	state.routeSplit = path.split('/');
 	state.routeSplit.shift();
 	state.routeSplitFirst = `/${state.routeSplit[0]}`;
 	state.routeSplitIndex = 1;
 	getBreadcrumbList(routesList.value);
-	if (route.name === 'home' || (route.name === 'notFound' && state.breadcrumbList.length > 1)) state.breadcrumbList.shift();
+	if (currentRoute.name === 'home' || (currentRoute.name === 'notFound' && state.breadcrumbList.length > 1)) state.breadcrumbList.shift();
 	if (state.breadcrumbList.length > 0)
-		state.breadcrumbList[state.breadcrumbList.length - 1].meta.tagsViewName = other.setTagsViewNameI18n(<RouteToFrom>route);
+		state.breadcrumbList[state.breadcrumbList.length - 1].meta.tagsViewName = other.setTagsViewNameI18n(<RouteToFrom>currentRoute);
 };
-// On mount
-onMounted(() => {
-	initRouteSplit(route.path);
-});
-// When the route updates
-onBeforeRouteUpdate((to) => {
-	initRouteSplit(to.path);
-});
+
+watch(
+	() => [route.fullPath, routesList.value.length, themeConfig.value.isBreadcrumb],
+	() => initRouteSplit(route.path, <RouteToFrom>route),
+	{ immediate: true }
+);
 </script>
 
 <style scoped lang="scss">

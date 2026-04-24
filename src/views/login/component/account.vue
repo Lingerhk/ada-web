@@ -192,7 +192,7 @@ onMounted(async () => {
 
 <style scoped lang="scss">
 .login-content-form {
-	margin-top: 20px;
+	margin-top: 18px;
 	@for $i from 1 through 4 {
 		.login-animation#{$i} {
 			opacity: 0;
@@ -207,7 +207,7 @@ onMounted(async () => {
 		width: 20px;
 		cursor: pointer;
 		&:hover {
-			color: #909399;
+			color: #168f7a;
 		}
 	}
 	.login-content-code {
@@ -218,22 +218,28 @@ onMounted(async () => {
 	}
 	.login-content-submit {
 		width: 100%;
-		letter-spacing: 2px;
-		font-weight: 300;
-		margin-top: 15px;
-		background-color: rgb(245, 192, 96);
-		color: #333;
-		border-color: rgb(245, 192, 96);
+		letter-spacing: 0;
+		font-weight: 800;
+		margin-top: 12px;
+		background-color: #168f7a;
+		color: #ffffff;
+		border-color: #168f7a;
 		height: 50px;
-		font-size: 24px;
+		font-size: 18px;
 		transition: all 0.3s ease;
 		
 		&:hover {
-			background-color: rgb(250, 200, 107);
-			border-color: rgb(250, 200, 107);
-			transform: scale(1.02);
-			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			background-color: #20a38d;
+			border-color: #20a38d;
+			transform: translateY(-1px);
+			box-shadow: 0 12px 24px rgba(22, 143, 122, 0.22);
 		}
+	}
+
+	:deep(.el-input__wrapper) {
+		height: 48px;
+		border-radius: 6px;
+		background: #f8fbfa;
 	}
 }
 </style>

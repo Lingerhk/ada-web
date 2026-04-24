@@ -22,6 +22,11 @@
 				</el-icon>
 			</el-badge>
 		</div>
+		<div class="layout-navbars-breadcrumb-user-icon" @click="onOpenSettingsDrawer">
+			<el-icon :title="$t('message.user.title3')">
+				<ele-Setting />
+			</el-icon>
+		</div>
 		<el-popover
 			ref="userNewsRef"
 			:virtual-ref="userNewsBadgeRef"
@@ -65,6 +70,7 @@ import other from '/@/utils/other';
 import { Session, Local } from '/@/utils/storage';
 import { getSysLanguage, getUnreadNotification, updateSysLanguage } from '/@/api/grpc/method';
 import { formatApiTime } from '/@/utils/formatTime';
+import mittBus from '/@/utils/mitt';
 
 // Import components
 const UserNews = defineAsyncComponent(() => import('/@/layout/navBars/topBar/userNews.vue'));
@@ -98,6 +104,9 @@ const layoutUserFlexNum = computed(() => {
 // Handle notification clicks
 const onUserNewsClick = () => {
 	unref(userNewsRef).popperRef?.delayHide?.();
+};
+const onOpenSettingsDrawer = () => {
+	mittBus.emit('openSettingsDrawer');
 };
 // Handle dropdown-menu clicks
 const onHandleCommandClick = (path: string) => {

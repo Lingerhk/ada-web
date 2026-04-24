@@ -18,7 +18,7 @@ export const useThemeConfig = defineStore('themeConfig', {
 			 * Global theme
 			 */
 			// Default primary theme color.
-			primary: '#409eff',
+			primary: '#168f7a',
 			// Whether dark mode is enabled.
 			isIsDark: false,
 
@@ -28,7 +28,7 @@ export const useThemeConfig = defineStore('themeConfig', {
 			// Default top bar background color.
 			topBar: '#ffffff',
 			// Default top bar text color.
-			topBarColor: '#606266',
+			topBarColor: '#243142',
 			// Whether to apply a gradient to the top bar background.
 			isTopBarColorGradual: false,
 
@@ -36,11 +36,11 @@ export const useThemeConfig = defineStore('themeConfig', {
 			 * Menu
 			 */
 			// Default menu background color.
-			menuBar: '#545c64',
+			menuBar: '#1f2d2f',
 			// Default menu text color.
-			menuBarColor: '#eaeaea',
+			menuBarColor: '#c9d8d5',
 			// Default active menu background color.
-			menuBarActiveColor: 'rgba(0, 0, 0, 0.2)',
+			menuBarActiveColor: 'rgba(22, 143, 122, 0.18)',
 			// Whether to apply a gradient to the menu background.
 			isMenuBarColorGradual: false,
 
@@ -48,7 +48,7 @@ export const useThemeConfig = defineStore('themeConfig', {
 			 * Columns layout
 			 */
 			// Default columns-menu background color.
-			columnsMenuBar: '#545c64',
+			columnsMenuBar: '#1f2d2f',
 			// Default columns-menu text color.
 			columnsMenuBarColor: '#e6e6e6',
 			// Whether to apply a gradient to the columns-menu background.
@@ -85,6 +85,8 @@ export const useThemeConfig = defineStore('themeConfig', {
 			isBreadcrumb: true,
 			// Whether tagsView is enabled.
 			isTagsview: true,
+			// Whether the modern page header card is shown above route content.
+			isPageHeader: true,
 			// Whether breadcrumb icons are shown.
 			isBreadcrumbIcon: false,
 			// Whether tagsView icons are shown.
@@ -150,7 +152,7 @@ export const useThemeConfig = defineStore('themeConfig', {
 	}),
 	actions: {
 		setThemeConfig(data: ThemeConfigState) {
-			this.themeConfig = data.themeConfig;
+			this.themeConfig = { ...this.themeConfig, ...data.themeConfig };
 		},
 	},
 });

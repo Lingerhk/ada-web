@@ -66,6 +66,7 @@ declare interface ThemeConfigState {
 		isShowLogoChange: boolean;
 		isBreadcrumb: boolean;
 		isTagsview: boolean;
+		isPageHeader: boolean;
 		isBreadcrumbIcon: boolean;
 		isTagsviewIcon: boolean;
 		isCacheTagsView: boolean;

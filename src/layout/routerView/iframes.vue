@@ -80,8 +80,7 @@ watch(
 		if (item.path === '/kibana' || item.name === 'threatKibana') {
 			try {
 				await initKibanaSession();
-			} catch (error) {
-				console.error('Failed to initialize Kibana session:', error);
+			} catch {
 				// Continue loading iframe even if session init fails
 			}
 		}

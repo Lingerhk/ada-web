@@ -1,55 +1,57 @@
 <template>
     <div class="layout-pd">
-        <el-card shadow="hover">
-            <el-form :inline="true">
-                <el-form-item>
+        <el-card class="account-workbench" shadow="hover">
+            <div class="table-toolbar">
+                <div class="table-toolbar__actions">
                     <el-button type="primary" size="default" @click="onAddAccount">
                         <el-icon><Plus /></el-icon>
                         {{ T('new') }}
                     </el-button>
-                </el-form-item>
-                <el-form-item :label="T('role')">
-                    <el-select v-model="state.filter.role" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="T('selectRole')" popper-class="custom-header">
-                        <template #header>
-                            <el-checkbox v-model="roleCheckAll" :indeterminate="roleIndeterminate" @change="handleRoleCheckAll">
-                                {{ $t('message.tableCommon.checkAll') }}
-                            </el-checkbox>
-                        </template>
-                        <el-option v-for="option in option.role" :key="option.value" :label="option.label" :value="option.value" />
-                    </el-select>
-                </el-form-item>
-                <el-form-item :label="T('mfa_short')">
-                    <el-select v-model="state.filter.mfa" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="T('selectMfa')" popper-class="custom-header">
-                        <template #header>
-                            <el-checkbox v-model="mfaCheckAll" :indeterminate="mfaIndeterminate" @change="handleMfaCheckAll">
-                                {{ $t('message.tableCommon.checkAll') }}
-                            </el-checkbox>
-                        </template>
-                        <el-option v-for="opt in option.mfa" :key="opt.value" :label="opt.label" :value="opt.value" />
-                    </el-select>
-                </el-form-item>
-                <el-form-item :label="T('passwordStrength')">
-                    <el-select v-model="state.filter.passwordStrength" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="T('selectPasswordStrength')" popper-class="custom-header">
-                        <template #header>
-                            <el-checkbox v-model="passwordStrengthCheckAll" :indeterminate="passwordStrengthIndeterminate" @change="handlePasswordStrengthCheckAll">
-                                {{ $t('message.tableCommon.checkAll') }}
-                            </el-checkbox>
-                        </template>
-                        <el-option v-for="opt in option.passwordStrength" :key="opt.value" :label="opt.label" :value="opt.value" />
-                    </el-select>
-                </el-form-item>
-                <el-form-item :label="T('createTm')">
-                    <el-date-picker size="default" v-model="createTimeRange" type="datetimerange"
-                        :range-separator="$t('message.time.to')" :start-placeholder="$t('message.time.start')"
-                        :end-placeholder="$t('message.time.end')" :shortcuts="shortcuts" />
-                </el-form-item>
-                <el-form-item :label="T('pwdUpdateTm')">
-                    <el-date-picker size="default" v-model="passTimeRange" type="datetimerange"
-                        :range-separator="$t('message.time.to')" :start-placeholder="$t('message.time.start')"
-                        :end-placeholder="$t('message.time.end')" :shortcuts="shortcuts" />
-                </el-form-item>
-            </el-form>
-            <el-table :data="state.table.data" v-loading="state.table.loading" style="width: 100%">
+                </div>
+                <el-form class="table-toolbar__filters" :inline="true">
+                    <el-form-item :label="T('role')">
+                        <el-select v-model="state.filter.role" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" :placeholder="T('selectRole')" popper-class="custom-header">
+                            <template #header>
+                                <el-checkbox v-model="roleCheckAll" :indeterminate="roleIndeterminate" @change="handleRoleCheckAll">
+                                    {{ $t('message.tableCommon.checkAll') }}
+                                </el-checkbox>
+                            </template>
+                            <el-option v-for="option in option.role" :key="option.value" :label="option.label" :value="option.value" />
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item :label="T('mfa_short')">
+                        <el-select v-model="state.filter.mfa" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" :placeholder="T('selectMfa')" popper-class="custom-header">
+                            <template #header>
+                                <el-checkbox v-model="mfaCheckAll" :indeterminate="mfaIndeterminate" @change="handleMfaCheckAll">
+                                    {{ $t('message.tableCommon.checkAll') }}
+                                </el-checkbox>
+                            </template>
+                            <el-option v-for="opt in option.mfa" :key="opt.value" :label="opt.label" :value="opt.value" />
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item :label="T('passwordStrength')">
+                        <el-select v-model="state.filter.passwordStrength" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" :placeholder="T('selectPasswordStrength')" popper-class="custom-header">
+                            <template #header>
+                                <el-checkbox v-model="passwordStrengthCheckAll" :indeterminate="passwordStrengthIndeterminate" @change="handlePasswordStrengthCheckAll">
+                                    {{ $t('message.tableCommon.checkAll') }}
+                                </el-checkbox>
+                            </template>
+                            <el-option v-for="opt in option.passwordStrength" :key="opt.value" :label="opt.label" :value="opt.value" />
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item :label="T('createTm')">
+                        <el-date-picker size="default" v-model="createTimeRange" type="datetimerange"
+                            :range-separator="$t('message.time.to')" :start-placeholder="$t('message.time.start')"
+                            :end-placeholder="$t('message.time.end')" :shortcuts="shortcuts" />
+                    </el-form-item>
+                    <el-form-item :label="T('pwdUpdateTm')">
+                        <el-date-picker size="default" v-model="passTimeRange" type="datetimerange"
+                            :range-separator="$t('message.time.to')" :start-placeholder="$t('message.time.start')"
+                            :end-placeholder="$t('message.time.end')" :shortcuts="shortcuts" />
+                    </el-form-item>
+                </el-form>
+            </div>
+            <el-table class="workbench-table" :data="state.table.data" v-loading="state.table.loading" stripe style="width: 100%">
                 <el-table-column type="index" width="80px" :label="$t('message.tableCommon.index')" />
                 <el-table-column prop="username" :label="T('username')"></el-table-column>
                 <el-table-column prop="role" :label="T('role')" width="110">
@@ -84,17 +86,16 @@
                 </el-table-column>
                 <el-table-column :label="T('operation')" width="210" fixed="right" align="center">
                     <template #default="scope">
-                        <el-button size="small" @click="onViewAccount(scope.row)">{{ T('view') }}</el-button>
-                        <el-button size="small" :disabled="priv > scope.row.priv" @click="onEditAccount(scope.row)">{{ T('edit') }}</el-button>
+                        <el-button size="small" plain @click="onViewAccount(scope.row)">{{ T('view') }}</el-button>
+                        <el-button size="small" plain :disabled="priv > scope.row.priv" @click="onEditAccount(scope.row)">{{ T('edit') }}</el-button>
                         <el-button size="small" type="danger" :disabled="priv > scope.row.priv || currentUser === scope.row.username" @click="onDelete(scope.row)">{{ T('delete') }}</el-button>
                     </template>
                 </el-table-column>
             </el-table>
-            <el-row style="margin-top: 10px; padding: 0 20px;" justify="space-between">
-                <div></div>
+            <el-row class="workbench-pagination" justify="end">
                 <el-pagination v-model:current-page="state.filter.pageIdx" v-model:page-size="state.filter.pageSize"
                     :page-sizes="[10, 20, 30, 40, 50]" layout='sizes, prev, pager, next, jumper'
-                    :total="state.data?.entries.length ?? 0" @size-change="(val: number) => state.filter.pageSize = val"
+                    :total="state.total" @size-change="(val: number) => state.filter.pageSize = val"
                     @current-change="(val: number) => state.filter.pageIdx = val" />
             </el-row>
         </el-card>
@@ -325,4 +326,63 @@ onMounted(() => {
 
 <style>
 @import '../style.css';
+
+.account-workbench {
+    min-height: 520px;
+}
+
+.account-workbench .table-toolbar {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 0 0 14px;
+    border-bottom: 1px solid #edf3f1;
+    margin-bottom: 14px;
+}
+
+.account-workbench .table-toolbar__actions {
+    flex: none;
+}
+
+.account-workbench .table-toolbar__filters {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    padding-bottom: 0 !important;
+    border-bottom: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.account-workbench .table-toolbar__filters .el-select {
+    width: 184px;
+}
+
+.account-workbench .table-toolbar__filters .el-date-editor {
+    width: 312px;
+}
+
+.account-workbench .workbench-table {
+    border: 1px solid #edf3f1;
+    border-radius: 8px;
+}
+
+.account-workbench .workbench-pagination {
+    padding: 16px 2px 0;
+}
+
+@media (max-width: 960px) {
+    .account-workbench .table-toolbar {
+        flex-direction: column;
+    }
+
+    .account-workbench .table-toolbar__filters .el-select,
+    .account-workbench .table-toolbar__filters .el-date-editor {
+        width: 100%;
+    }
+
+    .account-workbench .table-toolbar__filters .el-form-item {
+        width: 100%;
+    }
+}
 </style>

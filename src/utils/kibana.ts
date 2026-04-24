@@ -9,6 +9,8 @@ let dataViewIdCache: string | null = null;
  * Kibana session status
  */
 let kibanaSessionInitialized = false;
+let kibanaSessionFailedAt = 0;
+const KIBANA_SESSION_RETRY_COOLDOWN = 30 * 1000;
 
 /**
  * Get Kibana data-view-id for ada-activity index pattern using Kibana API
@@ -86,6 +88,10 @@ export async function initKibanaSession(): Promise<{ app: string; hash: boolean 
 		return { app: '', hash: false };
 	}
 
+	if (kibanaSessionFailedAt && Date.now() - kibanaSessionFailedAt < KIBANA_SESSION_RETRY_COOLDOWN) {
+		return { app: '', hash: false };
+	}
+
 	try {
 		const response = await request({
 			url: '/kibana/GenSession',
@@ -102,7 +108,7 @@ export async function initKibanaSession(): Promise<{ app: string; hash: boolean 
 			throw new Error('Failed to initialize Kibana session');
 		}
 	} catch (error) {
-		console.error('Kibana session initialization error:', error);
+		kibanaSessionFailedAt = Date.now();
 		throw error;
 	}
 }
@@ -112,4 +118,5 @@ export async function initKibanaSession(): Promise<{ app: string; hash: boolean 
  */
 export function resetKibanaSession(): void {
 	kibanaSessionInitialized = false;
+	kibanaSessionFailedAt = 0;
 }

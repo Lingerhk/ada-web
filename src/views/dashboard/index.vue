@@ -1,9 +1,8 @@
 <template>
-	<div class="chart-warp layout-padding-auto layout-padding-view" style="background: none">
-		<div class="chart-warp-top">
+	<div class="chart-warp dashboard-shell layout-padding-auto layout-padding-view" style="background: none">
+		<div class="chart-warp-top dashboard-filter-bar">
 			<div class="big-data-up mb15">
 				<div class="up-left">
-					<i class="el-icon-time mr5"></i>
 					<el-form :model="state.form" style="width: 200px">
 						<el-form-item>
 							<el-select v-model="state.form.domain" :placeholder="T('allDomains')">
@@ -19,14 +18,14 @@
 			</div>
 		</div>
 		<div class="chart-main">
-			<el-row class="flex-item" style="height: 220px;">
+			<el-row class="flex-item summary-row">
 				<el-col :span="24" class="flex-item">
 					<div class="flex-item-box">
 						<div class="flex-title">{{ T('summary') }}</div>
 						<div style="height: 100%;">
 							<el-row :gutter="20" style="padding-top: 10px;">
-								<el-col :span="6">
-									<el-card>
+								<el-col :xs="24" :sm="12" :lg="6">
+									<el-card class="metric-card">
 										<el-row class="summary-title">{{ T('assets') }}</el-row>
 										<el-row class="summary-detail">
 											{{ T('users') }}: {{ state.asset.distribution.users }} |
@@ -36,8 +35,8 @@
 										<el-row class="summary-value">{{ state.asset.total }}</el-row>
 									</el-card>
 								</el-col>
-								<el-col :span="6">
-									<el-card>
+								<el-col :xs="24" :sm="12" :lg="6">
+									<el-card class="metric-card">
 										<el-row class="summary-title">{{ T('rules') }}</el-row>
 										<el-row class="summary-detail">
 											{{ T('alertRules') }}: {{ state.rules.distribution.alert }} |
@@ -46,8 +45,8 @@
 										<el-row class="summary-value">{{ state.rules.total }}</el-row>
 									</el-card>
 								</el-col>
-								<el-col :span="6">
-									<el-card>
+								<el-col :xs="24" :sm="12" :lg="6">
+									<el-card class="metric-card">
 										<el-row class="summary-title">{{ T('agents') }}</el-row>
 										<el-row class="summary-detail">
 											{{ T('domains') }}: {{ state.agent.distribution.domains }} |
@@ -57,8 +56,8 @@
 										<el-row class="summary-value">{{ state.agent.total }}</el-row>
 									</el-card>
 								</el-col>
-								<el-col :span="6">
-									<el-card>
+								<el-col :xs="24" :sm="12" :lg="6">
+									<el-card class="metric-card">
 										<el-row class="summary-title">{{ T('events') }}</el-row>
 										<el-row class="summary-detail">
 											{{ T('alertEvents') }}: {{ state.event.distribution.events }} |
@@ -79,8 +78,7 @@
 							<div class="flex-title">
 								<span>{{ T('todayAlarmStats') }}</span>
 							</div>
-							<div class="flex-item"
-								style="width: 100%; align-items: center; display: flex; justify-content: center;">
+							<div class="flex-item dashboard-chart">
 								<div ref="alarmTodayPieRef" style="min-width: 300px; min-height: 300px;"></div>
 							</div>
 						</el-row>
@@ -117,8 +115,7 @@
 								</el-form-item>
 							</el-form>
 						</div>
-						<div class="flex-item"
-							style="width: 100%; align-items: center; display: flex; justify-content: center;">
+						<div class="flex-item dashboard-chart">
 							<div ref="alarmRiskTrendLineRef" style="width: 100%; min-height: 300px;"></div>
 						</div>
 					</div>
@@ -139,33 +136,32 @@
 								</el-form-item>
 							</el-form>
 						</div>
-						<div class="flex-item"
-							style="width: 100%; align-items: center; display: flex; justify-content: center;">
+						<div class="flex-item dashboard-chart">
 							<div ref="dashboardLogStatsRef" style="width: 100%; min-height: 300px;"></div>
 						</div>
 					</div>
 				</el-col>
 			</el-row>
-			<el-row class="flex-item" style="height: 220px;">
-				<el-col :span="8" class="flex-item">
+			<el-row class="flex-item scan-row">
+				<el-col :lg="8" :span="24" class="flex-item">
 					<div class="flex-item-box">
 						<div class="flex-title">{{ T('latestVulnerabilityCount') }}</div>
 						<div style="height: 100%;">
 							<el-row :gutter="20" style="padding-top: 10px;">
-								<el-col :span="8">
-									<el-card>
+								<el-col :xs="24" :sm="8">
+									<el-card class="risk-card risk-card--high">
 										<el-row class="bug-title">{{ T('highRiskVulnerabilities') }}</el-row>
 										<el-row class="bug-value">{{ state.scan.leak.high }}</el-row>
 									</el-card>
 								</el-col>
-								<el-col :span="8">
-									<el-card>
+								<el-col :xs="24" :sm="8">
+									<el-card class="risk-card risk-card--medium">
 										<el-row class="bug-title">{{ T('mediumRiskVulnerabilities') }}</el-row>
 										<el-row class="bug-value">{{ state.scan.leak.medium }}</el-row>
 									</el-card>
 								</el-col>
-								<el-col :span="8">
-									<el-card>
+								<el-col :xs="24" :sm="8">
+									<el-card class="risk-card risk-card--low">
 										<el-row class="bug-title">{{ T('lowRiskVulnerabilities') }}</el-row>
 										<el-row class="bug-value">{{ state.scan.leak.low }}</el-row>
 									</el-card>
@@ -174,7 +170,7 @@
 						</div>
 					</div>
 				</el-col>
-				<el-col :span="8" class="flex-item">
+				<el-col :lg="8" :span="24" class="flex-item">
 					<div class="flex-item-box">
 						<div class="flex-title">
 							<span>{{ T('latestBaselineCount') }}</span>
@@ -182,20 +178,20 @@
 						<!-- <div style="width: 100%; height: 100%;" ref="baseLinePieRef"></div> -->
 						<div style="height: 100%;">
 							<el-row :gutter="20" style="padding-top: 10px;">
-								<el-col :span="8">
-									<el-card>
+								<el-col :xs="24" :sm="8">
+									<el-card class="risk-card risk-card--high">
 										<el-row class="bug-title">{{ T('highRiskBaseline') }}</el-row>
 										<el-row class="bug-value">{{ state.scan.baseline.high }}</el-row>
 									</el-card>
 								</el-col>
-								<el-col :span="8">
-									<el-card>
+								<el-col :xs="24" :sm="8">
+									<el-card class="risk-card risk-card--medium">
 										<el-row class="bug-title">{{ T('mediumRiskBaseline') }}</el-row>
 										<el-row class="bug-value">{{ state.scan.baseline.medium }}</el-row>
 									</el-card>
 								</el-col>
-								<el-col :span="8">
-									<el-card>
+								<el-col :xs="24" :sm="8">
+									<el-card class="risk-card risk-card--low">
 										<el-row class="bug-title">{{ T('lowRiskBaseline') }}</el-row>
 										<el-row class="bug-value">{{ state.scan.baseline.low }}</el-row>
 									</el-card>
@@ -205,11 +201,11 @@
 
 					</div>
 				</el-col>
-				<el-col :span="8" class="flex-item">
+				<el-col :lg="8" :span="24" class="flex-item">
 					<div style="width: 100%; height: 100%;" class="flex-item-box">
 						<div class="flex-title">
 							<span>{{ T('latestWeakPasswordHits') }}</span>
-							<span class="flex-title-small">{{ T('comparedToPrevious') }} <span style="color: #006eff;">+0{{ T('countUnit') }}</span></span>
+							<span class="flex-title-small">{{ T('comparedToPrevious') }} <span class="trend-up">+0{{ T('countUnit') }}</span></span>
 						</div>
 						<el-row style="width: 100%; padding-top: 10px">
 							<FilpNumber :value="state.scan.hits"></FilpNumber>
@@ -875,14 +871,25 @@ onUnmounted(() => {
 <style scoped lang="scss">
 @import '../chart/chart.scss';
 
+.dashboard-shell {
+	padding-top: 0 !important;
+}
+
+.dashboard-filter-bar {
+	margin-bottom: 2px;
+}
+
 .bug-title {
 	font-size: 16px;
-	color: #c88686;
+	color: var(--ada-muted);
+	font-weight: 800;
 }
 
 .bug-value {
-	font-size: 32px;
+	font-size: 30px;
 	margin-top: 10px;
+	color: var(--ada-ink);
+	font-weight: 800;
 }
 
 .asset-title {
@@ -897,57 +904,101 @@ onUnmounted(() => {
 
 .summary-title {
 	font-size: 16px;
-	color: #409eff;
-	font-weight: bold;
+	color: var(--ada-primary);
+	font-weight: 800;
 }
 
 .summary-detail {
 	font-size: 12px;
-	color: #909399;
+	color: var(--ada-muted);
 	margin-top: 8px;
 	line-height: 1.5;
 }
 
 .summary-value {
-	font-size: 32px;
+	font-size: 30px;
 	margin-top: 10px;
-	color: #303133;
-	font-weight: bold;
+	color: var(--ada-ink);
+	font-weight: 800;
+}
+
+.summary-row,
+.scan-row {
+	min-height: 220px;
+}
+
+.metric-card,
+.risk-card {
+	height: 100%;
+	min-height: 118px;
+}
+
+.metric-card {
+	position: relative;
+	overflow: hidden;
+
+	&::after {
+		content: '';
+		position: absolute;
+		right: 16px;
+		bottom: 14px;
+		width: 46px;
+		height: 46px;
+		border-radius: 50%;
+		background: rgba(22, 143, 122, 0.08);
+	}
+}
+
+.risk-card {
+	border-left: 3px solid var(--ada-primary) !important;
+}
+
+.risk-card--high {
+	border-left-color: var(--ada-danger) !important;
+}
+
+.risk-card--medium {
+	border-left-color: var(--ada-warning) !important;
+}
+
+.risk-card--low {
+	border-left-color: var(--ada-success) !important;
 }
 
 .no-data-img {
 	display: flex;
 	justify-content: center;
-	/* Center horizontally */
 	align-items: center;
-	/* Center vertically */
 	height: 100%;
-	/* Container height */
+	min-height: 260px;
 }
 
 .chart-main {
 	height: 100%;
-	padding-left: 15px;
+	padding-left: 0;
 }
 
 .flex-item {
-	padding: 0 15px 15px 0;
+	padding: 0 12px 12px 0;
 }
 
 .flex-item-box {
 	width: 100%;
 	height: 100%;
-	background: var(--el-color-white);
-	border: 1px solid var(--el-border-color-lighter);
-	border-radius: 4px;
-	transition: all ease 0.3s;
+	background: rgba(255, 255, 255, 0.96);
+	border: 1px solid rgba(220, 232, 229, 0.88);
+	border-radius: 8px;
+	transition:
+		transform 0.18s ease,
+		box-shadow 0.18s ease,
+		border-color 0.18s ease;
 	display: flex;
 	flex-direction: column;
-	padding: 10px;
+	padding: 16px;
 
 	&:hover {
-		box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
-		transition: all ease 0.3s;
+		border-color: rgba(22, 143, 122, 0.28);
+		box-shadow: 0 10px 24px rgba(31, 54, 61, 0.08);
 	}
 
 	.flex-title {
@@ -955,26 +1006,47 @@ onUnmounted(() => {
 		display: flex;
 		justify-content: space-between;
 		width: 100%;
-		font-size: 20px;
+		color: var(--ada-ink);
+		font-size: 18px;
+		font-weight: 800;
 
 		.flex-title-small {
 			font-size: 16px;
+			color: var(--ada-muted);
+			font-weight: 700;
 		}
 	}
 }
 
+.dashboard-chart {
+	width: 100%;
+	align-items: center;
+	display: flex;
+	justify-content: center;
+}
+
+.trend-up {
+	color: var(--ada-primary);
+	font-weight: 800;
+}
+
 .big-data-up {
-	height: 55px;
+	height: 64px;
 	width: 100%;
 	display: flex;
 	align-items: center;
-	padding: 0 15px;
-	color: var(--el-color-primary);
+	padding: 0 18px;
+	border: 1px solid rgba(220, 232, 229, 0.86);
+	border-radius: 8px;
+	color: var(--ada-primary);
+	background:
+		linear-gradient(135deg, rgba(22, 143, 122, 0.1), rgba(245, 184, 75, 0.08)),
+		#ffffff;
 	overflow: hidden;
 	position: relative;
 
 	.up-left {
-		position: absolute;
+		position: static;
 		font-size: 16px;
 	}
 
@@ -987,21 +1059,10 @@ onUnmounted(() => {
 		width: 100%;
 		display: flex;
 		justify-content: center;
+		color: var(--ada-ink);
 		font-size: 18px;
-		letter-spacing: 5px;
-		background-image: -webkit-linear-gradient(left,
-				var(--el-color-primary),
-				var(--el-color-primary-light-3) 25%,
-				var(--el-color-primary) 50%,
-				var(--el-color-primary-light-3) 75%,
-				var(--el-color-primary));
-		-webkit-text-fill-color: transparent;
-		-webkit-background-clip: text;
-		background-clip: text;
-		background-size: 200% 100%;
-		-webkit-animation: masked-animation-data-v-b02d8052 4s linear infinite;
-		animation: masked-animation-data-v-b02d8052 4s linear infinite;
-		-webkit-box-reflect: below -2px -webkit-gradient(linear, left top, left bottom, from(transparent), to(hsla(0, 0%, 100%, 0.1)));
+		font-weight: 800;
+		letter-spacing: 0;
 		position: relative;
 
 		@keyframes masked-animation {
@@ -1024,11 +1085,30 @@ onUnmounted(() => {
 			left: 50%;
 			transform: translateX(-50%);
 			border: 1px transparent solid;
-			border-image: linear-gradient(to right, var(--el-color-primary-light-9), var(--el-color-primary)) 1 10;
+			border-image: linear-gradient(to right, rgba(22, 143, 122, 0.12), rgba(245, 184, 75, 0.42)) 1 10;
 		}
 
 		span {
 			cursor: pointer;
+		}
+	}
+}
+
+@media (max-width: 768px) {
+	.flex-item {
+		padding-right: 0;
+	}
+
+	.big-data-up {
+		height: auto;
+		padding: 14px;
+	}
+
+	.big-data-up .up-left {
+		width: 100%;
+
+		.el-form {
+			width: 100% !important;
 		}
 	}
 }

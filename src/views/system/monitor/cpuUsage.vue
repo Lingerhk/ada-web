@@ -216,6 +216,14 @@ onUnmounted(() => {
 <style>
 .form-items {
     display: flex;
+    align-items: flex-start;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px 12px;
+}
+
+.form-items .el-form-item,
+.form-items .el-form-item:last-of-type {
+    margin: 0 !important;
 }
 </style>

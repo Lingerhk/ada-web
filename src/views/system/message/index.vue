@@ -1,7 +1,7 @@
 <template>
     <div class="layout-pd">
         <el-card shadow="hover">
-            <el-row justify="space-between">
+            <el-row class="table-filter-row">
                 <!-- Search controls -->
                 <el-form :inline="true">
                     <el-form-item :label="$t('message.system.message.msgType')">
@@ -25,7 +25,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item :label="$t('message.system.message.timeRange')">
-                        <el-date-picker size="default" v-model="timeRange" type="datetimerange"
+                        <el-date-picker class="filter-date-range" size="default" v-model="timeRange" type="datetimerange"
                             :range-separator="$t('message.time.to')" :start-placeholder="$t('message.time.start')"
                             :end-placeholder="$t('message.time.end')" :shortcuts="shortcuts" />
                     </el-form-item>

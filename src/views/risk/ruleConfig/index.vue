@@ -4,7 +4,7 @@
             <el-tabs v-model="activeTab">
                 <!-- Rule Template Tab -->
                 <el-tab-pane :label="$t('message.risk.ruleConfig.ruleTemplateTab')" name="ruleTemplate">
-                    <el-row justify="space-between" style="margin-top: 10px;">
+                    <el-row class="table-filter-row table-filter-row--compact" style="margin-top: 10px;">
                         <!-- Search controls -->
                         <el-form :inline="true">
                             <el-form-item>

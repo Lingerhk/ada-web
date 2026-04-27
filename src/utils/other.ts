@@ -37,11 +37,11 @@ export function useTitle() {
 		let globalTitle: string = themeConfig.value.globalTitle;
 		const { path, meta } = router.currentRoute.value;
 		if (path === '/login') {
-			webTitle = <string>meta.title;
+			webTitle = typeof meta?.title === 'string' ? i18n.global.t(meta.title) : '';
 		} else {
 			webTitle = setTagsViewNameI18n(router.currentRoute.value);
 		}
-		document.title = `${webTitle} - ${globalTitle}` || globalTitle;
+		document.title = webTitle ? `${webTitle} - ${globalTitle}` : globalTitle;
 	});
 }
 

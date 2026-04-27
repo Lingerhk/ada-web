@@ -1,9 +1,9 @@
 <template>
     <div class="layout-pd">
         <el-card shadow="hover">
-            <el-row justify="space-between" style="flex-wrap: nowrap;">
+            <el-row class="table-filter-row activity-filter-row">
                 <!-- Search controls -->
-                <el-form :inline="true" class="filter-form" style="flex: 1;">
+                <el-form :inline="true" class="filter-form">
                     <el-form-item :label="$t('message.threat.levelName')">
                         <el-select v-model="threatLevel" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 130px" :placeholder="$t('message.threat.alarmList.selectLevel')" popper-class="custom-header">
                             <template #header>
@@ -35,22 +35,24 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item :label="$t('message.threat.lastOccurenceTime')">
-                        <el-date-picker size="default" v-model="lastOccurenceTime" type="datetimerange"
+                        <el-date-picker class="filter-date-range" size="default" v-model="lastOccurenceTime" type="datetimerange"
                             :range-separator="$t('message.time.to')" :start-placeholder="$t('message.time.start')"
                             :end-placeholder="$t('message.time.end')" :shortcuts="shortcuts" />
                     </el-form-item>
-                </el-form>
-                <!-- Actions on the right -->
-                <el-space wrap size="default"
-                    style="min-width: 450px; justify-content: flex-end; align-items: flex-start; padding-top: 5px; flex-shrink: 0;">
-                    <el-input v-model="idInput" size="default" :placeholder="$t('message.threat.idInput')"
-                        style="width: 290px;" :suffix-icon="Search" clearable></el-input>
-                    <el-button type="primary" size="default" @click="resetReqParams">{{
-                        $t('message.threat.reset') }}</el-button>
-                    <el-button type="primary" size="default" @click="refreshActivity">{{
-                        $t('message.threat.refreshManually') }}</el-button>
+                    <el-form-item>
+                        <el-input class="filter-search-input" v-model="idInput" size="default" :placeholder="$t('message.threat.idInput')"
+                            :suffix-icon="Search" clearable></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" size="default" @click="resetReqParams">{{
+                            $t('message.threat.reset') }}</el-button>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" size="default" @click="refreshActivity">{{
+                            $t('message.threat.refreshManually') }}</el-button>
+                    </el-form-item>
                     <!-- <el-button type="primary" size="default">{{ $t('message.threat.print') }}</el-button> -->
-                </el-space>
+                </el-form>
             </el-row>
             <!-- Result list below -->
             <el-row style="margin-top: 10px">

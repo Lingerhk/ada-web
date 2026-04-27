@@ -1,8 +1,8 @@
 <template>
     <div class="layout-pd">
         <el-card shadow="hover">
-            <div class="risk-overview-header mb15">
-                <el-form inline size="default">
+            <div class="risk-overview-header table-filter-row table-filter-row--compact">
+                <el-form inline size="default" class="filter-form">
                     <el-form-item>
                         <el-select
                             v-model="domain"
@@ -170,7 +170,7 @@ onMounted(async () => {
 .risk-overview-header {
     display: flex;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .risk-overview-header :deep(.el-form-item) {

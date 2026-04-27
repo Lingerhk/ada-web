@@ -1,7 +1,7 @@
 <template>
     <div class="layout-pd">
         <el-card shadow="hover">
-            <el-row justify="space-between">
+            <el-row class="table-filter-row">
                 <!-- Search controls -->
                 <el-form :inline="true">
                     <el-form-item>

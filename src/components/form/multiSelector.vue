@@ -35,10 +35,28 @@ const checkAll = ref(props.selected.length !== 0 && props.selected.length === pr
 const indeterminate = ref(false);
 const selected = ref([...props.selected]);
 
+const isSameSelection = (left: any[], right: any[]) => {
+	if (left.length !== right.length) return false;
+	return left.every((item, index) => item === right[index]);
+};
+
+const updateCheckState = (val: any[]) => {
+	indeterminate.value = false;
+	if (val.length === 0) {
+		checkAll.value = false;
+	} else if (val.length === props.options.length) {
+		checkAll.value = true;
+	} else {
+		indeterminate.value = true;
+	}
+};
+
 watch(
 	() => props.selected,
 	(newValue) => {
-		selected.value = [...newValue];
+		if (!isSameSelection(selected.value, newValue)) {
+			selected.value = [...newValue];
+		}
 	},
 	{ deep: true }
 );
@@ -46,15 +64,18 @@ watch(
 watch(
 	() => selected.value,
 	(val) => {
-		indeterminate.value = false;
-		if (val.length === 0) {
-			checkAll.value = false;
-		} else if (val.length === props.options.length) {
-			checkAll.value = true;
-		} else {
-			indeterminate.value = true;
+		updateCheckState(val);
+		if (!isSameSelection(val, props.selected)) {
+			emit('update:selected', val);
 		}
-		emit('update:selected', val);
+	},
+	{ deep: true }
+);
+
+watch(
+	() => props.options,
+	() => {
+		updateCheckState(selected.value);
 	},
 	{ deep: true }
 );

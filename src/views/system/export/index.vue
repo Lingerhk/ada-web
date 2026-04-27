@@ -1,7 +1,7 @@
 <template>
     <div class="layout-pd">
         <el-card shadow="hover">
-            <el-row justify="space-between">
+            <el-row class="table-filter-row">
                 <!-- Search controls -->
                 <el-form :inline="true">
                     <el-form-item :label="transExport('type')">
@@ -25,14 +25,13 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item :label="transExport('createTm')">
-                        <el-date-picker size="default" v-model="timeRangeRef" type="datetimerange"
+                        <el-date-picker class="filter-date-range" size="default" v-model="timeRangeRef" type="datetimerange"
                             :range-separator="$t('message.time.to')" :start-placeholder="$t('message.time.start')"
                             :end-placeholder="$t('message.time.end')" :shortcuts="shortcuts" />
                     </el-form-item>
                 </el-form>
                 <!-- Actions on the right -->
-                <el-space wrap size="default"
-                    style="min-width: 450px; justify-content:right; align-items: flex-start; padding-top: 5px;">
+                <el-space wrap size="default" class="table-filter-actions">
                 </el-space>
             </el-row>
             <el-row style="margin-top: 10px">

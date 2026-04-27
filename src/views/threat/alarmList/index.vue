@@ -1,9 +1,9 @@
 <template>
     <div class="layout-pd">
         <el-card shadow="hover">
-            <el-row justify="space-between">
+            <el-row class="table-filter-row alarm-filter-row">
                 <!-- Advanced search -->
-                <el-form v-if="isAdvanceSearch">
+                <el-form v-if="isAdvanceSearch" class="filter-form alarm-advanced-form">
                     <el-form-item v-for="(value, index) in advancedSearchRef" style="margin-bottom: 5px;" size="default"
                         :key="index">
                         <template #label>
@@ -35,7 +35,7 @@
                 <el-form v-if="!isAdvanceSearch" :inline="true" class="filter-form">
                     <!-- Threat type -->
                     <el-form-item :label="$t('message.threat.threatName')">
-                        <el-select v-model="threatIds" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.threat.alarmList.selectThreatName')" popper-class="custom-header">
+                        <el-select v-model="threatIds" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 150px" :placeholder="$t('message.threat.alarmList.selectThreatName')" popper-class="custom-header">
                             <template #header>
                                 <el-checkbox v-model="threatIdsCheckAll" :indeterminate="threatIdsIndeterminate" @change="handleThreatIdsCheckAll">
                                     {{ $t('message.tableCommon.checkAll') }}
@@ -46,7 +46,7 @@
                     </el-form-item>
                     <!-- Threat level -->
                     <el-form-item :label="$t('message.threat.levelName')">
-                        <el-select v-model="threatLevel" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 130px" :placeholder="$t('message.threat.alarmList.selectLevel')" popper-class="custom-header">
+                        <el-select v-model="threatLevel" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 110px" :placeholder="$t('message.threat.alarmList.selectLevel')" popper-class="custom-header">
                             <template #header>
                                 <el-checkbox v-model="levelCheckAll" :indeterminate="levelIndeterminate" @change="handleLevelCheckAll">
                                     {{ $t('message.tableCommon.checkAll') }}
@@ -57,30 +57,29 @@
                     </el-form-item>
                     <!-- Handling status -->
                     <el-form-item :label="$t('message.threat.tableTitle.eventStatus')">
-                        <el-radio-group v-model="eventStatus" size="default">
-                            <el-radio-button v-for="(level, index) in eventStatusOptions" :key="level" :value="index">
-                                {{ $t(`message.threat.status.${level}`)}}
-                            </el-radio-button>
-                        </el-radio-group>
+                        <el-select v-model="eventStatus" size="default" style="width: 96px">
+                            <el-option v-for="status in eventStatusOptions" :key="status" :value="status"
+                                :label="$t(`message.threat.status.${status}`)" />
+                        </el-select>
                     </el-form-item>
                     <el-form-item :label="$t('message.threat.lastOccurenceTime')">
-                        <el-date-picker size="default" v-model="lastOccurenceTime" type="datetimerange"
+                        <el-date-picker class="filter-date-range" size="default" v-model="lastOccurenceTime" type="datetimerange"
+                            format="YY-MM-DD HH:mm"
                             :range-separator="$t('message.time.to')" :start-placeholder="$t('message.time.start')"
                             :end-placeholder="$t('message.time.end')" :shortcuts="shortcuts" />
                     </el-form-item>
                 </el-form>
 
                 <!-- Actions on the right -->
-                <el-space wrap size="default"
-                    style="min-width: 450px; justify-content:right; align-items: flex-start; padding-top: 5px;">
+                <div class="table-filter-actions">
                     <el-switch v-model="isAdvanceSearch" size="default"
-                        :active-text="$t('message.threat.advanceSearch')" style="float:right" />
+                        :active-text="$t('message.threat.advanceSearch')" />
                     <el-switch v-model="isAutoRefresh" size="default" :active-text="$t('message.threat.autoRefresh')"
                         @change="onAutoRefresh" />
                     <el-button type="primary" size="default" @click="refreshThreatTable">{{
                         $t('message.threat.refreshManually') }}</el-button>
                     <!-- <el-button type="primary" size="default">{{ $t('message.threat.print') }}</el-button> -->
-                </el-space>
+                </div>
             </el-row>
             <!-- Result list below -->
             <el-row style="margin-top: 30px; padding-left: 28px;">

@@ -1,20 +1,22 @@
 <template>
     <div class="layout-pd">
 
-        <el-form size="default" :inline="true">
+        <div class="table-filter-row table-filter-row--compact safety-overview-filter">
+        <el-form size="default" :inline="true" class="filter-form">
             <el-form-item>
-                <el-select v-model="state.req.duration" style="width: 100px">
+                <el-select v-model="state.req.duration" style="width: 120px">
                     <el-option v-for="opt in dayOptions" :label="opt.label" :key="opt.value"
                         :value="opt.value"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <el-select v-model="state.req.domain" :placeholder="$t('message.tableCommon.allDomain')" style="width: 100px">
+                <el-select v-model="state.req.domain" :placeholder="$t('message.tableCommon.allDomain')" style="width: 140px">
                     <el-option v-for="domain in domainOptions" :label="domain.label" :key="domain.value"
                         :value="domain.value"></el-option>
                 </el-select>
             </el-form-item>
         </el-form>
+        </div>
         <el-row :gutter="10">
             <el-col :span="24" :lg="12">
                 <el-card shadow="hover" class="topThreatCard">

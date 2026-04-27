@@ -348,6 +348,113 @@ body {
 	}
 }
 
+.table-filter-row {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 10px 12px;
+	padding: 0 0 14px;
+	margin-bottom: 14px;
+	border-bottom: 1px solid #edf3f1;
+
+	.el-form--inline {
+		flex: 1 1 auto;
+		min-width: 0;
+		padding-bottom: 0;
+		margin-bottom: 0;
+		border-bottom: 0;
+		gap: 10px 12px;
+		align-items: flex-start;
+	}
+
+	.el-form-item,
+	.el-form--inline .el-form-item,
+	.el-form--inline .el-form-item:last-of-type {
+		margin: 0 !important;
+	}
+
+	.el-form-item__label {
+		height: var(--el-component-size);
+		line-height: var(--el-component-size);
+		padding: 0 10px;
+		display: inline-flex;
+		align-items: center;
+		white-space: nowrap;
+		background: #f0f6f4 !important;
+		border: 1px solid #dbe8e5 !important;
+		border-right: 0 !important;
+		border-radius: 6px 0 0 6px;
+		color: var(--ada-text);
+		font-weight: 700;
+	}
+
+	.el-form-item__content {
+		min-height: var(--el-component-size);
+		align-items: flex-start;
+	}
+
+	.el-input,
+	.el-select,
+	.el-date-editor {
+		vertical-align: top;
+	}
+
+	.el-input__wrapper,
+	.el-select__wrapper,
+	.el-date-editor {
+		border-radius: 6px;
+		min-height: var(--el-component-size);
+	}
+
+	.el-form-item__label + .el-form-item__content {
+		.el-input__wrapper,
+		.el-select__wrapper,
+		.el-date-editor {
+			border-radius: 0 6px 6px 0;
+		}
+	}
+
+	.el-date-editor--datetimerange {
+		width: 300px !important;
+		max-width: 100%;
+	}
+
+	.filter-search-input {
+		width: 260px !important;
+	}
+}
+
+.table-filter-row--compact {
+	padding-bottom: 0;
+	margin-bottom: 18px;
+	border-bottom: 0;
+}
+
+.table-filter-actions {
+	display: flex;
+	flex: 0 1 auto;
+	align-items: center;
+	justify-content: flex-end;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin-left: auto;
+}
+
+.alarm-filter-row > .filter-form {
+	flex-basis: 100%;
+}
+
+.alarm-filter-row > .table-filter-actions {
+	width: 100%;
+	margin-left: 0;
+	justify-content: flex-end;
+}
+
+.alarm-filter-row .el-date-editor--datetimerange {
+	width: 260px !important;
+}
+
 .el-table {
 	border-radius: 8px;
 	overflow: hidden;
@@ -552,7 +659,7 @@ body {
 	align-items: flex-end;
 	justify-content: space-between;
 	gap: 16px;
-	margin: 18px 18px 0;
+	margin: 15px 15px 0;
 	padding: 18px 20px;
 	border: 1px solid rgba(219, 232, 228, 0.88);
 	border-radius: 8px;

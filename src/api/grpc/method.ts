@@ -33,6 +33,7 @@ import {
 	UpdateActivityRuleReq,
 	DeleteActivityRuleReq,
 	GetActivityRuleFieldsReply,
+	GetAlertRuleNamesReq,
 } from './ada';
 import { alertApiError } from '/@/utils/error';
 import { OptionType } from '/@/utils/constant';
@@ -270,23 +271,18 @@ export const listThreatRuleOptions = async (): Promise<OptionType[]> => {
 
 export const listAlertRuleNameOptions = async (): Promise<OptionType[]> => {
 	try {
-		const req: ListAlertRuleReq = {
-			pageIdx: 1,
-			pageSize: 1000,
-			level: [],
-			status: [],
-			enable: false,
-			keyword: '',
-			tags: [],
-			sortTm: -1,
+		const req: GetAlertRuleNamesReq = {
+			ruleId: '',
 		};
-		const response = await api.listAlertRule(req).then((resp) => resp.response);
-		return response.rules.map((rule) => ({
-			label: rule.title,
-			value: rule.iD,
-		}));
+		const response = await api.getAlertRuleNames(req).then((resp) => resp.response);
+		return Object.entries(response.names)
+			.map(([ruleId, title]) => ({
+				label: title,
+				value: ruleId,
+			}))
+			.sort((left, right) => left.label.localeCompare(right.label));
 	} catch (err) {
-		console.error(err);
+		alertApiError(err);
 		return [];
 	}
 };

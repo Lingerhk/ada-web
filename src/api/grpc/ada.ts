@@ -4589,11 +4589,107 @@ export interface DashboardStatsReply {
  * @generated from protobuf message ada.DashboardTrendsReq
  */
 export interface DashboardTrendsReq {
+    /**
+     * @generated from protobuf field: string domain = 1;
+     */
+    domain: string; // Required, all|domainX
+    /**
+     * @generated from protobuf field: int32 year = 2;
+     */
+    year: number; // Optional, default current year
 }
 /**
  * @generated from protobuf message ada.DashboardTrendsReply
  */
 export interface DashboardTrendsReply {
+    /**
+     * @generated from protobuf field: repeated string labels = 1;
+     */
+    labels: string[]; // Month labels, e.g. 2026-01
+    /**
+     * @generated from protobuf field: repeated int32 total = 2;
+     */
+    total: number[]; // Total alert events
+    /**
+     * @generated from protobuf field: repeated int32 high = 3;
+     */
+    high: number[]; // High/critical alert events
+    /**
+     * @generated from protobuf field: repeated int32 medium = 4;
+     */
+    medium: number[]; // Medium alert events
+    /**
+     * @generated from protobuf field: repeated int32 low = 5;
+     */
+    low: number[]; // Low alert events
+    /**
+     * @generated from protobuf field: repeated int32 alert_pending = 6;
+     */
+    alertPending: number[]; // Pending alert events
+    /**
+     * @generated from protobuf field: repeated int32 alert_handled = 7;
+     */
+    alertHandled: number[]; // Handled alert events
+    /**
+     * @generated from protobuf field: repeated int32 alert_whitelisted = 8;
+     */
+    alertWhitelisted: number[]; // Whitelisted alert events
+    /**
+     * @generated from protobuf field: repeated int32 alert_blocked = 9;
+     */
+    alertBlocked: number[]; // Blocked alert events
+    /**
+     * @generated from protobuf field: repeated string domain_risk_domains = 10;
+     */
+    domainRiskDomains: string[]; // Domain risk ranking labels
+    /**
+     * @generated from protobuf field: repeated int32 domain_risk_high_alerts = 11;
+     */
+    domainRiskHighAlerts: number[]; // High/critical alert events by domain
+    /**
+     * @generated from protobuf field: repeated int32 domain_risk_high_leaks = 12;
+     */
+    domainRiskHighLeaks: number[]; // High/critical vulnerability hits by domain
+    /**
+     * @generated from protobuf field: repeated int32 domain_risk_high_baselines = 13;
+     */
+    domainRiskHighBaselines: number[]; // High/critical baseline hits by domain
+    /**
+     * @generated from protobuf field: repeated int32 scan_leak_finished = 14;
+     */
+    scanLeakFinished: number[]; // Finished vulnerability scan tasks
+    /**
+     * @generated from protobuf field: repeated int32 scan_leak_failed = 15;
+     */
+    scanLeakFailed: number[]; // Failed vulnerability scan tasks
+    /**
+     * @generated from protobuf field: repeated int32 scan_leak_hits = 16;
+     */
+    scanLeakHits: number[]; // Vulnerability scan hits
+    /**
+     * @generated from protobuf field: repeated int32 scan_baseline_finished = 17;
+     */
+    scanBaselineFinished: number[]; // Finished baseline scan tasks
+    /**
+     * @generated from protobuf field: repeated int32 scan_baseline_failed = 18;
+     */
+    scanBaselineFailed: number[]; // Failed baseline scan tasks
+    /**
+     * @generated from protobuf field: repeated int32 scan_baseline_hits = 19;
+     */
+    scanBaselineHits: number[]; // Baseline scan hits
+    /**
+     * @generated from protobuf field: repeated int32 scan_weakpwd_finished = 20;
+     */
+    scanWeakpwdFinished: number[]; // Finished weak-password scan tasks
+    /**
+     * @generated from protobuf field: repeated int32 scan_weakpwd_failed = 21;
+     */
+    scanWeakpwdFailed: number[]; // Failed weak-password scan tasks
+    /**
+     * @generated from protobuf field: repeated int32 scan_weakpwd_hits = 22;
+     */
+    scanWeakpwdHits: number[]; // Weak-password scan hits
 }
 /**
  * @generated from protobuf message ada.DashboardLogStatsReq
@@ -21707,18 +21803,48 @@ export const DashboardStatsReply = new DashboardStatsReply$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class DashboardTrendsReq$Type extends MessageType<DashboardTrendsReq> {
     constructor() {
-        super("ada.DashboardTrendsReq", []);
+        super("ada.DashboardTrendsReq", [
+            { no: 1, name: "domain", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "year", kind: "scalar", T: 5 /*ScalarType.INT32*/ }
+        ]);
     }
     create(value?: PartialMessage<DashboardTrendsReq>): DashboardTrendsReq {
         const message = globalThis.Object.create((this.messagePrototype!));
+        message.domain = "";
+        message.year = 0;
         if (value !== undefined)
             reflectionMergePartial<DashboardTrendsReq>(this, message, value);
         return message;
     }
     internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: DashboardTrendsReq): DashboardTrendsReq {
-        return target ?? this.create();
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string domain */ 1:
+                    message.domain = reader.string();
+                    break;
+                case /* int32 year */ 2:
+                    message.year = reader.int32();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
     }
     internalBinaryWrite(message: DashboardTrendsReq, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string domain = 1; */
+        if (message.domain !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.domain);
+        /* int32 year = 2; */
+        if (message.year !== 0)
+            writer.tag(2, WireType.Varint).int32(message.year);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -21732,18 +21858,368 @@ export const DashboardTrendsReq = new DashboardTrendsReq$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class DashboardTrendsReply$Type extends MessageType<DashboardTrendsReply> {
     constructor() {
-        super("ada.DashboardTrendsReply", []);
+        super("ada.DashboardTrendsReply", [
+            { no: 1, name: "labels", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "total", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ },
+            { no: 3, name: "high", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ },
+            { no: 4, name: "medium", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ },
+            { no: 5, name: "low", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ },
+            { no: 6, name: "alertPending", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ },
+            { no: 7, name: "alertHandled", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ },
+            { no: 8, name: "alertWhitelisted", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ },
+            { no: 9, name: "alertBlocked", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ },
+            { no: 10, name: "domainRiskDomains", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 11, name: "domainRiskHighAlerts", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ },
+            { no: 12, name: "domainRiskHighLeaks", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ },
+            { no: 13, name: "domainRiskHighBaselines", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ },
+            { no: 14, name: "scanLeakFinished", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ },
+            { no: 15, name: "scanLeakFailed", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ },
+            { no: 16, name: "scanLeakHits", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ },
+            { no: 17, name: "scanBaselineFinished", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ },
+            { no: 18, name: "scanBaselineFailed", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ },
+            { no: 19, name: "scanBaselineHits", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ },
+            { no: 20, name: "scanWeakpwdFinished", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ },
+            { no: 21, name: "scanWeakpwdFailed", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ },
+            { no: 22, name: "scanWeakpwdHits", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ }
+        ]);
     }
     create(value?: PartialMessage<DashboardTrendsReply>): DashboardTrendsReply {
         const message = globalThis.Object.create((this.messagePrototype!));
+        message.labels = [];
+        message.total = [];
+        message.high = [];
+        message.medium = [];
+        message.low = [];
+        message.alertPending = [];
+        message.alertHandled = [];
+        message.alertWhitelisted = [];
+        message.alertBlocked = [];
+        message.domainRiskDomains = [];
+        message.domainRiskHighAlerts = [];
+        message.domainRiskHighLeaks = [];
+        message.domainRiskHighBaselines = [];
+        message.scanLeakFinished = [];
+        message.scanLeakFailed = [];
+        message.scanLeakHits = [];
+        message.scanBaselineFinished = [];
+        message.scanBaselineFailed = [];
+        message.scanBaselineHits = [];
+        message.scanWeakpwdFinished = [];
+        message.scanWeakpwdFailed = [];
+        message.scanWeakpwdHits = [];
         if (value !== undefined)
             reflectionMergePartial<DashboardTrendsReply>(this, message, value);
         return message;
     }
     internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: DashboardTrendsReply): DashboardTrendsReply {
-        return target ?? this.create();
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated string labels */ 1:
+                    message.labels.push(reader.string());
+                    break;
+                case /* repeated int32 total */ 2:
+                    if (wireType === WireType.LengthDelimited)
+                        for (let e = reader.int32() + reader.pos; reader.pos < e;)
+                            message.total.push(reader.int32());
+                    else
+                        message.total.push(reader.int32());
+                    break;
+                case /* repeated int32 high */ 3:
+                    if (wireType === WireType.LengthDelimited)
+                        for (let e = reader.int32() + reader.pos; reader.pos < e;)
+                            message.high.push(reader.int32());
+                    else
+                        message.high.push(reader.int32());
+                    break;
+                case /* repeated int32 medium */ 4:
+                    if (wireType === WireType.LengthDelimited)
+                        for (let e = reader.int32() + reader.pos; reader.pos < e;)
+                            message.medium.push(reader.int32());
+                    else
+                        message.medium.push(reader.int32());
+                    break;
+                case /* repeated int32 low */ 5:
+                    if (wireType === WireType.LengthDelimited)
+                        for (let e = reader.int32() + reader.pos; reader.pos < e;)
+                            message.low.push(reader.int32());
+                    else
+                        message.low.push(reader.int32());
+                    break;
+                case /* repeated int32 alertPending */ 6:
+                    if (wireType === WireType.LengthDelimited)
+                        for (let e = reader.int32() + reader.pos; reader.pos < e;)
+                            message.alertPending.push(reader.int32());
+                    else
+                        message.alertPending.push(reader.int32());
+                    break;
+                case /* repeated int32 alertHandled */ 7:
+                    if (wireType === WireType.LengthDelimited)
+                        for (let e = reader.int32() + reader.pos; reader.pos < e;)
+                            message.alertHandled.push(reader.int32());
+                    else
+                        message.alertHandled.push(reader.int32());
+                    break;
+                case /* repeated int32 alertWhitelisted */ 8:
+                    if (wireType === WireType.LengthDelimited)
+                        for (let e = reader.int32() + reader.pos; reader.pos < e;)
+                            message.alertWhitelisted.push(reader.int32());
+                    else
+                        message.alertWhitelisted.push(reader.int32());
+                    break;
+                case /* repeated int32 alertBlocked */ 9:
+                    if (wireType === WireType.LengthDelimited)
+                        for (let e = reader.int32() + reader.pos; reader.pos < e;)
+                            message.alertBlocked.push(reader.int32());
+                    else
+                        message.alertBlocked.push(reader.int32());
+                    break;
+                case /* repeated string domainRiskDomains */ 10:
+                    message.domainRiskDomains.push(reader.string());
+                    break;
+                case /* repeated int32 domainRiskHighAlerts */ 11:
+                    if (wireType === WireType.LengthDelimited)
+                        for (let e = reader.int32() + reader.pos; reader.pos < e;)
+                            message.domainRiskHighAlerts.push(reader.int32());
+                    else
+                        message.domainRiskHighAlerts.push(reader.int32());
+                    break;
+                case /* repeated int32 domainRiskHighLeaks */ 12:
+                    if (wireType === WireType.LengthDelimited)
+                        for (let e = reader.int32() + reader.pos; reader.pos < e;)
+                            message.domainRiskHighLeaks.push(reader.int32());
+                    else
+                        message.domainRiskHighLeaks.push(reader.int32());
+                    break;
+                case /* repeated int32 domainRiskHighBaselines */ 13:
+                    if (wireType === WireType.LengthDelimited)
+                        for (let e = reader.int32() + reader.pos; reader.pos < e;)
+                            message.domainRiskHighBaselines.push(reader.int32());
+                    else
+                        message.domainRiskHighBaselines.push(reader.int32());
+                    break;
+                case /* repeated int32 scanLeakFinished */ 14:
+                    if (wireType === WireType.LengthDelimited)
+                        for (let e = reader.int32() + reader.pos; reader.pos < e;)
+                            message.scanLeakFinished.push(reader.int32());
+                    else
+                        message.scanLeakFinished.push(reader.int32());
+                    break;
+                case /* repeated int32 scanLeakFailed */ 15:
+                    if (wireType === WireType.LengthDelimited)
+                        for (let e = reader.int32() + reader.pos; reader.pos < e;)
+                            message.scanLeakFailed.push(reader.int32());
+                    else
+                        message.scanLeakFailed.push(reader.int32());
+                    break;
+                case /* repeated int32 scanLeakHits */ 16:
+                    if (wireType === WireType.LengthDelimited)
+                        for (let e = reader.int32() + reader.pos; reader.pos < e;)
+                            message.scanLeakHits.push(reader.int32());
+                    else
+                        message.scanLeakHits.push(reader.int32());
+                    break;
+                case /* repeated int32 scanBaselineFinished */ 17:
+                    if (wireType === WireType.LengthDelimited)
+                        for (let e = reader.int32() + reader.pos; reader.pos < e;)
+                            message.scanBaselineFinished.push(reader.int32());
+                    else
+                        message.scanBaselineFinished.push(reader.int32());
+                    break;
+                case /* repeated int32 scanBaselineFailed */ 18:
+                    if (wireType === WireType.LengthDelimited)
+                        for (let e = reader.int32() + reader.pos; reader.pos < e;)
+                            message.scanBaselineFailed.push(reader.int32());
+                    else
+                        message.scanBaselineFailed.push(reader.int32());
+                    break;
+                case /* repeated int32 scanBaselineHits */ 19:
+                    if (wireType === WireType.LengthDelimited)
+                        for (let e = reader.int32() + reader.pos; reader.pos < e;)
+                            message.scanBaselineHits.push(reader.int32());
+                    else
+                        message.scanBaselineHits.push(reader.int32());
+                    break;
+                case /* repeated int32 scanWeakpwdFinished */ 20:
+                    if (wireType === WireType.LengthDelimited)
+                        for (let e = reader.int32() + reader.pos; reader.pos < e;)
+                            message.scanWeakpwdFinished.push(reader.int32());
+                    else
+                        message.scanWeakpwdFinished.push(reader.int32());
+                    break;
+                case /* repeated int32 scanWeakpwdFailed */ 21:
+                    if (wireType === WireType.LengthDelimited)
+                        for (let e = reader.int32() + reader.pos; reader.pos < e;)
+                            message.scanWeakpwdFailed.push(reader.int32());
+                    else
+                        message.scanWeakpwdFailed.push(reader.int32());
+                    break;
+                case /* repeated int32 scanWeakpwdHits */ 22:
+                    if (wireType === WireType.LengthDelimited)
+                        for (let e = reader.int32() + reader.pos; reader.pos < e;)
+                            message.scanWeakpwdHits.push(reader.int32());
+                    else
+                        message.scanWeakpwdHits.push(reader.int32());
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
     }
     internalBinaryWrite(message: DashboardTrendsReply, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated string labels = 1; */
+        for (let i = 0; i < message.labels.length; i++)
+            writer.tag(1, WireType.LengthDelimited).string(message.labels[i]);
+        /* repeated int32 total = 2; */
+        if (message.total.length) {
+            writer.tag(2, WireType.LengthDelimited).fork();
+            for (let i = 0; i < message.total.length; i++)
+                writer.int32(message.total[i]);
+            writer.join();
+        }
+        /* repeated int32 high = 3; */
+        if (message.high.length) {
+            writer.tag(3, WireType.LengthDelimited).fork();
+            for (let i = 0; i < message.high.length; i++)
+                writer.int32(message.high[i]);
+            writer.join();
+        }
+        /* repeated int32 medium = 4; */
+        if (message.medium.length) {
+            writer.tag(4, WireType.LengthDelimited).fork();
+            for (let i = 0; i < message.medium.length; i++)
+                writer.int32(message.medium[i]);
+            writer.join();
+        }
+        /* repeated int32 low = 5; */
+        if (message.low.length) {
+            writer.tag(5, WireType.LengthDelimited).fork();
+            for (let i = 0; i < message.low.length; i++)
+                writer.int32(message.low[i]);
+            writer.join();
+        }
+        /* repeated int32 alertPending = 6; */
+        if (message.alertPending.length) {
+            writer.tag(6, WireType.LengthDelimited).fork();
+            for (let i = 0; i < message.alertPending.length; i++)
+                writer.int32(message.alertPending[i]);
+            writer.join();
+        }
+        /* repeated int32 alertHandled = 7; */
+        if (message.alertHandled.length) {
+            writer.tag(7, WireType.LengthDelimited).fork();
+            for (let i = 0; i < message.alertHandled.length; i++)
+                writer.int32(message.alertHandled[i]);
+            writer.join();
+        }
+        /* repeated int32 alertWhitelisted = 8; */
+        if (message.alertWhitelisted.length) {
+            writer.tag(8, WireType.LengthDelimited).fork();
+            for (let i = 0; i < message.alertWhitelisted.length; i++)
+                writer.int32(message.alertWhitelisted[i]);
+            writer.join();
+        }
+        /* repeated int32 alertBlocked = 9; */
+        if (message.alertBlocked.length) {
+            writer.tag(9, WireType.LengthDelimited).fork();
+            for (let i = 0; i < message.alertBlocked.length; i++)
+                writer.int32(message.alertBlocked[i]);
+            writer.join();
+        }
+        /* repeated string domainRiskDomains = 10; */
+        for (let i = 0; i < message.domainRiskDomains.length; i++)
+            writer.tag(10, WireType.LengthDelimited).string(message.domainRiskDomains[i]);
+        /* repeated int32 domainRiskHighAlerts = 11; */
+        if (message.domainRiskHighAlerts.length) {
+            writer.tag(11, WireType.LengthDelimited).fork();
+            for (let i = 0; i < message.domainRiskHighAlerts.length; i++)
+                writer.int32(message.domainRiskHighAlerts[i]);
+            writer.join();
+        }
+        /* repeated int32 domainRiskHighLeaks = 12; */
+        if (message.domainRiskHighLeaks.length) {
+            writer.tag(12, WireType.LengthDelimited).fork();
+            for (let i = 0; i < message.domainRiskHighLeaks.length; i++)
+                writer.int32(message.domainRiskHighLeaks[i]);
+            writer.join();
+        }
+        /* repeated int32 domainRiskHighBaselines = 13; */
+        if (message.domainRiskHighBaselines.length) {
+            writer.tag(13, WireType.LengthDelimited).fork();
+            for (let i = 0; i < message.domainRiskHighBaselines.length; i++)
+                writer.int32(message.domainRiskHighBaselines[i]);
+            writer.join();
+        }
+        /* repeated int32 scanLeakFinished = 14; */
+        if (message.scanLeakFinished.length) {
+            writer.tag(14, WireType.LengthDelimited).fork();
+            for (let i = 0; i < message.scanLeakFinished.length; i++)
+                writer.int32(message.scanLeakFinished[i]);
+            writer.join();
+        }
+        /* repeated int32 scanLeakFailed = 15; */
+        if (message.scanLeakFailed.length) {
+            writer.tag(15, WireType.LengthDelimited).fork();
+            for (let i = 0; i < message.scanLeakFailed.length; i++)
+                writer.int32(message.scanLeakFailed[i]);
+            writer.join();
+        }
+        /* repeated int32 scanLeakHits = 16; */
+        if (message.scanLeakHits.length) {
+            writer.tag(16, WireType.LengthDelimited).fork();
+            for (let i = 0; i < message.scanLeakHits.length; i++)
+                writer.int32(message.scanLeakHits[i]);
+            writer.join();
+        }
+        /* repeated int32 scanBaselineFinished = 17; */
+        if (message.scanBaselineFinished.length) {
+            writer.tag(17, WireType.LengthDelimited).fork();
+            for (let i = 0; i < message.scanBaselineFinished.length; i++)
+                writer.int32(message.scanBaselineFinished[i]);
+            writer.join();
+        }
+        /* repeated int32 scanBaselineFailed = 18; */
+        if (message.scanBaselineFailed.length) {
+            writer.tag(18, WireType.LengthDelimited).fork();
+            for (let i = 0; i < message.scanBaselineFailed.length; i++)
+                writer.int32(message.scanBaselineFailed[i]);
+            writer.join();
+        }
+        /* repeated int32 scanBaselineHits = 19; */
+        if (message.scanBaselineHits.length) {
+            writer.tag(19, WireType.LengthDelimited).fork();
+            for (let i = 0; i < message.scanBaselineHits.length; i++)
+                writer.int32(message.scanBaselineHits[i]);
+            writer.join();
+        }
+        /* repeated int32 scanWeakpwdFinished = 20; */
+        if (message.scanWeakpwdFinished.length) {
+            writer.tag(20, WireType.LengthDelimited).fork();
+            for (let i = 0; i < message.scanWeakpwdFinished.length; i++)
+                writer.int32(message.scanWeakpwdFinished[i]);
+            writer.join();
+        }
+        /* repeated int32 scanWeakpwdFailed = 21; */
+        if (message.scanWeakpwdFailed.length) {
+            writer.tag(21, WireType.LengthDelimited).fork();
+            for (let i = 0; i < message.scanWeakpwdFailed.length; i++)
+                writer.int32(message.scanWeakpwdFailed[i]);
+            writer.join();
+        }
+        /* repeated int32 scanWeakpwdHits = 22; */
+        if (message.scanWeakpwdHits.length) {
+            writer.tag(22, WireType.LengthDelimited).fork();
+            for (let i = 0; i < message.scanWeakpwdHits.length; i++)
+                writer.int32(message.scanWeakpwdHits[i]);
+            writer.join();
+        }
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

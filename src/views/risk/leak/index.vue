@@ -1,7 +1,7 @@
 <template>
     <div class="layout-pd">
         <el-card shadow="hover">
-            <el-row justify="space-between">
+            <el-row class="table-filter-row">
                 <!-- Search controls -->
                 <el-form :inline="true">
                     <el-form-item>
@@ -39,7 +39,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item :label="$t('message.risk.updateTm')">
-                        <el-date-picker size="default" v-model="timeRange" type="datetimerange"
+                        <el-date-picker class="filter-date-range" size="default" v-model="timeRange" type="datetimerange"
                             :range-separator="$t('message.time.to')" :start-placeholder="$t('message.time.start')"
                             :end-placeholder="$t('message.time.end')" :shortcuts="shortcuts" />
                     </el-form-item>
@@ -55,10 +55,9 @@
                     </el-form-item>
                 </el-form>
                 <!-- Actions on the right -->
-                <el-space wrap size="default"
-                    style="min-width: 450px; justify-content:right; align-items: flex-start; padding-top: 5px;">
-                    <el-input size="default" v-model="state.req.search"
-                        :placeholder="$t('message.risk.leak.searchPlaceholder')" style="width: 290px;"
+                <el-space wrap size="default" class="table-filter-actions">
+                    <el-input class="filter-search-input" size="default" v-model="state.req.search"
+                        :placeholder="$t('message.risk.leak.searchPlaceholder')"
                         :suffix-icon="Search" clearable></el-input>
                     <ExportButton type="leak" />
                 </el-space>

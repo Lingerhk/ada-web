@@ -5,7 +5,7 @@
                 <!-- Alert Rules (Flow Rules) Tab -->
                 <el-tab-pane :label="$t('message.ruleManage.alertRuleTab')" name="alertRule" key="alertRule">
                     <!-- Filter Row with Add Button -->
-                    <el-row style="margin-bottom: 1px;">
+                    <el-row class="table-filter-row table-filter-row--compact" style="margin-bottom: 1px;">
                         <el-form :inline="true" class="filter-form">
                             <el-form-item>
                                 <el-button @click="handleAddAlertRule" type="primary" size="default">
@@ -65,7 +65,13 @@
                                 <el-tag :type="getLevelType(row.level)">{{ getLevelText(row.level) }}</el-tag>
                             </template>
                         </el-table-column>
-                        <el-table-column prop="status" :label="$t('message.ruleManage.status')" width="120" />
+                        <el-table-column prop="status" :label="$t('message.ruleManage.status')" width="120" align="center">
+                            <template #default="{ row }">
+                                <el-tag :type="getStatusType(row.status)" size="small" class="rule-status-tag">
+                                    {{ getStatusText(row.status) }}
+                                </el-tag>
+                            </template>
+                        </el-table-column>
                         <el-table-column prop="tags" :label="$t('message.ruleManage.tags')" min-width="150">
                             <template #default="{ row }">
                                 <el-tag v-for="tag in row.tags" :key="tag" size="small" style="margin-right: 4px;">{{ tag }}</el-tag>
@@ -112,7 +118,7 @@
                 <!-- Activity Rules (Sigma Rules) Tab -->
                 <el-tab-pane :label="$t('message.ruleManage.activityRuleTab')" name="activityRule" key="activityRule">
                     <!-- Filter Row with Add Button -->
-                    <el-row style="margin-bottom: 1px;">
+                    <el-row class="table-filter-row table-filter-row--compact" style="margin-bottom: 1px;">
                         <el-form :inline="true" class="filter-form">
                             <el-form-item>
                                 <el-button @click="handleAddActivityRule" type="primary" size="default">
@@ -157,7 +163,13 @@
                                 <el-tag :type="getLevelType(row.level)">{{ getLevelText(row.level) }}</el-tag>
                             </template>
                         </el-table-column>
-                        <el-table-column prop="status" :label="$t('message.ruleManage.status')" width="110" />
+                        <el-table-column prop="status" :label="$t('message.ruleManage.status')" width="120" align="center">
+                            <template #default="{ row }">
+                                <el-tag :type="getStatusType(row.status)" size="small" class="rule-status-tag">
+                                    {{ getStatusText(row.status) }}
+                                </el-tag>
+                            </template>
+                        </el-table-column>
                         <el-table-column prop="tags" :label="$t('message.ruleManage.tags')" min-width="150">
                             <template #default="{ row }">
                                 <el-tag v-for="tag in row.tags" :key="tag" size="small" style="margin-right: 4px;">{{ tag }}</el-tag>
@@ -1657,6 +1669,25 @@ const getLevelText = (level: number): string => {
     return texts[level] || 'Unknown';
 };
 
+const getStatusType = (status: string): string => {
+    const types: Record<string, string> = {
+        test: 'info',
+        experimental: 'warning',
+        stable: 'success',
+        deprecated: 'danger',
+    };
+    return types[status?.toLowerCase()] || 'info';
+};
+
+const getStatusText = (status: string): string => {
+    if (!status) return 'Unknown';
+    return status
+        .split(/[\s_-]+/)
+        .filter(Boolean)
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(' ');
+};
+
 const getAlertTypeText = (type: string): string => {
     if (!type) return '';
 
@@ -1781,6 +1812,12 @@ onMounted(() => {
     :deep(.el-form-item) {
         margin-right: 12px;
     }
+}
+
+.rule-status-tag {
+    min-width: 86px;
+    justify-content: center;
+    font-weight: 500;
 }
 
 .yaml-viewer {

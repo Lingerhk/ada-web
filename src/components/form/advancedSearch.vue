@@ -21,7 +21,7 @@
         <el-date-picker v-if="model.name === 'time'" size="default" v-model="model.value"
             :type="model.type === 'bt' ? 'datetimerange' : 'datetime'" :range-separator="$t('message.time.to')"
             :start-placeholder="$t('message.time.start')" :end-placeholder="$t('message.time.end')"
-            :style="model.type !== 'bt' ? { width: '240px' } : {}" />
+            :style="model.type === 'bt' ? { width: '300px' } : { width: '220px' }" />
         <!-- 4. User -->
         <el-input v-if="model.name === 'username'" size="default" v-model="model.value[0]"></el-input>
         <!-- 5. eventStatus -->

@@ -4,7 +4,7 @@
             <el-tabs v-model="state.req.type">
                 <el-tab-pane v-for="option in typeOptions" :label="$t(option.label)" :name="option.value"
                     :key="option.value">
-                    <el-row>
+                    <el-row class="table-filter-row">
                         <!-- Search controls -->
                         <el-form :inline="true" class="filter-form">
                             <el-form-item>
@@ -24,7 +24,7 @@
                                 </el-select>
                             </el-form-item>
                             <el-form-item :label="$t('message.time.createTm')">
-                                <el-date-picker size="default" v-model="timeRangeRef" type="datetimerange"
+                                <el-date-picker class="filter-date-range" size="default" v-model="timeRangeRef" type="datetimerange"
                                     :range-separator="$t('message.time.to')"
                                     :start-placeholder="$t('message.time.start')"
                                     :end-placeholder="$t('message.time.end')" :shortcuts="shortcuts" />

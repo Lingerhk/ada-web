@@ -2,7 +2,7 @@
     <div class="layout-pd">
         <el-card shadow="hover">
             <!-- serching -->
-            <el-row justify="space-between" style="margin-bottom: 15px;">
+            <el-row class="table-filter-row">
                 <el-form :inline="true" class="filter-form">
                     <el-form-item>
                         <el-button type="primary" @click="handleNew">
@@ -37,7 +37,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item :label="$t('message.threat.lastOccurenceTime')">
-                        <el-date-picker size="default" v-model="lastOccurenceTime" type="datetimerange"
+                        <el-date-picker class="filter-date-range" size="default" v-model="lastOccurenceTime" type="datetimerange"
                             :range-separator="$t('message.time.to')" :start-placeholder="$t('message.time.start')"
                             :end-placeholder="$t('message.time.end')" :shortcuts="shortcuts" />
                     </el-form-item>

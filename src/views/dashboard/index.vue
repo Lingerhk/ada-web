@@ -1,5 +1,5 @@
 <template>
-	<div class="chart-warp dashboard-shell layout-padding-auto layout-padding-view" style="background: none">
+	<div class="chart-warp dashboard-shell layout-pd" style="background: none">
 		<div class="chart-warp-top dashboard-filter-bar">
 			<div class="big-data-up mb15">
 				<div class="up-left">
@@ -111,6 +111,7 @@
 							<el-form :model="state.form" style="width: 150px">
 								<el-form-item>
 									<el-select v-model="state.form.riskTrendYear" :placeholder="T('fullYear')">
+										<el-option v-for="year in state.form.riskTrendYearOptions" :key="year" :label="`${year}`" :value="year" />
 									</el-select>
 								</el-form-item>
 							</el-form>
@@ -138,6 +139,34 @@
 						</div>
 						<div class="flex-item dashboard-chart">
 							<div ref="dashboardLogStatsRef" style="width: 100%; min-height: 300px;"></div>
+						</div>
+					</div>
+				</el-col>
+			</el-row>
+			<el-row class="flex-item">
+				<el-col :lg="12" :span="24" class="flex-item">
+					<div class="flex-item-box">
+						<div class="flex-title">{{ T('alertDispositionTrend') }}</div>
+						<div class="flex-item dashboard-chart">
+							<div ref="alertDispositionTrendBarRef" style="width: 100%; min-height: 300px;"></div>
+						</div>
+					</div>
+				</el-col>
+				<el-col :lg="12" :span="24" class="flex-item">
+					<div class="flex-item-box">
+						<div class="flex-title">{{ T('domainRiskRanking') }}</div>
+						<div class="flex-item dashboard-chart">
+							<div ref="domainRiskRankBarRef" style="width: 100%; min-height: 300px;"></div>
+						</div>
+					</div>
+				</el-col>
+			</el-row>
+			<el-row class="flex-item">
+				<el-col :span="24" class="flex-item">
+					<div class="flex-item-box">
+						<div class="flex-title">{{ T('scanTaskTrend') }}</div>
+						<div class="flex-item dashboard-chart">
+							<div ref="scanTaskTrendBarRef" style="width: 100%; min-height: 320px;"></div>
 						</div>
 					</div>
 				</el-col>
@@ -205,11 +234,22 @@
 					<div style="width: 100%; height: 100%;" class="flex-item-box">
 						<div class="flex-title">
 							<span>{{ T('latestWeakPasswordHits') }}</span>
-							<span class="flex-title-small">{{ T('comparedToPrevious') }} <span class="trend-up">+0{{ T('countUnit') }}</span></span>
 						</div>
-						<el-row style="width: 100%; padding-top: 10px">
-							<FilpNumber :value="state.scan.hits"></FilpNumber>
-							<span style="margin-left: 10px; font-size: 20px; align-self: flex-end;">{{ T('countUnit') }}</span>
+						<el-row :gutter="20" style="padding-top: 10px;">
+							<el-col :xs="24" :sm="12">
+								<el-card class="risk-card risk-card--high">
+									<el-row class="bug-title">{{ T('weakPasswordCount') }}</el-row>
+									<el-row class="bug-value">{{ state.scan.weakpwd.total }}</el-row>
+								</el-card>
+							</el-col>
+							<el-col :xs="24" :sm="12">
+								<el-card class="risk-card risk-card--medium">
+									<el-row class="bug-title">{{ T('comparedToPrevious') }}</el-row>
+									<el-row class="bug-value" :class="state.scan.weakpwd.diff < 0 ? 'trend-down' : 'trend-up'">
+										{{ state.scan.weakpwd.diff > 0 ? '+' : '' }}{{ state.scan.weakpwd.diff }}
+									</el-row>
+								</el-card>
+							</el-col>
 						</el-row>
 					</div>
 				</el-col>
@@ -219,7 +259,7 @@
 </template>
 
 <script setup lang="ts" name="dashboardIndex">
-import { defineAsyncComponent, reactive, onMounted, watch, nextTick, onActivated, ref, markRaw, onUnmounted } from 'vue';
+import { reactive, onMounted, watch, nextTick, onActivated, ref, markRaw, onUnmounted } from 'vue';
 import * as echarts from 'echarts';
 import 'echarts-wordcloud';
 import { storeToRefs } from 'pinia';
@@ -235,15 +275,14 @@ import { formatDate } from '/@/utils/formatTime';
 
 const { t } = useI18n();
 
-// Import components
-const FilpNumber = defineAsyncComponent(() => import('/@/components/flipNumber/FlipNumber.vue'))
-
 // Define reactive state and refs
 const storesTagsViewRoutes = useTagsViewRoutes();
 const { isTagsViewCurrenFull } = storeToRefs(storesTagsViewRoutes);
+const currentYear = new Date().getFullYear();
 const state = reactive({
 	form: {
-		riskTrendYear: '',
+		riskTrendYear: currentYear,
+		riskTrendYearOptions: Array.from({ length: 5 }, (_, index) => currentYear - index),
 		domain: 'all',
 		domainOptions: [] as OptionType[],
 		logStatsDuration: 1,
@@ -256,7 +295,6 @@ const state = reactive({
 		}
 	},
 	scan: {
-		hits: '000000',
 		leak: {
 			high: 0,
 			medium: 0,
@@ -266,6 +304,11 @@ const state = reactive({
 			high: 0,
 			medium: 0,
 			low: 0,
+		},
+		weakpwd: {
+			total: 0,
+			previous: 0,
+			diff: 0,
 		},
 	},
 	asset: {
@@ -304,6 +347,9 @@ const state = reactive({
 		baseLinePie: null,
 		alarmTrendLine: null,
 		dashboardLogStatsLine: null,
+		alertDispositionTrendBar: null,
+		domainRiskRankBar: null,
+		scanTaskTrendBar: null,
 		dispose: [null, '', undefined],
 	} as any,
 	charts: {
@@ -319,6 +365,9 @@ const alarmTodayPieRef = ref()
 const baseLinePieRef = ref()
 const alarmRiskTrendLineRef = ref()
 const dashboardLogStatsRef = ref()
+const alertDispositionTrendBarRef = ref()
+const domainRiskRankBarRef = ref()
+const scanTaskTrendBarRef = ref()
 
 // Function definitions
 const initECharts = (ec: any, ref: any, option: any) => {
@@ -517,14 +566,65 @@ const initBaseLinePie = (high: number, medium: number, low: number) => {
 	state.myCharts.push(state.global.baseLinePie);
 }
 
-const updateAlarmRiskTrendLine = (xData: any[], yData: any[]) => {
+const buildYearLabels = (year: number) => Array.from({ length: 12 }, (_, index) => `${year}-${String(index + 1).padStart(2, '0')}`);
+
+const fitTrendData = (values: number[] | undefined, length: number) => Array.from({ length }, (_, index) => Number(values?.[index] || 0));
+
+const updateAlarmRiskTrendLine = (xData: string[], trendData: { total?: number[]; high?: number[]; medium?: number[]; low?: number[] }) => {
 	if (!state.global.alarmRiskTrendLine) {
 		return;
 	}
 
+	const labels = xData.length ? xData : buildYearLabels(Number(state.form.riskTrendYear) || currentYear);
+	const seriesNames = {
+		total: T('totalAlerts'),
+		high: T('highRiskAlerts'),
+		medium: T('mediumRiskAlerts'),
+		low: T('lowRiskAlerts'),
+	};
 	const option = {
-		xAxis: { data: xData, },
-		series: [{ data: yData, }],
+		legend: {
+			top: 0,
+			right: 0,
+			data: Object.values(seriesNames),
+		},
+		grid: {
+			top: 48,
+			left: 42,
+			right: 24,
+			bottom: 32,
+		},
+		xAxis: { data: labels, },
+		series: [
+			{
+				name: seriesNames.total,
+				type: 'line',
+				smooth: true,
+				symbolSize: 6,
+				data: fitTrendData(trendData.total, labels.length),
+			},
+			{
+				name: seriesNames.high,
+				type: 'line',
+				smooth: true,
+				symbolSize: 6,
+				data: fitTrendData(trendData.high, labels.length),
+			},
+			{
+				name: seriesNames.medium,
+				type: 'line',
+				smooth: true,
+				symbolSize: 6,
+				data: fitTrendData(trendData.medium, labels.length),
+			},
+			{
+				name: seriesNames.low,
+				type: 'line',
+				smooth: true,
+				symbolSize: 6,
+				data: fitTrendData(trendData.low, labels.length),
+			},
+		],
 	};
 
 	state.global.alarmRiskTrendLine.setOption(option);
@@ -543,6 +643,17 @@ const initAlarmRiskTrendLine = () => {
 		tooltip: {
 			trigger: 'axis'
 		},
+		legend: {
+			top: 0,
+			right: 0,
+			data: [T('totalAlerts'), T('highRiskAlerts'), T('mediumRiskAlerts'), T('lowRiskAlerts')],
+		},
+		grid: {
+			top: 48,
+			left: 42,
+			right: 24,
+			bottom: 32,
+		},
 		xAxis: {
 			type: 'category',
 			boundaryGap: false,
@@ -554,27 +665,114 @@ const initAlarmRiskTrendLine = () => {
 			type: 'value'
 		},
 		// Configure the series list
-		series: [{
-			// name: 'Data',
-			type: 'line',
-			data: [],
-			// data: [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			// Configure the area fill style
-			areaStyle: {
-				color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ // Top-to-bottom gradient
-					offset: 0,
-					color: 'rgba(58,77,233,0.8)' // Top line color
-				}, {
-					offset: 1,
-					color: 'rgba(58,77,233,0)' // Bottom line color
-				}])
-			}
-		}]
+		series: []
 	};
 
 	// initECharts(state.global.alarmRiskTrendLine, alarmRiskTrendLineRef, option);
 	state.global.alarmRiskTrendLine.setOption(option);
 	state.myCharts.push(state.global.alarmRiskTrendLine);
+};
+
+const updateAlertDispositionTrendBar = (labels: string[], data: { pending?: number[]; handled?: number[]; whitelisted?: number[]; blocked?: number[] }) => {
+	if (!state.global.alertDispositionTrendBar) return;
+	state.global.alertDispositionTrendBar.setOption({
+		legend: { top: 0, right: 0 },
+		grid: { top: 48, left: 42, right: 24, bottom: 32 },
+		xAxis: { type: 'category', data: labels },
+		yAxis: { type: 'value' },
+		series: [
+			{ name: T('pendingAlerts'), type: 'bar', stack: 'status', data: fitTrendData(data.pending, labels.length) },
+			{ name: T('handledAlerts'), type: 'bar', stack: 'status', data: fitTrendData(data.handled, labels.length) },
+			{ name: T('whitelistedAlerts'), type: 'bar', stack: 'status', data: fitTrendData(data.whitelisted, labels.length) },
+			{ name: T('blockedAlerts'), type: 'bar', stack: 'status', data: fitTrendData(data.blocked, labels.length) },
+		],
+	});
+};
+
+const initAlertDispositionTrendBar = () => {
+	if (state.global.alertDispositionTrendBar && !state.global.dispose.some((b: any) => b === state.global.alertDispositionTrendBar)) {
+		state.global.alertDispositionTrendBar.dispose();
+	}
+	state.global.alertDispositionTrendBar = markRaw(echarts.init(alertDispositionTrendBarRef.value, state.charts.theme));
+	state.global.alertDispositionTrendBar.setOption({
+		tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+		legend: { top: 0, right: 0 },
+		grid: { top: 48, left: 42, right: 24, bottom: 32 },
+		xAxis: { type: 'category', data: [] },
+		yAxis: { type: 'value' },
+		series: [],
+	});
+	state.myCharts.push(state.global.alertDispositionTrendBar);
+};
+
+const updateDomainRiskRankBar = (domains: string[], data: { alerts?: number[]; leaks?: number[]; baselines?: number[] }) => {
+	if (!state.global.domainRiskRankBar) return;
+	const labels = domains.length ? domains : [T('noData')];
+	state.global.domainRiskRankBar.setOption({
+		legend: { top: 0, right: 0 },
+		grid: { top: 48, left: 110, right: 24, bottom: 32 },
+		xAxis: { type: 'value' },
+		yAxis: { type: 'category', data: labels },
+		series: [
+			{ name: T('highRiskAlerts'), type: 'bar', stack: 'risk', data: fitTrendData(data.alerts, labels.length) },
+			{ name: T('highRiskVulnerabilitiesShort'), type: 'bar', stack: 'risk', data: fitTrendData(data.leaks, labels.length) },
+			{ name: T('highRiskBaselinesShort'), type: 'bar', stack: 'risk', data: fitTrendData(data.baselines, labels.length) },
+		],
+	});
+};
+
+const initDomainRiskRankBar = () => {
+	if (state.global.domainRiskRankBar && !state.global.dispose.some((b: any) => b === state.global.domainRiskRankBar)) {
+		state.global.domainRiskRankBar.dispose();
+	}
+	state.global.domainRiskRankBar = markRaw(echarts.init(domainRiskRankBarRef.value, state.charts.theme));
+	state.global.domainRiskRankBar.setOption({
+		tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+		legend: { top: 0, right: 0 },
+		grid: { top: 48, left: 110, right: 24, bottom: 32 },
+		xAxis: { type: 'value' },
+		yAxis: { type: 'category', data: [] },
+		series: [],
+	});
+	state.myCharts.push(state.global.domainRiskRankBar);
+};
+
+const updateScanTaskTrendBar = (labels: string[], data: any) => {
+	if (!state.global.scanTaskTrendBar) return;
+	const series = [
+		{ name: T('vulnerabilityFinished'), data: fitTrendData(data.leakFinished, labels.length) },
+		{ name: T('vulnerabilityFailed'), data: fitTrendData(data.leakFailed, labels.length) },
+		{ name: T('vulnerabilityHits'), data: fitTrendData(data.leakHits, labels.length) },
+		{ name: T('baselineFinished'), data: fitTrendData(data.baselineFinished, labels.length) },
+		{ name: T('baselineFailed'), data: fitTrendData(data.baselineFailed, labels.length) },
+		{ name: T('baselineHits'), data: fitTrendData(data.baselineHits, labels.length) },
+		{ name: T('weakpwdFinished'), data: fitTrendData(data.weakpwdFinished, labels.length) },
+		{ name: T('weakpwdFailed'), data: fitTrendData(data.weakpwdFailed, labels.length) },
+		{ name: T('weakpwdHits'), data: fitTrendData(data.weakpwdHits, labels.length) },
+	].map(item => ({ name: item.name, type: 'bar', barMaxWidth: 14, data: item.data }));
+	state.global.scanTaskTrendBar.setOption({
+		legend: { type: 'scroll', top: 0, right: 0 },
+		grid: { top: 72, left: 42, right: 24, bottom: 32 },
+		xAxis: { type: 'category', data: labels },
+		yAxis: { type: 'value' },
+		series,
+	});
+};
+
+const initScanTaskTrendBar = () => {
+	if (state.global.scanTaskTrendBar && !state.global.dispose.some((b: any) => b === state.global.scanTaskTrendBar)) {
+		state.global.scanTaskTrendBar.dispose();
+	}
+	state.global.scanTaskTrendBar = markRaw(echarts.init(scanTaskTrendBarRef.value, state.charts.theme));
+	state.global.scanTaskTrendBar.setOption({
+		tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+		legend: { type: 'scroll', top: 0, right: 0 },
+		grid: { top: 72, left: 42, right: 24, bottom: 32 },
+		xAxis: { type: 'category', data: [] },
+		yAxis: { type: 'value' },
+		series: [],
+	});
+	state.myCharts.push(state.global.scanTaskTrendBar);
 };
 
 const initDashboardLogStatsLine = () => {
@@ -702,8 +900,13 @@ const fetchDashboardStats = () => {
 
 			// Update weak password hits
 			if (data.weakpwd) {
-				const total = Object.values(data.weakpwd).reduce((sum, val) => sum + val, 0);
-				state.scan.hits = total.toString().padStart(6, '0');
+				const total = data.weakpwd.latest ?? data.weakpwd.total ?? 0;
+				const previous = data.weakpwd.previous ?? 0;
+				state.scan.weakpwd = {
+					total,
+					previous,
+					diff: data.weakpwd.diff ?? total - previous,
+				};
 			}
 
 			// Update asset distribution
@@ -751,6 +954,56 @@ const fetchDashboardStats = () => {
 			}
 		})
 		.catch(err => alertApiError(err));
+};
+
+const fetchDashboardTrends = () => {
+	const year = Number(state.form.riskTrendYear) || currentYear;
+	const req: DashboardTrendsReq = {
+		domain: state.form.domain,
+		year,
+	};
+
+	api.dashboardTrends(req)
+		.then(resp => resp.response)
+		.then(data => {
+			const labels = data.labels || buildYearLabels(year);
+			updateAlarmRiskTrendLine(labels, {
+				total: data.total,
+				high: data.high,
+				medium: data.medium,
+				low: data.low,
+			});
+			updateAlertDispositionTrendBar(labels, {
+				pending: data.alertPending,
+				handled: data.alertHandled,
+				whitelisted: data.alertWhitelisted,
+				blocked: data.alertBlocked,
+			});
+			updateDomainRiskRankBar(data.domainRiskDomains || [], {
+				alerts: data.domainRiskHighAlerts,
+				leaks: data.domainRiskHighLeaks,
+				baselines: data.domainRiskHighBaselines,
+			});
+			updateScanTaskTrendBar(labels, {
+				leakFinished: data.scanLeakFinished,
+				leakFailed: data.scanLeakFailed,
+				leakHits: data.scanLeakHits,
+				baselineFinished: data.scanBaselineFinished,
+				baselineFailed: data.scanBaselineFailed,
+				baselineHits: data.scanBaselineHits,
+				weakpwdFinished: data.scanWeakpwdFinished,
+				weakpwdFailed: data.scanWeakpwdFailed,
+				weakpwdHits: data.scanWeakpwdHits,
+			});
+		})
+		.catch(err => {
+			const labels = buildYearLabels(year);
+			alertApiError(err);
+			updateAlarmRiskTrendLine(labels, {});
+			updateAlertDispositionTrendBar(labels, {});
+			updateDomainRiskRankBar([], {});
+			updateScanTaskTrendBar(labels, {});
+		});
 };
 
 const fetchDashboardLogStats = () => {
@@ -809,23 +1062,15 @@ onMounted(() => {
 	// initBaseLinePie(5, 10, 15);
 	initAlarmRiskTrendLine();
 	initDashboardLogStatsLine();
+	initAlertDispositionTrendBar();
+	initDomainRiskRankBar();
+	initScanTaskTrendBar();
 	initEchartsResize();
 
 	listDomainOptions().then(options => state.form.domainOptions = options);
 
 	fetchDashboardStats();
-
-	api.dashboardTrends({} as DashboardTrendsReq)
-		.then(resp => resp.response)
-		.then(data => {
-			updateAlarmRiskTrendLine(['2024-01', '2024-02', '2024-03', '2024-04', '2024-05', '2024-06', '2024-07', '2024-08', '2024-09', '2024-10', '2024-11', '2024-12'],
-				[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
-		})
-		.catch(err => alertApiError(err))
-		.finally(() => {
-			updateAlarmRiskTrendLine(['2024-01', '2024-02', '2024-03', '2024-04', '2024-05', '2024-06', '2024-07', '2024-08', '2024-09', '2024-10', '2024-11', '2024-12'],
-				[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
-		});
+	fetchDashboardTrends();
 
 	startLogStatsInterval();
 });
@@ -850,7 +1095,16 @@ watch(
 	() => {
 		// Re-fetch all domain-dependent data
 		fetchDashboardStats();
+		fetchDashboardTrends();
 		fetchDashboardLogStats();
+	}
+);
+
+// Watch for trend year changes
+watch(
+	() => state.form.riskTrendYear,
+	() => {
+		fetchDashboardTrends();
 	}
 );
 
@@ -978,8 +1232,16 @@ onUnmounted(() => {
 	padding-left: 0;
 }
 
+.chart-main > .el-row.flex-item {
+	padding-right: 0;
+}
+
 .flex-item {
 	padding: 0 12px 12px 0;
+}
+
+.chart-main > .el-row > .flex-item:last-child {
+	padding-right: 0;
 }
 
 .flex-item-box {
@@ -1027,6 +1289,11 @@ onUnmounted(() => {
 
 .trend-up {
 	color: var(--ada-primary);
+	font-weight: 800;
+}
+
+.trend-down {
+	color: var(--ada-danger);
 	font-weight: 800;
 }
 

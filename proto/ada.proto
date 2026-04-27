@@ -1670,11 +1670,33 @@ message DashboardStatsReply{
 }
 
 message DashboardTrendsReq{
-
+  string domain = 1; // Required, all|domainX
+  int32 year = 2; // Optional, default current year
 }
 
 message DashboardTrendsReply{
-
+  repeated string labels = 1; // Month labels, e.g. 2026-01
+  repeated int32 total = 2; // Total alert events
+  repeated int32 high = 3; // High/critical alert events
+  repeated int32 medium = 4; // Medium alert events
+  repeated int32 low = 5; // Low alert events
+  repeated int32 alert_pending = 6; // Pending alert events
+  repeated int32 alert_handled = 7; // Handled alert events
+  repeated int32 alert_whitelisted = 8; // Whitelisted alert events
+  repeated int32 alert_blocked = 9; // Blocked alert events
+  repeated string domain_risk_domains = 10; // Domain risk ranking labels
+  repeated int32 domain_risk_high_alerts = 11; // High/critical alert events by domain
+  repeated int32 domain_risk_high_leaks = 12; // High/critical vulnerability hits by domain
+  repeated int32 domain_risk_high_baselines = 13; // High/critical baseline hits by domain
+  repeated int32 scan_leak_finished = 14; // Finished vulnerability scan tasks
+  repeated int32 scan_leak_failed = 15; // Failed vulnerability scan tasks
+  repeated int32 scan_leak_hits = 16; // Vulnerability scan hits
+  repeated int32 scan_baseline_finished = 17; // Finished baseline scan tasks
+  repeated int32 scan_baseline_failed = 18; // Failed baseline scan tasks
+  repeated int32 scan_baseline_hits = 19; // Baseline scan hits
+  repeated int32 scan_weakpwd_finished = 20; // Finished weak-password scan tasks
+  repeated int32 scan_weakpwd_failed = 21; // Failed weak-password scan tasks
+  repeated int32 scan_weakpwd_hits = 22; // Weak-password scan hits
 }
 
 message DashboardLogStatsReq {

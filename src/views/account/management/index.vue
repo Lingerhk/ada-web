@@ -8,7 +8,7 @@
                         {{ T('new') }}
                     </el-button>
                 </div>
-                <el-form class="table-toolbar__filters" :inline="true">
+                <el-form class="table-toolbar__filters account-filter-form" :inline="true">
                     <el-form-item :label="T('role')">
                         <el-select v-model="state.filter.role" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" :placeholder="T('selectRole')" popper-class="custom-header">
                             <template #header>
@@ -349,9 +349,54 @@ onMounted(() => {
     display: flex;
     flex: 1;
     min-width: 0;
+    align-items: flex-start;
     padding-bottom: 0 !important;
     border-bottom: 0 !important;
     margin-bottom: 0 !important;
+}
+
+.account-workbench .table-toolbar__filters .el-form-item,
+.account-workbench .table-toolbar__filters .el-form-item:last-of-type {
+    margin: 0 !important;
+}
+
+.account-workbench .account-filter-form .el-form-item__label {
+    height: var(--el-component-size);
+    line-height: var(--el-component-size);
+    display: inline-flex;
+    align-items: center;
+    padding: 0 10px;
+    white-space: nowrap;
+    background: #f0f6f4 !important;
+    border: 1px solid #dbe8e5 !important;
+    border-right: 0 !important;
+    border-radius: 6px 0 0 6px;
+    color: var(--ada-text);
+    font-weight: 700;
+}
+
+.account-workbench .account-filter-form .el-form-item__content {
+    min-height: var(--el-component-size);
+    align-items: flex-start;
+}
+
+.account-workbench .account-filter-form .el-input,
+.account-workbench .account-filter-form .el-select,
+.account-workbench .account-filter-form .el-date-editor {
+    vertical-align: top;
+}
+
+.account-workbench .account-filter-form .el-input__wrapper,
+.account-workbench .account-filter-form .el-select__wrapper,
+.account-workbench .account-filter-form .el-date-editor {
+    min-height: var(--el-component-size);
+    border-radius: 6px;
+}
+
+.account-workbench .account-filter-form .el-form-item__label + .el-form-item__content .el-input__wrapper,
+.account-workbench .account-filter-form .el-form-item__label + .el-form-item__content .el-select__wrapper,
+.account-workbench .account-filter-form .el-form-item__label + .el-form-item__content .el-date-editor {
+    border-radius: 0 6px 6px 0;
 }
 
 .account-workbench .table-toolbar__filters .el-select {
@@ -359,7 +404,7 @@ onMounted(() => {
 }
 
 .account-workbench .table-toolbar__filters .el-date-editor {
-    width: 312px;
+    width: 300px;
 }
 
 .account-workbench .workbench-table {

@@ -1,6 +1,6 @@
 <template>
-	<div class="mb15">
-		<el-form label-width="auto" :inline="true">
+	<div class="table-filter-row">
+		<el-form label-width="auto" :inline="true" class="filter-form">
 			<el-form-item>
 				<template #label>{{ $t('message.advancedSearch.domain') }}</template>
 				<el-select v-model="state.req.domain" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.advancedSearch.selectDomain')" popper-class="custom-header">
@@ -24,7 +24,7 @@
 				</el-select>
 			</el-form-item>
 			<el-form-item>
-				<el-input v-model="state.req.keyword" size="default" style="width: 350px"
+				<el-input class="filter-search-input" v-model="state.req.keyword" size="default"
 					:placeholder="$t('message.sysConfig.sensorConfig.searchPlaceholder')" :suffix-icon="Search"
 					clearable />
 			</el-form-item>

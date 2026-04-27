@@ -1,7 +1,7 @@
 <template>
     <div class="layout-pd">
         <el-card shadow="hover">
-            <el-row justify="space-between">
+            <el-row class="table-filter-row">
                 <!-- Search controls -->
                 <el-form :inline="true" class="filter-form">
                     <el-form-item>
@@ -49,8 +49,8 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item>
-                        <el-input v-model="state.req.search" size="default" :placeholder="$t('message.risk.searchInput')"
-                            style="width: 290px;" :suffix-icon="Search" clearable></el-input>
+                        <el-input class="filter-search-input" v-model="state.req.search" size="default" :placeholder="$t('message.risk.searchInput')"
+                            :suffix-icon="Search" clearable></el-input>
                     </el-form-item>
                     <el-form-item>
                         <ExportButton type="baseline" />

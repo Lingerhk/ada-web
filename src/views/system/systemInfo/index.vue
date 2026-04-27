@@ -281,7 +281,7 @@
 
                 <!-- System logs Tab -->
                 <el-tab-pane :label="$t('message.router.systemLogsIndex')" name="systemLogs">
-                        <el-row justify="space-between" style="margin-bottom: 10px;">
+                        <el-row class="table-filter-row" style="margin-bottom: 10px;">
                             <el-col :span="24">
                                 <el-form :inline="true">
                                     <el-form-item :label="$t('message.system.systemLogs.level')">
@@ -309,11 +309,11 @@
                                         </el-select>
                                     </el-form-item>
                                     <el-form-item :label="$t('message.system.systemLogs.search')">
-                                        <el-input v-model="systemLogsState.req.search" size="default" style="width: 200px"
+                                        <el-input class="filter-search-input" v-model="systemLogsState.req.search" size="default"
                                             :placeholder="$t('message.system.systemLogs.searchPlaceholder')" clearable />
                                     </el-form-item>
                                     <el-form-item :label="$t('message.system.systemLogs.timeRange')">
-                                        <el-date-picker size="default" v-model="systemLogsTimeRange" type="datetimerange"
+                                        <el-date-picker class="filter-date-range" size="default" v-model="systemLogsTimeRange" type="datetimerange"
                                             :range-separator="$t('message.time.to')" :start-placeholder="$t('message.time.start')"
                                             :end-placeholder="$t('message.time.end')" :shortcuts="shortcuts" />
                                     </el-form-item>

@@ -1,6 +1,6 @@
 <template>
-	<div class="domain-config-filter mb15">
-		<el-form label-width="auto" :inline="true">
+	<div class="domain-config-filter table-filter-row">
+		<el-form label-width="auto" :inline="true" class="filter-form">
 			<el-form-item>
 				<el-button size="default" type="primary" @click="handleAdd">
 					<el-icon><Plus /></el-icon>
@@ -30,7 +30,7 @@
 				</el-select>
 			</el-form-item>
 			<el-form-item>
-				<el-input v-model="kwInput" size="default" style="width: 350px"
+				<el-input class="filter-search-input" v-model="kwInput" size="default"
 					:placeholder="$t('message.adDomain.kwInput')" :suffix-icon="Search" clearable />
 			</el-form-item>
 		</el-form>

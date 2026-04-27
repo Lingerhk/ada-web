@@ -1,7 +1,7 @@
 <template>
     <div class="layout-pd">
         <el-card shadow="hover">
-            <el-row justify="space-between">
+            <el-row class="table-filter-row">
                 <!-- Search controls -->
                 <el-form :inline="true">
                     <el-form-item :label="$t('message.system.audit.event')">
@@ -15,14 +15,14 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item :label="$t('message.system.audit.timeRange')">
-                        <el-date-picker size="default" v-model="timeRange" type="datetimerange"
+                        <el-date-picker class="filter-date-range" size="default" v-model="timeRange" type="datetimerange"
                             :range-separator="$t('message.time.to')" :start-placeholder="$t('message.time.start')"
                             :end-placeholder="$t('message.time.end')" :shortcuts="shortcuts" />
                     </el-form-item>
                 </el-form>
                 <el-form :inline="true">
-                    <el-space>
-                        <el-input v-model="state.keyword" style="width: 250px" :suffix-icon="Search"
+                    <el-space class="table-filter-actions">
+                        <el-input class="filter-search-input" v-model="state.keyword" :suffix-icon="Search"
                             :placeholder="$t('message.system.audit.searchPlaceholder')" clearable
                             @change="onKeywordChanged" />
                         <ExportButton type="audit" />

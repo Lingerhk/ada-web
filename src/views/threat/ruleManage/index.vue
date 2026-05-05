@@ -210,8 +210,8 @@
                                 :disabled="alertRuleDialog.isEdit"
                                 style="flex: 0 0 300px;"
                             />
-                            <el-tag v-if="!alertRuleDialog.isEdit && alertRuleDialog.form.iD" type="success" size="small">
-                                Custom ID
+                            <el-tag v-if="alertRuleDialog.form.ruleOrigin" :type="getRuleOriginTagType(alertRuleDialog.form.ruleOrigin)" size="small">
+                                {{ getRuleOriginText(alertRuleDialog.form.ruleOrigin) }}
                             </el-tag>
                         </div>
                     </div>
@@ -415,8 +415,8 @@
                                 @input="validateActivityRuleId"
                                 :class="{ 'is-error': activityRuleDialog.idValidationError }"
                             />
-                            <el-tag v-if="activityRuleDialog.form.iD" :type="isInternalRule(activityRuleDialog.form.iD) ? 'danger' : 'success'" size="small">
-                                {{ getRuleTypeText(activityRuleDialog.form.iD) }}
+                            <el-tag v-if="activityRuleDialog.form.ruleOrigin" :type="getRuleOriginTagType(activityRuleDialog.form.ruleOrigin)" size="small">
+                                {{ getRuleOriginText(activityRuleDialog.form.ruleOrigin) }}
                             </el-tag>
                         </div>
                         <div v-if="activityRuleDialog.idValidationError" style="color: #f56c6c; font-size: 12px; margin-left: 0;">
@@ -663,6 +663,7 @@ const alertRuleDialog = reactive({
         tags: [] as string[],
         logsource: '',
         type: '',
+        ruleOrigin: 'custom',
         autoBlock: false,
         detection: {
             eventType: '',
@@ -699,6 +700,7 @@ const activityRuleDialog = reactive({
         status: 'stable',
         tags: [] as string[],
         logsource: '',
+        ruleOrigin: 'custom',
         detection: '',
         references: [] as string[],
         rdxKey: '',
@@ -803,6 +805,7 @@ const handleAddAlertRule = () => {
         tags: [],
         logsource: '',
         type: '',
+        ruleOrigin: 'custom',
         autoBlock: false,
         detection: {
             eventType: '',
@@ -870,6 +873,7 @@ const handleViewAlertRule = async (row: AlertRuleInfo) => {
         tags: row.tags || '',
         logsource: row.logsource || '',
         type: row.type || '',
+        rule_origin: normalizeRuleOrigin(row.ruleOrigin, 'custom'),
         enable: row.enable,
         autoBlock: row.autoBlock,
         suggestion: row.suggestion || '',
@@ -942,6 +946,7 @@ const handleViewAlertRule = async (row: AlertRuleInfo) => {
                     modified: formatDate(activityRule.updateTm),
                     tags: activityRule.tags || [],
                     logsource: activityRule.logsource || '',
+                    rule_origin: normalizeRuleOrigin(activityRule.ruleOrigin, 'custom'),
                     detection: sigmaDetectionObject,
                     fields: activityRule.fields || [],
                     unique_fields: activityRule.uniqueFields || [],
@@ -1030,6 +1035,7 @@ const handleEditAlertRule = (row: AlertRuleInfo) => {
         tags: [...row.tags],
         logsource: row.logsource,
         type: row.type,
+        ruleOrigin: normalizeRuleOrigin(row.ruleOrigin, 'custom'),
         autoBlock: row.autoBlock,
         detection: detectionForm,
         references: row.references.length > 0 ? [...row.references] : [''],
@@ -1083,6 +1089,7 @@ const handleSaveAlertRule = async () => {
                 tags: alertRuleDialog.form.tags,
                 logsource: alertRuleDialog.form.logsource,
                 type: alertRuleDialog.form.type,
+                ruleOrigin: alertRuleDialog.form.ruleOrigin,
                 autoBlock: alertRuleDialog.form.autoBlock,
                 detection: detectionProto,
                 references: alertRuleDialog.form.references.filter(ref => ref.trim() !== ''),
@@ -1104,6 +1111,7 @@ const handleSaveAlertRule = async () => {
                 tags: alertRuleDialog.form.tags,
                 logsource: alertRuleDialog.form.logsource,
                 type: alertRuleDialog.form.type,
+                ruleOrigin: alertRuleDialog.form.ruleOrigin,
                 autoBlock: alertRuleDialog.form.autoBlock,
                 detection: detectionProto,
                 references: alertRuleDialog.form.references.filter(ref => ref.trim() !== ''),
@@ -1197,14 +1205,32 @@ const refreshCodeMirror = (codeMirrorRef: any) => {
     }
 };
 
-// Helper function to determine if a rule is internal
-const isInternalRule = (ruleId: string): boolean => {
-    return ruleId.startsWith('winlog-0000-') || ruleId.startsWith('pktlog-0000-');
+const normalizeRuleOrigin = (origin?: string, fallback = 'custom'): string => {
+    const value = (origin || '').trim().toLowerCase();
+    return ['internal', 'public', 'custom'].includes(value) ? value : fallback;
 };
 
-// Helper function to get rule type text
-const getRuleTypeText = (ruleId: string): string => {
-    return isInternalRule(ruleId) ? 'Internal Rule' : 'Public Rule';
+const inferImportedRuleOrigin = (ruleData: any): string => {
+    const explicitOrigin = normalizeRuleOrigin(ruleData.rule_origin || ruleData.ruleOrigin || '', '');
+    if (explicitOrigin) return explicitOrigin;
+    return ruleData.x_source_repository || ruleData.x_source_file || ruleData.x_source_commit ? 'public' : 'custom';
+};
+
+const getRuleOriginText = (origin?: string): string => {
+    const normalized = normalizeRuleOrigin(origin, 'custom');
+    const labelMap: Record<string, string> = {
+        internal: t('message.ruleManage.ruleOriginInternal'),
+        public: t('message.ruleManage.ruleOriginPublic'),
+        custom: t('message.ruleManage.ruleOriginCustom'),
+    };
+    return labelMap[normalized] || normalized;
+};
+
+const getRuleOriginTagType = (origin?: string): 'success' | 'primary' | 'info' => {
+    const normalized = normalizeRuleOrigin(origin, 'custom');
+    if (normalized === 'internal') return 'primary';
+    if (normalized === 'public') return 'success';
+    return 'info';
 };
 
 // Helper function to validate ID format
@@ -1213,9 +1239,9 @@ const validateRuleIdFormat = (ruleId: string): { isValid: boolean; message: stri
         return { isValid: true, message: '' };
     }
 
-    // Regular expressions for the two valid formats
-    const winlogPattern = /^winlog-\d{4}-\d{4}$/;
-    const pktlogPattern = /^pktlog-\d{4}-\d{4}$/;
+    // Accept the new contiguous format and the legacy two-segment format.
+    const winlogPattern = /^winlog-(\d{4}|\d{4}-\d{4})$/;
+    const pktlogPattern = /^pktlog-(\d{4}|\d{4}-\d{4})$/;
 
     if (winlogPattern.test(ruleId)) {
         return { isValid: true, message: '' };
@@ -1227,7 +1253,7 @@ const validateRuleIdFormat = (ruleId: string): { isValid: boolean; message: stri
 
     return {
         isValid: false,
-        message: 'ID format must be: winlog-dddd-dddd or pktlog-dddd-dddd'
+        message: 'ID format must be: winlog-dddd, pktlog-dddd, winlog-dddd-dddd, or pktlog-dddd-dddd'
     };
 };
 
@@ -1302,6 +1328,7 @@ const handleToggleAlertRule = async (row: AlertRuleInfo) => {
             tags: row.tags,
             logsource: row.logsource,
             type: row.type,
+            ruleOrigin: normalizeRuleOrigin(row.ruleOrigin, 'custom'),
             autoBlock: row.autoBlock,
             detection: '',
             references: [...row.references],
@@ -1341,6 +1368,7 @@ const handleAddActivityRule = () => {
         status: 'stable',
         tags: [],
         logsource: '',
+        ruleOrigin: 'custom',
         detection: '',
         references: [''],
         rdxKey: '',
@@ -1383,6 +1411,7 @@ const handleViewActivityRule = (row: ActivityRuleInfo) => {
         modified: formatDate(row.updateTm),
         tags: row.tags || [],
         logsource: row.logsource || '',
+        rule_origin: normalizeRuleOrigin(row.ruleOrigin, 'custom'),
         detection: detectionObject,
         fields: row.fields || [],
         unique_fields: row.uniqueFields || [],
@@ -1412,6 +1441,7 @@ const handleEditActivityRule = (row: ActivityRuleInfo) => {
         status: row.status,
         tags: [...row.tags],
         logsource: row.logsource,
+        ruleOrigin: normalizeRuleOrigin(row.ruleOrigin, 'custom'),
         detection: row.detection || '',
         references: row.references.length > 0 ? [...row.references] : [''],
         rdxKey: row.rdxKey,
@@ -1452,6 +1482,7 @@ const handleSaveActivityRule = async () => {
                 status: activityRuleDialog.form.status,
                 tags: activityRuleDialog.form.tags,
                 logsource: activityRuleDialog.form.logsource,
+                ruleOrigin: activityRuleDialog.form.ruleOrigin,
                 detection: activityRuleDialog.form.detection,
                 references: activityRuleDialog.form.references.filter(ref => ref.trim() !== ''),
                 rdxKey: activityRuleDialog.form.rdxKey,
@@ -1470,6 +1501,7 @@ const handleSaveActivityRule = async () => {
                 status: activityRuleDialog.form.status,
                 tags: activityRuleDialog.form.tags,
                 logsource: activityRuleDialog.form.logsource,
+                ruleOrigin: activityRuleDialog.form.ruleOrigin,
                 detection: activityRuleDialog.form.detection,
                 references: activityRuleDialog.form.references.filter(ref => ref.trim() !== ''),
                 rdxKey: activityRuleDialog.form.rdxKey,
@@ -1554,6 +1586,7 @@ const handleActivityRuleFileChange = async (event: Event) => {
         activityRuleDialog.form.status = ruleData.status || 'stable';
         activityRuleDialog.form.tags = Array.isArray(ruleData.tags) ? ruleData.tags : [];
         activityRuleDialog.form.logsource = ruleData.logsource || '';
+        activityRuleDialog.form.ruleOrigin = inferImportedRuleOrigin(ruleData);
         activityRuleDialog.form.author = ruleData.author || '';
         activityRuleDialog.form.rdxKey = ruleData.rdxKey || ruleData.rdx_key || '';
         activityRuleDialog.form.fields = Array.isArray(ruleData.fields) ? ruleData.fields : [];

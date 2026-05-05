@@ -9,165 +9,165 @@ package ada;
 
 option go_package = "./;v2";
 
-// import "github.com/mwitkow/go-proto-validators/validator.proto";
+import "github.com/mwitkow/go-proto-validators/validator.proto";
 
 service ADA {
-  // User account management
-  rpc Login(LoginReq) returns (LoginReply) {} // Login
-  rpc Logout(LogoutReq) returns (LogoutReply) {} // Logout
-  rpc ListUser(ListUserReq) returns (ListUserReply) {} // User list
-  rpc AddUser(AddUserReq) returns (AddUserReply) {} // Add user
-  rpc UpdateUser(UpdateUserReq) returns (UpdateUserReply) {} // Update user profile
-  rpc UpdateUserPassword(UpdateUserPasswordReq) returns (UpdateUserPasswordReply) {} // Update user password
-  rpc DeleteUser(DeleteUserReq) returns (DeleteUserReply) {} // Delete user
-  rpc UserExists(UserExistsReq) returns (UserExistsReply) {} // Check whether the user exists
-  // Authority and MFA-related APIs
-  rpc CheckMfa(CheckMfaReq)returns(CheckMfaReply) {}// Check whether MFA is required before login
-  rpc EnableMfa(EnableMfaReq)returns(EnableMfaReply) {} // Enable MFA
-  rpc DisableMfa(DisableMfaReq)returns(DisableMfaReply) {} // Disable MFA
-  rpc UpdateAvatar(UpdateAvatarReq)returns (UpdateAvatarReply) {}// Update avatar
-  rpc ResetPassword(ResetPasswordReq)returns (ResetPasswordReply) {}// Reset user password
+  // User 账户管理
+  rpc Login(LoginReq) returns (LoginReply) {} //登录
+  rpc Logout(LogoutReq) returns (LogoutReply) {} //登出
+  rpc ListUser(ListUserReq) returns (ListUserReply) {} //用户列表
+  rpc AddUser(AddUserReq) returns (AddUserReply) {} //添加用户
+  rpc UpdateUser(UpdateUserReq) returns (UpdateUserReply) {} //更新用户信息
+  rpc UpdateUserPassword(UpdateUserPasswordReq) returns (UpdateUserPasswordReply) {} //更新用户密码
+  rpc DeleteUser(DeleteUserReq) returns (DeleteUserReply) {} //删除用户
+  rpc UserExists(UserExistsReq) returns (UserExistsReply) {} //用户是否存在
+  // Authority 二次验证相关接口
+  rpc CheckMfa(CheckMfaReq)returns(CheckMfaReply) {}// 登陆前校验是否需要二次验证
+  rpc EnableMfa(EnableMfaReq)returns(EnableMfaReply) {} // 添加二次验证
+  rpc DisableMfa(DisableMfaReq)returns(DisableMfaReply) {} // 禁用二次验证
+  rpc UpdateAvatar(UpdateAvatarReq)returns (UpdateAvatarReply) {}// 更新头像
+  rpc ResetPassword(ResetPasswordReq)returns (ResetPasswordReply) {}// 重置用户密码
 
-  // AccessKey API key management
-  rpc ListAccessKey(ListAccessKeyReq) returns (ListAccessKeyReply) {} // List user AccessKeys
-  rpc GenerateAccessKey(GenerateAccessKeyReq) returns (GenerateAccessKeyReply) {} // Generate an AccessKey
-  rpc DeleteAccessKey(DeleteAccessKeyReq) returns (DeleteAccessKeyReply) {} // Delete an AccessKey
+  // AccessKey API密钥管理
+  rpc ListAccessKey(ListAccessKeyReq) returns (ListAccessKeyReply) {} // 列出用户AccessKey
+  rpc GenerateAccessKey(GenerateAccessKeyReq) returns (GenerateAccessKeyReply) {} // 生成AccessKey
+  rpc DeleteAccessKey(DeleteAccessKeyReq) returns (DeleteAccessKeyReply) {} // 删除AccessKey
 
   // Domain
-  rpc ListDomain(ListDomainReq) returns (ListDomainReply) {}  // Domain list
-  rpc AddDomain(AddDomainReq) returns (AddDomainReply) {} // Add domain
-  rpc TestDomain(TestDomainReq) returns (TestDomainReply) {} // Test the domain connection
-  rpc UpdateDomain(UpdateDomainReq) returns (UpdateDomainReply) {} // Update domain configuration
-  rpc DeleteDomain(DeleteDomainReq) returns (DeleteDomainReply) {} // Delete domain configuration
-  rpc UpdateDomainData(UpdateDomainDataReq)returns (UpdateDomainDataReply) {} // Sync domain data
+  rpc ListDomain(ListDomainReq) returns (ListDomainReply) {}  //域列表
+  rpc AddDomain(AddDomainReq) returns (AddDomainReply) {} //添加域
+  rpc TestDomain(TestDomainReq) returns (TestDomainReply) {} //测试域连接
+  rpc UpdateDomain(UpdateDomainReq) returns (UpdateDomainReply) {} //更新域配置
+  rpc DeleteDomain(DeleteDomainReq) returns (DeleteDomainReply) {} //删除域配置
+  rpc UpdateDomainData(UpdateDomainDataReq)returns (UpdateDomainDataReply) {} // 同步域数据
   rpc DeploySensor(DeploySensorReq) returns (DeploySensorReply) {} // Deploy Sensor(via winRM)
 
   // sensor
-  rpc ListSensor(ListSensorReq) returns (ListSensorReply) {} // Sensor list
-  rpc UpdateSensor(UpdateSensorReq) returns (UpdateSensorReply) {} // Update sensor configuration
-  rpc DownloadSensor(DownloadSensorReq)  returns (DownloadSensorReply) {}  // Download sensor
-  rpc CmdSensor(CmdSensorReq) returns (CmdSensorReply) {}  // Send commands (`start`/`stop`) to a sensor or uninstall it
-  rpc UpdateSensorVersion(UpdateSensorVersionReq) returns(UpdateSensorVersionReply) {}// Update the sensor version
+  rpc ListSensor(ListSensorReq) returns (ListSensorReply) {} //传感器列表
+  rpc UpdateSensor(UpdateSensorReq) returns (UpdateSensorReply) {} //更新传感器配置
+  rpc DownloadSensor(DownloadSensorReq)  returns (DownloadSensorReply) {}  //下载传感器
+  rpc CmdSensor(CmdSensorReq) returns (CmdSensorReply) {}  //下发命令(start/stop)到传感器/删除(uninstall)
+  rpc UpdateSensorVersion(UpdateSensorVersionReq) returns(UpdateSensorVersionReply) {}// 传感器版本更新
 
-  // System information
-  // 1. Basic information
-  rpc GetSystemInfo(GetSystemInfoReq) returns (GetSystemInfoReply) {} // Get system information
+  // 系统信息
+  // 1.基本信息
+  rpc GetSystemInfo(GetSystemInfoReq) returns (GetSystemInfoReply) {} //获取系统信息
   rpc GetSystemIcon(GetSystemIconReq)returns(GetSystemIconReply) {}
   rpc UpdateSystemLanguage(UpdateSystemLanguageReq)returns(UpdateSystemLanguageReply) {}
-  rpc UpdateSystemCfg(UpdateSystemCfgReq) returns (UpdateSystemCfgReply) {} // Update system configuration
-  rpc GetSystemProxy(GetSystemProxyReq) returns (GetSystemProxyReply) {} // Get system proxy configuration
-  rpc UpdateSystemProxy(UpdateSystemProxyReq) returns (UpdateSystemProxyReply) {} // Update system proxy configuration
+  rpc UpdateSystemCfg(UpdateSystemCfgReq) returns (UpdateSystemCfgReply) {} // 更新系统配置
+  rpc GetSystemProxy(GetSystemProxyReq) returns (GetSystemProxyReply) {} // 获取系统代理配置
+  rpc UpdateSystemProxy(UpdateSystemProxyReq) returns (UpdateSystemProxyReply) {} // 更新系统代理配置
 
-  // 2. System metrics: load|cpu|mem|net_rx|net_tx
-  rpc GetSystemStats(GetSystemStatsReq) returns (GetSystemStatsReply) {} // Get system metrics
-  rpc SetSystemStatsCfg(SetSystemStatsCfgReq) returns (SetSystemStatsCfgReply) {} // Set system metrics parameters; supported keys match `GetSystemInfoReply.statsCfg`
+  // 2.系统监控: load|cpu|mem|net_rx|net_tx
+  rpc GetSystemStats(GetSystemStatsReq) returns (GetSystemStatsReply) {} //获取系统监控信息
+  rpc SetSystemStatsCfg(SetSystemStatsCfgReq) returns (SetSystemStatsCfgReply) {} //设置系统监控参数, 支持的参考参考GetSystemInfoReply.statsCfg
 
-  // 3. License management
-  rpc GetLicense(GetLicenseReq) returns (GetLicenseReply) {} // Get the license
-  rpc UpdateLicense(UpdateLicenseReq) returns (UpdateLicenseReply) {}  // Update the license
+  // 3.授权管理
+  rpc GetLicense(GetLicenseReq) returns (GetLicenseReply) {} //获取许可证
+  rpc UpdateLicense(UpdateLicenseReq) returns (UpdateLicenseReply) {}  //更新许可证
 
-  // 4. Diagnostic tools
-  rpc NetworkDebug(NetworkDebugReq)returns(NetworkDebugReply) {} // Diagnostic tool
+  // 4.调试工具
+  rpc NetworkDebug(NetworkDebugReq)returns(NetworkDebugReply) {} //调试工具
 
-  // Alert configuration
-  rpc ListNotifyConf(ListNotifyConfReq)returns(ListNotifyConfReply) {} // Alert configuration list
-  rpc AddNotifyConf(AddNotifyConfReq)returns(AddNotifyConfReply) {} // Add an alert configuration
-  rpc UpdateNotifyConf(UpdateNotifyConfReq)returns(UpdateNotifyConfReply) {} // Edit an alert configuration
-  rpc DeleteNotifyConf(DeleteNotifyConfReq)returns(DeleteNotifyConfReply) {} // Delete an alert configuration
-  rpc EnableNotifyConf(EnableNotifyConfReq)returns(EnableNotifyConfReply){} // Enable or disable a notification configuration
-  rpc TestNotifyConf(TestNotifyConfReq)returns(TestNotifyConfReply){} // Test an alert configuration
+  // 告警配置
+  rpc ListNotifyConf(ListNotifyConfReq)returns(ListNotifyConfReply) {} // 告警配置列表页
+  rpc AddNotifyConf(AddNotifyConfReq)returns(AddNotifyConfReply) {} // 新增告警配置
+  rpc UpdateNotifyConf(UpdateNotifyConfReq)returns(UpdateNotifyConfReply) {} // 编辑告警配置
+  rpc DeleteNotifyConf(DeleteNotifyConfReq)returns(DeleteNotifyConfReply) {} // 删除告警配置
+  rpc EnableNotifyConf(EnableNotifyConfReq)returns(EnableNotifyConfReply){} // 开关通知配置
+  rpc TestNotifyConf(TestNotifyConfReq)returns(TestNotifyConfReply){} // 测试告警配置
 
-  // Export management
-  rpc ListExportTask(ListExportTaskReq)returns(ListExportTaskReply) {} // Export task list
-  rpc AddExportTask(AddExportTaskReq)returns(AddExportTaskReply) {} // Add an export task
-  rpc DeleteExportTask(DeleteExportTaskReq)returns(DeleteExportTaskReply) {} // Delete an export task
+  // 导出管理
+  rpc ListExportTask(ListExportTaskReq)returns(ListExportTaskReply) {} // 导出数据列表
+  rpc AddExportTask(AddExportTaskReq)returns(AddExportTaskReply) {} // 添加导出任务
+  rpc DeleteExportTask(DeleteExportTaskReq)returns(DeleteExportTaskReply) {} // 删除导出任务
 
-  // Message center
+  // 消息中心
   rpc ListNotify(ListNotifyReq)returns (ListNotifyReply) {}
   rpc UpdateNotify(UpdateNotifyReq)returns (UpdateNotifyReply) {}
   rpc StatsNotify(StatsNotifyReq)returns(StatsNotifyReply) {}
 
-  // Audit logs
-  rpc ListAuditLog(ListAuditLogReq) returns (ListAuditLogReply) {} // Get audit logs
+  // 日志审计
+  rpc ListAuditLog(ListAuditLogReq) returns (ListAuditLogReply) {} //获取审计日志
 
-  // System logs
-  rpc ListSystemLogs(ListSystemLogsReq) returns (ListSystemLogsReply) {} // Get system error logs
+  // 系统日志
+  rpc ListSystemLogs(ListSystemLogsReq) returns (ListSystemLogsReply) {} //获取系统错误日志
 
   ////////////////////////////////
-  // Threat detection dashboard
-  rpc ThreatTops(ThreatTopsReq) returns (ThreatTopsReply) {} // Top 10 threat events and activities
-  rpc ThreatTrends(ThreatTrendsReq) returns (ThreatTrendsReply) {} // Threat activity trends
+  // threat威胁检测dashboard
+  rpc ThreatTops(ThreatTopsReq) returns (ThreatTopsReply) {} // 威胁事件/行为top10
+  rpc ThreatTrends(ThreatTrendsReq) returns (ThreatTrendsReply) {} // 威胁行为趋势
 
-  // Threat detection
-  rpc ListThreat(ListThreatReq) returns (ListThreatReply) {} // Threat event list
-  rpc GetThreatNames(GetThreatNamesReq) returns (GetThreatNamesReply) {} // Mapping list for `ruleTitle` and `ruleId` in events
-  rpc GetThreat(GetThreatReq) returns (GetThreatReply) {} // Threat event details
-  rpc ActionThreat(ActionThreatReq) returns (ActionThreatReply) {} // Threat event actions
-  rpc ListActivity(ListActivityReq) returns (ListActivityReply) {} // Threat activity list
-  rpc GetActivityNames(GetActivityNamesReq) returns (GetActivityNamesReply) {} // Mapping list for threat activity names and `actId`
-  rpc GetActivity(GetActivityReq) returns (GetActivityReply) {} // Threat activity details
-  rpc ListSensitiveEntry(ListSensitiveEntryReq) returns (ListSensitiveEntryReply) {} // Sensitive entry list
-  rpc AddSensitiveEntry(AddSensitiveEntryReq) returns (AddSensitiveEntryReply) {} // Add a sensitive entry
-  rpc ListDomainEntry(ListDomainEntryReq) returns (ListDomainEntryReply) {} // Domain user list used when selecting a sensitive entry target
-  rpc DeleteSensitiveEntry(DeleteSensitiveEntryReq) returns (DeleteSensitiveEntryReply) {} // Delete a sensitive entry
-  rpc ListThreatWhitelist(ListThreatWhitelistReq) returns (ListThreatWhitelistReply) {} // Rule whitelist list
-  rpc GetThreatWhitelistField(GetThreatWhitelistFieldReq) returns (GetThreatWhitelistFieldReply) {} // Rule field descriptions
-  rpc AddThreatWhitelist(AddThreatWhitelistReq) returns (AddThreatWhitelistReply) {} // Add a rule whitelist entry
-  rpc UpdateThreatWhitelist(UpdateThreatWhitelistReq) returns (UpdateThreatWhitelistReply) {} // Update a rule whitelist entry
-  rpc DeleteThreatWhitelist(DeleteThreatWhitelistReq) returns (DeleteThreatWhitelistReply) {} // Delete a rule whitelist entry
-  rpc ListThreatBlock(ListThreatBlockReq) returns (ListThreatBlockReply) {} // Threat block list
-  rpc AddThreatBlock(AddThreatBlockReq) returns (AddThreatBlockReply) {} // Add a block rule
-  rpc UpdateThreatBlock(UpdateThreatBlockReq) returns (UpdateThreatBlockReply) {} // Update a block rule
-  rpc DeleteThreatBlock(DeleteThreatBlockReq) returns (DeleteThreatBlockReply) {} // Delete a block rule
+  // threat威胁检测
+  rpc ListThreat(ListThreatReq) returns (ListThreatReply) {} // 威胁事件列表
+  rpc GetThreatNames(GetThreatNamesReq) returns (GetThreatNamesReply) {} // Event中的ruleTitle/ruleId映射列表
+  rpc GetThreat(GetThreatReq) returns (GetThreatReply) {} // 威胁事件详情
+  rpc ActionThreat(ActionThreatReq) returns (ActionThreatReply) {} // 威胁事件操作
+  rpc ListActivity(ListActivityReq) returns (ListActivityReply) {} // 威胁行为列表
+  rpc GetActivityNames(GetActivityNamesReq) returns (GetActivityNamesReply) {} // 威胁行为名称/actId映射列表
+  rpc GetActivity(GetActivityReq) returns (GetActivityReply) {} // 威胁行为详情
+  rpc ListSensitiveEntry(ListSensitiveEntryReq) returns (ListSensitiveEntryReply) {} // 敏感条目列表
+  rpc AddSensitiveEntry(AddSensitiveEntryReq) returns (AddSensitiveEntryReply) {} // 增加敏感条目
+  rpc ListDomainEntry(ListDomainEntryReq) returns (ListDomainEntryReply) {} // Domain Users列表（增加敏感条目，选择)
+  rpc DeleteSensitiveEntry(DeleteSensitiveEntryReq) returns (DeleteSensitiveEntryReply) {} // 删除敏感条目
+  rpc ListThreatWhitelist(ListThreatWhitelistReq) returns (ListThreatWhitelistReply) {} // 规则白名单列表
+  rpc GetThreatWhitelistField(GetThreatWhitelistFieldReq) returns (GetThreatWhitelistFieldReply) {} // 规则字段说明
+  rpc AddThreatWhitelist(AddThreatWhitelistReq) returns (AddThreatWhitelistReply) {} // 添加规则白名单
+  rpc UpdateThreatWhitelist(UpdateThreatWhitelistReq) returns (UpdateThreatWhitelistReply) {} // 更新规则白名单
+  rpc DeleteThreatWhitelist(DeleteThreatWhitelistReq) returns (DeleteThreatWhitelistReply) {} // 删除规则白名单
+  rpc ListThreatBlock(ListThreatBlockReq) returns (ListThreatBlockReply) {} // 威胁阻断列表
+  rpc AddThreatBlock(AddThreatBlockReq) returns (AddThreatBlockReply) {} // 阻断添加
+  rpc UpdateThreatBlock(UpdateThreatBlockReq) returns (UpdateThreatBlockReply) {} // 阻断更新
+  rpc DeleteThreatBlock(DeleteThreatBlockReq) returns (DeleteThreatBlockReply) {} // 阻断删除
 
   // Rule Management (Alert Rules & Activity Rules)
-  rpc ListAlertRule(ListAlertRuleReq) returns (ListAlertRuleReply) {} // Alert rule list
-  rpc AddAlertRule(AddAlertRuleReq) returns (AddAlertRuleReply) {} // Add an alert rule
-  rpc UpdateAlertRule(UpdateAlertRuleReq) returns (UpdateAlertRuleReply) {} // Update an alert rule
-  rpc DeleteAlertRule(DeleteAlertRuleReq) returns (DeleteAlertRuleReply) {} // Delete an alert rule
-  rpc GetAlertRuleNames(GetAlertRuleNamesReq) returns (GetAlertRuleNamesReply) {} // Return all rule names mapped to their IDs
-  rpc GetAlertTypes(GetAlertTypesReq) returns (GetAlertTypesReply) {} // Delete an alert rule
-  rpc GetAlertRuleTags(GetAlertRuleTagsReq) returns (GetAlertRuleTagsReply) {} // Get all rule tags
-  rpc ListActivityRule(ListActivityRuleReq) returns (ListActivityRuleReply) {} // Sigma rule list
-  rpc GetActivityRule(GetActivityRuleReq) returns (GetActivityRuleReply) {} // Get Sigma rule details
-  rpc AddActivityRule(AddActivityRuleReq) returns (AddActivityRuleReply) {} // Add a Sigma rule
-  rpc UpdateActivityRule(UpdateActivityRuleReq) returns (UpdateActivityRuleReply) {} // Update a Sigma rule
-  rpc DeleteActivityRule(DeleteActivityRuleReq) returns (DeleteActivityRuleReply) {} // Delete a Sigma rule
-  rpc GetActivityRuleNames(GetActivityRuleNamesReq) returns (GetActivityRuleNamesReply) {} // Return all rule names mapped to their IDs
-  rpc GetActivityRuleUniqueFields(GetActivityRuleUniqueFieldsReq) returns (GetActivityRuleUniqueFieldsReply) {} // Get all unique fields used by activity rules
+  rpc ListAlertRule(ListAlertRuleReq) returns (ListAlertRuleReply) {} // 告警规则列表
+  rpc AddAlertRule(AddAlertRuleReq) returns (AddAlertRuleReply) {} // 添加告警规则
+  rpc UpdateAlertRule(UpdateAlertRuleReq) returns (UpdateAlertRuleReply) {} // 更新告警规则
+  rpc DeleteAlertRule(DeleteAlertRuleReq) returns (DeleteAlertRuleReply) {} // 删除告警规则
+  rpc GetAlertRuleNames(GetAlertRuleNamesReq) returns (GetAlertRuleNamesReply) {} // 返回所有规则名称与 id 对应列表
+  rpc GetAlertTypes(GetAlertTypesReq) returns (GetAlertTypesReply) {} // 删除告警规则
+  rpc GetAlertRuleTags(GetAlertRuleTagsReq) returns (GetAlertRuleTagsReply) {} // 获取所有规则标签
+  rpc ListActivityRule(ListActivityRuleReq) returns (ListActivityRuleReply) {} // Sigma规则列表
+  rpc GetActivityRule(GetActivityRuleReq) returns (GetActivityRuleReply) {} // 获取Sigma规则详情
+  rpc AddActivityRule(AddActivityRuleReq) returns (AddActivityRuleReply) {} // 添加Sigma规则
+  rpc UpdateActivityRule(UpdateActivityRuleReq) returns (UpdateActivityRuleReply) {} // 更新Sigma规则
+  rpc DeleteActivityRule(DeleteActivityRuleReq) returns (DeleteActivityRuleReply) {} // 删除Sigma规则
+  rpc GetActivityRuleNames(GetActivityRuleNamesReq) returns (GetActivityRuleNamesReply) {} // 返回所有规则名称与 id 对应列表
+  rpc GetActivityRuleUniqueFields(GetActivityRuleUniqueFieldsReq) returns (GetActivityRuleUniqueFieldsReply) {} // 获取所有行为规则UniqueFields
   ////////////////////////////////
-  // Scan-risk dashboard
-  rpc ScanRiskStats(ScanRiskStatsReq) returns (ScanRiskStatsReply) {} // Active scan event overview
-  // Active scan detection
-  rpc ListBaseline(ListBaselineReq) returns (ListBaselineReply) {} // Baseline event list
-  rpc GetBaseline(GetBaselineReq) returns (GetBaselineReply) {} // Get baseline event details
-  rpc ListLeak(ListLeakReq) returns (ListLeakReply) {} // Leak event list
-  rpc ListWeakPwd(ListWeakPwdReq) returns (ListWeakPwdReply) {} // Leak event list
+  // scanrisk主动检测dashboard
+  rpc ScanRiskStats(ScanRiskStatsReq) returns (ScanRiskStatsReply) {} // 主动检测事件概览
+  // scanrisk主动检测
+  rpc ListBaseline(ListBaselineReq) returns (ListBaselineReply) {} // 基线事件列表
+  rpc GetBaseline(GetBaselineReq) returns (GetBaselineReply) {} //  获取基线事件详情
+  rpc ListLeak(ListLeakReq) returns (ListLeakReply) {} // 漏洞事件列表
+  rpc ListWeakPwd(ListWeakPwdReq) returns (ListWeakPwdReply) {} // 漏洞事件列表
 
-  // Task management
-  rpc ListScanTask(ListScanTaskReq) returns (ListScanTaskReply) {} // Scan task list
-  rpc GetScanTask(GetScanTaskReq) returns (GetScanTaskReply) {} // Get scan task details
-  rpc AddScanTask(AddScanTaskReq) returns (AddScanTaskReply) {} // Add a scan task
-  rpc RecheckScanTask(RecheckScanTaskReq) returns (RecheckScanTaskReply) {} // Run the scan immediately
-  rpc DeleteScanTask(DeleteScanTaskReq) returns (DeleteScanTaskReply) {} // Delete a scan task
-  // Scan configuration
-  rpc ListScanConf(ListScanConfReq) returns (ListScanConfReply) {} // Scan configuration list
-  rpc SetScanConf(SetScanConfReq) returns (SetScanConfReply) {} // Update scan configuration
-  rpc GetScanConf(GetScanConfReq) returns (GetScanConfReply) {} // Scan configuration details
-  rpc GetScanTmplNames(GetScanTmplNamesReq) returns (GetScanTmplNamesReply) {} // Scan template name list
-  rpc UpdateScanConf(UpdateScanConfReq) returns (UpdateScanConfReply) {} // Update configuration details
-  // Scan templates
-  rpc ListScanTmpl(ListScanTmplReq) returns (ListScanTmplReply) {} // Scan template list
-  rpc GetScanTmpl(GetScanTmplReq) returns (GetScanTmplReply) {} // Get scan template details
-  rpc UpdateScanTmpl(UpdateScanTmplReq) returns (UpdateScanTmplReply) {} // Update a scan template
-  rpc DeleteScanTmpl(DeleteScanTmplReq) returns (DeleteScanTmplReply) {} // Delete a scan template
-  rpc AddScanTmpl(AddScanTmplReq) returns (AddScanTmplReply) {} // Add a scan template
-  rpc ListScanPlugin(ListScanPluginReq) returns (ListScanPluginReply) {} // Get the scan plugin list
+  // 任务管理
+  rpc ListScanTask(ListScanTaskReq) returns (ListScanTaskReply) {} // 扫描任务列表
+  rpc GetScanTask(GetScanTaskReq) returns (GetScanTaskReply) {} // 获取扫描任务详情
+  rpc AddScanTask(AddScanTaskReq) returns (AddScanTaskReply) {} // 添加扫描任务
+  rpc RecheckScanTask(RecheckScanTaskReq) returns (RecheckScanTaskReply) {} // 立即检测
+  rpc DeleteScanTask(DeleteScanTaskReq) returns (DeleteScanTaskReply) {} // 删除扫描任务
+  // 扫描配置
+  rpc ListScanConf(ListScanConfReq) returns (ListScanConfReply) {} // 扫描配置列表
+  rpc SetScanConf(SetScanConfReq) returns (SetScanConfReply) {} // 修改扫描配置
+  rpc GetScanConf(GetScanConfReq) returns (GetScanConfReply) {} // 扫描配置详情
+  rpc GetScanTmplNames(GetScanTmplNamesReq) returns (GetScanTmplNamesReply) {} // 扫描模版名称列表
+  rpc UpdateScanConf(UpdateScanConfReq) returns (UpdateScanConfReply) {} // 更新配置详情
+  // 扫描模板
+  rpc ListScanTmpl(ListScanTmplReq) returns (ListScanTmplReply) {} // 扫描模版列表
+  rpc GetScanTmpl(GetScanTmplReq) returns (GetScanTmplReply) {} // 获取扫描模版详情
+  rpc UpdateScanTmpl(UpdateScanTmplReq) returns (UpdateScanTmplReply) {} // 更新扫描模版
+  rpc DeleteScanTmpl(DeleteScanTmplReq) returns (DeleteScanTmplReply) {} // 删除扫描模版
+  rpc AddScanTmpl(AddScanTmplReq) returns (AddScanTmplReply) {} // 添加扫描模版
+  rpc ListScanPlugin(ListScanPluginReq) returns (ListScanPluginReply) {} // 获取扫描插件list
 
-  // Security dashboard
-  rpc DashboardStats(DashboardStatsReq) returns (DashboardStatsReply) {} // Dashboard summary metrics
-  rpc DashboardTrends(DashboardTrendsReq) returns (DashboardTrendsReply) {} // Dashboard trend charts
-  rpc DashboardLogStats(DashboardLogStatsReq) returns (DashboardLogStatsReply) {} // Dashboard winlog/pktlog metrics
+  // 安全大盘
+  rpc DashboardStats(DashboardStatsReq) returns (DashboardStatsReply) {} // dashboard 统计状态
+  rpc DashboardTrends(DashboardTrendsReq) returns (DashboardTrendsReply) {} // dashboard 趋势图表
+  rpc DashboardLogStats(DashboardLogStatsReq) returns (DashboardLogStatsReply) {} // dashboard winlog/pktlog状态
 }
 
 // common page message struct
@@ -178,23 +178,23 @@ message ModelPage {
 }
 
 message LoginReq {
-  string username = 1; // [(validator.field) = {string_not_empty: true}];
-  string password = 2; // [(validator.field) = {string_not_empty: true}];
-  string totpCode = 3; // [(validator.field) = {regex: "d{6}|^(\\s&&[^\\f\\n\\r\\t\\v])*"}];
+  string username = 1 [(validator.field) = {string_not_empty: true}];
+  string password = 2 [(validator.field) = {string_not_empty: true}];
+  string totpCode = 3 [(validator.field) = {regex: "d{6}|^(\\s&&[^\\f\\n\\r\\t\\v])*"}];
 }
 
 message LoginReply {
   int32 ID = 1;
   string username = 2;
-  string passStrength = 3; // Password strength: high/middle/low
+  string passStrength = 3; // 密码强度: high/middle/low
   string role = 4;
   int32 priv = 5;
   string mobile = 6;
   string email = 7;
   string remark = 8;
   string token = 9;
-  bool  hasMfa = 10; // Whether MFA is required
-  bool needChangePwd = 11; // Whether the password must be changed
+  bool  hasMfa = 10; // 是否需要二次验证
+  bool needChangePwd = 11; // 是否需要修改密码
 }
 
 message LogoutReq {
@@ -208,21 +208,21 @@ message LogoutReply {
 
 message ListUserReq {
   // start index with 1.
-  int32 pageIdx = 1; // [(validator.field) = {int_gt: 0}];
+  int32 pageIdx = 1 [(validator.field) = {int_gt: 0}];
   // if pageSize is -1, we will return all pods.
   int32 pageSize = 2;
   // the fuzzying matching pairs for this query.
   string search = 3;
   //
-  bool  isSelf = 4; // `true` when querying the current user profile; `false` when listing sub-users
-  repeated string filterRole = 5;  // Roles
-  repeated string filterMfaStatus = 6; // MFA status: enable|disable|stop
-  repeated string filterPassStrength = 7; // Password strength: high/middle/low
-  string filterStartCreateTm = 8; // Creation start time
-  string filterEndCreateTm = 9; // Creation end time
-  string filterStartPassTm = 10; // Password update start time
-  string filterEndPassTm = 11; // Password update end time
-  int32 sort = 12; // Sort by creation time (`1` asc, `-1` desc) or password update time (`2` asc, `-2` desc)
+  bool  isSelf = 4; // 查询个人信息true，查询子用户列表false
+  repeated string filterRole = 5;  // 角色
+  repeated string filterMfaStatus = 6; // 二次认证状态 开启enable|禁用disable|关闭stop
+  repeated string filterPassStrength = 7; // 密码强度 high/middle/low
+  string filterStartCreateTm = 8; // 创建开始时间
+  string filterEndCreateTm = 9; // 创建结束时间
+  string filterStartPassTm = 10; // 密码最后修改开始时间
+  string filterEndPassTm = 11; // 密码最后修改结束时间
+  int32 sort = 12; // 创建时间排序，1为升序，-1为降序| 密码修改时间 2为升序，-2为降序
 }
 
 message ListUserReply {
@@ -230,19 +230,19 @@ message ListUserReply {
   message Details {
     int32 ID = 1;
     string username = 2;
-    string passStrength = 3; // Password strength: high/middle/low
-    string role = 4; // User role: `mgr` super admin | `dev` development | `ops` operations | `sec` security
-    int32 priv = 5; // Privilege level: `1` super | `2` admin | `3` guest
+    string passStrength = 3; // 密码强度: high/middle/low
+    string role = 4; // 用户角色: mgr 超级管理员|dev 开发|ops 运维|sec 安全
+    int32 priv = 5; // 权限类别: 1:super 2:admin 3:guest
     string mobile = 6 ;
     string email = 7 ;
     string remark = 8;
     string createTm = 9;
-    bool  hasMfa = 10; // Whether MFA is enabled
-    string avatar = 11; // Avatar
-    string pwdUpdateTm = 12; // Password update time
-    string department = 13; // Department
-    string activeTm = 14; // Last active time
-    string updateTm = 15; // Update time
+    bool  hasMfa = 10; // 是否开启二次验证
+    string avatar = 11; // 头像
+    string pwdUpdateTm = 12; // 密码更新时间
+    string department = 13; // 部门
+    string activeTm = 14; // 活跃时间
+    string updateTm = 15; // 更新时间
   }
   repeated Details List = 2;
   bool exhausted = 3; // if this is last page
@@ -252,10 +252,10 @@ message AddUserReq {
   string username = 1;
   string password = 2;
   string role = 3;
-  string mobile = 4; // [(validator.field) = {regex: "^1[3|4|5|6|7|8|9][0-9]\\d{8}$|^(\\s&&[^\\f\\n\\r\\t\\v])*"}];
-  string email = 5; // [(validator.field) = {regex: "\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*|^(\\s&&[^\\f\\n\\r\\t\\v])*"}];
+  string mobile = 4 [(validator.field) = {regex: "^1[3|4|5|6|7|8|9][0-9]\\d{8}$|^(\\s&&[^\\f\\n\\r\\t\\v])*"}];
+  string email = 5 [(validator.field) = {regex: "\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*|^(\\s&&[^\\f\\n\\r\\t\\v])*"}];
   string remark = 6;
-  string department = 9; // Department
+  string department = 9; // 部门
 }
 
 message AddUserReply {
@@ -264,11 +264,11 @@ message AddUserReply {
 
 message UpdateUserReq {
   string username = 1;
-  string mobile = 2; // [(validator.field) = {regex: "^1[3|4|5|6|7|8|9][0-9]\\d{8}$|^(\\s&&[^\\f\\n\\r\\t\\v])*"}];
-  string email = 3; // [(validator.field) = {regex: "\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*|^(\\s&&[^\\f\\n\\r\\t\\v])*"}];
+  string mobile = 2 [(validator.field) = {regex: "^1[3|4|5|6|7|8|9][0-9]\\d{8}$|^(\\s&&[^\\f\\n\\r\\t\\v])*"}];
+  string email = 3 [(validator.field) = {regex: "\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*|^(\\s&&[^\\f\\n\\r\\t\\v])*"}];
   string remark = 4;
-  string role = 5; // Optional; a super user can change the role for any username
-  string department = 8; // Department
+  string role = 5; // 可选，super用户可以修改任意username的role
+  string department = 8; // 部门
 }
 
 message UpdateUserReply {
@@ -278,7 +278,7 @@ message UpdateUserReply {
 message UpdateUserPasswordReq {
   string oldPassword = 1;
   string newPassword = 2;
-  string username = 3; // Optional; a super user can change the password for any username
+  string username = 3; // 可选，super用户可以修改任意username的密码
 }
 
 message UpdateUserPasswordReply {
@@ -314,7 +314,7 @@ message EnableMfaReq {
   string username = 1;
   string password = 2;
   string secret = 3;
-  string mfaCode = 4; // [(validator.field) = {length_eq: 6}];
+  string mfaCode = 4 [(validator.field) = {length_eq: 6}];
 }
 
 message EnableMfaReply {
@@ -340,7 +340,7 @@ message UpdateAvatarReply {
 
 message ResetPasswordReq {
   string username = 1;
-  string newPassword = 2; // [(validator.field) = {length_gt: 11}];
+  string newPassword = 2 [(validator.field) = {length_gt: 11}];
 }
 
 message ResetPasswordReply {
@@ -349,18 +349,18 @@ message ResetPasswordReply {
 
 // AccessKey
 message ListAccessKeyReq {
-  string username = 1; // Username; leave empty to list all AccessKeys (admin only)
+  string username = 1; // 用户名，留空则列出所有AccessKey（管理员权限）
 }
 
 message AccessKeyDetails {
   string iD = 1; // ID
-  string username = 2; // Owner username
+  string username = 2; // 所属用户
   string secretKey = 4; // SecretKey (masked: sk-xx*****xxx)
-  string remark = 5; // Remark
-  string status = 6; // Status: active|disabled
-  string createTm = 7; // Creation time
-  string updateTm = 8; // Update time
-  string activeTm = 9; // Last used time
+  string remark = 5; // 备注
+  string status = 6; // 状态: active|disabled
+  string createTm = 7; // 创建时间
+  string updateTm = 8; // 更新时间
+  string activeTm = 9; // 最近使用时间
 }
 
 message ListAccessKeyReply {
@@ -368,33 +368,33 @@ message ListAccessKeyReply {
 }
 
 message GenerateAccessKeyReq {
-  string username = 1; // [(validator.field) = {length_gt: 0}]; // Username
-  string remark = 2; // Remark
+  string username = 1 [(validator.field) = {length_gt: 0}]; // 用户名
+  string remark = 2; // 备注
 }
 
 message GenerateAccessKeyReply {
   string result = 1; // success|fail
-  string secretKey = 3; // Generated secret key in plain text; returned only in this response
-  string message = 4; // Error message
+  string secretKey = 3; // 生成的SecretKey（明文，仅此时返回）
+  string message = 4; // 错误信息
 }
 
 message DeleteAccessKeyReq {
-  string iD = 1; // [(validator.field) = {length_gt: 0}]; // AccessKey ID
+  string iD = 1 [(validator.field) = {length_gt: 0}]; // AccessKey ID
 }
 
 message DeleteAccessKeyReply {
   string result = 1; // success|fail
-  string message = 2; // Error message
+  string message = 2; // 错误信息
 }
 
 // Domain
 message ListDomainReq {
-  int32 pageIdx = 1; // [(validator.field) = {int_gt: 0}];
+  int32 pageIdx = 1 [(validator.field) = {int_gt: 0}];
   // if pageSize is -1, we will return all pods.
   int32 pageSize = 2;
-  string filterDomain = 3; // Filter by domain
-  string filterStatus = 4; // Filter by domain status
-  string filterKeyword = 5; // Search by keyword
+  string filterDomain = 3; // 根据所在域筛选
+  string filterStatus = 4; // 根据域状态筛选
+  string filterKeyword = 5; // 根据关键词搜索
 }
 
 message ListDomainReply {
@@ -430,7 +430,7 @@ message AddDomainReq {
   string ldapAddr = 1;
   string username = 2;
   string password = 3;
-  string DNS = 4; // [(validator.field) = {regex: "^((0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])\\.){3}(0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])$|^(\\s&&[^\\f\\n\\r\\t\\v])*"}]; //Optional
+  string DNS = 4 [(validator.field) = {regex: "^((0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])\\.){3}(0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])$|^(\\s&&[^\\f\\n\\r\\t\\v])*"}]; //可选
 }
 message AddDomainReply {
   string result = 1;
@@ -440,11 +440,11 @@ message TestDomainReq {
   string ldapAddr = 1;
   string username = 2;
   string password = 3;
-  string DNS = 4; // [(validator.field) = {regex: "^((0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])\\.){3}(0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])$|^(\\s&&[^\\f\\n\\r\\t\\v])*"}]; //Optional
+  string DNS = 4 [(validator.field) = {regex: "^((0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])\\.){3}(0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])$|^(\\s&&[^\\f\\n\\r\\t\\v])*"}]; //可选
 }
 message TestDomainReply {
-  int32 status = 1; // `1` for success and `0` for failure
-  string msg = 2; // Error message
+  int32 status = 1; // 1为成功，0为失败，
+  string msg = 2; // 错误信息
 }
 
 message UpdateDomainReq {
@@ -452,7 +452,7 @@ message UpdateDomainReq {
   string ldapAddr = 2;
   string username = 3;
   string password = 4;
-  string DNS = 5; // [(validator.field) = {regex: "^((0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])\\.){3}(0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])$|^(\\s&&[^\\f\\n\\r\\t\\v])*"}]; //Optional
+  string DNS = 5 [(validator.field) = {regex: "^((0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])\\.){3}(0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])$|^(\\s&&[^\\f\\n\\r\\t\\v])*"}]; //可选
 }
 message UpdateDomainReply {
   string result = 1;
@@ -468,7 +468,7 @@ message DeleteDomainReply {
 }
 
 message UpdateDomainDataReq {
-  string domainID = 1;// Domain ID
+  string domainID = 1;// 域的ID
 }
 
 message UpdateDomainDataReply {
@@ -476,7 +476,7 @@ message UpdateDomainDataReply {
 }
 
 message DeploySensorReq {
-  string domainID = 1; // Domain ID
+  string domainID = 1; // 域的ID
   string dcHostname = 2; // DC Hostname
 }
 
@@ -485,12 +485,12 @@ message DeploySensorReply {
 }
 
 message ListSensorReq {
-  int32 pageIdx = 1; // [(validator.field) = {int_gt: 0}];
+  int32 pageIdx = 1 [(validator.field) = {int_gt: 0}];
   int32 pageSize = 2;
   repeated string domain = 3; // filter: domain
   repeated string status = 4; // filter: Init|Running|Stopped
   string keyword = 5; // for search
-  int32 tmSort = 6; // Sort by last online time: `1` asc, `-1` desc
+  int32 tmSort = 6; // 最后在线时间排序，1为升序，-1为降序
 }
 
 message ListSensorReply {
@@ -504,22 +504,22 @@ message ListSensorReply {
     string IP = 2 ;
     string hostname = 3;
     string domain = 4 ;
-    string status = 5; // Runtime status
+    string status = 5; // 运行状态
     string version = 6;
-    string newVersion = 7; // Available sensor version
-    string pktStatus = 8; // Packet collection status: Init|Running|Stopped|Error
-    string logStatus = 9; // Log collection status: Init|Running|Stopped|Error
-    string sensorTime = 10; // Current host timestamp used for time calibration
-    string remark = 11;    // Remark
+    string newVersion = 7; // 可更新的sensor版本
+    string pktStatus = 8; // 流量采集状态 Init|Running|Stopped|Error
+    string logStatus = 9; // 日志采集状态 Init|Running|Stopped|Error
+    string sensorTime = 10; // 宿主机的当前时间戳(用作时间校正)
+    string remark = 11;    // 备注
 
-    string pktPluginSwitch = 12;   // Packet plugin switch: true|false
-    string logPluginSwitch = 13;    // Log plugin switch: true|false
-    string rpcFwPluginSwitch = 14;   // rpcfw plugin switch: true|false
-    string ldapFwPluginSwitch = 15;  // ldapfw plugin switch: true|false
-    string pktPluginStatus = 16;     // Packet plugin status: Init|Running|Stopped|Error
-    string logPluginStatus = 17;     // Log plugin status: Init|Running|Stopped|Error
-    string rpcFwPluginStatus = 18;   // rpcfw plugin status: Init|Running|Stopped|Error
-    string ldapFwPluginStatus = 19;  // ldapfw plugin status: Init|Running|Stopped|Error
+    string pktPluginSwitch = 12;   // 流量插件开关: true|false
+    string logPluginSwitch = 13;    // 日志插件开关: true|false
+    string rpcFwPluginSwitch = 14;   // rpcfw插件开关: true|false
+    string ldapFwPluginSwitch = 15;  // ldapfw插件开关: true|false
+    string pktPluginStatus = 16;     // 流量插件状态 Init|Running|Stopped|Error
+    string logPluginStatus = 17;     // 日志插件状态 Init|Running|Stopped|Error
+    string rpcFwPluginStatus = 18;   // rpcfw插件状态 Init|Running|Stopped|Error
+    string ldapFwPluginStatus = 19;  // ldapfw插件状态 Init|Running|Stopped|Error
     string rpcFWCpuUsed = 20;
     string rpcFWMemUsed = 21;
     string ldapFwCpuUsed = 22;
@@ -527,20 +527,20 @@ message ListSensorReply {
     string sensorCpuUsed = 24;
     string sensorMemUsed = 25;
 
-    string platform = 26; // Domain controller platform
-    string kernelVer = 27; // Domain controller kernel version
-    string memTotal = 28; // Domain controller memory size
-    string cpuTotal  = 29; // CPU core count
-    map<string, string> netIface = 30; // Host network interfaces, for example `{ "eth0": "ip1,ip2" }`
-    repeated string bindNetIface = 31; // Bound interface list, for example `["eth0", "eth1"]`
-    int32 dcIntervalTm = 32; // Difference between domain-controller time and server time in seconds
+    string platform = 26; // DC 平台
+    string kernelVer = 27; // DC内核版本
+    string memTotal = 28; // 内存大小(DC)
+    string cpuTotal  = 29; // CPU核数
+    map<string, string> netIface = 30; // 主机上网口列表 {"eth0":"ip1,ip2"}
+    repeated string bindNetIface = 31; // 绑定的接口list： ["eth0", "eth1"]
+    int32 dcIntervalTm = 32; // 域控时间与服务器时间的差值(秒)
 
-    map<string, string> perfLimit = 33; // Resource usage limits
-    repeated mapSlice events = 34; // Runtime logs
+    map<string, string> perfLimit = 33; // // 资源占用限制
+    repeated mapSlice events = 34; //  运行日志
 
-    string createTm = 35; // Added time
-    string lastOnlineTm = 36; // Last online time
-    string LastCollectTm = 37;// Last collection time
+    string createTm = 35; // 添加时间
+    string lastOnlineTm = 36; // 最后在线时间
+    string LastCollectTm = 37;// 最后采集时间
   }
   repeated Details List = 2;
   bool exhausted = 3; // if this is last page
@@ -548,13 +548,13 @@ message ListSensorReply {
 
 message UpdateSensorReq {
   string ID = 1;
-  repeated string bindNetIface = 2; // Return the original value if unchanged
-  map<string, string> perfLimit = 3; // Return the original value if unchanged, {"limit_mem_max":"0.05", "limit_cpu_max":"0.06"}
-  string remark = 4;// Return the original value if unchanged
-  string pktPluginSwitch = 5; // [(validator.field) = {regex: "true|false"}]; // Leave blank if unchanged
-  string logPluginSwitch = 6; // [(validator.field) = {regex: "true|false"}];  // Leave blank if unchanged
-  string rpcFwPluginSwitch = 7; // [(validator.field) = {regex: "true|false"}];  // Leave blank if unchanged
-  string ldapFwPluginSwitch = 8; // [(validator.field) = {regex: "true|false"}];  // Leave blank if unchanged
+  repeated string bindNetIface = 2; // 如果没有变化 带原值
+  map<string, string> perfLimit = 3; // 如果没有变化 带原值, {"limit_mem_max":"0.05", "limit_cpu_max":"0.06"}
+  string remark = 4;// 如果没有变化 带原值
+  string pktPluginSwitch = 5 [(validator.field) = {regex: "true|false"}]; // 如果没有变化留空
+  string logPluginSwitch = 6 [(validator.field) = {regex: "true|false"}];  // 如果没有变化留空
+  string rpcFwPluginSwitch = 7 [(validator.field) = {regex: "true|false"}];  // 如果没有变化留空
+  string ldapFwPluginSwitch = 8 [(validator.field) = {regex: "true|false"}];  // 如果没有变化留空
 }
 
 message UpdateSensorReply {
@@ -562,7 +562,7 @@ message UpdateSensorReply {
 }
 
 message DownloadSensorReq {
-  string Type = 1; // [(validator.field) = {regex: "x64|x86"}]; // x64 x86
+  string Type = 1 [(validator.field) = {regex: "x64|x86"}]; // x64 x86
 }
 
 message DownloadSensorReply {
@@ -571,7 +571,7 @@ message DownloadSensorReply {
 
 message CmdSensorReq {
   string ID = 1;
-  string cmd = 2; // [(validator.field) = {regex: "delete|uninstall"}]; // delete|uninstall
+  string cmd = 2 [(validator.field) = {regex: "delete|uninstall"}]; // delete|uninstall
 }
 
 message CmdSensorReply {
@@ -590,26 +590,26 @@ message GetSystemInfoReq {}
 
 message GetSystemInfoReply {
   string systemIP = 1;
-  string systemName = 2; // System name
+  string systemName = 2; // 系统名称
   string systemIcon = 3; // Logo
-  string systemVersion = 4; // System version
-  string systemInstallTm = 5; // Installation time
-  string systemUpgradeTm = 6; // Last upgrade time
+  string systemVersion = 4; // 系统版本
+  string systemInstallTm = 5; // 安装时间
+  string systemUpgradeTm = 6; // 上次升级时间
   string systemCpuTotal = 7; // 4C
   string systemMemTotal = 8; // 16GB
   string systemDiskTotal = 9; // 64GB
-  string systemLoadAverage = 10; // System load, local_15m
-  string systemBootTime = 11; // Uptime
-  string systemEsHealth = 12; // Elasticsearch health: green/yellow/red
-  string systemTimestamp = 13; // System time
-  string systemNtpAddress = 14; // NTP server address
-  string systemLanguage = 15; // System language (EN/ZH)
-  map<string, string> statsCfg = 16; // System metrics parameters
-  string upgradeSrv = 17; // Upgrade server address
-  string upgradeRule = 18; // Upgrade policy switch: "true|false"
-  string currentRuleVer = 19; // Current rule version
-  string cloudRuleVer = 20; // Cloud rule version
-  SystemProxyInfo systemProxy = 21; // System proxy configuration
+  string systemLoadAverage = 10; // 系统负载, local_15m
+  string systemBootTime = 11; // 开机使用时间
+  string systemEsHealth = 12; // ES健康状态: green/yellow/red
+  string systemTimestamp = 13; // 系统时间
+  string systemNtpAddress = 14; // NTP服务器地址
+  string systemLanguage = 15; // 系统语言(EN/ZH)
+  map<string, string> statsCfg = 16; // 系统监控参数
+  string upgradeSrv = 17; // 升级服务器地址
+  string upgradeRule = 18; // 升级规则开关 "true|false"
+  string currentRuleVer = 19; // 当前规则版本
+  string cloudRuleVer = 20; // 云端规则版本
+  SystemProxyInfo systemProxy = 21; // 系统代理配置
 }
 
 message GetSystemIconReq {}
@@ -618,7 +618,7 @@ message GetSystemIconReply {
 }
 
 message UpdateSystemLanguageReq{
-  string language = 1; // [(validator.field) = {regex: "EN|ZH"}]; // EN/ZH
+  string language = 1[(validator.field) = {regex: "EN|ZH"}]; // EN/ZH
 }
 message UpdateSystemLanguageReply{
   string result = 1; //  success failed
@@ -628,11 +628,11 @@ message UpdateSystemLanguageReply{
 message UpdateSystemCfgReq{
   string ntp = 1; // ntp server
   string systemIP = 2; // system ip
-  string file = 3; // Send the file as a Base64 string
-  string upgradeSrv = 4; // Upgrade server address
+  string file = 3; // 将文件转为base64字符串传过来
+  string upgradeSrv = 4; // 更新srv地址
   string upgradeRule = 5; // "true|false"
-  string currentRuleVer = 6; // Current rule version
-  string cloudRuleVer = 7; // Cloud rule version
+  string currentRuleVer = 6; // 当前规则版本
+  string cloudRuleVer = 7; // 云端规则版本
 }
 
 message UpdateSystemCfgReply {
@@ -641,10 +641,10 @@ message UpdateSystemCfgReply {
 
 // SystemProxy related messages
 message SystemProxyInfo {
-  string httpProxy = 1; // HTTP proxy address
-  string httpsProxy = 2; // HTTPS proxy address
-  bool upgradeProxy = 3; // Use a proxy during upgrades
-  bool notifyProxy = 4; // Use a proxy for alert notifications
+  string httpProxy = 1; // HTTP代理地址
+  string httpsProxy = 2; // HTTPS代理地址
+  bool upgradeProxy = 3; // 升级时使用代理
+  bool notifyProxy = 4; // 告警通知时使用代理
 }
 
 message GetSystemProxyReq {}
@@ -654,10 +654,10 @@ message GetSystemProxyReply {
 }
 
 message UpdateSystemProxyReq {
-  string httpProxy = 1; // [(validator.field) = {regex: "^http://[^\\s]+|^(\\s&&[^\\f\\n\\r\\t\\v])*"}]; // HTTP proxy address, format: `http://proxy:port`
-  string httpsProxy = 2; // [(validator.field) = {regex: "^https://[^\\s]+|^(\\s&&[^\\f\\n\\r\\t\\v])*"}]; // HTTPS proxy address, format: `https://proxy:port`
-  bool upgradeProxy = 3; // Use a proxy during upgrades
-  bool notifyProxy = 4; // Use a proxy for alert notifications
+  string httpProxy = 1 [(validator.field) = {regex: "^http://[^\\s]+|^(\\s&&[^\\f\\n\\r\\t\\v])*"}]; // HTTP代理地址，格式: http://proxy:port
+  string httpsProxy = 2 [(validator.field) = {regex: "^https://[^\\s]+|^(\\s&&[^\\f\\n\\r\\t\\v])*"}]; // HTTPS代理地址，格式: https://proxy:port
+  bool upgradeProxy = 3; // 升级时使用代理
+  bool notifyProxy = 4; // 告警通知时使用代理
 }
 
 message UpdateSystemProxyReply {
@@ -665,20 +665,20 @@ message UpdateSystemProxyReply {
 }
 
 message GetSystemStatsReq {
-  string Type = 1; // [(validator.field) = {regex: "load|cpu|mem|net_rx|net_tx"}];
-  string scope = 2; // [(validator.field) = {regex: "2h|24h"}];
+  string Type = 1 [(validator.field) = {regex: "load|cpu|mem|net_rx|net_tx"}];
+  string scope = 2 [(validator.field) = {regex: "2h|24h"}];
 }
 
 message StatsInfo {
-  string value = 1; // Value
-  string timestamp = 2; // Timestamp
+  string value = 1; // 值
+  string timestamp = 2; // 时间戳
 }
 message GetSystemStatsReply {
   repeated StatsInfo stats = 1; // list
 }
 
 message SetSystemStatsCfgReq {
-  map<string, string> stats = 1; // Supported values:
+  map<string, string> stats = 1; //支持:
 }
 
 message SetSystemStatsCfgReply {
@@ -687,14 +687,14 @@ message SetSystemStatsCfgReply {
 
 message ListAuditLogReq {
   // start index with 1.
-  int32 pageIdx = 1; // [(validator.field) = {int_gt: 0}];
+  int32 pageIdx = 1 [(validator.field) = {int_gt: 0}];
   // if pageSize is -1, we will return all pods.
   int32 pageSize = 2;
-  string startTm = 3; // Start time
-  string endTm = 4; // End time
+  string startTm = 3; // 开始时间
+  string endTm = 4; // 结束时间
   string keyword = 5;
-  repeated string filterEvent = 6; // Events
-  int32 createSort = 7; // Sort by audit time: `1` asc, `-1` desc
+  repeated string filterEvent = 6; // 事件
+  int32 createSort = 7; // 审计时间 1升级 -1降序
 }
 message ListAuditLogReply {
   ModelPage page = 1;
@@ -712,10 +712,10 @@ message ListAuditLogReply {
 }
 
 message ListSystemLogsReq {
-  int32 pageIdx = 1; // [(validator.field) = {int_gt: 0}];
+  int32 pageIdx = 1 [(validator.field) = {int_gt: 0}];
   int32 pageSize = 2;
-  repeated string level = 3; // [(validator.field) = {regex: "error|warn"}]; // error, warn
-  repeated string module = 4; // [(validator.field) = {regex: "apiserver|task_worker|task_server|scanner|engine"}]; // module filter
+  repeated string level = 3 [(validator.field) = {regex: "error|warn"}]; // error, warn
+  repeated string module = 4 [(validator.field) = {regex: "apiserver|task_worker|task_server|scanner|engine"}]; // module filter
   string search = 5; // search in msg field
   string startTm = 6; // optional, start time
   string endTm = 7; // optional, end time
@@ -738,63 +738,63 @@ message ListSystemLogsReply {
 
 message GetLicenseReq {}
 message GetLicenseReply {
-  string trait = 1; // Machine fingerprint
-  int64 endTime = 3; // License expiry time
-  int32 assets = 4; // Asset count
-  string version = 5; // Product version
-  string partner = 6; // Licensed customer
+  string trait = 1; // 机器指纹
+  int64 endTime = 3; // 许可有效期
+  int32 assets = 4; // 资产数
+  string version = 5; // 产品版本
+  string partner = 6; // 授权客户
 }
 
 message UpdateLicenseReq {
-  string licenseKey = 1; // Activation code
+  string licenseKey = 1; //激活码
 }
 message UpdateLicenseReply {
   string result = 1;
 }
 
 message NetworkDebugReq {
-  string type = 1; // [(validator.field) = {regex: "ping|nslookup|traceroute|nc"}];
-  string target = 2; // [(validator.field) = {regex: "[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\\.?|((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}"}]; // Diagnostic target
+  string type = 1 [(validator.field) = {regex: "ping|nslookup|traceroute|nc"}];
+  string target = 2 [(validator.field) = {regex: "[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\\.?|((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}"}]; // 诊断目标
 }
 
 message NetworkDebugReply {
-  string result = 1; // Diagnostic result
+  string result = 1; //诊断结果
 }
 
 
 message ListNotifyConfReq{
   int32 pageIdx = 1 ; // start index with 1
   int32 pageSize = 2 ; // if pageSize is -1, we will return all nodes
-  repeated string moduleName = 3; // [(validator.field) = {regex: "all|alert|baseline|leak|system"}]; // Module type: alert|baseline|leak|system
-  repeated string notifyType = 4; // [(validator.field) = {regex: "all|syslog|webhook|email"}]; // Notification type: syslog|webhook|email
-  string endpoint = 5; // Notification target
-  repeated string enable = 6; // [(validator.field) = {regex: "all|enable|disable"}]; // Enable state: `enable` or `disable`
-  int32 sortTime = 7; // Sort by time: 1 ascending, -1 descending, 0 for the default order
+  repeated string moduleName = 3 [(validator.field) = {regex: "all|alert|baseline|leak|system"}]; // 模块类型 alert,baseline,leak,system
+  repeated string notifyType = 4 [(validator.field) = {regex: "all|syslog|webhook|email"}]; // 通知类型 syslog,webhook,email
+  string endpoint = 5; // 通知目标
+  repeated string enable = 6 [(validator.field) = {regex: "all|enable|disable"}]; // 启用状态， 开启enable 关闭disable
+  int32 sortTime = 7; // 根据时间排序，1升序，-1降序,0为默认顺序
 }
 
 message ListNotifyConfReply{
   message Details {
     string id = 1;
-    string moduleName = 2; // Module type: alert|baseline|leak|system
-    string notifyType = 3; // Notification type: syslog|webhook|email
-    string endpoint = 4; // Notification target
-    string remark = 5; // Remark
-    string enable = 6; // Enable state: `enable` or `disable`
-    map<string, string> metadata = 7; // Alert configuration metadata
-    string updateTm = 8; // Update time
-    repeated int32 level = 9; // Risk levels
+    string moduleName = 2; // 模块类型 alert,baseline,leak,system
+    string notifyType = 3; // 通知类型 syslog,webhook,email
+    string endpoint = 4; // 通知目标
+    string remark = 5; // 备注
+    string enable = 6; //启用状态， 开启enable 关闭disable
+    map<string, string> metadata = 7; // 告警配置信息
+    string updateTm = 8; // 修改时间
+    repeated int32 level = 9; // 危险等级
   }
   repeated Details list = 1;
   ModelPage page = 2;
 }
 
 message UpdateNotifyConfReq {
-  string id = 1; // [(validator.field) = {string_not_empty: true}];
-  string enable = 2; // [(validator.field) = {regex: "enable|disable"}]; //Enable state: `enable` or `disable`
+  string id = 1 [(validator.field) = {string_not_empty: true}];
+  string enable = 2 [(validator.field) = {regex: "enable|disable"}]; //启用状态， 开启enable 关闭disable
   string endpoint = 3;
-  repeated int32 level = 4; // Risk levels
-  map<string, string> metadata = 5; // Always includes `alert_interval: 20` (string). Optional fields depend on the type: email uses `server`, `port`, `username`, `password`, and `receiver`; webhook uses `application_type` (`weixin`, `feishu`, `dingtalk`, or `common`).
-  string remark = 6; // Remark
+  repeated int32 level = 4; // 危险等级
+  map<string, string> metadata = 5; // 都有: alert_interval: 20(str), 可选: email类型: server(str),port(str),username,password,receiver; syslog类型; webhook类型: application_type(weixin/feishu/dingtalk/common)
+  string remark = 6; // 备注
 }
 
 message UpdateNotifyConfReply {
@@ -802,8 +802,8 @@ message UpdateNotifyConfReply {
 }
 
 message EnableNotifyConfReq{
-  string id = 1; // [(validator.field) = {string_not_empty: true}];
-  string enable = 2; // [(validator.field) = {regex: "enable|disable"}]; //Enable state: `enable` or `disable`
+  string id = 1 [(validator.field) = {string_not_empty: true}];
+  string enable = 2 [(validator.field) = {regex: "enable|disable"}]; //启用状态， 开启enable 关闭disable
 }
 
 message EnableNotifyConfReply{
@@ -811,10 +811,10 @@ message EnableNotifyConfReply{
 }
 
 message TestNotifyConfReq{
-  string moduleName = 1; // [(validator.field) = {regex: "alert|baseline|leak|system"}]; // Module type: alert|baseline|leak|system
-  string notifyType = 2; // [(validator.field) = {regex: "syslog|webhook|email"}]; // Notification type: syslog|webhook|email
-  string endpoint = 3; // Notification target
-  map<string, string> metadata = 4; // Configuration parameters
+  string moduleName = 1 [(validator.field) = {regex: "alert|baseline|leak|system"}]; // 模块类型 alert,baseline,leak,system
+  string notifyType = 2 [(validator.field) = {regex: "syslog|webhook|email"}]; // 通知类型 syslog,webhook,email
+  string endpoint = 3; // 通知目标
+  map<string, string> metadata = 4; // 配置参数
 }
 
 message TestNotifyConfReply{
@@ -823,22 +823,22 @@ message TestNotifyConfReply{
 }
 
 message AddNotifyConfReq{
-  string moduleName = 1; // [(validator.field) = {regex: "alert|baseline|leak|system"}]; // Module type: alert|baseline|leak|system
-  string notifyType = 2; // [(validator.field) = {regex: "syslog|webhook|email"}]; // Notification type: syslog|webhook|email
-  string endpoint = 3; // Notification target
-  string enable = 4; // [(validator.field) = {regex: "enable|disable"}]; // Enable state: `enable` or `disable`
-  repeated int32 level = 5; // Risk levels
-  map<string, string> metadata = 6; // Configuration parameters
-  string remark = 7; // Remark
+  string moduleName = 1 [(validator.field) = {regex: "alert|baseline|leak|system"}]; // 模块类型 alert,baseline,leak,system
+  string notifyType = 2 [(validator.field) = {regex: "syslog|webhook|email"}]; // 通知类型 syslog,webhook,email
+  string endpoint = 3; // 通知目标
+  string enable = 4 [(validator.field) = {regex: "enable|disable"}]; // 启用状态， 开启enable 关闭disable
+  repeated int32 level = 5; // 危险等级
+  map<string, string> metadata = 6; // 配置参数
+  string remark = 7; // 备注
 }
 
 message AddNotifyConfReply{
   string result = 1;// SUCCESS||FAILED
-  string id = 2; // ID of the newly created configuration
+  string id = 2; // 新增配置的ID
 }
 
 message DeleteNotifyConfReq{
-  string id = 1; // [(validator.field) = {string_not_empty: true}]; // Configuration ID
+  string id = 1 [(validator.field) = {string_not_empty: true}]; // 配置ID
 }
 
 message DeleteNotifyConfReply{
@@ -848,35 +848,35 @@ message DeleteNotifyConfReply{
 message ListExportTaskReq{
   int32 pageIdx = 1 ; // start index with 1
   int32 pageSize = 2 ; // if pageSize is -1, we will return all nodes
-  repeated string type = 3; // [(validator.field) = {regex: "all|alert_event|alert_activity|baseline|leak|weakpwd|system|audit"}];  // alert_event/alert_activity/baseline/leak/weakpwd/system/audit
-  repeated string status = 4; // [(validator.field) = {regex: "all|padding|doing|finish|failed"}]; // Task status: padding|doing|finish|failed
-  string startTm = 5; // Optional start time
-  string endTm = 6;  // Optional end time
-  int32 sortTime = 7; // Sort by time: 1 ascending, -1 descending, 0 for the default order
+  repeated string type = 3 [(validator.field) = {regex: "all|alert_event|alert_activity|baseline|leak|weakpwd|system|audit"}];  // alert_event/alert_activity/baseline/leak/weakpwd/system/audit
+  repeated string status = 4 [(validator.field) = {regex: "all|padding|doing|finish|failed"}]; // 任务状态: padding,doing,finish,failed
+  string startTm = 5; //  可选，开始时间
+  string endTm = 6;  //  可选，结束时间
+  int32 sortTime = 7; // 根据时间排序，1升序，-1降序,0为默认顺序
 }
 
 message ListExportTaskReply{
   ModelPage page = 1;
   message Details {
-    string ID = 1; // Report ID
-    string name = 2;// Report name
-    string type = 3;// Report type: alert_event|alert_activity|baseline|leak|weakpwd|system|audit
-    map<string, string> params = 4; // Configuration parameters
-    string status = 5; // Task status: padding|doing|finish|failed
-    string fileType = 6; // File type: csv|excel|pdf
-    string createTm = 7; // Creation time
-    string updateTm = 8; // Report path
-    string errMsg = 9; // Error message
-    string filePath = 10; // Report path
+    string ID = 1; // 报表ID
+    string name = 2;// 报表名称
+    string type = 3;// 报表类型 alert_event/alert_activity/baseline/leak/weakpwd/system/audit
+    map<string, string> params = 4; // 配置参数
+    string status = 5; //任务状态 padding,doing,finish,failed
+    string fileType = 6; // 文件类型 csv,excel,pdf
+    string createTm = 7; // 创建时间
+    string updateTm = 8; // 报表路径
+    string errMsg = 9; // 错误信息
+    string filePath = 10; // 报表路径
   }
   repeated Details list = 2;
   bool exhausted = 3; // if this is last page
 }
 
 message AddExportTaskReq{
-  string name = 1; // Report name entered manually by the user
+  string name = 1; // 报表名称,用户手动输入
   string type = 2; // alert_event|alert_activity|baseline|leak|weakpwd|audit|system
-  map<string, string> params = 3; // Export parameters, for example `{ "domain": "domainA,domainB", "start_tm": "2021-01-01 00:00:00", "end_tm": "2021-01-01 23:59:59", "level": "3,4" }`
+  map<string, string> params = 3; // 导出参数 {"domain":"domainA,domainB","start_tm":"2021-01-01 00:00:00","end_tm":"2021-01-01 23:59:59","level":"3,4"}
 }
 
 message AddExportTaskReply{
@@ -894,31 +894,31 @@ message DeleteExportTaskReply {
 message ListNotifyReq{
   int32 pageIdx = 1 ; // start index with 1
   int32 pageSize = 2 ; // if pageSize is -1, we will return all nodes
-  repeated string msgType = 3;// Message types: Leak vulnerability checks, Baseline scans, Alert events, and System alerts
-  repeated int32 status = 5;// Message status: 0 unread, 1 read
-  string startTm = 6; // Optional start time
-  string endTm = 7;  // Optional end time
-  int32 orderCreateTm = 8; // Sort by created time: 1 ascending, -1 descending. Default: -1.
+  repeated string msgType = 3;// 消息类型,Leak漏洞监测，Baseline主动检测，Alert告警事件,System系统告警
+  repeated int32 status = 5;// 消息状态: 0未读，1已读
+  string startTm = 6; //  可选，开始时间
+  string endTm = 7;  //  可选，结束时间
+  int32 orderCreateTm = 8; // 创建时间排序 1升序 -1降序, 默认-1
 }
 
 message ListNotifyReply{
   ModelPage page = 1;
   message Details {
     string ID = 1;
-    string title = 2;   // Title
-    string msgType = 3;    // Message type
-    string eventType = 4;    // Event type
-    string createTm = 5; // Time
-    string desc = 6;    // Alert details
-    int32 status = 7;  // Message status: `0` unread, `1` read
-    map<string, string> params = 8; // Reserved attribute field
+    string title = 2;   // 标题
+    string msgType = 3;    //消息类型
+    string eventType = 4;    // 事件类型
+    string createTm = 5; // 时间
+    string desc = 6;    // 告警详情
+    int32 status = 7;  // 消息状态，0未读，1已读
+    map<string, string> params = 8; // 属性，预留字段
   }
   repeated Details List = 2;
   bool exhausted = 3; // if this is last page
 }
 
 message UpdateNotifyReq{
-  repeated string IDs = 1; // Mark as read for the given event ID list
+  repeated string IDs = 1; // 修改状态为已读， 事件ID list
 }
 
 message UpdateNotifyReply{
@@ -931,77 +931,77 @@ message StatsNotifyReply{
 }
 
 message ThreatTopsReq{
-  string domain = 1; // Required: `all` or `domainX`
-  string type = 2; // [(validator.field) = {regex: "activity|event"}]; // Required: `activity` or `event`
-  int32 duration = 3; // Required time range in days. Allowed values: 1, 7, or 30. Default: 7.
+  string domain = 1; // 必选，all|domainX
+  string type = 2 [(validator.field) = {regex: "activity|event"}]; // 必选，activity|event
+  int32 duration = 3; // 必选，时间范围/天， 可选值: 1/7/30 （默认为7）
 }
 
 message ThreatTopsReply{
   message Details {
-    string name = 1; // Name
-    int32 total = 2; // Count
+    string name = 1; // 名称
+    int32 total = 2; // 数量
   }
-  repeated Details List = 1; // Item list
+  repeated Details List = 1; // 条目列表
 }
 
 message ThreatTrendsReq{
-  string domain = 1; // Required: `all` or `domainX`
-  repeated int32 level = 2; // Required. Risk levels: `5` critical, `4` high, `3` medium, `2` low
-  int32 duration = 3; // Required time range in days. Allowed values: 1, 7, or 30. Default: 7.
+  string domain = 1; // 必选，all|domainX
+  repeated int32 level = 2; // 必选， 风险等级, 5:严重,4:高危,3:中危,2:低危
+  int32 duration = 3; // 必选，时间范围/天， 可选值: 1/7/30 （默认为7）
 }
 
 message ThreatTrendsReply{
   message Item {
-    int64 ts = 1; // Timestamp
-    int32 total = 2; // Count
+    int64 ts = 1; // 时间戳
+    int32 total = 2; // 数量
   }
-  repeated Item List = 1; // Item list
+  repeated Item List = 1; // 条目列表
 }
 
 message ListThreatReq{
-  int32 pageIdx = 1; // [(validator.field) = {int_gt: 0}];
+  int32 pageIdx = 1 [(validator.field) = {int_gt: 0}];
   int32 pageSize = 2;
-  repeated string IDs = 3; // Threat ID list
-  repeated int32 level = 4; // Threat levels and severity
-  int32 eventStatus = 5; // Event status: `0` unhandled, `1` handled (reserved: `2` whitelisted, `3` blocked)
-  string startTm = 6; // Start time
-  string endTm = 7;  // End time
-  int32 searchType = 8;// Search type: `0` basic, `1` advanced
+  repeated string IDs = 3; // 威胁ID list
+  repeated int32 level = 4; // 威胁等级,严重性
+  int32 eventStatus = 5; // 事件状态, 0:未处理, 1:已处理 (预留: 2:已加白 3:已阻断)
+  string startTm = 6; // 开始时间
+  string endTm = 7;  // 结束时间
+  int32 searchType = 8;// 检索类型,0为普通检索，1为高级检索
   message Details {
-    string name = 1; // Search field
-    string type = 2; // Operators: `eq`, `ne`, `lt`, `gt`, `bt`, `contain`, `not_contain`
+    string name = 1; // 检索字段
+    string type = 2; // 等于 eq，不等于ne 之前lt，之后gt 两者之间bt，包含contain 不包含 not_contain
     repeated string value = 3;
   }
-  repeated Details advancedSearch = 9; // Advanced search
-  int32 sortTm = 10; // Sort by time: `1` asc, `-1` desc
+  repeated Details advancedSearch = 9; // 高级检索
+  int32 sortTm = 10; // 时间排序，1为升序，-1为降序
 }
 
 message ListThreatReply{
   ModelPage page = 1;
   message Details {
-    string ID = 1;  // Request detail page
-    string title = 2; // Alert title
-    string desc = 3; // Alert description
-    string flowId = 4; // Associated rule flowId
+    string ID = 1;  //请求详情页
+    string title = 2; // 告警标题
+    string desc = 3; // 告警描述
+    string flowId = 4; // 关联规则flowId
     string attckId = 5;
-    int32 level = 6;  // Risk level: `5` critical, `4` high, `3` medium, `2` low
+    int32 level = 6;  // 风险等级, 5:严重,4:高危,3:中危,2:低危
     string dcHostname = 7;
     string domain = 8;
-    string status = 9; // Rule status reserved for future use
-    int32 eventStatus = 10; // Event status: `0` unhandled, `1` handled, `2` whitelisted, `3` blocked
-    string remark = 11; // Additional remark
+    string status = 9; // 规则状态，后期会使用
+    int32 eventStatus = 10; // 事件状态, 0:未处理, 1:已处理 2:已加白 3:已阻断
+    string remark = 11; // 添加备注说明
     repeated string tags = 12; // tags
-    AttackFlowReply attackFlow = 13; // Attack flow graph
-    int32 duration = 14; // Duration in seconds
-    string startTm = 16; // Start time
-    string endTm = 17; // End time
+    AttackFlowReply attackFlow = 13; // 攻击流图
+    int32 duration = 14; // 持续时间，单位s
+    string startTm = 16; // 开始时间
+    string endTm = 17; // 结束时间
   }
   repeated Details List = 2; // list
   bool exhausted = 3; // if this is last page
 }
 
 message GetThreatNamesReq{
-  string flowId = 1; // Optional. If empty, return the mapping of all `flow_id` values to titles
+  string flowId = 1; // 可选，为空则返回所有的flow_id与title的map
 }
 
 message GetThreatNamesReply{
@@ -1009,39 +1009,39 @@ message GetThreatNamesReply{
 }
 
 message GetThreatReq{
-  string ID = 1;  // Threat event ID
+  string ID = 1;  //威胁事件ID
 }
 
 message GetThreatReply {
-  string ID = 1;  // Request detail page
-  string title = 2; // Alert title
-  string desc = 3; // Alert description
-  string flowId = 4; // Associated rule flowId
-  string uniqueId = 5; // Used to identify the activity uniquely
+  string ID = 1;  //请求详情页
+  string title = 2; // 告警标题
+  string desc = 3; // 告警描述
+  string flowId = 4; // 关联规则flowId
+  string uniqueId = 5; // 确定行为唯一性
   string attckId = 6;
-  int32 level = 7;  // Risk level: `5` critical, `4` high, `3` medium, `2` low
+  int32 level = 7;  // 风险等级, 5:严重,4:高危,3:中危,2:低危
   string dcHostname = 8;
   string domain = 9;
-  string status = 10; // Rule status reserved for future use
-  int32 eventStatus = 11; // Event status: `0` unhandled by default, `1` handled, `2` whitelisted, `3` blocked
+  string status = 10; // 规则状态，后期会使用
+  int32 eventStatus = 11; // 事件状态, 0:未处理(默认), 1:已处理 2:已加白 3:已阻断
   repeated string tags = 12; // tag
-  string source = 13; // Attack source
-  string target = 14; // Attack target
-  int32 duration = 15; // Duration in seconds
-  string startTm = 16; // Start time
-  string endTm = 17; // End time
-  map<string, string> fieldData = 18; // fieldData metadata
-  AttackFlowReply attackFlow = 19; // Attack flow graph
+  string source = 13; // 攻击来源
+  string target = 14; // 攻击目标
+  int32 duration = 15; // 持续时间，单位s
+  string startTm = 16; // 开始时间
+  string endTm = 17; // 结束时间
+  map<string, string> fieldData = 18; // fieldData信息
+  AttackFlowReply attackFlow = 19; // 攻击流图
   repeated ActivityDetails activities = 20; // activity list
-  string suggestion = 21; // Remediation suggestions
-  repeated string references = 22; // False-positive investigation references
-  string remark = 23; // Additional remark
+  string suggestion = 21; // 修复建议
+  repeated string references = 22; // 误报排查
+  string remark = 23; // 添加备注说明
 }
 
 message ActionThreatReq{
   string ID = 1;
-  int32 eventStatus = 2; // [(validator.field) = {int_gt: -1, int_lt: 4}]; // Event status: `0` unhandled, `1` handled, `2` whitelisted, `3` blocked
-  string remark = 3; // Additional remark
+  int32 eventStatus = 2 [(validator.field) = {int_gt: -1, int_lt: 4}]; // 事件状态: 0:未处理 1:已处理 2:已加白 3:已阻断
+  string remark = 3; // 添加备注说明
 }
 
 message ActionThreatReply {
@@ -1049,31 +1049,31 @@ message ActionThreatReply {
 }
 
 message ListActivityReq{
-  int32 pageIdx = 1; // [(validator.field) = {int_gt: 0}];
+  int32 pageIdx = 1 [(validator.field) = {int_gt: 0}];
   int32 pageSize = 2;
-  repeated int32 level = 3; // Threat levels and severity
-  repeated string dcHostname = 4; // Optional domain controller
-  repeated string title = 5; // Optional activity names
-  string ID = 6; // Optional. If provided, query the threat activity that matches the given activity ID
-  string startTm = 7; // Optional start time
-  string endTm = 8;  // Optional end time
-  int32 orderCreateTm = 9; // Optional sort order: 1 or -1
+  repeated int32 level = 3; // 威胁等级,严重性
+  repeated string dcHostname = 4; // 可选，所在域控
+  repeated string title = 5; // 可选,行为名称
+  string ID = 6; // 可选，如果存在查询对应activityID的威胁活动
+  string startTm = 7; //  可选，开始时间
+  string endTm = 8;  //  可选，结束时间
+  int32 orderCreateTm = 9; // 可选，排序 1|-1
 }
 
 message ActivityDetails{
   string ID = 1;  // activity id
-  string title = 2; // Title
-  string desc = 3; // Description
-  string ruleId = 4; // Associated rule ID
+  string title = 2; // 标题
+  string desc = 3; // 描述
+  string ruleId = 4; // 关联规则ruleId
   string uniqueId = 5;
   string attckId = 6;
-  int32 level = 7;  // Risk level: `5` critical, `4` high, `3` medium, `2` low
+  int32 level = 7;  // 风险等级, 5:严重,4:高危,3:中危,2:低危
   string dcHostname = 8;
-  string ruleConfidence = 9; // Rule confidence: experimental|test|stable
+  string ruleConfidence = 9; // 规则置信度: experimental(实验), test(测试), stable(稳定)
   repeated string tags = 10; // tags
-  map<string, string> fieldData = 11; // Metadata
+  map<string, string> fieldData = 11; // metadata信息
   string rawLog = 12; // json str.
-  string createTm = 13; // Occurrence time
+  string createTm = 13; // 发生时间
 }
 message ListActivityReply{
   ModelPage page = 1;
@@ -1082,13 +1082,13 @@ message ListActivityReply{
 }
 
 message GetActivityNamesReq{
-  repeated string dcHostname = 1; // Optional. If empty, return the mapping of all activity titles to totals
-  string startTm = 2; // Optional start time
-  string endTm = 3;  // Optional end time
+  repeated string dcHostname = 1; // 可选，为空则返回所有的activity title->total的map
+  string startTm = 2; //  可选，开始时间
+  string endTm = 3;  //  可选，结束时间
 }
 
 message GetActivityNamesReply{
-  map<string, int32> names = 1; // Map of activity title to count
+  map<string, int32> names = 1; // key为act title，val为数量
 }
 
 message GetActivityReq{
@@ -1100,15 +1100,15 @@ message GetActivityReply{
 }
 
 message ListSensitiveEntryReq{
-  int32 pageIdx = 1; // [(validator.field) = {int_gt: 0}];  // start index with 1.
+  int32 pageIdx = 1 [(validator.field) = {int_gt: 0}];  // start index with 1.
   int32 pageSize = 2;
-  string type = 3; // Required. One of `user`, `group`, `computer`, or `honeyuser`
-  repeated string domain = 4; // Optional; used for filtering
-  repeated int32 origin = 5; // Optional source filter: `0` LDAP auto-sync, `1` manual UI entry
-  string startTm = 6; // Optional start time
-  string endTm = 7;  // Optional end time
-  int32 orderCreateTm = 8; // Sort by created time: 1 ascending, -1 descending. Default: -1.
-  int32 orderUpdateTm = 9; // Sort by update time: `1` asc, `-1` desc; default is unsorted
+  string type = 3; // 必选，user|group|computer|honeyuser
+  repeated string domain = 4; // 可选，过滤使用
+  repeated int32 origin = 5; // 可选， 来源分为自动和手动，0为ldap自动同步，1为页面手动添加
+  string startTm = 6; //  可选，开始时间
+  string endTm = 7;  //  可选，结束时间
+  int32 orderCreateTm = 8; // 创建时间排序 1升序 -1降序, 默认-1
+  int32 orderUpdateTm = 9; // 更新时间排序 1升序 -1降序, 默认无
 }
 
 message ListSensitiveEntryReply{
@@ -1116,17 +1116,17 @@ message ListSensitiveEntryReply{
   message Details {
     string ID = 1; // ID
     string domain = 2;
-    string name = 3; // Entry value
-    int32 origin = 4;  // Source: `0` LDAP auto-sync, `1` manual UI entry
-    string createTm = 5; // Added time
-    string updateTm = 6; // Update time
+    string name = 3; //条目内容
+    int32 origin = 4;  // 来源，分为自动和手动，0为ldap自动同步，1为页面手动添加
+    string createTm = 5; // 添加时间
+    string updateTm = 6; // 修改时间
   }
-  repeated Details List = 2; // Sensitive entry list
+  repeated Details List = 2; // 敏感条目列表
   bool exhausted = 3; // if this is last page
 }
 
 message AddSensitiveEntryReq{
-  string type = 1; // [(validator.field) = {regex: "user|group|computer|honeyuser"}];
+  string type = 1 [(validator.field) = {regex: "user|group|computer|honeyuser"}];
   string domain = 2;
   string name = 3; // entry name
 }
@@ -1136,9 +1136,9 @@ message AddSensitiveEntryReply{
 }
 
 message ListDomainEntryReq {
-  string type = 1; // [(validator.field) = {regex: "user|group|computer|honeyuser"}];
+  string type = 1 [(validator.field) = {regex: "user|group|computer|honeyuser"}];
   string domain = 2; // domain
-  string search = 3; // Optional search keyword
+  string search = 3; // 可选，搜索关键字
 }
 
 message ListDomainEntryReply {
@@ -1153,78 +1153,78 @@ message DeleteSensitiveEntryReply{
   string result = 1; // SUCCESS||FAILED
 }
 
-// Alert rule whitelist
+// 告警规则白名单
 message ListThreatWhitelistReq{
-  int32 pageIdx = 1; // [(validator.field) = {int_gt: 0}];
+  int32 pageIdx = 1 [(validator.field) = {int_gt: 0}];
   int32 pageSize = 2;
-  string ruleId = 3; // Optional. If not empty, only return whitelist rules for this rule ID
-  repeated string domain = 4; // Optional. If empty, query all domains
-  repeated int32 origin = 5; // Optional source filter: 1 for manual add, 2 for automatic add
-  string startTm = 6; // Optional start time
-  string endTm = 7;  // Optional end time
-  string search = 8; // Optional search keyword (rule name)
-  int32 orderUpdateTm = 9; // Sort by updated time: 1 ascending, -1 descending. Default: -1.
+  string ruleId = 3; // 可选,如果不为空则只返回该规则ID对应的白名单规则
+  repeated string domain = 4; // 可选,为空则查询所有域
+  repeated int32 origin = 5; // 可选，来源，手动添加: 1 自动添加:2
+  string startTm = 6; //  可选，开始时间
+  string endTm = 7;  //  可选，结束时间
+  string search = 8; // 可选，搜索关键字（规则名称）
+  int32 orderUpdateTm = 9; // 更新时间排序 1升序 -1降序, 默认-1
 }
 
 message ListThreatWhitelistReply{
   ModelPage page = 1;
   message Details {
     string ID = 1; // ID
-    string ruleId = 2; // Rule name
-    string ruleName = 3; // Rule name
-    string ruleType = 4; // Alert type `tag[0]`
+    string ruleId = 2; // 规则名称
+    string ruleName = 3; // 规则名称
+    string ruleType = 4; // 告警类型 tag[0]
     string domain = 5;
     message ruleInfo {
-      map<string, string> info = 1; // Rule details
+      map<string, string> info = 1; // 规则信息
     }
-    repeated ruleInfo rules = 6; // Rule details
-    int32 origin = 7;  // Source: `1` manual, `2` manual batch import, `3` automatic (machine learning)
-    string remark = 8; // Remark
-    string createTm = 9; // Added time
-    string updateTm = 10; // Update time
+    repeated ruleInfo rules = 6; // 规则信息
+    int32 origin = 7;  // 来源，1:手动添加, 2:手动批量添加，3:自动添加(机器学习)
+    string remark = 8; // 备注
+    string createTm = 9; // 添加时间
+    string updateTm = 10; // 修改时间
   }
-  repeated Details List = 2; // Sensitive entry list
+  repeated Details List = 2; // 敏感条目列表
   bool exhausted = 3; // if this is last page
 }
 
-// Get field descriptions for whitelist rules
+// 获取白名单规则fields描述说明
 message GetThreatWhitelistFieldReq{
   string ruleId = 1; // rule_id
 }
 message GetThreatWhitelistFieldReply{
-  repeated string fields = 1; // Sensitive entry list
+  repeated string fields = 1; // 敏感条目列表
 }
 
-// Add a whitelist entry
-// Supported operators: `==`, `!=`, `>`, `<`, `>=`, `<=`, `contain`, `not_contain`, `in`, `not_in`, `regex`; for `in`/`not_in`, separate multiple values with commas
+// 增加白名单
+// 支持的op: ==, !=, >, <, >=, <=, contain, not_contain, in, not_in, regex    in/not_in 多个value按`,`分隔
 message AddThreatWhitelistReq{
-  string ruleId = 1; // Rule ID
+  string ruleId = 1; // 规则ID
   string domain = 2;
   message ruleInfo {
-    map<string, string> info = 1; // Rule details, for example `{ "field": "TargetUsername", "op": "==", "value": "admin" }`
+    map<string, string> info = 1; // 规则信息,eg: {"field":"TargetUsername","op":"==","value":"admin"}
   }
-  repeated ruleInfo rules = 3; // Rule details
-  int32 origin = 4; // [(validator.field) = {int_gt: 0, int_lt: 3}];  // Source: `1` manual, `2` manual batch import
-  string remark = 5; // Remark
+  repeated ruleInfo rules = 3; // 规则信息
+  int32 origin = 4 [(validator.field) = {int_gt: 0, int_lt: 3}];  // 来源，1:手动添加, 2:手动批量添加
+  string remark = 5; // 备注
 }
 message AddThreatWhitelistReply{
   string result = 1; // SUCCESS||FAILED
 }
 
-// Update a whitelist entry
+// 更新白名单
 message UpdateThreatWhitelistReq{
   string ID = 1; // ID
   message ruleInfo {
-    map<string, string> info = 1; // Rule details
+    map<string, string> info = 1; // 规则信息
   }
-  repeated ruleInfo rules = 2; // Required rule details; send the original value if unchanged
-  string remark = 3; // Required remark; send the original value if unchanged
+  repeated ruleInfo rules = 2; // 规则信息，必须。如果没有变化，带原值
+  string remark = 3; // 备注，必须。如果没有变化，带原值
 }
 message UpdateThreatWhitelistReply{
   string result = 1; // SUCCESS||FAILED
 }
 
-// Update a whitelist entry
+// 更新白名单
 message DeleteThreatWhitelistReq{
   string ID = 1; // ID
 }
@@ -1232,48 +1232,48 @@ message DeleteThreatWhitelistReply{
   string result = 1; // SUCCESS||FAILED
 }
 
-// Threat blocking
+// 威胁阻挡
 message ListThreatBlockReq{
-  int32 pageIdx = 1; // [(validator.field) = {int_gt: 0}];
+  int32 pageIdx = 1 [(validator.field) = {int_gt: 0}];
   int32 pageSize = 2;
-  repeated string domain = 4; // Optional. If empty, query all domains
-  repeated int32 origin = 5; // Optional source filter: 1 for manual, 2 for automatic
-  string startTm = 6; // Optional start time
-  string endTm = 7;  // Optional end time
-  string search = 8; // Optional search keyword (blocked user or IP)
+  repeated string domain = 4; // 可选,为空则查询所有域
+  repeated int32 origin = 5; // 可选，来源，1:手动, 2:自动
+  string startTm = 6; //  可选，开始时间
+  string endTm = 7;  //  可选，结束时间
+  string search = 8; // 可选，搜索关键字（阻断用户/IP）
 }
 
 message ListThreatBlockReply{
   ModelPage page = 1;
   message Results {
-    map<string, string> info = 1; // Block result details
+    map<string, string> info = 1; // 阻断结果信息
   }
   message Details {
     string ID = 1; // ID
-    string Name = 2; // Name
-    string domain = 3;  // Domain
-    int32 origin = 4;  // Source: `1` manual, `2` automatic
-    bool userBlock = 5; // Whether user blocking is enabled
-    bool ipBlock = 6; // Whether IP blocking is enabled
+    string Name = 2; // 名称
+    string domain = 3;  // 所在域
+    int32 origin = 4;  // 来源，1:手动, 2:自动
+    bool userBlock = 5; // 是否阻断用户
+    bool ipBlock = 6; // 是否阻断IP
     repeated string userList = 7; // user list
     repeated string ipList = 8; // ip list
-    repeated Results results = 9; // Block result details
-    string remark = 10; // Remark
-    string createTm = 11; // Added time
-    string updateTm = 12; // Update time
+    repeated Results results = 9; // 阻断结果信息
+    string remark = 10; // 备注
+    string createTm = 11; // 添加时间
+    string updateTm = 12; // 修改时间
   }
-  repeated Details List = 2; // Sensitive entry list
+  repeated Details List = 2; // 敏感条目列表
   bool exhausted = 3; // if this is last page
 }
 
 message AddThreatBlockReq{
-  string Name = 1; // Name
-  string domain = 2; // Domain
-  bool userBlock = 4; // If user blocking is disabled, `userList` is empty
-  bool ipBlock = 5; // If IP blocking is disabled, `ipList` is empty
-  repeated string userList = 6; // Blocked users
-  repeated string ipList = 7; // Blocked IPs
-  string remark = 8; // Remark
+  string Name = 1; // 名称
+  string domain = 2; // 所在域
+  bool userBlock = 4; // 是否阻断用户 如果为false, userList为空
+  bool ipBlock = 5; // 是否阻断IP 如果为false, ipList为空
+  repeated string userList = 6; // 阻断用户
+  repeated string ipList = 7; // 阻断IP
+  string remark = 8; // 备注
 }
 
 message AddThreatBlockReply{
@@ -1282,12 +1282,12 @@ message AddThreatBlockReply{
 
 message UpdateThreatBlockReq{
   string ID = 1; // ID
-  string Name = 2; // Name
-  bool userBlock = 3; // If user blocking is disabled, `userList` is empty
-  bool ipBlock = 4; // If IP blocking is disabled, `ipList` is empty
-  repeated string userList = 5; // Blocked users
-  repeated string ipList = 6; // Blocked IPs
-  string remark = 7; // Remark
+  string Name = 2; // 名称
+  bool userBlock = 3; // 是否阻断用户 如果为false, userList为空
+  bool ipBlock = 4; // 是否阻断IP 如果为false, ipList为空
+  repeated string userList = 5; // 阻断用户
+  repeated string ipList = 6; // 阻断IP
+  string remark = 7; // 备注
 }
 
 message UpdateThreatBlockReply{
@@ -1302,45 +1302,45 @@ message DeleteThreatBlockReply{
   string result = 1; // SUCCESS||FAILED
 }
 
-// Active scanning
+// 主动扫描
 message ScanRiskStatsReq{
-  string domain = 1; // Required: `all` or `domainX`
-  string type = 2; // [(validator.field) = {regex: "baseline|leak"}]; // Required: `baseline` or `leak` (`weakpwd` is not supported here)
+  string domain = 1; // 必选，all|domainX
+  string type = 2 [(validator.field) = {regex: "baseline|leak"}]; // 必选，baseline|leak(无weakpwd)
 }
 message ScanRiskStatsReply{
   message Details {
-    string subType = 1; // Type
-    string subTypeDesc = 2; // Type description
-    int32 riskTotal = 3; // Risk count
-    int32 normalTotal = 4; // Normal count
+    string subType = 1; // 类型
+    string subTypeDesc = 2; // 类型描述
+    int32 riskTotal = 3; // 风险数量
+    int32 normalTotal = 4; // 正常数量
   }
-  repeated Details List = 1; // Item list
+  repeated Details List = 1; // 条目列表
 }
 
 message ListBaselineReq{
-  int32 pageIdx = 1; // [(validator.field) = {int_gt: 0}];  // start index with 1.
+  int32 pageIdx = 1 [(validator.field) = {int_gt: 0}];  // start index with 1.
   int32 pageSize = 2;
   repeated string domain = 3;
   repeated string subType = 4; //
   repeated int32 level = 5; //
   repeated int32 result = 6; //
   string search = 7; //
-  int32 orderUpdateTm = 8; // Sort by updated time: 1 ascending, -1 descending. Default: -1.
+  int32 orderUpdateTm = 8; // 更新时间排序 1升序 -1降序, 默认-1
 }
 
 message ListBaselineReply{
   ModelPage page = 1;
   message Details {
     string ID = 1; // ID
-    string name = 2; // Baseline name
-    string domain = 3; // Domain
-    string subType = 4; // Baseline type
-    int32 level = 5;  // Risk level
-    int32 entries = 6;  // Affected object
-    int32 result = 7; // Detection result
-    string updateTm = 8; // End time
+    string name = 2; // 基线名称
+    string domain = 3; // 所在域
+    string subType = 4; // 基线类型
+    int32 level = 5;  // 风险等级
+    int32 entries = 6;  // 影响对象
+    int32 result = 7; // 检测结果
+    string updateTm = 8; // 结束时间
   }
-  repeated Details List = 2; // Leak item list
+  repeated Details List = 2; // leak条目列表
   bool exhausted = 3; // if this is last page
 }
 
@@ -1350,91 +1350,91 @@ message GetBaselineReq{
 
 message GetBaselineReply{
   message entryInfo {
-    map<string, string> info = 1; // Related object
+    map<string, string> info = 1; // 关联对象
   }
   string ID = 1;
-  string name = 2; // Baseline name
-  string domain = 3; // Domain
-  string subType = 4; // Baseline type
-  int32 level = 5;  // Risk level
-  repeated entryInfo entries = 6;  // Affected object list
-  int32 result = 7; // Detection result
-  string desc = 8; // Description
-  string verify_desc = 9; // Verification notes
-  string suggestion = 10; // Remediation suggestions
-  string reference = 11; // Reference links
-  string updateTm = 12; // End time
+  string name = 2; // 基线名称
+  string domain = 3; // 所在域
+  string subType = 4; // 基线类型
+  int32 level = 5;  // 风险等级
+  repeated entryInfo entries = 6;  // 影响对象List
+  int32 result = 7; // 检测结果
+  string desc = 8; // 描述
+  string verify_desc = 9; // 验证描述
+  string suggestion = 10; // 修复建议
+  string reference = 11; // 参考链接
+  string updateTm = 12; // 结束时间
 }
 
 message ListLeakReq{
-  int32 pageIdx = 1; // [(validator.field) = {int_gt: 0}];  // start index with 1.
+  int32 pageIdx = 1 [(validator.field) = {int_gt: 0}];  // start index with 1.
   int32 pageSize = 2;
   repeated string domain = 3;
   repeated string subType = 4; //
   repeated int32 level = 5; //
   repeated int32 result = 6; //
   string search = 7; //
-  string startTm = 8; // Optional start time
-  string endTm = 9;  // Optional end time
-  int32 orderUpdateTm = 10; // Sort by updated time: 1 ascending, -1 descending. Default: -1.
+  string startTm = 8; //  可选，开始时间
+  string endTm = 9;  //  可选，结束时间
+  int32 orderUpdateTm = 10; // 更新时间排序 1升序 -1降序, 默认-1
 }
 
 message ListLeakReply{
   ModelPage page = 1;
   message Details {
     string ID = 1; // ID
-    string name = 2; // Leak name
-    string domain = 3; // Domain
-    string dcHostname = 4; // Domain controller
-    string subType = 5; // Leak type
-    int32 level = 6;  // Risk level
-    int32 result = 7; // Detection result
-    string suggestion = 8; // Remediation suggestions
-    string reference = 9; // Reference links
-    string createTm = 10; // Added time
-    string updateTm = 11; // End time
+    string name = 2; // 漏洞名称
+    string domain = 3; // 所在域
+    string dcHostname = 4; // 所在DC
+    string subType = 5; // 漏洞类型
+    int32 level = 6;  // 风险等级
+    int32 result = 7; // 检测结果
+    string suggestion = 8; // 修复建议
+    string reference = 9; // 参考链接
+    string createTm = 10; // 添加时间
+    string updateTm = 11; // 结束时间
   }
-  repeated Details List = 2; // Leak item list
+  repeated Details List = 2; // leak条目列表
   bool exhausted = 3; // if this is last page
 }
 
 message ListWeakPwdReq{
-  int32 pageIdx = 1; // [(validator.field) = {int_gt: 0}];  // start index with 1.
+  int32 pageIdx = 1 [(validator.field) = {int_gt: 0}];  // start index with 1.
   int32 pageSize = 2;
   repeated string domain = 3;
-  repeated int32 locked = 4; // `1` locked, `0` normal
-  bool isPlain = 5; // Whether the password is stored in plain text
+  repeated int32 locked = 4; // 1:locked, 0:正常
+  bool isPlain = 5; // 是否明文密码
   string search = 6; //
-  int32 orderUpdateTm = 7; // Sort by updated time: 1 ascending, -1 descending. Default: -1.
+  int32 orderUpdateTm = 7; // 更新时间排序 1升序 -1降序, 默认-1
 }
 
 message ListWeakPwdReply{
   ModelPage page = 1;
   message Details {
     int32 ID = 1; // ID
-    string username = 2; // Username
-    string samName = 3; // SAM account name
-    string password = 4; // Password
-    string expirationTm = 5; // Password expiry time
-    string lastUpdateTm = 6; // Password last update time
-    string domain = 7; // Domain
-    int32 locked = 8; // User lock status: `1` locked, `0` normal
-    string updateTm = 9; // Update time
+    string username = 2; // 用户名
+    string samName = 3; // SAM名
+    string password = 4; // 密码
+    string expirationTm = 5; // 密码过期时间
+    string lastUpdateTm = 6; // 密码最近更新时间
+    string domain = 7; // 所在域
+    int32 locked = 8; // 用户锁定状态 1:locked 0:正常
+    string updateTm = 9; // 更新时间
   }
-  repeated Details List = 2; // Leak item list
+  repeated Details List = 2; // leak条目列表
   bool exhausted = 3; // if this is last page
 }
 
 message ListScanTaskReq{
-  int32 pageIdx = 1; // [(validator.field) = {int_gt: 0}];  // start index with 1.
+  int32 pageIdx = 1 [(validator.field) = {int_gt: 0}];  // start index with 1.
   int32 pageSize = 2;
-  string cycle = 3; // [(validator.field) = {regex: "all|cycle|once"}]; // Required. One of `all`, `cycle`, or `once`
-  string type = 4; // [(validator.field) = {regex: "all|baseline|leak|weakpwd"}]; // all|baseline|leak|weakpwd
-  string status = 5; // [(validator.field) = {regex: "all|PENDING|RUNNING|FINISH|FAILURE"}]; // Optional status: `all|PENDING|RUNNING|FINISH|FAILURE`
-  string startTm = 6; // Optional start time
-  string endTm = 7;  // Optional end time
-  int32 orderCreateTm = 8; // Sort by created time: 1 ascending, -1 descending. Default: -1.
-  int32 orderUpdateTm = 9; // Sort by end time: `1` asc, `-1` desc; default is unsorted
+  string cycle = 3 [(validator.field) = {regex: "all|cycle|once"}]; // 必选，all|cycle|once
+  string type = 4 [(validator.field) = {regex: "all|baseline|leak|weakpwd"}]; // all|baseline|leak|weakpwd
+  string status = 5 [(validator.field) = {regex: "all|PENDING|RUNNING|FINISH|FAILURE"}]; // 可选，状态:all|PENDING|RUNNING|FINISH|FAILURE
+  string startTm = 6; //  可选，开始时间
+  string endTm = 7;  //  可选，结束时间
+  int32 orderCreateTm = 8; // 创建时间排序 1升序 -1降序, 默认-1
+  int32 orderUpdateTm = 9; // 结束时间排序 1升序 -1降序, 默认无
 }
 
 message ListScanTaskReply{
@@ -1442,46 +1442,46 @@ message ListScanTaskReply{
   message Details {
     string ID = 1; // ID
     string type = 2;
-    string cycle = 3; // Scheduled task
-    string status = 4; // Status
-    int32 subTasks = 5;  // Subtask count
-    int32 subtasksFinish = 6; // Completed subtask count
-    string errorMsg = 7;  // Error message
-    string createTm = 8; // Added time
-    string updateTm = 9; // End time
+    string cycle = 3; // 周期任务
+    string status = 4; // 状态
+    int32 subTasks = 5;  // 子任务数量
+    int32 subtasksFinish = 6; // 子任务完成数量
+    string errorMsg = 7;  // 错误消息
+    string createTm = 8; // 添加时间
+    string updateTm = 9; // 结束时间
   }
-  repeated Details List = 2; // Task item list
+  repeated Details List = 2; // task条目列表
   bool exhausted = 3; // if this is last page
 }
 
 message GetScanTaskReq{
-  int32 pageIdx = 1; // [(validator.field) = {int_gt: 0}];  // start index with 1.
+  int32 pageIdx = 1 [(validator.field) = {int_gt: 0}];  // start index with 1.
   int32 pageSize = 2;
   string ID = 3; // ID
 }
 
 message GetScanTaskReply{
   ModelPage page = 1;
-  string headType = 2; // Type: baseline|leak|weakpwd
-  repeated string headField = 3; // Header descriptions
+  string headType = 2; // 类型: baseline|leak|weakpwd
+  repeated string headField = 3; // 表头描述
   message Details {
     string ID = 1; // ID
-    string name = 2; // Name
-    string domain = 3; // Domain
+    string name = 2; // 名称
+    string domain = 3; // 所在域
     string dcHostname = 4; // DC
-    string tmplName = 5; // Template name
-    string subType = 6; // (Sub)task type
-    int32 level = 7;  // Risk level
-    int32 result = 8; // Detection result
-    map<string, string> params = 9; // Metadata
-    string updateTm = 10; // Last time
+    string tmplName = 5; // 模板名称
+    string subType = 6; // (子)任务类型
+    int32 level = 7;  // 风险等级
+    int32 result = 8; // 检测结果
+    map<string, string> params = 9; // 元数据
+    string updateTm = 10; // 最后时间
   }
-  repeated Details List = 4; // Task item list
+  repeated Details List = 4; // task条目列表
   bool exhausted = 5; // if this is last page
 }
 
 message AddScanTaskReq{
-  string type = 1; // [(validator.field) = {regex: "all|baseline|leak|weakpwd"}]; // all|baseline|leak|weakpwd
+  string type = 1 [(validator.field) = {regex: "all|baseline|leak|weakpwd"}]; // all|baseline|leak|weakpwd
   map<string, string> plans = 2; // domain: template_id
 }
 
@@ -1491,7 +1491,7 @@ message AddScanTaskReply{
 
 message RecheckScanTaskReq{
   string ID = 1; // ID
-  string type = 2; // [(validator.field) = {regex: "baseline|leak|weakpwd"}]; // baseline|leak|weakpwd
+  string type = 2 [(validator.field) = {regex: "baseline|leak|weakpwd"}]; // baseline|leak|weakpwd
 }
 
 message RecheckScanTaskReply{
@@ -1507,31 +1507,31 @@ message DeleteScanTaskReply{
 }
 
 message ListScanConfReq{
-  int32 pageIdx = 1; // [(validator.field) = {int_gt: 0}];  // start index with 1.
+  int32 pageIdx = 1 [(validator.field) = {int_gt: 0}];  // start index with 1.
   int32 pageSize = 2;
 }
 
 message ListScanConfReply{
   ModelPage page = 1;
-  repeated scanConfDetail List = 2; // Item list
+  repeated scanConfDetail List = 2; // 条目列表
   bool exhausted = 3; // if this is last page
 }
 
 message scanConfDetail{
   string ID = 1; // ID
-  string name = 2; // Entry value
+  string name = 2; // 条目内容
   string type = 3; // baseline|leak|weakpwd
-  bool isEnable = 4; // Enable state
-  int32 cycleType = 5; // `1` day, `2` week, `3` month
+  bool isEnable = 4; // 启用状态
+  int32 cycleType = 5; // 1是day，2是week，3是month
   map<string, string> plans = 8; // domain: template_id
-  string createTm = 9; // Added time
-  string updateTm = 10; // Update time
+  string createTm = 9; // 添加时间
+  string updateTm = 10; // 修改时间
 }
 
 message SetScanConfReq{
   string ID = 1; // ID
-  bool isEnable = 2; // Enable state; return the original value if unchanged
-  int32 cycleType = 3; // [(validator.field) = {int_gt: 0, int_lt: 4}]; // `1` day, `2` week, `3` month; return the original value if unchanged
+  bool isEnable = 2; // 启用状态, 若无修改需将原值返回
+  int32 cycleType = 3 [(validator.field) = {int_gt: 0, int_lt: 4}]; // 1是day，2是week，3是month, 若无修改需将原值返回
 }
 
 message SetScanConfReply{
@@ -1543,17 +1543,17 @@ message GetScanConfReq{
 }
 
 message GetScanConfReply{
-  scanConfDetail Detail = 1; // Configuration details
+  scanConfDetail Detail = 1; // 配置详情
 }
 
 message GetScanTmplNamesReq{
-  string type = 1; // [(validator.field) = {regex: "all|baseline|leak|weakpwd"}]; // all|baseline|leak|weakpwd
+  string type = 1 [(validator.field) = {regex: "all|baseline|leak|weakpwd"}]; // all|baseline|leak|weakpwd
 }
 
 message GetScanTmplNamesReply{
   message tmplNames {
     string ID = 1; // ID
-    string name = 2; // Name
+    string name = 2; // 名称
   }
   repeated tmplNames List = 1;
 }
@@ -1568,9 +1568,9 @@ message UpdateScanConfReply{
 }
 
 message ListScanTmplReq{
-  int32 pageIdx = 1; // [(validator.field) = {int_gt: 0}];  // start index with 1.
+  int32 pageIdx = 1 [(validator.field) = {int_gt: 0}];  // start index with 1.
   int32 pageSize = 2;
-  string type = 3; // [(validator.field) = {regex: "all|baseline|leak|weakpwd"}]; // all|baseline|leak|weakpwd
+  string type = 3 [(validator.field) = {regex: "all|baseline|leak|weakpwd"}]; // all|baseline|leak|weakpwd
 
 }
 
@@ -1578,12 +1578,12 @@ message ListScanTmplReply{
   ModelPage page = 1;
   message Details {
     string ID = 1; // ID
-    string name = 2; // Name
+    string name = 2; // 名称
     string type = 3; // baseline|leak|weakpwd
-    int32 tmplType = 4; // Template type: `1` default, `2` custom
-    string updateTm = 10; // Update time
+    int32 tmplType = 4; //  模板类型：1:默认, 2:自定义
+    string updateTm = 10; // 修改时间
   }
-  repeated Details List = 2; // Item list
+  repeated Details List = 2; // 条目列表
   bool exhausted = 3; // if this is last page
 }
 
@@ -1595,8 +1595,8 @@ message pluginInfo {
   int32 ID = 1;
   string name   = 2;
   int32 enable = 3;
-  string type  = 4; // By type:
-  int32 level  = 5; // `1` low, `2` medium, `3` high
+  string type  = 4; // 按不同类型:
+  int32 level  = 5; //  1:低危 2:中危 3:高危
   map<string, string> metaData = 6;
 }
 
@@ -1605,14 +1605,14 @@ message GetScanTmplReply{
   string name = 2;
   string type = 3; // baseline|leak|weakpwd
   repeated pluginInfo Plugins = 4;
-  int32 tmplType = 5; // Template type: `1` default, `2` custom
+  int32 tmplType = 5; // 模板类型：1:默认, 2:自定义
   string createTm = 6;
   string updateTm = 7;
 }
 
 message UpdateScanTmplReq{
   string ID = 1; // ID
-  string name = 2; // `Name` can be modified
+  string name = 2; // Name可以修改
   repeated pluginInfoV2 Plugins = 3;
 }
 
@@ -1646,27 +1646,27 @@ message AddScanTmplReply{
 }
 
 message ListScanPluginReq{
-  string type = 1 ; // [(validator.field) = {regex: "baseline|leak|weakpwd"}]; // baseline|leak|weakpwd
+  string type = 1  [(validator.field) = {regex: "baseline|leak|weakpwd"}]; // baseline|leak|weakpwd
 }
 
 message ListScanPluginReply{
   repeated pluginInfo Plugins = 1;
 }
 
-// Dashboard
+// 仪表盘
 message DashboardStatsReq{
-  string domain = 1; // Required: `all` or `domainX`
+  string domain = 1; // 必选，all|domainX
 }
 
 message DashboardStatsReply{
-  map<string, int32> agent = 1; // Agent metrics, for example `{ "domains": 2, "sensors": 5, "dcs": 10 }`
-  map<string, int32> alert = 2; // Alert counts, for example `{ "high": 2, "medium": 3, "low": 1 }`
-  map<string, int32> baseline = 3; // Baseline counts, for example `{ "high": 2, "medium": 3, "low": 1 }`
-  map<string, int32> leak = 4; // Leak counts, for example `{ "high": 2, "medium": 3, "low": 1 }`
-  map<string, int32> weakpwd = 5; // Weak-password counts, for example `{ "high": 2, "medium": 3, "low": 1 }`
-  map<string, int32> asset = 6; // Asset distribution, for example `{ "users": 100, "computers": 50, "groups": 20 }`
-  map<string, int32> rule = 7; // Rule distribution, for example `{ "alert": 50, "activity": 100 }`
-  map<string, int32> event = 8; // Event metrics, for example `{ "events": 200, "activities": 500 }`
+  map<string, int32> agent = 1; // 代理统计: {"domains": 2, "sensors": 5, "dcs": 10}
+  map<string, int32> alert = 2; // 告警数: {"high": 2, "medium ": 3, "low": 1}
+  map<string, int32> baseline = 3; // 基线数: {"high": 2, "medium ": 3, "low": 1}
+  map<string, int32> leak = 4; // 漏洞数: {"high": 2, "medium ": 3, "low": 1}
+  map<string, int32> weakpwd = 5; // 弱口令数: {"high": 2, "medium ": 3, "low": 1}
+  map<string, int32> asset = 6; // 资产分布: {"users": 100, "computers": 50, "groups": 20}
+  map<string, int32> rule = 7; // 规则分布: {"alert": 50, "activity": 100}
+  map<string, int32> event = 8; // 事件统计: {"events": 200, "activities": 500}
 }
 
 message DashboardTrendsReq{
@@ -1700,8 +1700,8 @@ message DashboardTrendsReply{
 }
 
 message DashboardLogStatsReq {
-  string domain = 1; // Required: `all` or `domainX`
-  int32 duration = 2; // Required time range in hours. Allowed values: `1`, `3`, `6`, `12`, `24`; default is `1 hour`
+  string domain = 1; // 必选，all|domainX
+  int32 duration = 2; // 必选，时间范围/h， 可选值: 1/3/6/12/24 （默认为1hour）
 }
 
 message DashboardLogStatsReply {
@@ -1710,7 +1710,7 @@ message DashboardLogStatsReply {
     int32 winlogCounts = 2;
     int32 pktlogCounts = 3;
   }
-  repeated logStatsList List = 1; // winlog/pktlog collection metrics
+  repeated logStatsList List = 1; // winlog/pktlog采集统计
 }
 ///////////////////////////////////////////
 // Alert Rule & Activity Rule Messages
@@ -1718,21 +1718,21 @@ message DashboardLogStatsReply {
 
 // Alert Rule (Flow Rules) Messages
 message ListAlertRuleReq {
-  int32 pageIdx = 1; // [(validator.field) = {int_gt: 0}];
+  int32 pageIdx = 1 [(validator.field) = {int_gt: 0}];
   int32 pageSize = 2;
-  repeated int32 level = 3; // Rule level: `5` critical, `4` high, `3` medium, `2` low, `1` info
-  repeated string status = 4; // Rule status: `test|experimental|stable|deprecated`
-  bool enable = 5; // Enable state
-  string keyword = 6; // Keyword search across title and description
-  repeated string tags = 7; // Tag filter
-  int32 sortTm = 8; // Sort by time: `1` asc, `-1` desc
+  repeated int32 level = 3; // 规则等级: 5:critical, 4:high, 3:medium, 2:low, 1:info
+  repeated string status = 4; // 规则状态: test|experimental|stable|deprecated
+  bool enable = 5; // 启用状态
+  string keyword = 6; // 关键词搜索(标题/描述)
+  repeated string tags = 7; // 标签过滤
+  int32 sortTm = 8; // 时间排序: 1升序, -1降序
 }
 
 // define AttackFlow
-message AttackFlowReply{ // Attack flow graph definition
+message AttackFlowReply{ // 攻击流图定义
   message Field {
-    string obj = 1; // Supported types: ip|user|computer|dc
-    string key = 2; // Example: `$1.TargetUsername`
+    string obj = 1; // 支持:ip/user/computer/dc
+    string key = 2; // 如: $1.TargetUsername
     string value = 3; // only used at threat api
   }
   string desc = 1;
@@ -1742,23 +1742,24 @@ message AttackFlowReply{ // Attack flow graph definition
 
 message AlertRuleInfo {
   string ID = 1;
-  string title = 2; // Rule title
-  string description = 3; // Rule description
-  bool enable = 4; // Enable state
-  int32 level = 5; // Threat level
-  string status = 6; // Rule status
-  repeated string tags = 7; // Tags
-  string logsource = 8; // Log source
+  string title = 2; // 规则标题
+  string description = 3; // 规则描述
+  bool enable = 4; // 启用状态
+  int32 level = 5; // 威胁等级
+  string status = 6; // 规则状态
+  repeated string tags = 7; // 标签
+  string logsource = 8; // 日志来源
   string detection = 9; // Yaml string
-  string type = 10; // Rule category
-  string author = 11; // Author
-  repeated string references = 12; // References
-  string suggestion = 13; // Handling suggestions
-  bool autoBlock = 14; // Automatic blocking
+  string type = 10; // 规则分类
+  string author = 11; // 作者
+  repeated string references = 12; // 参考信息
+  string suggestion = 13; // 处置建议
+  bool autoBlock = 14; // 自动阻断
   AttackFlowReply attackFlow = 15;
-  repeated string uniqueFilter = 16; // Uniqueness filter
+  repeated string uniqueFilter = 16; // 唯一性过滤器
   string createTm = 17;
   string updateTm = 18;
+  string ruleOrigin = 19; // 规则来源: internal/public/custom
 }
 
 message ListAlertRuleReply {
@@ -1767,19 +1768,19 @@ message ListAlertRuleReply {
 }
 
 message AlertDetection {
-  string eventType = 1; // [(validator.field) = {regex: "count|multi_eve|multi_pkt|multi_eve_pkt"}]; // Event type
-  string winSize = 2; // Window size
-  bool sorted = 3; // Whether sorting is enabled
-  repeated string sigmaRules = 4; // Associated Sigma rules
-  string matchBy = 5; // Match condition
+  string eventType = 1 [(validator.field) = {regex: "count|multi_eve|multi_pkt|multi_eve_pkt"}]; // 事件类型
+  string winSize = 2; // 窗口大小
+  bool sorted = 3; // 是否排序
+  repeated string sigmaRules = 4; // 关联sigma规则
+  string matchBy = 5; // 匹配条件
 }
 
 message AddAlertRuleReq {
   string iD = 1; // Alert rule ID, optional. If empty, will be auto-generated
-  string title = 2; // [(validator.field) = {string_not_empty: true}];
+  string title = 2 [(validator.field) = {string_not_empty: true}];
   string description = 3;
   bool enable = 4;
-  int32 level = 5; // [(validator.field) = {int_gt: 0, int_lt: 6}]; // 1-5
+  int32 level = 5 [(validator.field) = {int_gt: 0, int_lt: 6}]; // 1-5
   string status = 6;
   repeated string tags = 7;
   string logsource = 8;
@@ -1790,7 +1791,8 @@ message AddAlertRuleReq {
   string author = 13;
   bool autoBlock = 14;
   AttackFlowReply attackFlow = 15;
-  repeated string uniqueFilter = 16; // Uniqueness filter
+  repeated string uniqueFilter = 16; // 唯一性过滤器
+  string ruleOrigin = 17; // 规则来源: internal/public/custom
 }
 
 message AddAlertRuleReply {
@@ -1799,7 +1801,7 @@ message AddAlertRuleReply {
 }
 
 message UpdateAlertRuleReq {
-  string ID = 1; // [(validator.field) = {string_not_empty: true}];
+  string ID = 1 [(validator.field) = {string_not_empty: true}];
   string title = 2;
   string description = 3;
   bool enable = 4;
@@ -1814,7 +1816,8 @@ message UpdateAlertRuleReq {
   string author = 13;
   bool autoBlock = 14;
   AttackFlowReply attackFlow= 15;
-  repeated string uniqueFilter = 16; // Uniqueness filter
+  repeated string uniqueFilter = 16; // 唯一性过滤器
+  string ruleOrigin = 17; // 规则来源: internal/public/custom
 }
 
 message UpdateAlertRuleReply {
@@ -1822,7 +1825,7 @@ message UpdateAlertRuleReply {
 }
 
 message DeleteAlertRuleReq {
-  string ID = 1; // [(validator.field) = {string_not_empty: true}];
+  string ID = 1 [(validator.field) = {string_not_empty: true}];
 }
 
 message DeleteAlertRuleReply {
@@ -1836,7 +1839,7 @@ message GetAlertTypesReply{
 }
 
 message GetAlertRuleNamesReq{
-  string ruleId = 1; // Optional. If empty, return the mapping of all `rule_id` values to names
+  string ruleId = 1; // 可选，为空则返回所有的rule_id与name的map
 }
 
 message GetAlertRuleNamesReply{
@@ -1846,62 +1849,63 @@ message GetAlertRuleNamesReply{
 message GetAlertRuleTagsReq{}
 
 message GetAlertRuleTagsReply{
-  repeated string tags = 1; // List of all rule tags
+  repeated string tags = 1; // 所有规则标签列表
 }
 
 message GetActivityRuleFieldsReq{}
 
 message GetActivityRuleFieldsReply{
-  repeated string fields = 1; // List of all activity-rule fields
+  repeated string fields = 1; // 所有行为规则Fields列表
 }
 
 message RuleNameItem {
-  string ruleId = 1; // Rule ID, for example 'winlog-0000-1101'
-  string title = 2; // Rule name
+  string ruleId = 1; // 规则ID，如 'winlog-0000-1101'
+  string title = 2; // 规则名称
 }
 
 message GetActivityRuleNamesReq{}
 
 message GetActivityRuleNamesReply{
-  repeated RuleNameItem rules = 1; // List of all activity rule IDs and names
+  repeated RuleNameItem rules = 1; // 所有行为规则ID和名称列表
 }
 
 message GetActivityRuleUniqueFieldsReq{}
 
 message GetActivityRuleUniqueFieldsReply{
-  repeated string uniqueFields = 1; // List of all activity-rule unique fields
+  repeated string uniqueFields = 1; // 所有行为规则UniqueFields列表
 }
 
 // Activity Rule (Sigma Rules) Messages
 message ListActivityRuleReq {
-  int32 pageIdx = 1; // [(validator.field) = {int_gt: 0}];
+  int32 pageIdx = 1 [(validator.field) = {int_gt: 0}];
   int32 pageSize = 2;
-  repeated string IDs = 3; // Rule ID list
-  repeated int32 level = 4; // Rule level: `5` critical, `4` high, `3` medium, `2` low, `1` info
-  repeated string status = 5; // Rule status: `test|experimental|stable|deprecated`
-  string keyword = 6; // Keyword search across title and description
-  repeated string tags = 7; // Tag filter (MITRE ATT&CK)
-  string logsource = 8; // Log source: windows/linux/pktlog
-  string ruleType = 9; // Rule type: winlog|pktlog|flow
-  int32 sortTm = 10; // Sort by time: `1` asc, `-1` desc
+  repeated string IDs = 3; // 规则ID列表
+  repeated int32 level = 4; // 规则等级: 5:critical, 4:high, 3:medium, 2:low, 1:info
+  repeated string status = 5; // 规则状态: test|experimental|stable|deprecated
+  string keyword = 6; // 关键词搜索(标题/描述)
+  repeated string tags = 7; // 标签过滤 (MITRE ATT&CK)
+  string logsource = 8; // 日志来源: windows/linux/pktlog
+  string ruleType = 9; // 规则类型: winlog/pktlog/flow
+  int32 sortTm = 10; // 时间排序: 1升序, -1降序
 }
 
 message ActivityRuleInfo {
   string ID = 1;
-  string title = 2; // Rule title
-  string description = 3; // Rule description
-  int32 level = 4; // Risk level
-  string status = 5; // Rule status
-  repeated string tags = 6; // Tags
-  string logsource = 7; // Log source
-  repeated string references = 8; // Reference links
+  string title = 2; // 规则标题
+  string description = 3; // 规则描述
+  int32 level = 4; // 风险等级
+  string status = 5; // 规则状态
+  repeated string tags = 6; // 标签
+  string logsource = 7; // 日志来源
+  repeated string references = 8; // 参考链接
   string detection = 9; // JSON string of dynamic detection
-  string rdxKey = 10; // Redis cache key
-  repeated string fields = 11; // Extracted fields
-  repeated string uniqueFields = 12; // Unique fields
-  string author = 13; // Author
+  string rdxKey = 10; // Redis缓存key
+  repeated string fields = 11; // 提取字段
+  repeated string uniqueFields = 12; // 唯一字段
+  string author = 13; // 作者
   string createTm = 14;
   string updateTm = 15;
+  string ruleOrigin = 16; // 规则来源: internal/public/custom
 }
 
 message ListActivityRuleReply {
@@ -1910,7 +1914,7 @@ message ListActivityRuleReply {
 }
 
 message GetActivityRuleReq {
-  string ID = 1; // [(validator.field) = {string_not_empty: true}];
+  string ID = 1 [(validator.field) = {string_not_empty: true}];
 }
 
 message GetActivityRuleReply {
@@ -1929,22 +1933,24 @@ message GetActivityRuleReply {
   string author = 13;
   string createTm = 14;
   string updateTm = 15;
+  string ruleOrigin = 16; // 规则来源: internal/public/custom
 }
 
 message AddActivityRuleReq {
-  string ID = 1; // [(validator.field) = {string_not_empty: true}]; // Sigma rule ID (e.g. winlog-0000-0001)
-  string title = 2; // [(validator.field) = {string_not_empty: true}];
+  string ID = 1 [(validator.field) = {string_not_empty: true}]; // Sigma rule ID (e.g. winlog-0000-0001)
+  string title = 2 [(validator.field) = {string_not_empty: true}];
   string description = 3;
-  int32 level = 4; // [(validator.field) = {int_gt: 0, int_lt: 6}]; // 1-5
+  int32 level = 4 [(validator.field) = {int_gt: 0, int_lt: 6}]; // 1-5
   string status = 5;
   repeated string tags = 6;
   string logsource = 7;
   repeated string references = 8;
-  string detection = 9; // [(validator.field) = {string_not_empty: true}]; // JSON string
+  string detection = 9 [(validator.field) = {string_not_empty: true}]; // JSON string
   string rdxKey = 10;
   repeated string fields = 11;
   repeated string uniqueFields = 12;
   string author = 13;
+  string ruleOrigin = 14; // 规则来源: internal/public/custom
 }
 
 message AddActivityRuleReply {
@@ -1953,7 +1959,7 @@ message AddActivityRuleReply {
 }
 
 message UpdateActivityRuleReq {
-  string ID = 1; // [(validator.field) = {string_not_empty: true}];
+  string ID = 1 [(validator.field) = {string_not_empty: true}];
   string title = 2;
   string description = 3;
   int32 level = 4;
@@ -1966,6 +1972,7 @@ message UpdateActivityRuleReq {
   repeated string fields = 11;
   repeated string uniqueFields = 12;
   string author = 13;
+  string ruleOrigin = 14; // 规则来源: internal/public/custom
 }
 
 message UpdateActivityRuleReply {
@@ -1973,7 +1980,7 @@ message UpdateActivityRuleReply {
 }
 
 message DeleteActivityRuleReq {
-  string ID = 1; // [(validator.field) = {string_not_empty: true}];
+  string ID = 1 [(validator.field) = {string_not_empty: true}];
 }
 
 message DeleteActivityRuleReply {

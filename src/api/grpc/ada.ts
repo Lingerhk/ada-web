@@ -44,15 +44,15 @@ export interface LoginReq {
     /**
      * @generated from protobuf field: string username = 1;
      */
-    username: string; // [(validator.field) = {string_not_empty: true}];
+    username: string;
     /**
      * @generated from protobuf field: string password = 2;
      */
-    password: string; // [(validator.field) = {string_not_empty: true}];
+    password: string;
     /**
      * @generated from protobuf field: string totpCode = 3;
      */
-    totpCode: string; // [(validator.field) = {regex: "d{6}|^(\\s&&[^\\f\\n\\r\\t\\v])*"}];
+    totpCode: string;
 }
 /**
  * @generated from protobuf message ada.LoginReply
@@ -69,7 +69,7 @@ export interface LoginReply {
     /**
      * @generated from protobuf field: string passStrength = 3;
      */
-    passStrength: string; // Password strength: high/middle/low
+    passStrength: string; // 密码强度: high/middle/low
     /**
      * @generated from protobuf field: string role = 4;
      */
@@ -97,11 +97,11 @@ export interface LoginReply {
     /**
      * @generated from protobuf field: bool hasMfa = 10;
      */
-    hasMfa: boolean; // Whether MFA is required
+    hasMfa: boolean; // 是否需要二次验证
     /**
      * @generated from protobuf field: bool needChangePwd = 11;
      */
-    needChangePwd: boolean; // Whether the password must be changed
+    needChangePwd: boolean; // 是否需要修改密码
 }
 /**
  * @generated from protobuf message ada.LogoutReq
@@ -130,7 +130,7 @@ export interface ListUserReq {
      *
      * @generated from protobuf field: int32 pageIdx = 1;
      */
-    pageIdx: number; // [(validator.field) = {int_gt: 0}];
+    pageIdx: number;
     /**
      * if pageSize is -1, we will return all pods.
      *
@@ -146,39 +146,39 @@ export interface ListUserReq {
     /**
      * @generated from protobuf field: bool isSelf = 4;
      */
-    isSelf: boolean; // `true` when querying the current user profile; `false` when listing sub-users
+    isSelf: boolean; // 查询个人信息true，查询子用户列表false
     /**
      * @generated from protobuf field: repeated string filterRole = 5;
      */
-    filterRole: string[]; // Roles
+    filterRole: string[]; // 角色
     /**
      * @generated from protobuf field: repeated string filterMfaStatus = 6;
      */
-    filterMfaStatus: string[]; // MFA status: enable|disable|stop
+    filterMfaStatus: string[]; // 二次认证状态 开启enable|禁用disable|关闭stop
     /**
      * @generated from protobuf field: repeated string filterPassStrength = 7;
      */
-    filterPassStrength: string[]; // Password strength: high/middle/low
+    filterPassStrength: string[]; // 密码强度 high/middle/low
     /**
      * @generated from protobuf field: string filterStartCreateTm = 8;
      */
-    filterStartCreateTm: string; // Creation start time
+    filterStartCreateTm: string; // 创建开始时间
     /**
      * @generated from protobuf field: string filterEndCreateTm = 9;
      */
-    filterEndCreateTm: string; // Creation end time
+    filterEndCreateTm: string; // 创建结束时间
     /**
      * @generated from protobuf field: string filterStartPassTm = 10;
      */
-    filterStartPassTm: string; // Password update start time
+    filterStartPassTm: string; // 密码最后修改开始时间
     /**
      * @generated from protobuf field: string filterEndPassTm = 11;
      */
-    filterEndPassTm: string; // Password update end time
+    filterEndPassTm: string; // 密码最后修改结束时间
     /**
      * @generated from protobuf field: int32 sort = 12;
      */
-    sort: number; // Sort by creation time (`1` asc, `-1` desc) or password update time (`2` asc, `-2` desc)
+    sort: number; // 创建时间排序，1为升序，-1为降序| 密码修改时间 2为升序，-2为降序
 }
 /**
  * @generated from protobuf message ada.ListUserReply
@@ -212,15 +212,15 @@ export interface ListUserReply_Details {
     /**
      * @generated from protobuf field: string passStrength = 3;
      */
-    passStrength: string; // Password strength: high/middle/low
+    passStrength: string; // 密码强度: high/middle/low
     /**
      * @generated from protobuf field: string role = 4;
      */
-    role: string; // User role: `mgr` super admin | `dev` development | `ops` operations | `sec` security
+    role: string; // 用户角色: mgr 超级管理员|dev 开发|ops 运维|sec 安全
     /**
      * @generated from protobuf field: int32 priv = 5;
      */
-    priv: number; // Privilege level: `1` super | `2` admin | `3` guest
+    priv: number; // 权限类别: 1:super 2:admin 3:guest
     /**
      * @generated from protobuf field: string mobile = 6;
      */
@@ -240,27 +240,27 @@ export interface ListUserReply_Details {
     /**
      * @generated from protobuf field: bool hasMfa = 10;
      */
-    hasMfa: boolean; // Whether MFA is enabled
+    hasMfa: boolean; // 是否开启二次验证
     /**
      * @generated from protobuf field: string avatar = 11;
      */
-    avatar: string; // Avatar
+    avatar: string; // 头像
     /**
      * @generated from protobuf field: string pwdUpdateTm = 12;
      */
-    pwdUpdateTm: string; // Password update time
+    pwdUpdateTm: string; // 密码更新时间
     /**
      * @generated from protobuf field: string department = 13;
      */
-    department: string; // Department
+    department: string; // 部门
     /**
      * @generated from protobuf field: string activeTm = 14;
      */
-    activeTm: string; // Last active time
+    activeTm: string; // 活跃时间
     /**
      * @generated from protobuf field: string updateTm = 15;
      */
-    updateTm: string; // Update time
+    updateTm: string; // 更新时间
 }
 /**
  * @generated from protobuf message ada.AddUserReq
@@ -281,11 +281,11 @@ export interface AddUserReq {
     /**
      * @generated from protobuf field: string mobile = 4;
      */
-    mobile: string; // [(validator.field) = {regex: "^1[3|4|5|6|7|8|9][0-9]\\d{8}$|^(\\s&&[^\\f\\n\\r\\t\\v])*"}];
+    mobile: string;
     /**
      * @generated from protobuf field: string email = 5;
      */
-    email: string; // [(validator.field) = {regex: "\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*|^(\\s&&[^\\f\\n\\r\\t\\v])*"}];
+    email: string;
     /**
      * @generated from protobuf field: string remark = 6;
      */
@@ -293,7 +293,7 @@ export interface AddUserReq {
     /**
      * @generated from protobuf field: string department = 9;
      */
-    department: string; // Department
+    department: string; // 部门
 }
 /**
  * @generated from protobuf message ada.AddUserReply
@@ -315,11 +315,11 @@ export interface UpdateUserReq {
     /**
      * @generated from protobuf field: string mobile = 2;
      */
-    mobile: string; // [(validator.field) = {regex: "^1[3|4|5|6|7|8|9][0-9]\\d{8}$|^(\\s&&[^\\f\\n\\r\\t\\v])*"}];
+    mobile: string;
     /**
      * @generated from protobuf field: string email = 3;
      */
-    email: string; // [(validator.field) = {regex: "\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*|^(\\s&&[^\\f\\n\\r\\t\\v])*"}];
+    email: string;
     /**
      * @generated from protobuf field: string remark = 4;
      */
@@ -327,11 +327,11 @@ export interface UpdateUserReq {
     /**
      * @generated from protobuf field: string role = 5;
      */
-    role: string; // Optional; a super user can change the role for any username
+    role: string; // 可选，super用户可以修改任意username的role
     /**
      * @generated from protobuf field: string department = 8;
      */
-    department: string; // Department
+    department: string; // 部门
 }
 /**
  * @generated from protobuf message ada.UpdateUserReply
@@ -357,7 +357,7 @@ export interface UpdateUserPasswordReq {
     /**
      * @generated from protobuf field: string username = 3;
      */
-    username: string; // Optional; a super user can change the password for any username
+    username: string; // 可选，super用户可以修改任意username的密码
 }
 /**
  * @generated from protobuf message ada.UpdateUserPasswordReply
@@ -445,7 +445,7 @@ export interface EnableMfaReq {
     /**
      * @generated from protobuf field: string mfaCode = 4;
      */
-    mfaCode: string; // [(validator.field) = {length_eq: 6}];
+    mfaCode: string;
 }
 /**
  * @generated from protobuf message ada.EnableMfaReply
@@ -507,7 +507,7 @@ export interface ResetPasswordReq {
     /**
      * @generated from protobuf field: string newPassword = 2;
      */
-    newPassword: string; // [(validator.field) = {length_gt: 11}];
+    newPassword: string;
 }
 /**
  * @generated from protobuf message ada.ResetPasswordReply
@@ -527,7 +527,7 @@ export interface ListAccessKeyReq {
     /**
      * @generated from protobuf field: string username = 1;
      */
-    username: string; // Username; leave empty to list all AccessKeys (admin only)
+    username: string; // 用户名，留空则列出所有AccessKey（管理员权限）
 }
 /**
  * @generated from protobuf message ada.AccessKeyDetails
@@ -540,7 +540,7 @@ export interface AccessKeyDetails {
     /**
      * @generated from protobuf field: string username = 2;
      */
-    username: string; // Owner username
+    username: string; // 所属用户
     /**
      * @generated from protobuf field: string secretKey = 4;
      */
@@ -548,23 +548,23 @@ export interface AccessKeyDetails {
     /**
      * @generated from protobuf field: string remark = 5;
      */
-    remark: string; // Remark
+    remark: string; // 备注
     /**
      * @generated from protobuf field: string status = 6;
      */
-    status: string; // Status: active|disabled
+    status: string; // 状态: active|disabled
     /**
      * @generated from protobuf field: string createTm = 7;
      */
-    createTm: string; // Creation time
+    createTm: string; // 创建时间
     /**
      * @generated from protobuf field: string updateTm = 8;
      */
-    updateTm: string; // Update time
+    updateTm: string; // 更新时间
     /**
      * @generated from protobuf field: string activeTm = 9;
      */
-    activeTm: string; // Last used time
+    activeTm: string; // 最近使用时间
 }
 /**
  * @generated from protobuf message ada.ListAccessKeyReply
@@ -582,11 +582,11 @@ export interface GenerateAccessKeyReq {
     /**
      * @generated from protobuf field: string username = 1;
      */
-    username: string; // [(validator.field) = {length_gt: 0}]; // Username
+    username: string; // 用户名
     /**
      * @generated from protobuf field: string remark = 2;
      */
-    remark: string; // Remark
+    remark: string; // 备注
 }
 /**
  * @generated from protobuf message ada.GenerateAccessKeyReply
@@ -599,11 +599,11 @@ export interface GenerateAccessKeyReply {
     /**
      * @generated from protobuf field: string secretKey = 3;
      */
-    secretKey: string; // Generated secret key in plain text; returned only in this response
+    secretKey: string; // 生成的SecretKey（明文，仅此时返回）
     /**
      * @generated from protobuf field: string message = 4;
      */
-    message: string; // Error message
+    message: string; // 错误信息
 }
 /**
  * @generated from protobuf message ada.DeleteAccessKeyReq
@@ -612,7 +612,7 @@ export interface DeleteAccessKeyReq {
     /**
      * @generated from protobuf field: string iD = 1;
      */
-    iD: string; // [(validator.field) = {length_gt: 0}]; // AccessKey ID
+    iD: string; // AccessKey ID
 }
 /**
  * @generated from protobuf message ada.DeleteAccessKeyReply
@@ -625,7 +625,7 @@ export interface DeleteAccessKeyReply {
     /**
      * @generated from protobuf field: string message = 2;
      */
-    message: string; // Error message
+    message: string; // 错误信息
 }
 /**
  * Domain
@@ -636,7 +636,7 @@ export interface ListDomainReq {
     /**
      * @generated from protobuf field: int32 pageIdx = 1;
      */
-    pageIdx: number; // [(validator.field) = {int_gt: 0}];
+    pageIdx: number;
     /**
      * if pageSize is -1, we will return all pods.
      *
@@ -646,15 +646,15 @@ export interface ListDomainReq {
     /**
      * @generated from protobuf field: string filterDomain = 3;
      */
-    filterDomain: string; // Filter by domain
+    filterDomain: string; // 根据所在域筛选
     /**
      * @generated from protobuf field: string filterStatus = 4;
      */
-    filterStatus: string; // Filter by domain status
+    filterStatus: string; // 根据域状态筛选
     /**
      * @generated from protobuf field: string filterKeyword = 5;
      */
-    filterKeyword: string; // Search by keyword
+    filterKeyword: string; // 根据关键词搜索
 }
 /**
  * @generated from protobuf message ada.ListDomainReply
@@ -780,7 +780,7 @@ export interface AddDomainReq {
     /**
      * @generated from protobuf field: string DNS = 4 [json_name = "DNS"];
      */
-    dNS: string; // [(validator.field) = {regex: "^((0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])\\.){3}(0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])$|^(\\s&&[^\\f\\n\\r\\t\\v])*"}]; //Optional
+    dNS: string; // 可选
 }
 /**
  * @generated from protobuf message ada.AddDomainReply
@@ -810,7 +810,7 @@ export interface TestDomainReq {
     /**
      * @generated from protobuf field: string DNS = 4 [json_name = "DNS"];
      */
-    dNS: string; // [(validator.field) = {regex: "^((0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])\\.){3}(0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])$|^(\\s&&[^\\f\\n\\r\\t\\v])*"}]; //Optional
+    dNS: string; // 可选
 }
 /**
  * @generated from protobuf message ada.TestDomainReply
@@ -819,11 +819,11 @@ export interface TestDomainReply {
     /**
      * @generated from protobuf field: int32 status = 1;
      */
-    status: number; // `1` for success and `0` for failure
+    status: number; // 1为成功，0为失败，
     /**
      * @generated from protobuf field: string msg = 2;
      */
-    msg: string; // Error message
+    msg: string; // 错误信息
 }
 /**
  * @generated from protobuf message ada.UpdateDomainReq
@@ -848,7 +848,7 @@ export interface UpdateDomainReq {
     /**
      * @generated from protobuf field: string DNS = 5 [json_name = "DNS"];
      */
-    dNS: string; // [(validator.field) = {regex: "^((0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])\\.){3}(0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])$|^(\\s&&[^\\f\\n\\r\\t\\v])*"}]; //Optional
+    dNS: string; // 可选
 }
 /**
  * @generated from protobuf message ada.UpdateDomainReply
@@ -888,7 +888,7 @@ export interface UpdateDomainDataReq {
     /**
      * @generated from protobuf field: string domainID = 1;
      */
-    domainID: string; // Domain ID
+    domainID: string; // 域的ID
 }
 /**
  * @generated from protobuf message ada.UpdateDomainDataReply
@@ -906,7 +906,7 @@ export interface DeploySensorReq {
     /**
      * @generated from protobuf field: string domainID = 1;
      */
-    domainID: string; // Domain ID
+    domainID: string; // 域的ID
     /**
      * @generated from protobuf field: string dcHostname = 2;
      */
@@ -928,7 +928,7 @@ export interface ListSensorReq {
     /**
      * @generated from protobuf field: int32 pageIdx = 1;
      */
-    pageIdx: number; // [(validator.field) = {int_gt: 0}];
+    pageIdx: number;
     /**
      * @generated from protobuf field: int32 pageSize = 2;
      */
@@ -948,7 +948,7 @@ export interface ListSensorReq {
     /**
      * @generated from protobuf field: int32 tmSort = 6;
      */
-    tmSort: number; // Sort by last online time: `1` asc, `-1` desc
+    tmSort: number; // 最后在线时间排序，1为升序，-1为降序
 }
 /**
  * @generated from protobuf message ada.ListSensorReply
@@ -1001,7 +1001,7 @@ export interface ListSensorReply_Details {
     /**
      * @generated from protobuf field: string status = 5;
      */
-    status: string; // Runtime status
+    status: string; // 运行状态
     /**
      * @generated from protobuf field: string version = 6;
      */
@@ -1009,55 +1009,55 @@ export interface ListSensorReply_Details {
     /**
      * @generated from protobuf field: string newVersion = 7;
      */
-    newVersion: string; // Available sensor version
+    newVersion: string; // 可更新的sensor版本
     /**
      * @generated from protobuf field: string pktStatus = 8;
      */
-    pktStatus: string; // Packet collection status: Init|Running|Stopped|Error
+    pktStatus: string; // 流量采集状态 Init|Running|Stopped|Error
     /**
      * @generated from protobuf field: string logStatus = 9;
      */
-    logStatus: string; // Log collection status: Init|Running|Stopped|Error
+    logStatus: string; // 日志采集状态 Init|Running|Stopped|Error
     /**
      * @generated from protobuf field: string sensorTime = 10;
      */
-    sensorTime: string; // Current host timestamp used for time calibration
+    sensorTime: string; // 宿主机的当前时间戳(用作时间校正)
     /**
      * @generated from protobuf field: string remark = 11;
      */
-    remark: string; // Remark
+    remark: string; // 备注
     /**
      * @generated from protobuf field: string pktPluginSwitch = 12;
      */
-    pktPluginSwitch: string; // Packet plugin switch: true|false
+    pktPluginSwitch: string; // 流量插件开关: true|false
     /**
      * @generated from protobuf field: string logPluginSwitch = 13;
      */
-    logPluginSwitch: string; // Log plugin switch: true|false
+    logPluginSwitch: string; // 日志插件开关: true|false
     /**
      * @generated from protobuf field: string rpcFwPluginSwitch = 14;
      */
-    rpcFwPluginSwitch: string; // rpcfw plugin switch: true|false
+    rpcFwPluginSwitch: string; // rpcfw插件开关: true|false
     /**
      * @generated from protobuf field: string ldapFwPluginSwitch = 15;
      */
-    ldapFwPluginSwitch: string; // ldapfw plugin switch: true|false
+    ldapFwPluginSwitch: string; // ldapfw插件开关: true|false
     /**
      * @generated from protobuf field: string pktPluginStatus = 16;
      */
-    pktPluginStatus: string; // Packet plugin status: Init|Running|Stopped|Error
+    pktPluginStatus: string; // 流量插件状态 Init|Running|Stopped|Error
     /**
      * @generated from protobuf field: string logPluginStatus = 17;
      */
-    logPluginStatus: string; // Log plugin status: Init|Running|Stopped|Error
+    logPluginStatus: string; // 日志插件状态 Init|Running|Stopped|Error
     /**
      * @generated from protobuf field: string rpcFwPluginStatus = 18;
      */
-    rpcFwPluginStatus: string; // rpcfw plugin status: Init|Running|Stopped|Error
+    rpcFwPluginStatus: string; // rpcfw插件状态 Init|Running|Stopped|Error
     /**
      * @generated from protobuf field: string ldapFwPluginStatus = 19;
      */
-    ldapFwPluginStatus: string; // ldapfw plugin status: Init|Running|Stopped|Error
+    ldapFwPluginStatus: string; // ldapfw插件状态 Init|Running|Stopped|Error
     /**
      * @generated from protobuf field: string rpcFWCpuUsed = 20;
      */
@@ -1085,55 +1085,55 @@ export interface ListSensorReply_Details {
     /**
      * @generated from protobuf field: string platform = 26;
      */
-    platform: string; // Domain controller platform
+    platform: string; // DC 平台
     /**
      * @generated from protobuf field: string kernelVer = 27;
      */
-    kernelVer: string; // Domain controller kernel version
+    kernelVer: string; // DC内核版本
     /**
      * @generated from protobuf field: string memTotal = 28;
      */
-    memTotal: string; // Domain controller memory size
+    memTotal: string; // 内存大小(DC)
     /**
      * @generated from protobuf field: string cpuTotal = 29;
      */
-    cpuTotal: string; // CPU core count
+    cpuTotal: string; // CPU核数
     /**
      * @generated from protobuf field: map<string, string> netIface = 30;
      */
     netIface: {
         [key: string]: string;
-    }; // Host network interfaces, for example `{ "eth0": "ip1,ip2" }`
+    }; // 主机上网口列表 {"eth0":"ip1,ip2"}
     /**
      * @generated from protobuf field: repeated string bindNetIface = 31;
      */
-    bindNetIface: string[]; // Bound interface list, for example `["eth0", "eth1"]`
+    bindNetIface: string[]; // 绑定的接口list： ["eth0", "eth1"]
     /**
      * @generated from protobuf field: int32 dcIntervalTm = 32;
      */
-    dcIntervalTm: number; // Difference between domain-controller time and server time in seconds
+    dcIntervalTm: number; // 域控时间与服务器时间的差值(秒)
     /**
      * @generated from protobuf field: map<string, string> perfLimit = 33;
      */
     perfLimit: {
         [key: string]: string;
-    }; // Resource usage limits
+    }; // // 资源占用限制
     /**
      * @generated from protobuf field: repeated ada.ListSensorReply.mapSlice events = 34;
      */
-    events: ListSensorReply_mapSlice[]; // Runtime logs
+    events: ListSensorReply_mapSlice[]; //  运行日志
     /**
      * @generated from protobuf field: string createTm = 35;
      */
-    createTm: string; // Added time
+    createTm: string; // 添加时间
     /**
      * @generated from protobuf field: string lastOnlineTm = 36;
      */
-    lastOnlineTm: string; // Last online time
+    lastOnlineTm: string; // 最后在线时间
     /**
      * @generated from protobuf field: string LastCollectTm = 37 [json_name = "LastCollectTm"];
      */
-    lastCollectTm: string; // Last collection time
+    lastCollectTm: string; // 最后采集时间
 }
 /**
  * @generated from protobuf message ada.UpdateSensorReq
@@ -1146,33 +1146,33 @@ export interface UpdateSensorReq {
     /**
      * @generated from protobuf field: repeated string bindNetIface = 2;
      */
-    bindNetIface: string[]; // Return the original value if unchanged
+    bindNetIface: string[]; // 如果没有变化 带原值
     /**
      * @generated from protobuf field: map<string, string> perfLimit = 3;
      */
     perfLimit: {
         [key: string]: string;
-    }; // Return the original value if unchanged, {"limit_mem_max":"0.05", "limit_cpu_max":"0.06"}
+    }; // 如果没有变化 带原值, {"limit_mem_max":"0.05", "limit_cpu_max":"0.06"}
     /**
      * @generated from protobuf field: string remark = 4;
      */
-    remark: string; // Return the original value if unchanged
+    remark: string; // 如果没有变化 带原值
     /**
      * @generated from protobuf field: string pktPluginSwitch = 5;
      */
-    pktPluginSwitch: string; // [(validator.field) = {regex: "true|false"}]; // Leave blank if unchanged
+    pktPluginSwitch: string; // 如果没有变化留空
     /**
      * @generated from protobuf field: string logPluginSwitch = 6;
      */
-    logPluginSwitch: string; // [(validator.field) = {regex: "true|false"}];  // Leave blank if unchanged
+    logPluginSwitch: string; // 如果没有变化留空
     /**
      * @generated from protobuf field: string rpcFwPluginSwitch = 7;
      */
-    rpcFwPluginSwitch: string; // [(validator.field) = {regex: "true|false"}];  // Leave blank if unchanged
+    rpcFwPluginSwitch: string; // 如果没有变化留空
     /**
      * @generated from protobuf field: string ldapFwPluginSwitch = 8;
      */
-    ldapFwPluginSwitch: string; // [(validator.field) = {regex: "true|false"}];  // Leave blank if unchanged
+    ldapFwPluginSwitch: string; // 如果没有变化留空
 }
 /**
  * @generated from protobuf message ada.UpdateSensorReply
@@ -1190,7 +1190,7 @@ export interface DownloadSensorReq {
     /**
      * @generated from protobuf field: string Type = 1 [json_name = "Type"];
      */
-    type: string; // [(validator.field) = {regex: "x64|x86"}]; // x64 x86
+    type: string; // x64 x86
 }
 /**
  * @generated from protobuf message ada.DownloadSensorReply
@@ -1212,7 +1212,7 @@ export interface CmdSensorReq {
     /**
      * @generated from protobuf field: string cmd = 2;
      */
-    cmd: string; // [(validator.field) = {regex: "delete|uninstall"}]; // delete|uninstall
+    cmd: string; // delete|uninstall
 }
 /**
  * @generated from protobuf message ada.CmdSensorReply
@@ -1261,7 +1261,7 @@ export interface GetSystemInfoReply {
     /**
      * @generated from protobuf field: string systemName = 2;
      */
-    systemName: string; // System name
+    systemName: string; // 系统名称
     /**
      * @generated from protobuf field: string systemIcon = 3;
      */
@@ -1269,15 +1269,15 @@ export interface GetSystemInfoReply {
     /**
      * @generated from protobuf field: string systemVersion = 4;
      */
-    systemVersion: string; // System version
+    systemVersion: string; // 系统版本
     /**
      * @generated from protobuf field: string systemInstallTm = 5;
      */
-    systemInstallTm: string; // Installation time
+    systemInstallTm: string; // 安装时间
     /**
      * @generated from protobuf field: string systemUpgradeTm = 6;
      */
-    systemUpgradeTm: string; // Last upgrade time
+    systemUpgradeTm: string; // 上次升级时间
     /**
      * @generated from protobuf field: string systemCpuTotal = 7;
      */
@@ -1293,53 +1293,53 @@ export interface GetSystemInfoReply {
     /**
      * @generated from protobuf field: string systemLoadAverage = 10;
      */
-    systemLoadAverage: string; // System load, local_15m
+    systemLoadAverage: string; // 系统负载, local_15m
     /**
      * @generated from protobuf field: string systemBootTime = 11;
      */
-    systemBootTime: string; // Uptime
+    systemBootTime: string; // 开机使用时间
     /**
      * @generated from protobuf field: string systemEsHealth = 12;
      */
-    systemEsHealth: string; // Elasticsearch health: green/yellow/red
+    systemEsHealth: string; // ES健康状态: green/yellow/red
     /**
      * @generated from protobuf field: string systemTimestamp = 13;
      */
-    systemTimestamp: string; // System time
+    systemTimestamp: string; // 系统时间
     /**
      * @generated from protobuf field: string systemNtpAddress = 14;
      */
-    systemNtpAddress: string; // NTP server address
+    systemNtpAddress: string; // NTP服务器地址
     /**
      * @generated from protobuf field: string systemLanguage = 15;
      */
-    systemLanguage: string; // System language (EN/ZH)
+    systemLanguage: string; // 系统语言(EN/ZH)
     /**
      * @generated from protobuf field: map<string, string> statsCfg = 16;
      */
     statsCfg: {
         [key: string]: string;
-    }; // System metrics parameters
+    }; // 系统监控参数
     /**
      * @generated from protobuf field: string upgradeSrv = 17;
      */
-    upgradeSrv: string; // Upgrade server address
+    upgradeSrv: string; // 升级服务器地址
     /**
      * @generated from protobuf field: string upgradeRule = 18;
      */
-    upgradeRule: string; // Upgrade policy switch: "true|false"
+    upgradeRule: string; // 升级规则开关 "true|false"
     /**
      * @generated from protobuf field: string currentRuleVer = 19;
      */
-    currentRuleVer: string; // Current rule version
+    currentRuleVer: string; // 当前规则版本
     /**
      * @generated from protobuf field: string cloudRuleVer = 20;
      */
-    cloudRuleVer: string; // Cloud rule version
+    cloudRuleVer: string; // 云端规则版本
     /**
      * @generated from protobuf field: ada.SystemProxyInfo systemProxy = 21;
      */
-    systemProxy?: SystemProxyInfo; // System proxy configuration
+    systemProxy?: SystemProxyInfo; // 系统代理配置
 }
 /**
  * @generated from protobuf message ada.GetSystemIconReq
@@ -1362,7 +1362,7 @@ export interface UpdateSystemLanguageReq {
     /**
      * @generated from protobuf field: string language = 1;
      */
-    language: string; // [(validator.field) = {regex: "EN|ZH"}]; // EN/ZH
+    language: string; // EN/ZH
 }
 /**
  * @generated from protobuf message ada.UpdateSystemLanguageReply
@@ -1388,11 +1388,11 @@ export interface UpdateSystemCfgReq {
     /**
      * @generated from protobuf field: string file = 3;
      */
-    file: string; // Send the file as a Base64 string
+    file: string; // 将文件转为base64字符串传过来
     /**
      * @generated from protobuf field: string upgradeSrv = 4;
      */
-    upgradeSrv: string; // Upgrade server address
+    upgradeSrv: string; // 更新srv地址
     /**
      * @generated from protobuf field: string upgradeRule = 5;
      */
@@ -1400,11 +1400,11 @@ export interface UpdateSystemCfgReq {
     /**
      * @generated from protobuf field: string currentRuleVer = 6;
      */
-    currentRuleVer: string; // Current rule version
+    currentRuleVer: string; // 当前规则版本
     /**
      * @generated from protobuf field: string cloudRuleVer = 7;
      */
-    cloudRuleVer: string; // Cloud rule version
+    cloudRuleVer: string; // 云端规则版本
 }
 /**
  * @generated from protobuf message ada.UpdateSystemCfgReply
@@ -1424,19 +1424,19 @@ export interface SystemProxyInfo {
     /**
      * @generated from protobuf field: string httpProxy = 1;
      */
-    httpProxy: string; // HTTP proxy address
+    httpProxy: string; // HTTP代理地址
     /**
      * @generated from protobuf field: string httpsProxy = 2;
      */
-    httpsProxy: string; // HTTPS proxy address
+    httpsProxy: string; // HTTPS代理地址
     /**
      * @generated from protobuf field: bool upgradeProxy = 3;
      */
-    upgradeProxy: boolean; // Use a proxy during upgrades
+    upgradeProxy: boolean; // 升级时使用代理
     /**
      * @generated from protobuf field: bool notifyProxy = 4;
      */
-    notifyProxy: boolean; // Use a proxy for alert notifications
+    notifyProxy: boolean; // 告警通知时使用代理
 }
 /**
  * @generated from protobuf message ada.GetSystemProxyReq
@@ -1459,19 +1459,19 @@ export interface UpdateSystemProxyReq {
     /**
      * @generated from protobuf field: string httpProxy = 1;
      */
-    httpProxy: string; // [(validator.field) = {regex: "^http://[^\\s]+|^(\\s&&[^\\f\\n\\r\\t\\v])*"}]; // HTTP proxy address, format: `http://proxy:port`
+    httpProxy: string; // HTTP代理地址，格式: http://proxy:port
     /**
      * @generated from protobuf field: string httpsProxy = 2;
      */
-    httpsProxy: string; // [(validator.field) = {regex: "^https://[^\\s]+|^(\\s&&[^\\f\\n\\r\\t\\v])*"}]; // HTTPS proxy address, format: `https://proxy:port`
+    httpsProxy: string; // HTTPS代理地址，格式: https://proxy:port
     /**
      * @generated from protobuf field: bool upgradeProxy = 3;
      */
-    upgradeProxy: boolean; // Use a proxy during upgrades
+    upgradeProxy: boolean; // 升级时使用代理
     /**
      * @generated from protobuf field: bool notifyProxy = 4;
      */
-    notifyProxy: boolean; // Use a proxy for alert notifications
+    notifyProxy: boolean; // 告警通知时使用代理
 }
 /**
  * @generated from protobuf message ada.UpdateSystemProxyReply
@@ -1489,11 +1489,11 @@ export interface GetSystemStatsReq {
     /**
      * @generated from protobuf field: string Type = 1 [json_name = "Type"];
      */
-    type: string; // [(validator.field) = {regex: "load|cpu|mem|net_rx|net_tx"}];
+    type: string;
     /**
      * @generated from protobuf field: string scope = 2;
      */
-    scope: string; // [(validator.field) = {regex: "2h|24h"}];
+    scope: string;
 }
 /**
  * @generated from protobuf message ada.StatsInfo
@@ -1502,11 +1502,11 @@ export interface StatsInfo {
     /**
      * @generated from protobuf field: string value = 1;
      */
-    value: string; // Value
+    value: string; // 值
     /**
      * @generated from protobuf field: string timestamp = 2;
      */
-    timestamp: string; // Timestamp
+    timestamp: string; // 时间戳
 }
 /**
  * @generated from protobuf message ada.GetSystemStatsReply
@@ -1526,7 +1526,7 @@ export interface SetSystemStatsCfgReq {
      */
     stats: {
         [key: string]: string;
-    }; // Supported values:
+    }; // 支持:
 }
 /**
  * @generated from protobuf message ada.SetSystemStatsCfgReply
@@ -1546,7 +1546,7 @@ export interface ListAuditLogReq {
      *
      * @generated from protobuf field: int32 pageIdx = 1;
      */
-    pageIdx: number; // [(validator.field) = {int_gt: 0}];
+    pageIdx: number;
     /**
      * if pageSize is -1, we will return all pods.
      *
@@ -1556,11 +1556,11 @@ export interface ListAuditLogReq {
     /**
      * @generated from protobuf field: string startTm = 3;
      */
-    startTm: string; // Start time
+    startTm: string; // 开始时间
     /**
      * @generated from protobuf field: string endTm = 4;
      */
-    endTm: string; // End time
+    endTm: string; // 结束时间
     /**
      * @generated from protobuf field: string keyword = 5;
      */
@@ -1568,11 +1568,11 @@ export interface ListAuditLogReq {
     /**
      * @generated from protobuf field: repeated string filterEvent = 6;
      */
-    filterEvent: string[]; // Events
+    filterEvent: string[]; // 事件
     /**
      * @generated from protobuf field: int32 createSort = 7;
      */
-    createSort: number; // Sort by audit time: `1` asc, `-1` desc
+    createSort: number; // 审计时间 1升级 -1降序
 }
 /**
  * @generated from protobuf message ada.ListAuditLogReply
@@ -1631,7 +1631,7 @@ export interface ListSystemLogsReq {
     /**
      * @generated from protobuf field: int32 pageIdx = 1;
      */
-    pageIdx: number; // [(validator.field) = {int_gt: 0}];
+    pageIdx: number;
     /**
      * @generated from protobuf field: int32 pageSize = 2;
      */
@@ -1639,11 +1639,11 @@ export interface ListSystemLogsReq {
     /**
      * @generated from protobuf field: repeated string level = 3;
      */
-    level: string[]; // [(validator.field) = {regex: "error|warn"}]; // error, warn
+    level: string[]; // error, warn
     /**
      * @generated from protobuf field: repeated string module = 4;
      */
-    module: string[]; // [(validator.field) = {regex: "apiserver|task_worker|task_server|scanner|engine"}]; // module filter
+    module: string[]; // module filter
     /**
      * @generated from protobuf field: string search = 5;
      */
@@ -1719,23 +1719,23 @@ export interface GetLicenseReply {
     /**
      * @generated from protobuf field: string trait = 1;
      */
-    trait: string; // Machine fingerprint
+    trait: string; // 机器指纹
     /**
      * @generated from protobuf field: int64 endTime = 3;
      */
-    endTime: bigint; // License expiry time
+    endTime: bigint; // 许可有效期
     /**
      * @generated from protobuf field: int32 assets = 4;
      */
-    assets: number; // Asset count
+    assets: number; // 资产数
     /**
      * @generated from protobuf field: string version = 5;
      */
-    version: string; // Product version
+    version: string; // 产品版本
     /**
      * @generated from protobuf field: string partner = 6;
      */
-    partner: string; // Licensed customer
+    partner: string; // 授权客户
 }
 /**
  * @generated from protobuf message ada.UpdateLicenseReq
@@ -1744,7 +1744,7 @@ export interface UpdateLicenseReq {
     /**
      * @generated from protobuf field: string licenseKey = 1;
      */
-    licenseKey: string; // Activation code
+    licenseKey: string; // 激活码
 }
 /**
  * @generated from protobuf message ada.UpdateLicenseReply
@@ -1762,11 +1762,11 @@ export interface NetworkDebugReq {
     /**
      * @generated from protobuf field: string type = 1;
      */
-    type: string; // [(validator.field) = {regex: "ping|nslookup|traceroute|nc"}];
+    type: string;
     /**
      * @generated from protobuf field: string target = 2;
      */
-    target: string; // [(validator.field) = {regex: "[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\\.?|((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}"}]; // Diagnostic target
+    target: string; // 诊断目标
 }
 /**
  * @generated from protobuf message ada.NetworkDebugReply
@@ -1775,7 +1775,7 @@ export interface NetworkDebugReply {
     /**
      * @generated from protobuf field: string result = 1;
      */
-    result: string; // Diagnostic result
+    result: string; // 诊断结果
 }
 /**
  * @generated from protobuf message ada.ListNotifyConfReq
@@ -1792,23 +1792,23 @@ export interface ListNotifyConfReq {
     /**
      * @generated from protobuf field: repeated string moduleName = 3;
      */
-    moduleName: string[]; // [(validator.field) = {regex: "all|alert|baseline|leak|system"}]; // Module type: alert|baseline|leak|system
+    moduleName: string[]; // 模块类型 alert,baseline,leak,system
     /**
      * @generated from protobuf field: repeated string notifyType = 4;
      */
-    notifyType: string[]; // [(validator.field) = {regex: "all|syslog|webhook|email"}]; // Notification type: syslog|webhook|email
+    notifyType: string[]; // 通知类型 syslog,webhook,email
     /**
      * @generated from protobuf field: string endpoint = 5;
      */
-    endpoint: string; // Notification target
+    endpoint: string; // 通知目标
     /**
      * @generated from protobuf field: repeated string enable = 6;
      */
-    enable: string[]; // [(validator.field) = {regex: "all|enable|disable"}]; // Enable state: `enable` or `disable`
+    enable: string[]; // 启用状态， 开启enable 关闭disable
     /**
      * @generated from protobuf field: int32 sortTime = 7;
      */
-    sortTime: number; // Sort by time: 1 ascending, -1 descending, 0 for the default order
+    sortTime: number; // 根据时间排序，1升序，-1降序,0为默认顺序
 }
 /**
  * @generated from protobuf message ada.ListNotifyConfReply
@@ -1834,37 +1834,37 @@ export interface ListNotifyConfReply_Details {
     /**
      * @generated from protobuf field: string moduleName = 2;
      */
-    moduleName: string; // Module type: alert|baseline|leak|system
+    moduleName: string; // 模块类型 alert,baseline,leak,system
     /**
      * @generated from protobuf field: string notifyType = 3;
      */
-    notifyType: string; // Notification type: syslog|webhook|email
+    notifyType: string; // 通知类型 syslog,webhook,email
     /**
      * @generated from protobuf field: string endpoint = 4;
      */
-    endpoint: string; // Notification target
+    endpoint: string; // 通知目标
     /**
      * @generated from protobuf field: string remark = 5;
      */
-    remark: string; // Remark
+    remark: string; // 备注
     /**
      * @generated from protobuf field: string enable = 6;
      */
-    enable: string; // Enable state: `enable` or `disable`
+    enable: string; // 启用状态， 开启enable 关闭disable
     /**
      * @generated from protobuf field: map<string, string> metadata = 7;
      */
     metadata: {
         [key: string]: string;
-    }; // Alert configuration metadata
+    }; // 告警配置信息
     /**
      * @generated from protobuf field: string updateTm = 8;
      */
-    updateTm: string; // Update time
+    updateTm: string; // 修改时间
     /**
      * @generated from protobuf field: repeated int32 level = 9;
      */
-    level: number[]; // Risk levels
+    level: number[]; // 危险等级
 }
 /**
  * @generated from protobuf message ada.UpdateNotifyConfReq
@@ -1873,11 +1873,11 @@ export interface UpdateNotifyConfReq {
     /**
      * @generated from protobuf field: string id = 1;
      */
-    id: string; // [(validator.field) = {string_not_empty: true}];
+    id: string;
     /**
      * @generated from protobuf field: string enable = 2;
      */
-    enable: string; // [(validator.field) = {regex: "enable|disable"}]; //Enable state: `enable` or `disable`
+    enable: string; // 启用状态， 开启enable 关闭disable
     /**
      * @generated from protobuf field: string endpoint = 3;
      */
@@ -1885,17 +1885,17 @@ export interface UpdateNotifyConfReq {
     /**
      * @generated from protobuf field: repeated int32 level = 4;
      */
-    level: number[]; // Risk levels
+    level: number[]; // 危险等级
     /**
      * @generated from protobuf field: map<string, string> metadata = 5;
      */
     metadata: {
         [key: string]: string;
-    }; // Always includes `alert_interval: 20` (string). Optional fields depend on the type: email uses `server`, `port`, `username`, `password`, and `receiver`; webhook uses `application_type` (`weixin`, `feishu`, `dingtalk`, or `common`).
+    }; // 都有: alert_interval: 20(str), 可选: email类型: server(str),port(str),username,password,receiver; syslog类型; webhook类型: application_type(weixin/feishu/dingtalk/common)
     /**
      * @generated from protobuf field: string remark = 6;
      */
-    remark: string; // Remark
+    remark: string; // 备注
 }
 /**
  * @generated from protobuf message ada.UpdateNotifyConfReply
@@ -1913,11 +1913,11 @@ export interface EnableNotifyConfReq {
     /**
      * @generated from protobuf field: string id = 1;
      */
-    id: string; // [(validator.field) = {string_not_empty: true}];
+    id: string;
     /**
      * @generated from protobuf field: string enable = 2;
      */
-    enable: string; // [(validator.field) = {regex: "enable|disable"}]; //Enable state: `enable` or `disable`
+    enable: string; // 启用状态， 开启enable 关闭disable
 }
 /**
  * @generated from protobuf message ada.EnableNotifyConfReply
@@ -1935,21 +1935,21 @@ export interface TestNotifyConfReq {
     /**
      * @generated from protobuf field: string moduleName = 1;
      */
-    moduleName: string; // [(validator.field) = {regex: "alert|baseline|leak|system"}]; // Module type: alert|baseline|leak|system
+    moduleName: string; // 模块类型 alert,baseline,leak,system
     /**
      * @generated from protobuf field: string notifyType = 2;
      */
-    notifyType: string; // [(validator.field) = {regex: "syslog|webhook|email"}]; // Notification type: syslog|webhook|email
+    notifyType: string; // 通知类型 syslog,webhook,email
     /**
      * @generated from protobuf field: string endpoint = 3;
      */
-    endpoint: string; // Notification target
+    endpoint: string; // 通知目标
     /**
      * @generated from protobuf field: map<string, string> metadata = 4;
      */
     metadata: {
         [key: string]: string;
-    }; // Configuration parameters
+    }; // 配置参数
 }
 /**
  * @generated from protobuf message ada.TestNotifyConfReply
@@ -1971,33 +1971,33 @@ export interface AddNotifyConfReq {
     /**
      * @generated from protobuf field: string moduleName = 1;
      */
-    moduleName: string; // [(validator.field) = {regex: "alert|baseline|leak|system"}]; // Module type: alert|baseline|leak|system
+    moduleName: string; // 模块类型 alert,baseline,leak,system
     /**
      * @generated from protobuf field: string notifyType = 2;
      */
-    notifyType: string; // [(validator.field) = {regex: "syslog|webhook|email"}]; // Notification type: syslog|webhook|email
+    notifyType: string; // 通知类型 syslog,webhook,email
     /**
      * @generated from protobuf field: string endpoint = 3;
      */
-    endpoint: string; // Notification target
+    endpoint: string; // 通知目标
     /**
      * @generated from protobuf field: string enable = 4;
      */
-    enable: string; // [(validator.field) = {regex: "enable|disable"}]; // Enable state: `enable` or `disable`
+    enable: string; // 启用状态， 开启enable 关闭disable
     /**
      * @generated from protobuf field: repeated int32 level = 5;
      */
-    level: number[]; // Risk levels
+    level: number[]; // 危险等级
     /**
      * @generated from protobuf field: map<string, string> metadata = 6;
      */
     metadata: {
         [key: string]: string;
-    }; // Configuration parameters
+    }; // 配置参数
     /**
      * @generated from protobuf field: string remark = 7;
      */
-    remark: string; // Remark
+    remark: string; // 备注
 }
 /**
  * @generated from protobuf message ada.AddNotifyConfReply
@@ -2010,7 +2010,7 @@ export interface AddNotifyConfReply {
     /**
      * @generated from protobuf field: string id = 2;
      */
-    id: string; // ID of the newly created configuration
+    id: string; // 新增配置的ID
 }
 /**
  * @generated from protobuf message ada.DeleteNotifyConfReq
@@ -2019,7 +2019,7 @@ export interface DeleteNotifyConfReq {
     /**
      * @generated from protobuf field: string id = 1;
      */
-    id: string; // [(validator.field) = {string_not_empty: true}]; // Configuration ID
+    id: string; // 配置ID
 }
 /**
  * @generated from protobuf message ada.DeleteNotifyConfReply
@@ -2045,23 +2045,23 @@ export interface ListExportTaskReq {
     /**
      * @generated from protobuf field: repeated string type = 3;
      */
-    type: string[]; // [(validator.field) = {regex: "all|alert_event|alert_activity|baseline|leak|weakpwd|system|audit"}];  // alert_event/alert_activity/baseline/leak/weakpwd/system/audit
+    type: string[]; // alert_event/alert_activity/baseline/leak/weakpwd/system/audit
     /**
      * @generated from protobuf field: repeated string status = 4;
      */
-    status: string[]; // [(validator.field) = {regex: "all|padding|doing|finish|failed"}]; // Task status: padding|doing|finish|failed
+    status: string[]; // 任务状态: padding,doing,finish,failed
     /**
      * @generated from protobuf field: string startTm = 5;
      */
-    startTm: string; // Optional start time
+    startTm: string; //  可选，开始时间
     /**
      * @generated from protobuf field: string endTm = 6;
      */
-    endTm: string; // Optional end time
+    endTm: string; //  可选，结束时间
     /**
      * @generated from protobuf field: int32 sortTime = 7;
      */
-    sortTime: number; // Sort by time: 1 ascending, -1 descending, 0 for the default order
+    sortTime: number; // 根据时间排序，1升序，-1降序,0为默认顺序
 }
 /**
  * @generated from protobuf message ada.ListExportTaskReply
@@ -2087,45 +2087,45 @@ export interface ListExportTaskReply_Details {
     /**
      * @generated from protobuf field: string ID = 1 [json_name = "ID"];
      */
-    iD: string; // Report ID
+    iD: string; // 报表ID
     /**
      * @generated from protobuf field: string name = 2;
      */
-    name: string; // Report name
+    name: string; // 报表名称
     /**
      * @generated from protobuf field: string type = 3;
      */
-    type: string; // Report type: alert_event|alert_activity|baseline|leak|weakpwd|system|audit
+    type: string; // 报表类型 alert_event/alert_activity/baseline/leak/weakpwd/system/audit
     /**
      * @generated from protobuf field: map<string, string> params = 4;
      */
     params: {
         [key: string]: string;
-    }; // Configuration parameters
+    }; // 配置参数
     /**
      * @generated from protobuf field: string status = 5;
      */
-    status: string; // Task status: padding|doing|finish|failed
+    status: string; // 任务状态 padding,doing,finish,failed
     /**
      * @generated from protobuf field: string fileType = 6;
      */
-    fileType: string; // File type: csv|excel|pdf
+    fileType: string; // 文件类型 csv,excel,pdf
     /**
      * @generated from protobuf field: string createTm = 7;
      */
-    createTm: string; // Creation time
+    createTm: string; // 创建时间
     /**
      * @generated from protobuf field: string updateTm = 8;
      */
-    updateTm: string; // Report path
+    updateTm: string; // 报表路径
     /**
      * @generated from protobuf field: string errMsg = 9;
      */
-    errMsg: string; // Error message
+    errMsg: string; // 错误信息
     /**
      * @generated from protobuf field: string filePath = 10;
      */
-    filePath: string; // Report path
+    filePath: string; // 报表路径
 }
 /**
  * @generated from protobuf message ada.AddExportTaskReq
@@ -2134,7 +2134,7 @@ export interface AddExportTaskReq {
     /**
      * @generated from protobuf field: string name = 1;
      */
-    name: string; // Report name entered manually by the user
+    name: string; // 报表名称,用户手动输入
     /**
      * @generated from protobuf field: string type = 2;
      */
@@ -2144,7 +2144,7 @@ export interface AddExportTaskReq {
      */
     params: {
         [key: string]: string;
-    }; // Export parameters, for example `{ "domain": "domainA,domainB", "start_tm": "2021-01-01 00:00:00", "end_tm": "2021-01-01 23:59:59", "level": "3,4" }`
+    }; // 导出参数 {"domain":"domainA,domainB","start_tm":"2021-01-01 00:00:00","end_tm":"2021-01-01 23:59:59","level":"3,4"}
 }
 /**
  * @generated from protobuf message ada.AddExportTaskReply
@@ -2188,23 +2188,23 @@ export interface ListNotifyReq {
     /**
      * @generated from protobuf field: repeated string msgType = 3;
      */
-    msgType: string[]; // Message types: Leak vulnerability checks, Baseline scans, Alert events, and System alerts
+    msgType: string[]; // 消息类型,Leak漏洞监测，Baseline主动检测，Alert告警事件,System系统告警
     /**
      * @generated from protobuf field: repeated int32 status = 5;
      */
-    status: number[]; // Message status: 0 unread, 1 read
+    status: number[]; // 消息状态: 0未读，1已读
     /**
      * @generated from protobuf field: string startTm = 6;
      */
-    startTm: string; // Optional start time
+    startTm: string; //  可选，开始时间
     /**
      * @generated from protobuf field: string endTm = 7;
      */
-    endTm: string; // Optional end time
+    endTm: string; //  可选，结束时间
     /**
      * @generated from protobuf field: int32 orderCreateTm = 8;
      */
-    orderCreateTm: number; // Sort by created time: 1 ascending, -1 descending. Default: -1.
+    orderCreateTm: number; // 创建时间排序 1升序 -1降序, 默认-1
 }
 /**
  * @generated from protobuf message ada.ListNotifyReply
@@ -2234,33 +2234,33 @@ export interface ListNotifyReply_Details {
     /**
      * @generated from protobuf field: string title = 2;
      */
-    title: string; // Title
+    title: string; // 标题
     /**
      * @generated from protobuf field: string msgType = 3;
      */
-    msgType: string; // Message type
+    msgType: string; // 消息类型
     /**
      * @generated from protobuf field: string eventType = 4;
      */
-    eventType: string; // Event type
+    eventType: string; // 事件类型
     /**
      * @generated from protobuf field: string createTm = 5;
      */
-    createTm: string; // Time
+    createTm: string; // 时间
     /**
      * @generated from protobuf field: string desc = 6;
      */
-    desc: string; // Alert details
+    desc: string; // 告警详情
     /**
      * @generated from protobuf field: int32 status = 7;
      */
-    status: number; // Message status: `0` unread, `1` read
+    status: number; // 消息状态，0未读，1已读
     /**
      * @generated from protobuf field: map<string, string> params = 8;
      */
     params: {
         [key: string]: string;
-    }; // Reserved attribute field
+    }; // 属性，预留字段
 }
 /**
  * @generated from protobuf message ada.UpdateNotifyReq
@@ -2269,7 +2269,7 @@ export interface UpdateNotifyReq {
     /**
      * @generated from protobuf field: repeated string IDs = 1 [json_name = "IDs"];
      */
-    iDs: string[]; // Mark as read for the given event ID list
+    iDs: string[]; // 修改状态为已读， 事件ID list
 }
 /**
  * @generated from protobuf message ada.UpdateNotifyReply
@@ -2297,15 +2297,15 @@ export interface ThreatTopsReq {
     /**
      * @generated from protobuf field: string domain = 1;
      */
-    domain: string; // Required: `all` or `domainX`
+    domain: string; // 必选，all|domainX
     /**
      * @generated from protobuf field: string type = 2;
      */
-    type: string; // [(validator.field) = {regex: "activity|event"}]; // Required: `activity` or `event`
+    type: string; // 必选，activity|event
     /**
      * @generated from protobuf field: int32 duration = 3;
      */
-    duration: number; // Required time range in days. Allowed values: 1, 7, or 30. Default: 7.
+    duration: number; // 必选，时间范围/天， 可选值: 1/7/30 （默认为7）
 }
 /**
  * @generated from protobuf message ada.ThreatTopsReply
@@ -2314,7 +2314,7 @@ export interface ThreatTopsReply {
     /**
      * @generated from protobuf field: repeated ada.ThreatTopsReply.Details List = 1 [json_name = "List"];
      */
-    list: ThreatTopsReply_Details[]; // Item list
+    list: ThreatTopsReply_Details[]; // 条目列表
 }
 /**
  * @generated from protobuf message ada.ThreatTopsReply.Details
@@ -2323,11 +2323,11 @@ export interface ThreatTopsReply_Details {
     /**
      * @generated from protobuf field: string name = 1;
      */
-    name: string; // Name
+    name: string; // 名称
     /**
      * @generated from protobuf field: int32 total = 2;
      */
-    total: number; // Count
+    total: number; // 数量
 }
 /**
  * @generated from protobuf message ada.ThreatTrendsReq
@@ -2336,15 +2336,15 @@ export interface ThreatTrendsReq {
     /**
      * @generated from protobuf field: string domain = 1;
      */
-    domain: string; // Required: `all` or `domainX`
+    domain: string; // 必选，all|domainX
     /**
      * @generated from protobuf field: repeated int32 level = 2;
      */
-    level: number[]; // Required. Risk levels: `5` critical, `4` high, `3` medium, `2` low
+    level: number[]; // 必选， 风险等级, 5:严重,4:高危,3:中危,2:低危
     /**
      * @generated from protobuf field: int32 duration = 3;
      */
-    duration: number; // Required time range in days. Allowed values: 1, 7, or 30. Default: 7.
+    duration: number; // 必选，时间范围/天， 可选值: 1/7/30 （默认为7）
 }
 /**
  * @generated from protobuf message ada.ThreatTrendsReply
@@ -2353,7 +2353,7 @@ export interface ThreatTrendsReply {
     /**
      * @generated from protobuf field: repeated ada.ThreatTrendsReply.Item List = 1 [json_name = "List"];
      */
-    list: ThreatTrendsReply_Item[]; // Item list
+    list: ThreatTrendsReply_Item[]; // 条目列表
 }
 /**
  * @generated from protobuf message ada.ThreatTrendsReply.Item
@@ -2362,11 +2362,11 @@ export interface ThreatTrendsReply_Item {
     /**
      * @generated from protobuf field: int64 ts = 1;
      */
-    ts: bigint; // Timestamp
+    ts: bigint; // 时间戳
     /**
      * @generated from protobuf field: int32 total = 2;
      */
-    total: number; // Count
+    total: number; // 数量
 }
 /**
  * @generated from protobuf message ada.ListThreatReq
@@ -2375,7 +2375,7 @@ export interface ListThreatReq {
     /**
      * @generated from protobuf field: int32 pageIdx = 1;
      */
-    pageIdx: number; // [(validator.field) = {int_gt: 0}];
+    pageIdx: number;
     /**
      * @generated from protobuf field: int32 pageSize = 2;
      */
@@ -2383,35 +2383,35 @@ export interface ListThreatReq {
     /**
      * @generated from protobuf field: repeated string IDs = 3 [json_name = "IDs"];
      */
-    iDs: string[]; // Threat ID list
+    iDs: string[]; // 威胁ID list
     /**
      * @generated from protobuf field: repeated int32 level = 4;
      */
-    level: number[]; // Threat levels and severity
+    level: number[]; // 威胁等级,严重性
     /**
      * @generated from protobuf field: int32 eventStatus = 5;
      */
-    eventStatus: number; // Event status: `0` unhandled, `1` handled (reserved: `2` whitelisted, `3` blocked)
+    eventStatus: number; // 事件状态, 0:未处理, 1:已处理 (预留: 2:已加白 3:已阻断)
     /**
      * @generated from protobuf field: string startTm = 6;
      */
-    startTm: string; // Start time
+    startTm: string; // 开始时间
     /**
      * @generated from protobuf field: string endTm = 7;
      */
-    endTm: string; // End time
+    endTm: string; // 结束时间
     /**
      * @generated from protobuf field: int32 searchType = 8;
      */
-    searchType: number; // Search type: `0` basic, `1` advanced
+    searchType: number; // 检索类型,0为普通检索，1为高级检索
     /**
      * @generated from protobuf field: repeated ada.ListThreatReq.Details advancedSearch = 9;
      */
-    advancedSearch: ListThreatReq_Details[]; // Advanced search
+    advancedSearch: ListThreatReq_Details[]; // 高级检索
     /**
      * @generated from protobuf field: int32 sortTm = 10;
      */
-    sortTm: number; // Sort by time: `1` asc, `-1` desc
+    sortTm: number; // 时间排序，1为升序，-1为降序
 }
 /**
  * @generated from protobuf message ada.ListThreatReq.Details
@@ -2420,11 +2420,11 @@ export interface ListThreatReq_Details {
     /**
      * @generated from protobuf field: string name = 1;
      */
-    name: string; // Search field
+    name: string; // 检索字段
     /**
      * @generated from protobuf field: string type = 2;
      */
-    type: string; // Operators: `eq`, `ne`, `lt`, `gt`, `bt`, `contain`, `not_contain`
+    type: string; // 等于 eq，不等于ne 之前lt，之后gt 两者之间bt，包含contain 不包含 not_contain
     /**
      * @generated from protobuf field: repeated string value = 3;
      */
@@ -2454,19 +2454,19 @@ export interface ListThreatReply_Details {
     /**
      * @generated from protobuf field: string ID = 1 [json_name = "ID"];
      */
-    iD: string; // Request detail page
+    iD: string; // 请求详情页
     /**
      * @generated from protobuf field: string title = 2;
      */
-    title: string; // Alert title
+    title: string; // 告警标题
     /**
      * @generated from protobuf field: string desc = 3;
      */
-    desc: string; // Alert description
+    desc: string; // 告警描述
     /**
      * @generated from protobuf field: string flowId = 4;
      */
-    flowId: string; // Associated rule flowId
+    flowId: string; // 关联规则flowId
     /**
      * @generated from protobuf field: string attckId = 5;
      */
@@ -2474,7 +2474,7 @@ export interface ListThreatReply_Details {
     /**
      * @generated from protobuf field: int32 level = 6;
      */
-    level: number; // Risk level: `5` critical, `4` high, `3` medium, `2` low
+    level: number; // 风险等级, 5:严重,4:高危,3:中危,2:低危
     /**
      * @generated from protobuf field: string dcHostname = 7;
      */
@@ -2486,15 +2486,15 @@ export interface ListThreatReply_Details {
     /**
      * @generated from protobuf field: string status = 9;
      */
-    status: string; // Rule status reserved for future use
+    status: string; // 规则状态，后期会使用
     /**
      * @generated from protobuf field: int32 eventStatus = 10;
      */
-    eventStatus: number; // Event status: `0` unhandled, `1` handled, `2` whitelisted, `3` blocked
+    eventStatus: number; // 事件状态, 0:未处理, 1:已处理 2:已加白 3:已阻断
     /**
      * @generated from protobuf field: string remark = 11;
      */
-    remark: string; // Additional remark
+    remark: string; // 添加备注说明
     /**
      * @generated from protobuf field: repeated string tags = 12;
      */
@@ -2502,19 +2502,19 @@ export interface ListThreatReply_Details {
     /**
      * @generated from protobuf field: ada.AttackFlowReply attackFlow = 13;
      */
-    attackFlow?: AttackFlowReply; // Attack flow graph
+    attackFlow?: AttackFlowReply; // 攻击流图
     /**
      * @generated from protobuf field: int32 duration = 14;
      */
-    duration: number; // Duration in seconds
+    duration: number; // 持续时间，单位s
     /**
      * @generated from protobuf field: string startTm = 16;
      */
-    startTm: string; // Start time
+    startTm: string; // 开始时间
     /**
      * @generated from protobuf field: string endTm = 17;
      */
-    endTm: string; // End time
+    endTm: string; // 结束时间
 }
 /**
  * @generated from protobuf message ada.GetThreatNamesReq
@@ -2523,7 +2523,7 @@ export interface GetThreatNamesReq {
     /**
      * @generated from protobuf field: string flowId = 1;
      */
-    flowId: string; // Optional. If empty, return the mapping of all `flow_id` values to titles
+    flowId: string; // 可选，为空则返回所有的flow_id与title的map
 }
 /**
  * @generated from protobuf message ada.GetThreatNamesReply
@@ -2543,7 +2543,7 @@ export interface GetThreatReq {
     /**
      * @generated from protobuf field: string ID = 1 [json_name = "ID"];
      */
-    iD: string; // Threat event ID
+    iD: string; // 威胁事件ID
 }
 /**
  * @generated from protobuf message ada.GetThreatReply
@@ -2552,23 +2552,23 @@ export interface GetThreatReply {
     /**
      * @generated from protobuf field: string ID = 1 [json_name = "ID"];
      */
-    iD: string; // Request detail page
+    iD: string; // 请求详情页
     /**
      * @generated from protobuf field: string title = 2;
      */
-    title: string; // Alert title
+    title: string; // 告警标题
     /**
      * @generated from protobuf field: string desc = 3;
      */
-    desc: string; // Alert description
+    desc: string; // 告警描述
     /**
      * @generated from protobuf field: string flowId = 4;
      */
-    flowId: string; // Associated rule flowId
+    flowId: string; // 关联规则flowId
     /**
      * @generated from protobuf field: string uniqueId = 5;
      */
-    uniqueId: string; // Used to identify the activity uniquely
+    uniqueId: string; // 确定行为唯一性
     /**
      * @generated from protobuf field: string attckId = 6;
      */
@@ -2576,7 +2576,7 @@ export interface GetThreatReply {
     /**
      * @generated from protobuf field: int32 level = 7;
      */
-    level: number; // Risk level: `5` critical, `4` high, `3` medium, `2` low
+    level: number; // 风险等级, 5:严重,4:高危,3:中危,2:低危
     /**
      * @generated from protobuf field: string dcHostname = 8;
      */
@@ -2588,11 +2588,11 @@ export interface GetThreatReply {
     /**
      * @generated from protobuf field: string status = 10;
      */
-    status: string; // Rule status reserved for future use
+    status: string; // 规则状态，后期会使用
     /**
      * @generated from protobuf field: int32 eventStatus = 11;
      */
-    eventStatus: number; // Event status: `0` unhandled by default, `1` handled, `2` whitelisted, `3` blocked
+    eventStatus: number; // 事件状态, 0:未处理(默认), 1:已处理 2:已加白 3:已阻断
     /**
      * @generated from protobuf field: repeated string tags = 12;
      */
@@ -2600,33 +2600,33 @@ export interface GetThreatReply {
     /**
      * @generated from protobuf field: string source = 13;
      */
-    source: string; // Attack source
+    source: string; // 攻击来源
     /**
      * @generated from protobuf field: string target = 14;
      */
-    target: string; // Attack target
+    target: string; // 攻击目标
     /**
      * @generated from protobuf field: int32 duration = 15;
      */
-    duration: number; // Duration in seconds
+    duration: number; // 持续时间，单位s
     /**
      * @generated from protobuf field: string startTm = 16;
      */
-    startTm: string; // Start time
+    startTm: string; // 开始时间
     /**
      * @generated from protobuf field: string endTm = 17;
      */
-    endTm: string; // End time
+    endTm: string; // 结束时间
     /**
      * @generated from protobuf field: map<string, string> fieldData = 18;
      */
     fieldData: {
         [key: string]: string;
-    }; // fieldData metadata
+    }; // fieldData信息
     /**
      * @generated from protobuf field: ada.AttackFlowReply attackFlow = 19;
      */
-    attackFlow?: AttackFlowReply; // Attack flow graph
+    attackFlow?: AttackFlowReply; // 攻击流图
     /**
      * @generated from protobuf field: repeated ada.ActivityDetails activities = 20;
      */
@@ -2634,15 +2634,15 @@ export interface GetThreatReply {
     /**
      * @generated from protobuf field: string suggestion = 21;
      */
-    suggestion: string; // Remediation suggestions
+    suggestion: string; // 修复建议
     /**
      * @generated from protobuf field: repeated string references = 22;
      */
-    references: string[]; // False-positive investigation references
+    references: string[]; // 误报排查
     /**
      * @generated from protobuf field: string remark = 23;
      */
-    remark: string; // Additional remark
+    remark: string; // 添加备注说明
 }
 /**
  * @generated from protobuf message ada.ActionThreatReq
@@ -2655,11 +2655,11 @@ export interface ActionThreatReq {
     /**
      * @generated from protobuf field: int32 eventStatus = 2;
      */
-    eventStatus: number; // [(validator.field) = {int_gt: -1, int_lt: 4}]; // Event status: `0` unhandled, `1` handled, `2` whitelisted, `3` blocked
+    eventStatus: number; // 事件状态: 0:未处理 1:已处理 2:已加白 3:已阻断
     /**
      * @generated from protobuf field: string remark = 3;
      */
-    remark: string; // Additional remark
+    remark: string; // 添加备注说明
 }
 /**
  * @generated from protobuf message ada.ActionThreatReply
@@ -2677,7 +2677,7 @@ export interface ListActivityReq {
     /**
      * @generated from protobuf field: int32 pageIdx = 1;
      */
-    pageIdx: number; // [(validator.field) = {int_gt: 0}];
+    pageIdx: number;
     /**
      * @generated from protobuf field: int32 pageSize = 2;
      */
@@ -2685,31 +2685,31 @@ export interface ListActivityReq {
     /**
      * @generated from protobuf field: repeated int32 level = 3;
      */
-    level: number[]; // Threat levels and severity
+    level: number[]; // 威胁等级,严重性
     /**
      * @generated from protobuf field: repeated string dcHostname = 4;
      */
-    dcHostname: string[]; // Optional domain controller
+    dcHostname: string[]; // 可选，所在域控
     /**
      * @generated from protobuf field: repeated string title = 5;
      */
-    title: string[]; // Optional activity names
+    title: string[]; // 可选,行为名称
     /**
      * @generated from protobuf field: string ID = 6 [json_name = "ID"];
      */
-    iD: string; // Optional. If provided, query the threat activity that matches the given activity ID
+    iD: string; // 可选，如果存在查询对应activityID的威胁活动
     /**
      * @generated from protobuf field: string startTm = 7;
      */
-    startTm: string; // Optional start time
+    startTm: string; //  可选，开始时间
     /**
      * @generated from protobuf field: string endTm = 8;
      */
-    endTm: string; // Optional end time
+    endTm: string; //  可选，结束时间
     /**
      * @generated from protobuf field: int32 orderCreateTm = 9;
      */
-    orderCreateTm: number; // Optional sort order: 1 or -1
+    orderCreateTm: number; // 可选，排序 1|-1
 }
 /**
  * @generated from protobuf message ada.ActivityDetails
@@ -2722,15 +2722,15 @@ export interface ActivityDetails {
     /**
      * @generated from protobuf field: string title = 2;
      */
-    title: string; // Title
+    title: string; // 标题
     /**
      * @generated from protobuf field: string desc = 3;
      */
-    desc: string; // Description
+    desc: string; // 描述
     /**
      * @generated from protobuf field: string ruleId = 4;
      */
-    ruleId: string; // Associated rule ID
+    ruleId: string; // 关联规则ruleId
     /**
      * @generated from protobuf field: string uniqueId = 5;
      */
@@ -2742,7 +2742,7 @@ export interface ActivityDetails {
     /**
      * @generated from protobuf field: int32 level = 7;
      */
-    level: number; // Risk level: `5` critical, `4` high, `3` medium, `2` low
+    level: number; // 风险等级, 5:严重,4:高危,3:中危,2:低危
     /**
      * @generated from protobuf field: string dcHostname = 8;
      */
@@ -2750,7 +2750,7 @@ export interface ActivityDetails {
     /**
      * @generated from protobuf field: string ruleConfidence = 9;
      */
-    ruleConfidence: string; // Rule confidence: experimental|test|stable
+    ruleConfidence: string; // 规则置信度: experimental(实验), test(测试), stable(稳定)
     /**
      * @generated from protobuf field: repeated string tags = 10;
      */
@@ -2760,7 +2760,7 @@ export interface ActivityDetails {
      */
     fieldData: {
         [key: string]: string;
-    }; // Metadata
+    }; // metadata信息
     /**
      * @generated from protobuf field: string rawLog = 12;
      */
@@ -2768,7 +2768,7 @@ export interface ActivityDetails {
     /**
      * @generated from protobuf field: string createTm = 13;
      */
-    createTm: string; // Occurrence time
+    createTm: string; // 发生时间
 }
 /**
  * @generated from protobuf message ada.ListActivityReply
@@ -2794,15 +2794,15 @@ export interface GetActivityNamesReq {
     /**
      * @generated from protobuf field: repeated string dcHostname = 1;
      */
-    dcHostname: string[]; // Optional. If empty, return the mapping of all activity titles to totals
+    dcHostname: string[]; // 可选，为空则返回所有的activity title->total的map
     /**
      * @generated from protobuf field: string startTm = 2;
      */
-    startTm: string; // Optional start time
+    startTm: string; //  可选，开始时间
     /**
      * @generated from protobuf field: string endTm = 3;
      */
-    endTm: string; // Optional end time
+    endTm: string; //  可选，结束时间
 }
 /**
  * @generated from protobuf message ada.GetActivityNamesReply
@@ -2813,7 +2813,7 @@ export interface GetActivityNamesReply {
      */
     names: {
         [key: string]: number;
-    }; // Map of activity title to count
+    }; // key为act title，val为数量
 }
 /**
  * @generated from protobuf message ada.GetActivityReq
@@ -2840,7 +2840,7 @@ export interface ListSensitiveEntryReq {
     /**
      * @generated from protobuf field: int32 pageIdx = 1;
      */
-    pageIdx: number; // [(validator.field) = {int_gt: 0}];  // start index with 1.
+    pageIdx: number; // start index with 1.
     /**
      * @generated from protobuf field: int32 pageSize = 2;
      */
@@ -2848,31 +2848,31 @@ export interface ListSensitiveEntryReq {
     /**
      * @generated from protobuf field: string type = 3;
      */
-    type: string; // Required. One of `user`, `group`, `computer`, or `honeyuser`
+    type: string; // 必选，user|group|computer|honeyuser
     /**
      * @generated from protobuf field: repeated string domain = 4;
      */
-    domain: string[]; // Optional; used for filtering
+    domain: string[]; // 可选，过滤使用
     /**
      * @generated from protobuf field: repeated int32 origin = 5;
      */
-    origin: number[]; // Optional source filter: `0` LDAP auto-sync, `1` manual UI entry
+    origin: number[]; // 可选， 来源分为自动和手动，0为ldap自动同步，1为页面手动添加
     /**
      * @generated from protobuf field: string startTm = 6;
      */
-    startTm: string; // Optional start time
+    startTm: string; //  可选，开始时间
     /**
      * @generated from protobuf field: string endTm = 7;
      */
-    endTm: string; // Optional end time
+    endTm: string; //  可选，结束时间
     /**
      * @generated from protobuf field: int32 orderCreateTm = 8;
      */
-    orderCreateTm: number; // Sort by created time: 1 ascending, -1 descending. Default: -1.
+    orderCreateTm: number; // 创建时间排序 1升序 -1降序, 默认-1
     /**
      * @generated from protobuf field: int32 orderUpdateTm = 9;
      */
-    orderUpdateTm: number; // Sort by update time: `1` asc, `-1` desc; default is unsorted
+    orderUpdateTm: number; // 更新时间排序 1升序 -1降序, 默认无
 }
 /**
  * @generated from protobuf message ada.ListSensitiveEntryReply
@@ -2885,7 +2885,7 @@ export interface ListSensitiveEntryReply {
     /**
      * @generated from protobuf field: repeated ada.ListSensitiveEntryReply.Details List = 2 [json_name = "List"];
      */
-    list: ListSensitiveEntryReply_Details[]; // Sensitive entry list
+    list: ListSensitiveEntryReply_Details[]; // 敏感条目列表
     /**
      * @generated from protobuf field: bool exhausted = 3;
      */
@@ -2906,19 +2906,19 @@ export interface ListSensitiveEntryReply_Details {
     /**
      * @generated from protobuf field: string name = 3;
      */
-    name: string; // Entry value
+    name: string; // 条目内容
     /**
      * @generated from protobuf field: int32 origin = 4;
      */
-    origin: number; // Source: `0` LDAP auto-sync, `1` manual UI entry
+    origin: number; // 来源，分为自动和手动，0为ldap自动同步，1为页面手动添加
     /**
      * @generated from protobuf field: string createTm = 5;
      */
-    createTm: string; // Added time
+    createTm: string; // 添加时间
     /**
      * @generated from protobuf field: string updateTm = 6;
      */
-    updateTm: string; // Update time
+    updateTm: string; // 修改时间
 }
 /**
  * @generated from protobuf message ada.AddSensitiveEntryReq
@@ -2927,7 +2927,7 @@ export interface AddSensitiveEntryReq {
     /**
      * @generated from protobuf field: string type = 1;
      */
-    type: string; // [(validator.field) = {regex: "user|group|computer|honeyuser"}];
+    type: string;
     /**
      * @generated from protobuf field: string domain = 2;
      */
@@ -2953,7 +2953,7 @@ export interface ListDomainEntryReq {
     /**
      * @generated from protobuf field: string type = 1;
      */
-    type: string; // [(validator.field) = {regex: "user|group|computer|honeyuser"}];
+    type: string;
     /**
      * @generated from protobuf field: string domain = 2;
      */
@@ -2961,7 +2961,7 @@ export interface ListDomainEntryReq {
     /**
      * @generated from protobuf field: string search = 3;
      */
-    search: string; // Optional search keyword
+    search: string; // 可选，搜索关键字
 }
 /**
  * @generated from protobuf message ada.ListDomainEntryReply
@@ -2991,7 +2991,7 @@ export interface DeleteSensitiveEntryReply {
     result: string; // SUCCESS||FAILED
 }
 /**
- * Alert rule whitelist
+ * 告警规则白名单
  *
  * @generated from protobuf message ada.ListThreatWhitelistReq
  */
@@ -2999,7 +2999,7 @@ export interface ListThreatWhitelistReq {
     /**
      * @generated from protobuf field: int32 pageIdx = 1;
      */
-    pageIdx: number; // [(validator.field) = {int_gt: 0}];
+    pageIdx: number;
     /**
      * @generated from protobuf field: int32 pageSize = 2;
      */
@@ -3007,31 +3007,31 @@ export interface ListThreatWhitelistReq {
     /**
      * @generated from protobuf field: string ruleId = 3;
      */
-    ruleId: string; // Optional. If not empty, only return whitelist rules for this rule ID
+    ruleId: string; // 可选,如果不为空则只返回该规则ID对应的白名单规则
     /**
      * @generated from protobuf field: repeated string domain = 4;
      */
-    domain: string[]; // Optional. If empty, query all domains
+    domain: string[]; // 可选,为空则查询所有域
     /**
      * @generated from protobuf field: repeated int32 origin = 5;
      */
-    origin: number[]; // Optional source filter: 1 for manual add, 2 for automatic add
+    origin: number[]; // 可选，来源，手动添加: 1 自动添加:2
     /**
      * @generated from protobuf field: string startTm = 6;
      */
-    startTm: string; // Optional start time
+    startTm: string; //  可选，开始时间
     /**
      * @generated from protobuf field: string endTm = 7;
      */
-    endTm: string; // Optional end time
+    endTm: string; //  可选，结束时间
     /**
      * @generated from protobuf field: string search = 8;
      */
-    search: string; // Optional search keyword (rule name)
+    search: string; // 可选，搜索关键字（规则名称）
     /**
      * @generated from protobuf field: int32 orderUpdateTm = 9;
      */
-    orderUpdateTm: number; // Sort by updated time: 1 ascending, -1 descending. Default: -1.
+    orderUpdateTm: number; // 更新时间排序 1升序 -1降序, 默认-1
 }
 /**
  * @generated from protobuf message ada.ListThreatWhitelistReply
@@ -3044,7 +3044,7 @@ export interface ListThreatWhitelistReply {
     /**
      * @generated from protobuf field: repeated ada.ListThreatWhitelistReply.Details List = 2 [json_name = "List"];
      */
-    list: ListThreatWhitelistReply_Details[]; // Sensitive entry list
+    list: ListThreatWhitelistReply_Details[]; // 敏感条目列表
     /**
      * @generated from protobuf field: bool exhausted = 3;
      */
@@ -3061,15 +3061,15 @@ export interface ListThreatWhitelistReply_Details {
     /**
      * @generated from protobuf field: string ruleId = 2;
      */
-    ruleId: string; // Rule name
+    ruleId: string; // 规则名称
     /**
      * @generated from protobuf field: string ruleName = 3;
      */
-    ruleName: string; // Rule name
+    ruleName: string; // 规则名称
     /**
      * @generated from protobuf field: string ruleType = 4;
      */
-    ruleType: string; // Alert type `tag[0]`
+    ruleType: string; // 告警类型 tag[0]
     /**
      * @generated from protobuf field: string domain = 5;
      */
@@ -3077,23 +3077,23 @@ export interface ListThreatWhitelistReply_Details {
     /**
      * @generated from protobuf field: repeated ada.ListThreatWhitelistReply.Details.ruleInfo rules = 6;
      */
-    rules: ListThreatWhitelistReply_Details_ruleInfo[]; // Rule details
+    rules: ListThreatWhitelistReply_Details_ruleInfo[]; // 规则信息
     /**
      * @generated from protobuf field: int32 origin = 7;
      */
-    origin: number; // Source: `1` manual, `2` manual batch import, `3` automatic (machine learning)
+    origin: number; // 来源，1:手动添加, 2:手动批量添加，3:自动添加(机器学习)
     /**
      * @generated from protobuf field: string remark = 8;
      */
-    remark: string; // Remark
+    remark: string; // 备注
     /**
      * @generated from protobuf field: string createTm = 9;
      */
-    createTm: string; // Added time
+    createTm: string; // 添加时间
     /**
      * @generated from protobuf field: string updateTm = 10;
      */
-    updateTm: string; // Update time
+    updateTm: string; // 修改时间
 }
 /**
  * @generated from protobuf message ada.ListThreatWhitelistReply.Details.ruleInfo
@@ -3104,10 +3104,10 @@ export interface ListThreatWhitelistReply_Details_ruleInfo {
      */
     info: {
         [key: string]: string;
-    }; // Rule details
+    }; // 规则信息
 }
 /**
- * Get field descriptions for whitelist rules
+ * 获取白名单规则fields描述说明
  *
  * @generated from protobuf message ada.GetThreatWhitelistFieldReq
  */
@@ -3124,11 +3124,11 @@ export interface GetThreatWhitelistFieldReply {
     /**
      * @generated from protobuf field: repeated string fields = 1;
      */
-    fields: string[]; // Sensitive entry list
+    fields: string[]; // 敏感条目列表
 }
 /**
- * Add a whitelist entry
- * Supported operators: `==`, `!=`, `>`, `<`, `>=`, `<=`, `contain`, `not_contain`, `in`, `not_in`, `regex`; for `in`/`not_in`, separate multiple values with commas
+ * 增加白名单
+ * 支持的op: ==, !=, >, <, >=, <=, contain, not_contain, in, not_in, regex    in/not_in 多个value按`,`分隔
  *
  * @generated from protobuf message ada.AddThreatWhitelistReq
  */
@@ -3136,7 +3136,7 @@ export interface AddThreatWhitelistReq {
     /**
      * @generated from protobuf field: string ruleId = 1;
      */
-    ruleId: string; // Rule ID
+    ruleId: string; // 规则ID
     /**
      * @generated from protobuf field: string domain = 2;
      */
@@ -3144,15 +3144,15 @@ export interface AddThreatWhitelistReq {
     /**
      * @generated from protobuf field: repeated ada.AddThreatWhitelistReq.ruleInfo rules = 3;
      */
-    rules: AddThreatWhitelistReq_ruleInfo[]; // Rule details
+    rules: AddThreatWhitelistReq_ruleInfo[]; // 规则信息
     /**
      * @generated from protobuf field: int32 origin = 4;
      */
-    origin: number; // [(validator.field) = {int_gt: 0, int_lt: 3}];  // Source: `1` manual, `2` manual batch import
+    origin: number; // 来源，1:手动添加, 2:手动批量添加
     /**
      * @generated from protobuf field: string remark = 5;
      */
-    remark: string; // Remark
+    remark: string; // 备注
 }
 /**
  * @generated from protobuf message ada.AddThreatWhitelistReq.ruleInfo
@@ -3163,7 +3163,7 @@ export interface AddThreatWhitelistReq_ruleInfo {
      */
     info: {
         [key: string]: string;
-    }; // Rule details, for example `{ "field": "TargetUsername", "op": "==", "value": "admin" }`
+    }; // 规则信息,eg: {"field":"TargetUsername","op":"==","value":"admin"}
 }
 /**
  * @generated from protobuf message ada.AddThreatWhitelistReply
@@ -3175,7 +3175,7 @@ export interface AddThreatWhitelistReply {
     result: string; // SUCCESS||FAILED
 }
 /**
- * Update a whitelist entry
+ * 更新白名单
  *
  * @generated from protobuf message ada.UpdateThreatWhitelistReq
  */
@@ -3187,11 +3187,11 @@ export interface UpdateThreatWhitelistReq {
     /**
      * @generated from protobuf field: repeated ada.UpdateThreatWhitelistReq.ruleInfo rules = 2;
      */
-    rules: UpdateThreatWhitelistReq_ruleInfo[]; // Required rule details; send the original value if unchanged
+    rules: UpdateThreatWhitelistReq_ruleInfo[]; // 规则信息，必须。如果没有变化，带原值
     /**
      * @generated from protobuf field: string remark = 3;
      */
-    remark: string; // Required remark; send the original value if unchanged
+    remark: string; // 备注，必须。如果没有变化，带原值
 }
 /**
  * @generated from protobuf message ada.UpdateThreatWhitelistReq.ruleInfo
@@ -3202,7 +3202,7 @@ export interface UpdateThreatWhitelistReq_ruleInfo {
      */
     info: {
         [key: string]: string;
-    }; // Rule details
+    }; // 规则信息
 }
 /**
  * @generated from protobuf message ada.UpdateThreatWhitelistReply
@@ -3214,7 +3214,7 @@ export interface UpdateThreatWhitelistReply {
     result: string; // SUCCESS||FAILED
 }
 /**
- * Update a whitelist entry
+ * 更新白名单
  *
  * @generated from protobuf message ada.DeleteThreatWhitelistReq
  */
@@ -3234,7 +3234,7 @@ export interface DeleteThreatWhitelistReply {
     result: string; // SUCCESS||FAILED
 }
 /**
- * Threat blocking
+ * 威胁阻挡
  *
  * @generated from protobuf message ada.ListThreatBlockReq
  */
@@ -3242,7 +3242,7 @@ export interface ListThreatBlockReq {
     /**
      * @generated from protobuf field: int32 pageIdx = 1;
      */
-    pageIdx: number; // [(validator.field) = {int_gt: 0}];
+    pageIdx: number;
     /**
      * @generated from protobuf field: int32 pageSize = 2;
      */
@@ -3250,23 +3250,23 @@ export interface ListThreatBlockReq {
     /**
      * @generated from protobuf field: repeated string domain = 4;
      */
-    domain: string[]; // Optional. If empty, query all domains
+    domain: string[]; // 可选,为空则查询所有域
     /**
      * @generated from protobuf field: repeated int32 origin = 5;
      */
-    origin: number[]; // Optional source filter: 1 for manual, 2 for automatic
+    origin: number[]; // 可选，来源，1:手动, 2:自动
     /**
      * @generated from protobuf field: string startTm = 6;
      */
-    startTm: string; // Optional start time
+    startTm: string; //  可选，开始时间
     /**
      * @generated from protobuf field: string endTm = 7;
      */
-    endTm: string; // Optional end time
+    endTm: string; //  可选，结束时间
     /**
      * @generated from protobuf field: string search = 8;
      */
-    search: string; // Optional search keyword (blocked user or IP)
+    search: string; // 可选，搜索关键字（阻断用户/IP）
 }
 /**
  * @generated from protobuf message ada.ListThreatBlockReply
@@ -3279,7 +3279,7 @@ export interface ListThreatBlockReply {
     /**
      * @generated from protobuf field: repeated ada.ListThreatBlockReply.Details List = 2 [json_name = "List"];
      */
-    list: ListThreatBlockReply_Details[]; // Sensitive entry list
+    list: ListThreatBlockReply_Details[]; // 敏感条目列表
     /**
      * @generated from protobuf field: bool exhausted = 3;
      */
@@ -3294,7 +3294,7 @@ export interface ListThreatBlockReply_Results {
      */
     info: {
         [key: string]: string;
-    }; // Block result details
+    }; // 阻断结果信息
 }
 /**
  * @generated from protobuf message ada.ListThreatBlockReply.Details
@@ -3307,23 +3307,23 @@ export interface ListThreatBlockReply_Details {
     /**
      * @generated from protobuf field: string Name = 2 [json_name = "Name"];
      */
-    name: string; // Name
+    name: string; // 名称
     /**
      * @generated from protobuf field: string domain = 3;
      */
-    domain: string; // Domain
+    domain: string; // 所在域
     /**
      * @generated from protobuf field: int32 origin = 4;
      */
-    origin: number; // Source: `1` manual, `2` automatic
+    origin: number; // 来源，1:手动, 2:自动
     /**
      * @generated from protobuf field: bool userBlock = 5;
      */
-    userBlock: boolean; // Whether user blocking is enabled
+    userBlock: boolean; // 是否阻断用户
     /**
      * @generated from protobuf field: bool ipBlock = 6;
      */
-    ipBlock: boolean; // Whether IP blocking is enabled
+    ipBlock: boolean; // 是否阻断IP
     /**
      * @generated from protobuf field: repeated string userList = 7;
      */
@@ -3335,19 +3335,19 @@ export interface ListThreatBlockReply_Details {
     /**
      * @generated from protobuf field: repeated ada.ListThreatBlockReply.Results results = 9;
      */
-    results: ListThreatBlockReply_Results[]; // Block result details
+    results: ListThreatBlockReply_Results[]; // 阻断结果信息
     /**
      * @generated from protobuf field: string remark = 10;
      */
-    remark: string; // Remark
+    remark: string; // 备注
     /**
      * @generated from protobuf field: string createTm = 11;
      */
-    createTm: string; // Added time
+    createTm: string; // 添加时间
     /**
      * @generated from protobuf field: string updateTm = 12;
      */
-    updateTm: string; // Update time
+    updateTm: string; // 修改时间
 }
 /**
  * @generated from protobuf message ada.AddThreatBlockReq
@@ -3356,31 +3356,31 @@ export interface AddThreatBlockReq {
     /**
      * @generated from protobuf field: string Name = 1 [json_name = "Name"];
      */
-    name: string; // Name
+    name: string; // 名称
     /**
      * @generated from protobuf field: string domain = 2;
      */
-    domain: string; // Domain
+    domain: string; // 所在域
     /**
      * @generated from protobuf field: bool userBlock = 4;
      */
-    userBlock: boolean; // If user blocking is disabled, `userList` is empty
+    userBlock: boolean; // 是否阻断用户 如果为false, userList为空
     /**
      * @generated from protobuf field: bool ipBlock = 5;
      */
-    ipBlock: boolean; // If IP blocking is disabled, `ipList` is empty
+    ipBlock: boolean; // 是否阻断IP 如果为false, ipList为空
     /**
      * @generated from protobuf field: repeated string userList = 6;
      */
-    userList: string[]; // Blocked users
+    userList: string[]; // 阻断用户
     /**
      * @generated from protobuf field: repeated string ipList = 7;
      */
-    ipList: string[]; // Blocked IPs
+    ipList: string[]; // 阻断IP
     /**
      * @generated from protobuf field: string remark = 8;
      */
-    remark: string; // Remark
+    remark: string; // 备注
 }
 /**
  * @generated from protobuf message ada.AddThreatBlockReply
@@ -3402,27 +3402,27 @@ export interface UpdateThreatBlockReq {
     /**
      * @generated from protobuf field: string Name = 2 [json_name = "Name"];
      */
-    name: string; // Name
+    name: string; // 名称
     /**
      * @generated from protobuf field: bool userBlock = 3;
      */
-    userBlock: boolean; // If user blocking is disabled, `userList` is empty
+    userBlock: boolean; // 是否阻断用户 如果为false, userList为空
     /**
      * @generated from protobuf field: bool ipBlock = 4;
      */
-    ipBlock: boolean; // If IP blocking is disabled, `ipList` is empty
+    ipBlock: boolean; // 是否阻断IP 如果为false, ipList为空
     /**
      * @generated from protobuf field: repeated string userList = 5;
      */
-    userList: string[]; // Blocked users
+    userList: string[]; // 阻断用户
     /**
      * @generated from protobuf field: repeated string ipList = 6;
      */
-    ipList: string[]; // Blocked IPs
+    ipList: string[]; // 阻断IP
     /**
      * @generated from protobuf field: string remark = 7;
      */
-    remark: string; // Remark
+    remark: string; // 备注
 }
 /**
  * @generated from protobuf message ada.UpdateThreatBlockReply
@@ -3452,7 +3452,7 @@ export interface DeleteThreatBlockReply {
     result: string; // SUCCESS||FAILED
 }
 /**
- * Active scanning
+ * 主动扫描
  *
  * @generated from protobuf message ada.ScanRiskStatsReq
  */
@@ -3460,11 +3460,11 @@ export interface ScanRiskStatsReq {
     /**
      * @generated from protobuf field: string domain = 1;
      */
-    domain: string; // Required: `all` or `domainX`
+    domain: string; // 必选，all|domainX
     /**
      * @generated from protobuf field: string type = 2;
      */
-    type: string; // [(validator.field) = {regex: "baseline|leak"}]; // Required: `baseline` or `leak` (`weakpwd` is not supported here)
+    type: string; // 必选，baseline|leak(无weakpwd)
 }
 /**
  * @generated from protobuf message ada.ScanRiskStatsReply
@@ -3473,7 +3473,7 @@ export interface ScanRiskStatsReply {
     /**
      * @generated from protobuf field: repeated ada.ScanRiskStatsReply.Details List = 1 [json_name = "List"];
      */
-    list: ScanRiskStatsReply_Details[]; // Item list
+    list: ScanRiskStatsReply_Details[]; // 条目列表
 }
 /**
  * @generated from protobuf message ada.ScanRiskStatsReply.Details
@@ -3482,19 +3482,19 @@ export interface ScanRiskStatsReply_Details {
     /**
      * @generated from protobuf field: string subType = 1;
      */
-    subType: string; // Type
+    subType: string; // 类型
     /**
      * @generated from protobuf field: string subTypeDesc = 2;
      */
-    subTypeDesc: string; // Type description
+    subTypeDesc: string; // 类型描述
     /**
      * @generated from protobuf field: int32 riskTotal = 3;
      */
-    riskTotal: number; // Risk count
+    riskTotal: number; // 风险数量
     /**
      * @generated from protobuf field: int32 normalTotal = 4;
      */
-    normalTotal: number; // Normal count
+    normalTotal: number; // 正常数量
 }
 /**
  * @generated from protobuf message ada.ListBaselineReq
@@ -3503,7 +3503,7 @@ export interface ListBaselineReq {
     /**
      * @generated from protobuf field: int32 pageIdx = 1;
      */
-    pageIdx: number; // [(validator.field) = {int_gt: 0}];  // start index with 1.
+    pageIdx: number; // start index with 1.
     /**
      * @generated from protobuf field: int32 pageSize = 2;
      */
@@ -3531,7 +3531,7 @@ export interface ListBaselineReq {
     /**
      * @generated from protobuf field: int32 orderUpdateTm = 8;
      */
-    orderUpdateTm: number; // Sort by updated time: 1 ascending, -1 descending. Default: -1.
+    orderUpdateTm: number; // 更新时间排序 1升序 -1降序, 默认-1
 }
 /**
  * @generated from protobuf message ada.ListBaselineReply
@@ -3544,7 +3544,7 @@ export interface ListBaselineReply {
     /**
      * @generated from protobuf field: repeated ada.ListBaselineReply.Details List = 2 [json_name = "List"];
      */
-    list: ListBaselineReply_Details[]; // Leak item list
+    list: ListBaselineReply_Details[]; // leak条目列表
     /**
      * @generated from protobuf field: bool exhausted = 3;
      */
@@ -3561,31 +3561,31 @@ export interface ListBaselineReply_Details {
     /**
      * @generated from protobuf field: string name = 2;
      */
-    name: string; // Baseline name
+    name: string; // 基线名称
     /**
      * @generated from protobuf field: string domain = 3;
      */
-    domain: string; // Domain
+    domain: string; // 所在域
     /**
      * @generated from protobuf field: string subType = 4;
      */
-    subType: string; // Baseline type
+    subType: string; // 基线类型
     /**
      * @generated from protobuf field: int32 level = 5;
      */
-    level: number; // Risk level
+    level: number; // 风险等级
     /**
      * @generated from protobuf field: int32 entries = 6;
      */
-    entries: number; // Affected object
+    entries: number; // 影响对象
     /**
      * @generated from protobuf field: int32 result = 7;
      */
-    result: number; // Detection result
+    result: number; // 检测结果
     /**
      * @generated from protobuf field: string updateTm = 8;
      */
-    updateTm: string; // End time
+    updateTm: string; // 结束时间
 }
 /**
  * @generated from protobuf message ada.GetBaselineReq
@@ -3607,47 +3607,47 @@ export interface GetBaselineReply {
     /**
      * @generated from protobuf field: string name = 2;
      */
-    name: string; // Baseline name
+    name: string; // 基线名称
     /**
      * @generated from protobuf field: string domain = 3;
      */
-    domain: string; // Domain
+    domain: string; // 所在域
     /**
      * @generated from protobuf field: string subType = 4;
      */
-    subType: string; // Baseline type
+    subType: string; // 基线类型
     /**
      * @generated from protobuf field: int32 level = 5;
      */
-    level: number; // Risk level
+    level: number; // 风险等级
     /**
      * @generated from protobuf field: repeated ada.GetBaselineReply.entryInfo entries = 6;
      */
-    entries: GetBaselineReply_entryInfo[]; // Affected object list
+    entries: GetBaselineReply_entryInfo[]; // 影响对象List
     /**
      * @generated from protobuf field: int32 result = 7;
      */
-    result: number; // Detection result
+    result: number; // 检测结果
     /**
      * @generated from protobuf field: string desc = 8;
      */
-    desc: string; // Description
+    desc: string; // 描述
     /**
      * @generated from protobuf field: string verify_desc = 9;
      */
-    verifyDesc: string; // Verification notes
+    verifyDesc: string; // 验证描述
     /**
      * @generated from protobuf field: string suggestion = 10;
      */
-    suggestion: string; // Remediation suggestions
+    suggestion: string; // 修复建议
     /**
      * @generated from protobuf field: string reference = 11;
      */
-    reference: string; // Reference links
+    reference: string; // 参考链接
     /**
      * @generated from protobuf field: string updateTm = 12;
      */
-    updateTm: string; // End time
+    updateTm: string; // 结束时间
 }
 /**
  * @generated from protobuf message ada.GetBaselineReply.entryInfo
@@ -3658,7 +3658,7 @@ export interface GetBaselineReply_entryInfo {
      */
     info: {
         [key: string]: string;
-    }; // Related object
+    }; // 关联对象
 }
 /**
  * @generated from protobuf message ada.ListLeakReq
@@ -3667,7 +3667,7 @@ export interface ListLeakReq {
     /**
      * @generated from protobuf field: int32 pageIdx = 1;
      */
-    pageIdx: number; // [(validator.field) = {int_gt: 0}];  // start index with 1.
+    pageIdx: number; // start index with 1.
     /**
      * @generated from protobuf field: int32 pageSize = 2;
      */
@@ -3695,15 +3695,15 @@ export interface ListLeakReq {
     /**
      * @generated from protobuf field: string startTm = 8;
      */
-    startTm: string; // Optional start time
+    startTm: string; //  可选，开始时间
     /**
      * @generated from protobuf field: string endTm = 9;
      */
-    endTm: string; // Optional end time
+    endTm: string; //  可选，结束时间
     /**
      * @generated from protobuf field: int32 orderUpdateTm = 10;
      */
-    orderUpdateTm: number; // Sort by updated time: 1 ascending, -1 descending. Default: -1.
+    orderUpdateTm: number; // 更新时间排序 1升序 -1降序, 默认-1
 }
 /**
  * @generated from protobuf message ada.ListLeakReply
@@ -3716,7 +3716,7 @@ export interface ListLeakReply {
     /**
      * @generated from protobuf field: repeated ada.ListLeakReply.Details List = 2 [json_name = "List"];
      */
-    list: ListLeakReply_Details[]; // Leak item list
+    list: ListLeakReply_Details[]; // leak条目列表
     /**
      * @generated from protobuf field: bool exhausted = 3;
      */
@@ -3733,43 +3733,43 @@ export interface ListLeakReply_Details {
     /**
      * @generated from protobuf field: string name = 2;
      */
-    name: string; // Leak name
+    name: string; // 漏洞名称
     /**
      * @generated from protobuf field: string domain = 3;
      */
-    domain: string; // Domain
+    domain: string; // 所在域
     /**
      * @generated from protobuf field: string dcHostname = 4;
      */
-    dcHostname: string; // Domain controller
+    dcHostname: string; // 所在DC
     /**
      * @generated from protobuf field: string subType = 5;
      */
-    subType: string; // Leak type
+    subType: string; // 漏洞类型
     /**
      * @generated from protobuf field: int32 level = 6;
      */
-    level: number; // Risk level
+    level: number; // 风险等级
     /**
      * @generated from protobuf field: int32 result = 7;
      */
-    result: number; // Detection result
+    result: number; // 检测结果
     /**
      * @generated from protobuf field: string suggestion = 8;
      */
-    suggestion: string; // Remediation suggestions
+    suggestion: string; // 修复建议
     /**
      * @generated from protobuf field: string reference = 9;
      */
-    reference: string; // Reference links
+    reference: string; // 参考链接
     /**
      * @generated from protobuf field: string createTm = 10;
      */
-    createTm: string; // Added time
+    createTm: string; // 添加时间
     /**
      * @generated from protobuf field: string updateTm = 11;
      */
-    updateTm: string; // End time
+    updateTm: string; // 结束时间
 }
 /**
  * @generated from protobuf message ada.ListWeakPwdReq
@@ -3778,7 +3778,7 @@ export interface ListWeakPwdReq {
     /**
      * @generated from protobuf field: int32 pageIdx = 1;
      */
-    pageIdx: number; // [(validator.field) = {int_gt: 0}];  // start index with 1.
+    pageIdx: number; // start index with 1.
     /**
      * @generated from protobuf field: int32 pageSize = 2;
      */
@@ -3790,11 +3790,11 @@ export interface ListWeakPwdReq {
     /**
      * @generated from protobuf field: repeated int32 locked = 4;
      */
-    locked: number[]; // `1` locked, `0` normal
+    locked: number[]; // 1:locked, 0:正常
     /**
      * @generated from protobuf field: bool isPlain = 5;
      */
-    isPlain: boolean; // Whether the password is stored in plain text
+    isPlain: boolean; // 是否明文密码
     /**
      * @generated from protobuf field: string search = 6;
      */
@@ -3802,7 +3802,7 @@ export interface ListWeakPwdReq {
     /**
      * @generated from protobuf field: int32 orderUpdateTm = 7;
      */
-    orderUpdateTm: number; // Sort by updated time: 1 ascending, -1 descending. Default: -1.
+    orderUpdateTm: number; // 更新时间排序 1升序 -1降序, 默认-1
 }
 /**
  * @generated from protobuf message ada.ListWeakPwdReply
@@ -3815,7 +3815,7 @@ export interface ListWeakPwdReply {
     /**
      * @generated from protobuf field: repeated ada.ListWeakPwdReply.Details List = 2 [json_name = "List"];
      */
-    list: ListWeakPwdReply_Details[]; // Leak item list
+    list: ListWeakPwdReply_Details[]; // leak条目列表
     /**
      * @generated from protobuf field: bool exhausted = 3;
      */
@@ -3832,35 +3832,35 @@ export interface ListWeakPwdReply_Details {
     /**
      * @generated from protobuf field: string username = 2;
      */
-    username: string; // Username
+    username: string; // 用户名
     /**
      * @generated from protobuf field: string samName = 3;
      */
-    samName: string; // SAM account name
+    samName: string; // SAM名
     /**
      * @generated from protobuf field: string password = 4;
      */
-    password: string; // Password
+    password: string; // 密码
     /**
      * @generated from protobuf field: string expirationTm = 5;
      */
-    expirationTm: string; // Password expiry time
+    expirationTm: string; // 密码过期时间
     /**
      * @generated from protobuf field: string lastUpdateTm = 6;
      */
-    lastUpdateTm: string; // Password last update time
+    lastUpdateTm: string; // 密码最近更新时间
     /**
      * @generated from protobuf field: string domain = 7;
      */
-    domain: string; // Domain
+    domain: string; // 所在域
     /**
      * @generated from protobuf field: int32 locked = 8;
      */
-    locked: number; // User lock status: `1` locked, `0` normal
+    locked: number; // 用户锁定状态 1:locked 0:正常
     /**
      * @generated from protobuf field: string updateTm = 9;
      */
-    updateTm: string; // Update time
+    updateTm: string; // 更新时间
 }
 /**
  * @generated from protobuf message ada.ListScanTaskReq
@@ -3869,7 +3869,7 @@ export interface ListScanTaskReq {
     /**
      * @generated from protobuf field: int32 pageIdx = 1;
      */
-    pageIdx: number; // [(validator.field) = {int_gt: 0}];  // start index with 1.
+    pageIdx: number; // start index with 1.
     /**
      * @generated from protobuf field: int32 pageSize = 2;
      */
@@ -3877,31 +3877,31 @@ export interface ListScanTaskReq {
     /**
      * @generated from protobuf field: string cycle = 3;
      */
-    cycle: string; // [(validator.field) = {regex: "all|cycle|once"}]; // Required. One of `all`, `cycle`, or `once`
+    cycle: string; // 必选，all|cycle|once
     /**
      * @generated from protobuf field: string type = 4;
      */
-    type: string; // [(validator.field) = {regex: "all|baseline|leak|weakpwd"}]; // all|baseline|leak|weakpwd
+    type: string; // all|baseline|leak|weakpwd
     /**
      * @generated from protobuf field: string status = 5;
      */
-    status: string; // [(validator.field) = {regex: "all|PENDING|RUNNING|FINISH|FAILURE"}]; // Optional status: `all|PENDING|RUNNING|FINISH|FAILURE`
+    status: string; // 可选，状态:all|PENDING|RUNNING|FINISH|FAILURE
     /**
      * @generated from protobuf field: string startTm = 6;
      */
-    startTm: string; // Optional start time
+    startTm: string; //  可选，开始时间
     /**
      * @generated from protobuf field: string endTm = 7;
      */
-    endTm: string; // Optional end time
+    endTm: string; //  可选，结束时间
     /**
      * @generated from protobuf field: int32 orderCreateTm = 8;
      */
-    orderCreateTm: number; // Sort by created time: 1 ascending, -1 descending. Default: -1.
+    orderCreateTm: number; // 创建时间排序 1升序 -1降序, 默认-1
     /**
      * @generated from protobuf field: int32 orderUpdateTm = 9;
      */
-    orderUpdateTm: number; // Sort by end time: `1` asc, `-1` desc; default is unsorted
+    orderUpdateTm: number; // 结束时间排序 1升序 -1降序, 默认无
 }
 /**
  * @generated from protobuf message ada.ListScanTaskReply
@@ -3914,7 +3914,7 @@ export interface ListScanTaskReply {
     /**
      * @generated from protobuf field: repeated ada.ListScanTaskReply.Details List = 2 [json_name = "List"];
      */
-    list: ListScanTaskReply_Details[]; // Task item list
+    list: ListScanTaskReply_Details[]; // task条目列表
     /**
      * @generated from protobuf field: bool exhausted = 3;
      */
@@ -3935,31 +3935,31 @@ export interface ListScanTaskReply_Details {
     /**
      * @generated from protobuf field: string cycle = 3;
      */
-    cycle: string; // Scheduled task
+    cycle: string; // 周期任务
     /**
      * @generated from protobuf field: string status = 4;
      */
-    status: string; // Status
+    status: string; // 状态
     /**
      * @generated from protobuf field: int32 subTasks = 5;
      */
-    subTasks: number; // Subtask count
+    subTasks: number; // 子任务数量
     /**
      * @generated from protobuf field: int32 subtasksFinish = 6;
      */
-    subtasksFinish: number; // Completed subtask count
+    subtasksFinish: number; // 子任务完成数量
     /**
      * @generated from protobuf field: string errorMsg = 7;
      */
-    errorMsg: string; // Error message
+    errorMsg: string; // 错误消息
     /**
      * @generated from protobuf field: string createTm = 8;
      */
-    createTm: string; // Added time
+    createTm: string; // 添加时间
     /**
      * @generated from protobuf field: string updateTm = 9;
      */
-    updateTm: string; // End time
+    updateTm: string; // 结束时间
 }
 /**
  * @generated from protobuf message ada.GetScanTaskReq
@@ -3968,7 +3968,7 @@ export interface GetScanTaskReq {
     /**
      * @generated from protobuf field: int32 pageIdx = 1;
      */
-    pageIdx: number; // [(validator.field) = {int_gt: 0}];  // start index with 1.
+    pageIdx: number; // start index with 1.
     /**
      * @generated from protobuf field: int32 pageSize = 2;
      */
@@ -3989,15 +3989,15 @@ export interface GetScanTaskReply {
     /**
      * @generated from protobuf field: string headType = 2;
      */
-    headType: string; // Type: baseline|leak|weakpwd
+    headType: string; // 类型: baseline|leak|weakpwd
     /**
      * @generated from protobuf field: repeated string headField = 3;
      */
-    headField: string[]; // Header descriptions
+    headField: string[]; // 表头描述
     /**
      * @generated from protobuf field: repeated ada.GetScanTaskReply.Details List = 4 [json_name = "List"];
      */
-    list: GetScanTaskReply_Details[]; // Task item list
+    list: GetScanTaskReply_Details[]; // task条目列表
     /**
      * @generated from protobuf field: bool exhausted = 5;
      */
@@ -4014,11 +4014,11 @@ export interface GetScanTaskReply_Details {
     /**
      * @generated from protobuf field: string name = 2;
      */
-    name: string; // Name
+    name: string; // 名称
     /**
      * @generated from protobuf field: string domain = 3;
      */
-    domain: string; // Domain
+    domain: string; // 所在域
     /**
      * @generated from protobuf field: string dcHostname = 4;
      */
@@ -4026,29 +4026,29 @@ export interface GetScanTaskReply_Details {
     /**
      * @generated from protobuf field: string tmplName = 5;
      */
-    tmplName: string; // Template name
+    tmplName: string; // 模板名称
     /**
      * @generated from protobuf field: string subType = 6;
      */
-    subType: string; // (Sub)task type
+    subType: string; // (子)任务类型
     /**
      * @generated from protobuf field: int32 level = 7;
      */
-    level: number; // Risk level
+    level: number; // 风险等级
     /**
      * @generated from protobuf field: int32 result = 8;
      */
-    result: number; // Detection result
+    result: number; // 检测结果
     /**
      * @generated from protobuf field: map<string, string> params = 9;
      */
     params: {
         [key: string]: string;
-    }; // Metadata
+    }; // 元数据
     /**
      * @generated from protobuf field: string updateTm = 10;
      */
-    updateTm: string; // Last time
+    updateTm: string; // 最后时间
 }
 /**
  * @generated from protobuf message ada.AddScanTaskReq
@@ -4057,7 +4057,7 @@ export interface AddScanTaskReq {
     /**
      * @generated from protobuf field: string type = 1;
      */
-    type: string; // [(validator.field) = {regex: "all|baseline|leak|weakpwd"}]; // all|baseline|leak|weakpwd
+    type: string; // all|baseline|leak|weakpwd
     /**
      * @generated from protobuf field: map<string, string> plans = 2;
      */
@@ -4085,7 +4085,7 @@ export interface RecheckScanTaskReq {
     /**
      * @generated from protobuf field: string type = 2;
      */
-    type: string; // [(validator.field) = {regex: "baseline|leak|weakpwd"}]; // baseline|leak|weakpwd
+    type: string; // baseline|leak|weakpwd
 }
 /**
  * @generated from protobuf message ada.RecheckScanTaskReply
@@ -4121,7 +4121,7 @@ export interface ListScanConfReq {
     /**
      * @generated from protobuf field: int32 pageIdx = 1;
      */
-    pageIdx: number; // [(validator.field) = {int_gt: 0}];  // start index with 1.
+    pageIdx: number; // start index with 1.
     /**
      * @generated from protobuf field: int32 pageSize = 2;
      */
@@ -4138,7 +4138,7 @@ export interface ListScanConfReply {
     /**
      * @generated from protobuf field: repeated ada.scanConfDetail List = 2 [json_name = "List"];
      */
-    list: scanConfDetail[]; // Item list
+    list: scanConfDetail[]; // 条目列表
     /**
      * @generated from protobuf field: bool exhausted = 3;
      */
@@ -4155,7 +4155,7 @@ export interface scanConfDetail {
     /**
      * @generated from protobuf field: string name = 2;
      */
-    name: string; // Entry value
+    name: string; // 条目内容
     /**
      * @generated from protobuf field: string type = 3;
      */
@@ -4163,11 +4163,11 @@ export interface scanConfDetail {
     /**
      * @generated from protobuf field: bool isEnable = 4;
      */
-    isEnable: boolean; // Enable state
+    isEnable: boolean; // 启用状态
     /**
      * @generated from protobuf field: int32 cycleType = 5;
      */
-    cycleType: number; // `1` day, `2` week, `3` month
+    cycleType: number; // 1是day，2是week，3是month
     /**
      * @generated from protobuf field: map<string, string> plans = 8;
      */
@@ -4177,11 +4177,11 @@ export interface scanConfDetail {
     /**
      * @generated from protobuf field: string createTm = 9;
      */
-    createTm: string; // Added time
+    createTm: string; // 添加时间
     /**
      * @generated from protobuf field: string updateTm = 10;
      */
-    updateTm: string; // Update time
+    updateTm: string; // 修改时间
 }
 /**
  * @generated from protobuf message ada.SetScanConfReq
@@ -4194,11 +4194,11 @@ export interface SetScanConfReq {
     /**
      * @generated from protobuf field: bool isEnable = 2;
      */
-    isEnable: boolean; // Enable state; return the original value if unchanged
+    isEnable: boolean; // 启用状态, 若无修改需将原值返回
     /**
      * @generated from protobuf field: int32 cycleType = 3;
      */
-    cycleType: number; // [(validator.field) = {int_gt: 0, int_lt: 4}]; // `1` day, `2` week, `3` month; return the original value if unchanged
+    cycleType: number; // 1是day，2是week，3是month, 若无修改需将原值返回
 }
 /**
  * @generated from protobuf message ada.SetScanConfReply
@@ -4225,7 +4225,7 @@ export interface GetScanConfReply {
     /**
      * @generated from protobuf field: ada.scanConfDetail Detail = 1 [json_name = "Detail"];
      */
-    detail?: scanConfDetail; // Configuration details
+    detail?: scanConfDetail; // 配置详情
 }
 /**
  * @generated from protobuf message ada.GetScanTmplNamesReq
@@ -4234,7 +4234,7 @@ export interface GetScanTmplNamesReq {
     /**
      * @generated from protobuf field: string type = 1;
      */
-    type: string; // [(validator.field) = {regex: "all|baseline|leak|weakpwd"}]; // all|baseline|leak|weakpwd
+    type: string; // all|baseline|leak|weakpwd
 }
 /**
  * @generated from protobuf message ada.GetScanTmplNamesReply
@@ -4256,7 +4256,7 @@ export interface GetScanTmplNamesReply_tmplNames {
     /**
      * @generated from protobuf field: string name = 2;
      */
-    name: string; // Name
+    name: string; // 名称
 }
 /**
  * @generated from protobuf message ada.UpdateScanConfReq
@@ -4289,7 +4289,7 @@ export interface ListScanTmplReq {
     /**
      * @generated from protobuf field: int32 pageIdx = 1;
      */
-    pageIdx: number; // [(validator.field) = {int_gt: 0}];  // start index with 1.
+    pageIdx: number; // start index with 1.
     /**
      * @generated from protobuf field: int32 pageSize = 2;
      */
@@ -4297,7 +4297,7 @@ export interface ListScanTmplReq {
     /**
      * @generated from protobuf field: string type = 3;
      */
-    type: string; // [(validator.field) = {regex: "all|baseline|leak|weakpwd"}]; // all|baseline|leak|weakpwd
+    type: string; // all|baseline|leak|weakpwd
 }
 /**
  * @generated from protobuf message ada.ListScanTmplReply
@@ -4310,7 +4310,7 @@ export interface ListScanTmplReply {
     /**
      * @generated from protobuf field: repeated ada.ListScanTmplReply.Details List = 2 [json_name = "List"];
      */
-    list: ListScanTmplReply_Details[]; // Item list
+    list: ListScanTmplReply_Details[]; // 条目列表
     /**
      * @generated from protobuf field: bool exhausted = 3;
      */
@@ -4327,7 +4327,7 @@ export interface ListScanTmplReply_Details {
     /**
      * @generated from protobuf field: string name = 2;
      */
-    name: string; // Name
+    name: string; // 名称
     /**
      * @generated from protobuf field: string type = 3;
      */
@@ -4335,11 +4335,11 @@ export interface ListScanTmplReply_Details {
     /**
      * @generated from protobuf field: int32 tmplType = 4;
      */
-    tmplType: number; // Template type: `1` default, `2` custom
+    tmplType: number; //  模板类型：1:默认, 2:自定义
     /**
      * @generated from protobuf field: string updateTm = 10;
      */
-    updateTm: string; // Update time
+    updateTm: string; // 修改时间
 }
 /**
  * @generated from protobuf message ada.GetScanTmplReq
@@ -4369,11 +4369,11 @@ export interface pluginInfo {
     /**
      * @generated from protobuf field: string type = 4;
      */
-    type: string; // By type:
+    type: string; // 按不同类型:
     /**
      * @generated from protobuf field: int32 level = 5;
      */
-    level: number; // `1` low, `2` medium, `3` high
+    level: number; //  1:低危 2:中危 3:高危
     /**
      * @generated from protobuf field: map<string, string> metaData = 6;
      */
@@ -4404,7 +4404,7 @@ export interface GetScanTmplReply {
     /**
      * @generated from protobuf field: int32 tmplType = 5;
      */
-    tmplType: number; // Template type: `1` default, `2` custom
+    tmplType: number; // 模板类型：1:默认, 2:自定义
     /**
      * @generated from protobuf field: string createTm = 6;
      */
@@ -4425,7 +4425,7 @@ export interface UpdateScanTmplReq {
     /**
      * @generated from protobuf field: string name = 2;
      */
-    name: string; // `Name` can be modified
+    name: string; // Name可以修改
     /**
      * @generated from protobuf field: repeated ada.pluginInfoV2 Plugins = 3 [json_name = "Plugins"];
      */
@@ -4510,7 +4510,7 @@ export interface ListScanPluginReq {
     /**
      * @generated from protobuf field: string type = 1;
      */
-    type: string; // [(validator.field) = {regex: "baseline|leak|weakpwd"}]; // baseline|leak|weakpwd
+    type: string; // baseline|leak|weakpwd
 }
 /**
  * @generated from protobuf message ada.ListScanPluginReply
@@ -4522,7 +4522,7 @@ export interface ListScanPluginReply {
     plugins: pluginInfo[];
 }
 /**
- * Dashboard
+ * 仪表盘
  *
  * @generated from protobuf message ada.DashboardStatsReq
  */
@@ -4530,7 +4530,7 @@ export interface DashboardStatsReq {
     /**
      * @generated from protobuf field: string domain = 1;
      */
-    domain: string; // Required: `all` or `domainX`
+    domain: string; // 必选，all|domainX
 }
 /**
  * @generated from protobuf message ada.DashboardStatsReply
@@ -4541,49 +4541,49 @@ export interface DashboardStatsReply {
      */
     agent: {
         [key: string]: number;
-    }; // Agent metrics, for example `{ "domains": 2, "sensors": 5, "dcs": 10 }`
+    }; // 代理统计: {"domains": 2, "sensors": 5, "dcs": 10}
     /**
      * @generated from protobuf field: map<string, int32> alert = 2;
      */
     alert: {
         [key: string]: number;
-    }; // Alert counts, for example `{ "high": 2, "medium": 3, "low": 1 }`
+    }; // 告警数: {"high": 2, "medium ": 3, "low": 1}
     /**
      * @generated from protobuf field: map<string, int32> baseline = 3;
      */
     baseline: {
         [key: string]: number;
-    }; // Baseline counts, for example `{ "high": 2, "medium": 3, "low": 1 }`
+    }; // 基线数: {"high": 2, "medium ": 3, "low": 1}
     /**
      * @generated from protobuf field: map<string, int32> leak = 4;
      */
     leak: {
         [key: string]: number;
-    }; // Leak counts, for example `{ "high": 2, "medium": 3, "low": 1 }`
+    }; // 漏洞数: {"high": 2, "medium ": 3, "low": 1}
     /**
      * @generated from protobuf field: map<string, int32> weakpwd = 5;
      */
     weakpwd: {
         [key: string]: number;
-    }; // Weak-password counts, for example `{ "high": 2, "medium": 3, "low": 1 }`
+    }; // 弱口令数: {"high": 2, "medium ": 3, "low": 1}
     /**
      * @generated from protobuf field: map<string, int32> asset = 6;
      */
     asset: {
         [key: string]: number;
-    }; // Asset distribution, for example `{ "users": 100, "computers": 50, "groups": 20 }`
+    }; // 资产分布: {"users": 100, "computers": 50, "groups": 20}
     /**
      * @generated from protobuf field: map<string, int32> rule = 7;
      */
     rule: {
         [key: string]: number;
-    }; // Rule distribution, for example `{ "alert": 50, "activity": 100 }`
+    }; // 规则分布: {"alert": 50, "activity": 100}
     /**
      * @generated from protobuf field: map<string, int32> event = 8;
      */
     event: {
         [key: string]: number;
-    }; // Event metrics, for example `{ "events": 200, "activities": 500 }`
+    }; // 事件统计: {"events": 200, "activities": 500}
 }
 /**
  * @generated from protobuf message ada.DashboardTrendsReq
@@ -4698,11 +4698,11 @@ export interface DashboardLogStatsReq {
     /**
      * @generated from protobuf field: string domain = 1;
      */
-    domain: string; // Required: `all` or `domainX`
+    domain: string; // 必选，all|domainX
     /**
      * @generated from protobuf field: int32 duration = 2;
      */
-    duration: number; // Required time range in hours. Allowed values: `1`, `3`, `6`, `12`, `24`; default is `1 hour`
+    duration: number; // 必选，时间范围/h， 可选值: 1/3/6/12/24 （默认为1hour）
 }
 /**
  * @generated from protobuf message ada.DashboardLogStatsReply
@@ -4711,7 +4711,7 @@ export interface DashboardLogStatsReply {
     /**
      * @generated from protobuf field: repeated ada.DashboardLogStatsReply.logStatsList List = 1 [json_name = "List"];
      */
-    list: DashboardLogStatsReply_logStatsList[]; // winlog/pktlog collection metrics
+    list: DashboardLogStatsReply_logStatsList[]; // winlog/pktlog采集统计
 }
 /**
  * @generated from protobuf message ada.DashboardLogStatsReply.logStatsList
@@ -4739,7 +4739,7 @@ export interface ListAlertRuleReq {
     /**
      * @generated from protobuf field: int32 pageIdx = 1;
      */
-    pageIdx: number; // [(validator.field) = {int_gt: 0}];
+    pageIdx: number;
     /**
      * @generated from protobuf field: int32 pageSize = 2;
      */
@@ -4747,32 +4747,32 @@ export interface ListAlertRuleReq {
     /**
      * @generated from protobuf field: repeated int32 level = 3;
      */
-    level: number[]; // Rule level: `5` critical, `4` high, `3` medium, `2` low, `1` info
+    level: number[]; // 规则等级: 5:critical, 4:high, 3:medium, 2:low, 1:info
     /**
      * @generated from protobuf field: repeated string status = 4;
      */
-    status: string[]; // Rule status: `test|experimental|stable|deprecated`
+    status: string[]; // 规则状态: test|experimental|stable|deprecated
     /**
      * @generated from protobuf field: bool enable = 5;
      */
-    enable: boolean; // Enable state
+    enable: boolean; // 启用状态
     /**
      * @generated from protobuf field: string keyword = 6;
      */
-    keyword: string; // Keyword search across title and description
+    keyword: string; // 关键词搜索(标题/描述)
     /**
      * @generated from protobuf field: repeated string tags = 7;
      */
-    tags: string[]; // Tag filter
+    tags: string[]; // 标签过滤
     /**
      * @generated from protobuf field: int32 sortTm = 8;
      */
-    sortTm: number; // Sort by time: `1` asc, `-1` desc
+    sortTm: number; // 时间排序: 1升序, -1降序
 }
 /**
  * define AttackFlow
  *
- * Attack flow graph definition
+ * 攻击流图定义
  *
  * @generated from protobuf message ada.AttackFlowReply
  */
@@ -4797,11 +4797,11 @@ export interface AttackFlowReply_Field {
     /**
      * @generated from protobuf field: string obj = 1;
      */
-    obj: string; // Supported types: ip|user|computer|dc
+    obj: string; // 支持:ip/user/computer/dc
     /**
      * @generated from protobuf field: string key = 2;
      */
-    key: string; // Example: `$1.TargetUsername`
+    key: string; // 如: $1.TargetUsername
     /**
      * @generated from protobuf field: string value = 3;
      */
@@ -4818,31 +4818,31 @@ export interface AlertRuleInfo {
     /**
      * @generated from protobuf field: string title = 2;
      */
-    title: string; // Rule title
+    title: string; // 规则标题
     /**
      * @generated from protobuf field: string description = 3;
      */
-    description: string; // Rule description
+    description: string; // 规则描述
     /**
      * @generated from protobuf field: bool enable = 4;
      */
-    enable: boolean; // Enable state
+    enable: boolean; // 启用状态
     /**
      * @generated from protobuf field: int32 level = 5;
      */
-    level: number; // Threat level
+    level: number; // 威胁等级
     /**
      * @generated from protobuf field: string status = 6;
      */
-    status: string; // Rule status
+    status: string; // 规则状态
     /**
      * @generated from protobuf field: repeated string tags = 7;
      */
-    tags: string[]; // Tags
+    tags: string[]; // 标签
     /**
      * @generated from protobuf field: string logsource = 8;
      */
-    logsource: string; // Log source
+    logsource: string; // 日志来源
     /**
      * @generated from protobuf field: string detection = 9;
      */
@@ -4850,23 +4850,23 @@ export interface AlertRuleInfo {
     /**
      * @generated from protobuf field: string type = 10;
      */
-    type: string; // Rule category
+    type: string; // 规则分类
     /**
      * @generated from protobuf field: string author = 11;
      */
-    author: string; // Author
+    author: string; // 作者
     /**
      * @generated from protobuf field: repeated string references = 12;
      */
-    references: string[]; // References
+    references: string[]; // 参考信息
     /**
      * @generated from protobuf field: string suggestion = 13;
      */
-    suggestion: string; // Handling suggestions
+    suggestion: string; // 处置建议
     /**
      * @generated from protobuf field: bool autoBlock = 14;
      */
-    autoBlock: boolean; // Automatic blocking
+    autoBlock: boolean; // 自动阻断
     /**
      * @generated from protobuf field: ada.AttackFlowReply attackFlow = 15;
      */
@@ -4874,7 +4874,7 @@ export interface AlertRuleInfo {
     /**
      * @generated from protobuf field: repeated string uniqueFilter = 16;
      */
-    uniqueFilter: string[]; // Uniqueness filter
+    uniqueFilter: string[]; // 唯一性过滤器
     /**
      * @generated from protobuf field: string createTm = 17;
      */
@@ -4883,6 +4883,10 @@ export interface AlertRuleInfo {
      * @generated from protobuf field: string updateTm = 18;
      */
     updateTm: string;
+    /**
+     * @generated from protobuf field: string ruleOrigin = 19;
+     */
+    ruleOrigin: string; // 规则来源: internal/public/custom
 }
 /**
  * @generated from protobuf message ada.ListAlertRuleReply
@@ -4904,23 +4908,23 @@ export interface AlertDetection {
     /**
      * @generated from protobuf field: string eventType = 1;
      */
-    eventType: string; // [(validator.field) = {regex: "count|multi_eve|multi_pkt|multi_eve_pkt"}]; // Event type
+    eventType: string; // 事件类型
     /**
      * @generated from protobuf field: string winSize = 2;
      */
-    winSize: string; // Window size
+    winSize: string; // 窗口大小
     /**
      * @generated from protobuf field: bool sorted = 3;
      */
-    sorted: boolean; // Whether sorting is enabled
+    sorted: boolean; // 是否排序
     /**
      * @generated from protobuf field: repeated string sigmaRules = 4;
      */
-    sigmaRules: string[]; // Associated Sigma rules
+    sigmaRules: string[]; // 关联sigma规则
     /**
      * @generated from protobuf field: string matchBy = 5;
      */
-    matchBy: string; // Match condition
+    matchBy: string; // 匹配条件
 }
 /**
  * @generated from protobuf message ada.AddAlertRuleReq
@@ -4933,7 +4937,7 @@ export interface AddAlertRuleReq {
     /**
      * @generated from protobuf field: string title = 2;
      */
-    title: string; // [(validator.field) = {string_not_empty: true}];
+    title: string;
     /**
      * @generated from protobuf field: string description = 3;
      */
@@ -4945,7 +4949,7 @@ export interface AddAlertRuleReq {
     /**
      * @generated from protobuf field: int32 level = 5;
      */
-    level: number; // [(validator.field) = {int_gt: 0, int_lt: 6}]; // 1-5
+    level: number; // 1-5
     /**
      * @generated from protobuf field: string status = 6;
      */
@@ -4989,7 +4993,11 @@ export interface AddAlertRuleReq {
     /**
      * @generated from protobuf field: repeated string uniqueFilter = 16;
      */
-    uniqueFilter: string[]; // Uniqueness filter
+    uniqueFilter: string[]; // 唯一性过滤器
+    /**
+     * @generated from protobuf field: string ruleOrigin = 17;
+     */
+    ruleOrigin: string; // 规则来源: internal/public/custom
 }
 /**
  * @generated from protobuf message ada.AddAlertRuleReply
@@ -5011,7 +5019,7 @@ export interface UpdateAlertRuleReq {
     /**
      * @generated from protobuf field: string ID = 1 [json_name = "ID"];
      */
-    iD: string; // [(validator.field) = {string_not_empty: true}];
+    iD: string;
     /**
      * @generated from protobuf field: string title = 2;
      */
@@ -5071,7 +5079,11 @@ export interface UpdateAlertRuleReq {
     /**
      * @generated from protobuf field: repeated string uniqueFilter = 16;
      */
-    uniqueFilter: string[]; // Uniqueness filter
+    uniqueFilter: string[]; // 唯一性过滤器
+    /**
+     * @generated from protobuf field: string ruleOrigin = 17;
+     */
+    ruleOrigin: string; // 规则来源: internal/public/custom
 }
 /**
  * @generated from protobuf message ada.UpdateAlertRuleReply
@@ -5089,7 +5101,7 @@ export interface DeleteAlertRuleReq {
     /**
      * @generated from protobuf field: string ID = 1 [json_name = "ID"];
      */
-    iD: string; // [(validator.field) = {string_not_empty: true}];
+    iD: string;
 }
 /**
  * @generated from protobuf message ada.DeleteAlertRuleReply
@@ -5123,7 +5135,7 @@ export interface GetAlertRuleNamesReq {
     /**
      * @generated from protobuf field: string ruleId = 1;
      */
-    ruleId: string; // Optional. If empty, return the mapping of all `rule_id` values to names
+    ruleId: string; // 可选，为空则返回所有的rule_id与name的map
 }
 /**
  * @generated from protobuf message ada.GetAlertRuleNamesReply
@@ -5148,7 +5160,7 @@ export interface GetAlertRuleTagsReply {
     /**
      * @generated from protobuf field: repeated string tags = 1;
      */
-    tags: string[]; // List of all rule tags
+    tags: string[]; // 所有规则标签列表
 }
 /**
  * @generated from protobuf message ada.GetActivityRuleFieldsReq
@@ -5162,7 +5174,7 @@ export interface GetActivityRuleFieldsReply {
     /**
      * @generated from protobuf field: repeated string fields = 1;
      */
-    fields: string[]; // List of all activity-rule fields
+    fields: string[]; // 所有行为规则Fields列表
 }
 /**
  * @generated from protobuf message ada.RuleNameItem
@@ -5171,11 +5183,11 @@ export interface RuleNameItem {
     /**
      * @generated from protobuf field: string ruleId = 1;
      */
-    ruleId: string; // Rule ID, for example 'winlog-0000-1101'
+    ruleId: string; // 规则ID，如 'winlog-0000-1101'
     /**
      * @generated from protobuf field: string title = 2;
      */
-    title: string; // Rule name
+    title: string; // 规则名称
 }
 /**
  * @generated from protobuf message ada.GetActivityRuleNamesReq
@@ -5189,7 +5201,7 @@ export interface GetActivityRuleNamesReply {
     /**
      * @generated from protobuf field: repeated ada.RuleNameItem rules = 1;
      */
-    rules: RuleNameItem[]; // List of all activity rule IDs and names
+    rules: RuleNameItem[]; // 所有行为规则ID和名称列表
 }
 /**
  * @generated from protobuf message ada.GetActivityRuleUniqueFieldsReq
@@ -5203,7 +5215,7 @@ export interface GetActivityRuleUniqueFieldsReply {
     /**
      * @generated from protobuf field: repeated string uniqueFields = 1;
      */
-    uniqueFields: string[]; // List of all activity-rule unique fields
+    uniqueFields: string[]; // 所有行为规则UniqueFields列表
 }
 /**
  * Activity Rule (Sigma Rules) Messages
@@ -5214,7 +5226,7 @@ export interface ListActivityRuleReq {
     /**
      * @generated from protobuf field: int32 pageIdx = 1;
      */
-    pageIdx: number; // [(validator.field) = {int_gt: 0}];
+    pageIdx: number;
     /**
      * @generated from protobuf field: int32 pageSize = 2;
      */
@@ -5222,35 +5234,35 @@ export interface ListActivityRuleReq {
     /**
      * @generated from protobuf field: repeated string IDs = 3 [json_name = "IDs"];
      */
-    iDs: string[]; // Rule ID list
+    iDs: string[]; // 规则ID列表
     /**
      * @generated from protobuf field: repeated int32 level = 4;
      */
-    level: number[]; // Rule level: `5` critical, `4` high, `3` medium, `2` low, `1` info
+    level: number[]; // 规则等级: 5:critical, 4:high, 3:medium, 2:low, 1:info
     /**
      * @generated from protobuf field: repeated string status = 5;
      */
-    status: string[]; // Rule status: `test|experimental|stable|deprecated`
+    status: string[]; // 规则状态: test|experimental|stable|deprecated
     /**
      * @generated from protobuf field: string keyword = 6;
      */
-    keyword: string; // Keyword search across title and description
+    keyword: string; // 关键词搜索(标题/描述)
     /**
      * @generated from protobuf field: repeated string tags = 7;
      */
-    tags: string[]; // Tag filter (MITRE ATT&CK)
+    tags: string[]; // 标签过滤 (MITRE ATT&CK)
     /**
      * @generated from protobuf field: string logsource = 8;
      */
-    logsource: string; // Log source: windows/linux/pktlog
+    logsource: string; // 日志来源: windows/linux/pktlog
     /**
      * @generated from protobuf field: string ruleType = 9;
      */
-    ruleType: string; // Rule type: winlog|pktlog|flow
+    ruleType: string; // 规则类型: winlog/pktlog/flow
     /**
      * @generated from protobuf field: int32 sortTm = 10;
      */
-    sortTm: number; // Sort by time: `1` asc, `-1` desc
+    sortTm: number; // 时间排序: 1升序, -1降序
 }
 /**
  * @generated from protobuf message ada.ActivityRuleInfo
@@ -5263,31 +5275,31 @@ export interface ActivityRuleInfo {
     /**
      * @generated from protobuf field: string title = 2;
      */
-    title: string; // Rule title
+    title: string; // 规则标题
     /**
      * @generated from protobuf field: string description = 3;
      */
-    description: string; // Rule description
+    description: string; // 规则描述
     /**
      * @generated from protobuf field: int32 level = 4;
      */
-    level: number; // Risk level
+    level: number; // 风险等级
     /**
      * @generated from protobuf field: string status = 5;
      */
-    status: string; // Rule status
+    status: string; // 规则状态
     /**
      * @generated from protobuf field: repeated string tags = 6;
      */
-    tags: string[]; // Tags
+    tags: string[]; // 标签
     /**
      * @generated from protobuf field: string logsource = 7;
      */
-    logsource: string; // Log source
+    logsource: string; // 日志来源
     /**
      * @generated from protobuf field: repeated string references = 8;
      */
-    references: string[]; // Reference links
+    references: string[]; // 参考链接
     /**
      * @generated from protobuf field: string detection = 9;
      */
@@ -5295,19 +5307,19 @@ export interface ActivityRuleInfo {
     /**
      * @generated from protobuf field: string rdxKey = 10;
      */
-    rdxKey: string; // Redis cache key
+    rdxKey: string; // Redis缓存key
     /**
      * @generated from protobuf field: repeated string fields = 11;
      */
-    fields: string[]; // Extracted fields
+    fields: string[]; // 提取字段
     /**
      * @generated from protobuf field: repeated string uniqueFields = 12;
      */
-    uniqueFields: string[]; // Unique fields
+    uniqueFields: string[]; // 唯一字段
     /**
      * @generated from protobuf field: string author = 13;
      */
-    author: string; // Author
+    author: string; // 作者
     /**
      * @generated from protobuf field: string createTm = 14;
      */
@@ -5316,6 +5328,10 @@ export interface ActivityRuleInfo {
      * @generated from protobuf field: string updateTm = 15;
      */
     updateTm: string;
+    /**
+     * @generated from protobuf field: string ruleOrigin = 16;
+     */
+    ruleOrigin: string; // 规则来源: internal/public/custom
 }
 /**
  * @generated from protobuf message ada.ListActivityRuleReply
@@ -5337,7 +5353,7 @@ export interface GetActivityRuleReq {
     /**
      * @generated from protobuf field: string ID = 1 [json_name = "ID"];
      */
-    iD: string; // [(validator.field) = {string_not_empty: true}];
+    iD: string;
 }
 /**
  * @generated from protobuf message ada.GetActivityRuleReply
@@ -5403,6 +5419,10 @@ export interface GetActivityRuleReply {
      * @generated from protobuf field: string updateTm = 15;
      */
     updateTm: string;
+    /**
+     * @generated from protobuf field: string ruleOrigin = 16;
+     */
+    ruleOrigin: string; // 规则来源: internal/public/custom
 }
 /**
  * @generated from protobuf message ada.AddActivityRuleReq
@@ -5411,11 +5431,11 @@ export interface AddActivityRuleReq {
     /**
      * @generated from protobuf field: string ID = 1 [json_name = "ID"];
      */
-    iD: string; // [(validator.field) = {string_not_empty: true}]; // Sigma rule ID (e.g. winlog-0000-0001)
+    iD: string; // Sigma rule ID (e.g. winlog-0000-0001)
     /**
      * @generated from protobuf field: string title = 2;
      */
-    title: string; // [(validator.field) = {string_not_empty: true}];
+    title: string;
     /**
      * @generated from protobuf field: string description = 3;
      */
@@ -5423,7 +5443,7 @@ export interface AddActivityRuleReq {
     /**
      * @generated from protobuf field: int32 level = 4;
      */
-    level: number; // [(validator.field) = {int_gt: 0, int_lt: 6}]; // 1-5
+    level: number; // 1-5
     /**
      * @generated from protobuf field: string status = 5;
      */
@@ -5443,7 +5463,7 @@ export interface AddActivityRuleReq {
     /**
      * @generated from protobuf field: string detection = 9;
      */
-    detection: string; // [(validator.field) = {string_not_empty: true}]; // JSON string
+    detection: string; // JSON string
     /**
      * @generated from protobuf field: string rdxKey = 10;
      */
@@ -5460,6 +5480,10 @@ export interface AddActivityRuleReq {
      * @generated from protobuf field: string author = 13;
      */
     author: string;
+    /**
+     * @generated from protobuf field: string ruleOrigin = 14;
+     */
+    ruleOrigin: string; // 规则来源: internal/public/custom
 }
 /**
  * @generated from protobuf message ada.AddActivityRuleReply
@@ -5481,7 +5505,7 @@ export interface UpdateActivityRuleReq {
     /**
      * @generated from protobuf field: string ID = 1 [json_name = "ID"];
      */
-    iD: string; // [(validator.field) = {string_not_empty: true}];
+    iD: string;
     /**
      * @generated from protobuf field: string title = 2;
      */
@@ -5530,6 +5554,10 @@ export interface UpdateActivityRuleReq {
      * @generated from protobuf field: string author = 13;
      */
     author: string;
+    /**
+     * @generated from protobuf field: string ruleOrigin = 14;
+     */
+    ruleOrigin: string; // 规则来源: internal/public/custom
 }
 /**
  * @generated from protobuf message ada.UpdateActivityRuleReply
@@ -5547,7 +5575,7 @@ export interface DeleteActivityRuleReq {
     /**
      * @generated from protobuf field: string ID = 1 [json_name = "ID"];
      */
-    iD: string; // [(validator.field) = {string_not_empty: true}];
+    iD: string;
 }
 /**
  * @generated from protobuf message ada.DeleteActivityRuleReply
@@ -5625,9 +5653,9 @@ export const ModelPage = new ModelPage$Type();
 class LoginReq$Type extends MessageType<LoginReq> {
     constructor() {
         super("ada.LoginReq", [
-            { no: 1, name: "username", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "password", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 3, name: "totpCode", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 1, name: "username", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { stringNotEmpty: true } } },
+            { no: 2, name: "password", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { stringNotEmpty: true } } },
+            { no: 3, name: "totpCode", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "d{6}|^(\\s&&[^\\f\\n\\r\\t\\v])*" } } }
         ]);
     }
     create(value?: PartialMessage<LoginReq>): LoginReq {
@@ -5909,7 +5937,7 @@ export const LogoutReply = new LogoutReply$Type();
 class ListUserReq$Type extends MessageType<ListUserReq> {
     constructor() {
         super("ada.ListUserReq", [
-            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/, options: { "validator.field": { intGt: "0" } } },
             { no: 2, name: "pageSize", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 3, name: "search", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "isSelf", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
@@ -6045,7 +6073,7 @@ class ListUserReply$Type extends MessageType<ListUserReply> {
     constructor() {
         super("ada.ListUserReply", [
             { no: 1, name: "page", kind: "message", T: () => ModelPage },
-            { no: 2, name: "List", kind: "message", jsonName: "List", repeat: 1 /*RepeatType.PACKED*/, T: () => ListUserReply_Details },
+            { no: 2, name: "List", kind: "message", jsonName: "List", repeat: 2 /*RepeatType.UNPACKED*/, T: () => ListUserReply_Details },
             { no: 3, name: "exhausted", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
@@ -6268,8 +6296,8 @@ class AddUserReq$Type extends MessageType<AddUserReq> {
             { no: 1, name: "username", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "password", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "role", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 4, name: "mobile", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 5, name: "email", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "mobile", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "^1[3|4|5|6|7|8|9][0-9]\\d{8}$|^(\\s&&[^\\f\\n\\r\\t\\v])*" } } },
+            { no: 5, name: "email", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*|^(\\s&&[^\\f\\n\\r\\t\\v])*" } } },
             { no: 6, name: "remark", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 9, name: "department", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
@@ -6408,8 +6436,8 @@ class UpdateUserReq$Type extends MessageType<UpdateUserReq> {
     constructor() {
         super("ada.UpdateUserReq", [
             { no: 1, name: "username", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "mobile", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 3, name: "email", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "mobile", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "^1[3|4|5|6|7|8|9][0-9]\\d{8}$|^(\\s&&[^\\f\\n\\r\\t\\v])*" } } },
+            { no: 3, name: "email", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*|^(\\s&&[^\\f\\n\\r\\t\\v])*" } } },
             { no: 4, name: "remark", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 5, name: "role", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 8, name: "department", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
@@ -6944,7 +6972,7 @@ class EnableMfaReq$Type extends MessageType<EnableMfaReq> {
             { no: 1, name: "username", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "password", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "secret", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 4, name: "mfaCode", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 4, name: "mfaCode", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { lengthEq: "6" } } }
         ]);
     }
     create(value?: PartialMessage<EnableMfaReq>): EnableMfaReq {
@@ -7256,7 +7284,7 @@ class ResetPasswordReq$Type extends MessageType<ResetPasswordReq> {
     constructor() {
         super("ada.ResetPasswordReq", [
             { no: 1, name: "username", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "newPassword", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 2, name: "newPassword", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { lengthGt: "11" } } }
         ]);
     }
     create(value?: PartialMessage<ResetPasswordReq>): ResetPasswordReq {
@@ -7507,7 +7535,7 @@ export const AccessKeyDetails = new AccessKeyDetails$Type();
 class ListAccessKeyReply$Type extends MessageType<ListAccessKeyReply> {
     constructor() {
         super("ada.ListAccessKeyReply", [
-            { no: 1, name: "list", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => AccessKeyDetails }
+            { no: 1, name: "list", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => AccessKeyDetails }
         ]);
     }
     create(value?: PartialMessage<ListAccessKeyReply>): ListAccessKeyReply {
@@ -7554,7 +7582,7 @@ export const ListAccessKeyReply = new ListAccessKeyReply$Type();
 class GenerateAccessKeyReq$Type extends MessageType<GenerateAccessKeyReq> {
     constructor() {
         super("ada.GenerateAccessKeyReq", [
-            { no: 1, name: "username", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 1, name: "username", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { lengthGt: "0" } } },
             { no: 2, name: "remark", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
@@ -7672,7 +7700,7 @@ export const GenerateAccessKeyReply = new GenerateAccessKeyReply$Type();
 class DeleteAccessKeyReq$Type extends MessageType<DeleteAccessKeyReq> {
     constructor() {
         super("ada.DeleteAccessKeyReq", [
-            { no: 1, name: "iD", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 1, name: "iD", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { lengthGt: "0" } } }
         ]);
     }
     create(value?: PartialMessage<DeleteAccessKeyReq>): DeleteAccessKeyReq {
@@ -7774,7 +7802,7 @@ export const DeleteAccessKeyReply = new DeleteAccessKeyReply$Type();
 class ListDomainReq$Type extends MessageType<ListDomainReq> {
     constructor() {
         super("ada.ListDomainReq", [
-            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/, options: { "validator.field": { intGt: "0" } } },
             { no: 2, name: "pageSize", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 3, name: "filterDomain", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "filterStatus", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
@@ -7854,7 +7882,7 @@ class ListDomainReply$Type extends MessageType<ListDomainReply> {
     constructor() {
         super("ada.ListDomainReply", [
             { no: 1, name: "page", kind: "message", T: () => ModelPage },
-            { no: 2, name: "List", kind: "message", jsonName: "List", repeat: 1 /*RepeatType.PACKED*/, T: () => ListDomainReply_Details },
+            { no: 2, name: "List", kind: "message", jsonName: "List", repeat: 2 /*RepeatType.UNPACKED*/, T: () => ListDomainReply_Details },
             { no: 3, name: "exhausted", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
@@ -8049,7 +8077,7 @@ class ListDomainReply_Details$Type extends MessageType<ListDomainReply_Details> 
             { no: 5, name: "domainInfo", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 9 /*ScalarType.STRING*/ } },
             { no: 6, name: "createTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 7, name: "errMsg", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 8, name: "DCs", kind: "message", jsonName: "DCs", repeat: 1 /*RepeatType.PACKED*/, T: () => ListDomainReply_dcList }
+            { no: 8, name: "DCs", kind: "message", jsonName: "DCs", repeat: 2 /*RepeatType.UNPACKED*/, T: () => ListDomainReply_dcList }
         ]);
     }
     create(value?: PartialMessage<ListDomainReply_Details>): ListDomainReply_Details {
@@ -8164,7 +8192,7 @@ class AddDomainReq$Type extends MessageType<AddDomainReq> {
             { no: 1, name: "ldapAddr", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "username", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "password", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 4, name: "DNS", kind: "scalar", jsonName: "DNS", T: 9 /*ScalarType.STRING*/ }
+            { no: 4, name: "DNS", kind: "scalar", jsonName: "DNS", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "^((0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])\\.){3}(0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])$|^(\\s&&[^\\f\\n\\r\\t\\v])*" } } }
         ]);
     }
     create(value?: PartialMessage<AddDomainReq>): AddDomainReq {
@@ -8282,7 +8310,7 @@ class TestDomainReq$Type extends MessageType<TestDomainReq> {
             { no: 1, name: "ldapAddr", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "username", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "password", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 4, name: "DNS", kind: "scalar", jsonName: "DNS", T: 9 /*ScalarType.STRING*/ }
+            { no: 4, name: "DNS", kind: "scalar", jsonName: "DNS", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "^((0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])\\.){3}(0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])$|^(\\s&&[^\\f\\n\\r\\t\\v])*" } } }
         ]);
     }
     create(value?: PartialMessage<TestDomainReq>): TestDomainReq {
@@ -8409,7 +8437,7 @@ class UpdateDomainReq$Type extends MessageType<UpdateDomainReq> {
             { no: 2, name: "ldapAddr", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "username", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "password", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 5, name: "DNS", kind: "scalar", jsonName: "DNS", T: 9 /*ScalarType.STRING*/ }
+            { no: 5, name: "DNS", kind: "scalar", jsonName: "DNS", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "^((0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])\\.){3}(0|[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-5])$|^(\\s&&[^\\f\\n\\r\\t\\v])*" } } }
         ]);
     }
     create(value?: PartialMessage<UpdateDomainReq>): UpdateDomainReq {
@@ -8829,7 +8857,7 @@ export const DeploySensorReply = new DeploySensorReply$Type();
 class ListSensorReq$Type extends MessageType<ListSensorReq> {
     constructor() {
         super("ada.ListSensorReq", [
-            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/, options: { "validator.field": { intGt: "0" } } },
             { no: 2, name: "pageSize", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 3, name: "domain", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "status", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
@@ -8917,7 +8945,7 @@ class ListSensorReply$Type extends MessageType<ListSensorReply> {
     constructor() {
         super("ada.ListSensorReply", [
             { no: 1, name: "page", kind: "message", T: () => ModelPage },
-            { no: 2, name: "List", kind: "message", jsonName: "List", repeat: 1 /*RepeatType.PACKED*/, T: () => ListSensorReply_Details },
+            { no: 2, name: "List", kind: "message", jsonName: "List", repeat: 2 /*RepeatType.UNPACKED*/, T: () => ListSensorReply_Details },
             { no: 3, name: "exhausted", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
@@ -9074,7 +9102,7 @@ class ListSensorReply_Details$Type extends MessageType<ListSensorReply_Details> 
             { no: 31, name: "bindNetIface", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 32, name: "dcIntervalTm", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 33, name: "perfLimit", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 9 /*ScalarType.STRING*/ } },
-            { no: 34, name: "events", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => ListSensorReply_mapSlice },
+            { no: 34, name: "events", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => ListSensorReply_mapSlice },
             { no: 35, name: "createTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 36, name: "lastOnlineTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 37, name: "LastCollectTm", kind: "scalar", jsonName: "LastCollectTm", T: 9 /*ScalarType.STRING*/ }
@@ -9412,10 +9440,10 @@ class UpdateSensorReq$Type extends MessageType<UpdateSensorReq> {
             { no: 2, name: "bindNetIface", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "perfLimit", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 9 /*ScalarType.STRING*/ } },
             { no: 4, name: "remark", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 5, name: "pktPluginSwitch", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 6, name: "logPluginSwitch", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 7, name: "rpcFwPluginSwitch", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 8, name: "ldapFwPluginSwitch", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 5, name: "pktPluginSwitch", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "true|false" } } },
+            { no: 6, name: "logPluginSwitch", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "true|false" } } },
+            { no: 7, name: "rpcFwPluginSwitch", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "true|false" } } },
+            { no: 8, name: "ldapFwPluginSwitch", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "true|false" } } }
         ]);
     }
     create(value?: PartialMessage<UpdateSensorReq>): UpdateSensorReq {
@@ -9574,7 +9602,7 @@ export const UpdateSensorReply = new UpdateSensorReply$Type();
 class DownloadSensorReq$Type extends MessageType<DownloadSensorReq> {
     constructor() {
         super("ada.DownloadSensorReq", [
-            { no: 1, name: "Type", kind: "scalar", jsonName: "Type", T: 9 /*ScalarType.STRING*/ }
+            { no: 1, name: "Type", kind: "scalar", jsonName: "Type", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "x64|x86" } } }
         ]);
     }
     create(value?: PartialMessage<DownloadSensorReq>): DownloadSensorReq {
@@ -9669,7 +9697,7 @@ class CmdSensorReq$Type extends MessageType<CmdSensorReq> {
     constructor() {
         super("ada.CmdSensorReq", [
             { no: 1, name: "ID", kind: "scalar", jsonName: "ID", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "cmd", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 2, name: "cmd", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "delete|uninstall" } } }
         ]);
     }
     create(value?: PartialMessage<CmdSensorReq>): CmdSensorReq {
@@ -10191,7 +10219,7 @@ export const GetSystemIconReply = new GetSystemIconReply$Type();
 class UpdateSystemLanguageReq$Type extends MessageType<UpdateSystemLanguageReq> {
     constructor() {
         super("ada.UpdateSystemLanguageReq", [
-            { no: 1, name: "language", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 1, name: "language", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "EN|ZH" } } }
         ]);
     }
     create(value?: PartialMessage<UpdateSystemLanguageReq>): UpdateSystemLanguageReq {
@@ -10569,8 +10597,8 @@ export const GetSystemProxyReply = new GetSystemProxyReply$Type();
 class UpdateSystemProxyReq$Type extends MessageType<UpdateSystemProxyReq> {
     constructor() {
         super("ada.UpdateSystemProxyReq", [
-            { no: 1, name: "httpProxy", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "httpsProxy", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 1, name: "httpProxy", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "^http://[^\\s]+|^(\\s&&[^\\f\\n\\r\\t\\v])*" } } },
+            { no: 2, name: "httpsProxy", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "^https://[^\\s]+|^(\\s&&[^\\f\\n\\r\\t\\v])*" } } },
             { no: 3, name: "upgradeProxy", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
             { no: 4, name: "notifyProxy", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
@@ -10687,8 +10715,8 @@ export const UpdateSystemProxyReply = new UpdateSystemProxyReply$Type();
 class GetSystemStatsReq$Type extends MessageType<GetSystemStatsReq> {
     constructor() {
         super("ada.GetSystemStatsReq", [
-            { no: 1, name: "Type", kind: "scalar", jsonName: "Type", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "scope", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 1, name: "Type", kind: "scalar", jsonName: "Type", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "load|cpu|mem|net_rx|net_tx" } } },
+            { no: 2, name: "scope", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "2h|24h" } } }
         ]);
     }
     create(value?: PartialMessage<GetSystemStatsReq>): GetSystemStatsReq {
@@ -10797,7 +10825,7 @@ export const StatsInfo = new StatsInfo$Type();
 class GetSystemStatsReply$Type extends MessageType<GetSystemStatsReply> {
     constructor() {
         super("ada.GetSystemStatsReply", [
-            { no: 1, name: "stats", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => StatsInfo }
+            { no: 1, name: "stats", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => StatsInfo }
         ]);
     }
     create(value?: PartialMessage<GetSystemStatsReply>): GetSystemStatsReply {
@@ -10954,7 +10982,7 @@ export const SetSystemStatsCfgReply = new SetSystemStatsCfgReply$Type();
 class ListAuditLogReq$Type extends MessageType<ListAuditLogReq> {
     constructor() {
         super("ada.ListAuditLogReq", [
-            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/, options: { "validator.field": { intGt: "0" } } },
             { no: 2, name: "pageSize", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 3, name: "startTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "endTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
@@ -11050,7 +11078,7 @@ class ListAuditLogReply$Type extends MessageType<ListAuditLogReply> {
     constructor() {
         super("ada.ListAuditLogReply", [
             { no: 1, name: "page", kind: "message", T: () => ModelPage },
-            { no: 2, name: "List", kind: "message", jsonName: "List", repeat: 1 /*RepeatType.PACKED*/, T: () => ListAuditLogReply_Details },
+            { no: 2, name: "List", kind: "message", jsonName: "List", repeat: 2 /*RepeatType.UNPACKED*/, T: () => ListAuditLogReply_Details },
             { no: 3, name: "exhausted", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
@@ -11206,10 +11234,10 @@ export const ListAuditLogReply_Details = new ListAuditLogReply_Details$Type();
 class ListSystemLogsReq$Type extends MessageType<ListSystemLogsReq> {
     constructor() {
         super("ada.ListSystemLogsReq", [
-            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/, options: { "validator.field": { intGt: "0" } } },
             { no: 2, name: "pageSize", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
-            { no: 3, name: "level", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
-            { no: 4, name: "module", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "level", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "error|warn" } } },
+            { no: 4, name: "module", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "apiserver|task_worker|task_server|scanner|engine" } } },
             { no: 5, name: "search", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 6, name: "startTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 7, name: "endTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
@@ -11310,7 +11338,7 @@ class ListSystemLogsReply$Type extends MessageType<ListSystemLogsReply> {
     constructor() {
         super("ada.ListSystemLogsReply", [
             { no: 1, name: "page", kind: "message", T: () => ModelPage },
-            { no: 2, name: "list", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => ListSystemLogsReply_Details },
+            { no: 2, name: "list", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => ListSystemLogsReply_Details },
             { no: 3, name: "exhausted", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
@@ -11656,8 +11684,8 @@ export const UpdateLicenseReply = new UpdateLicenseReply$Type();
 class NetworkDebugReq$Type extends MessageType<NetworkDebugReq> {
     constructor() {
         super("ada.NetworkDebugReq", [
-            { no: 1, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "target", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 1, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "ping|nslookup|traceroute|nc" } } },
+            { no: 2, name: "target", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\\.?|((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}" } } }
         ]);
     }
     create(value?: PartialMessage<NetworkDebugReq>): NetworkDebugReq {
@@ -11760,10 +11788,10 @@ class ListNotifyConfReq$Type extends MessageType<ListNotifyConfReq> {
         super("ada.ListNotifyConfReq", [
             { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 2, name: "pageSize", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
-            { no: 3, name: "moduleName", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
-            { no: 4, name: "notifyType", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "moduleName", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "all|alert|baseline|leak|system" } } },
+            { no: 4, name: "notifyType", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "all|syslog|webhook|email" } } },
             { no: 5, name: "endpoint", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 6, name: "enable", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 6, name: "enable", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "all|enable|disable" } } },
             { no: 7, name: "sortTime", kind: "scalar", T: 5 /*ScalarType.INT32*/ }
         ]);
     }
@@ -11853,7 +11881,7 @@ export const ListNotifyConfReq = new ListNotifyConfReq$Type();
 class ListNotifyConfReply$Type extends MessageType<ListNotifyConfReply> {
     constructor() {
         super("ada.ListNotifyConfReply", [
-            { no: 1, name: "list", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => ListNotifyConfReply_Details },
+            { no: 1, name: "list", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => ListNotifyConfReply_Details },
             { no: 2, name: "page", kind: "message", T: () => ModelPage }
         ]);
     }
@@ -12042,8 +12070,8 @@ export const ListNotifyConfReply_Details = new ListNotifyConfReply_Details$Type(
 class UpdateNotifyConfReq$Type extends MessageType<UpdateNotifyConfReq> {
     constructor() {
         super("ada.UpdateNotifyConfReq", [
-            { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "enable", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { stringNotEmpty: true } } },
+            { no: 2, name: "enable", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "enable|disable" } } },
             { no: 3, name: "endpoint", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "level", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ },
             { no: 5, name: "metadata", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 9 /*ScalarType.STRING*/ } },
@@ -12200,8 +12228,8 @@ export const UpdateNotifyConfReply = new UpdateNotifyConfReply$Type();
 class EnableNotifyConfReq$Type extends MessageType<EnableNotifyConfReq> {
     constructor() {
         super("ada.EnableNotifyConfReq", [
-            { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "enable", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { stringNotEmpty: true } } },
+            { no: 2, name: "enable", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "enable|disable" } } }
         ]);
     }
     create(value?: PartialMessage<EnableNotifyConfReq>): EnableNotifyConfReq {
@@ -12302,8 +12330,8 @@ export const EnableNotifyConfReply = new EnableNotifyConfReply$Type();
 class TestNotifyConfReq$Type extends MessageType<TestNotifyConfReq> {
     constructor() {
         super("ada.TestNotifyConfReq", [
-            { no: 1, name: "moduleName", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "notifyType", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 1, name: "moduleName", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "alert|baseline|leak|system" } } },
+            { no: 2, name: "notifyType", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "syslog|webhook|email" } } },
             { no: 3, name: "endpoint", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "metadata", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 9 /*ScalarType.STRING*/ } }
         ]);
@@ -12444,10 +12472,10 @@ export const TestNotifyConfReply = new TestNotifyConfReply$Type();
 class AddNotifyConfReq$Type extends MessageType<AddNotifyConfReq> {
     constructor() {
         super("ada.AddNotifyConfReq", [
-            { no: 1, name: "moduleName", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "notifyType", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 1, name: "moduleName", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "alert|baseline|leak|system" } } },
+            { no: 2, name: "notifyType", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "syslog|webhook|email" } } },
             { no: 3, name: "endpoint", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 4, name: "enable", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "enable", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "enable|disable" } } },
             { no: 5, name: "level", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ },
             { no: 6, name: "metadata", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 9 /*ScalarType.STRING*/ } },
             { no: 7, name: "remark", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
@@ -12618,7 +12646,7 @@ export const AddNotifyConfReply = new AddNotifyConfReply$Type();
 class DeleteNotifyConfReq$Type extends MessageType<DeleteNotifyConfReq> {
     constructor() {
         super("ada.DeleteNotifyConfReq", [
-            { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { stringNotEmpty: true } } }
         ]);
     }
     create(value?: PartialMessage<DeleteNotifyConfReq>): DeleteNotifyConfReq {
@@ -12714,8 +12742,8 @@ class ListExportTaskReq$Type extends MessageType<ListExportTaskReq> {
         super("ada.ListExportTaskReq", [
             { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 2, name: "pageSize", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
-            { no: 3, name: "type", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
-            { no: 4, name: "status", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "type", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "all|alert_event|alert_activity|baseline|leak|weakpwd|system|audit" } } },
+            { no: 4, name: "status", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "all|padding|doing|finish|failed" } } },
             { no: 5, name: "startTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 6, name: "endTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 7, name: "sortTime", kind: "scalar", T: 5 /*ScalarType.INT32*/ }
@@ -12808,7 +12836,7 @@ class ListExportTaskReply$Type extends MessageType<ListExportTaskReply> {
     constructor() {
         super("ada.ListExportTaskReply", [
             { no: 1, name: "page", kind: "message", T: () => ModelPage },
-            { no: 2, name: "list", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => ListExportTaskReply_Details },
+            { no: 2, name: "list", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => ListExportTaskReply_Details },
             { no: 3, name: "exhausted", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
@@ -13328,7 +13356,7 @@ class ListNotifyReply$Type extends MessageType<ListNotifyReply> {
     constructor() {
         super("ada.ListNotifyReply", [
             { no: 1, name: "page", kind: "message", T: () => ModelPage },
-            { no: 2, name: "List", kind: "message", jsonName: "List", repeat: 1 /*RepeatType.PACKED*/, T: () => ListNotifyReply_Details },
+            { no: 2, name: "List", kind: "message", jsonName: "List", repeat: 2 /*RepeatType.UNPACKED*/, T: () => ListNotifyReply_Details },
             { no: 3, name: "exhausted", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
@@ -13653,7 +13681,7 @@ class ThreatTopsReq$Type extends MessageType<ThreatTopsReq> {
     constructor() {
         super("ada.ThreatTopsReq", [
             { no: 1, name: "domain", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "activity|event" } } },
             { no: 3, name: "duration", kind: "scalar", T: 5 /*ScalarType.INT32*/ }
         ]);
     }
@@ -13715,7 +13743,7 @@ export const ThreatTopsReq = new ThreatTopsReq$Type();
 class ThreatTopsReply$Type extends MessageType<ThreatTopsReply> {
     constructor() {
         super("ada.ThreatTopsReply", [
-            { no: 1, name: "List", kind: "message", jsonName: "List", repeat: 1 /*RepeatType.PACKED*/, T: () => ThreatTopsReply_Details }
+            { no: 1, name: "List", kind: "message", jsonName: "List", repeat: 2 /*RepeatType.UNPACKED*/, T: () => ThreatTopsReply_Details }
         ]);
     }
     create(value?: PartialMessage<ThreatTopsReply>): ThreatTopsReply {
@@ -13888,7 +13916,7 @@ export const ThreatTrendsReq = new ThreatTrendsReq$Type();
 class ThreatTrendsReply$Type extends MessageType<ThreatTrendsReply> {
     constructor() {
         super("ada.ThreatTrendsReply", [
-            { no: 1, name: "List", kind: "message", jsonName: "List", repeat: 1 /*RepeatType.PACKED*/, T: () => ThreatTrendsReply_Item }
+            { no: 1, name: "List", kind: "message", jsonName: "List", repeat: 2 /*RepeatType.UNPACKED*/, T: () => ThreatTrendsReply_Item }
         ]);
     }
     create(value?: PartialMessage<ThreatTrendsReply>): ThreatTrendsReply {
@@ -13990,7 +14018,7 @@ export const ThreatTrendsReply_Item = new ThreatTrendsReply_Item$Type();
 class ListThreatReq$Type extends MessageType<ListThreatReq> {
     constructor() {
         super("ada.ListThreatReq", [
-            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/, options: { "validator.field": { intGt: "0" } } },
             { no: 2, name: "pageSize", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 3, name: "IDs", kind: "scalar", jsonName: "IDs", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "level", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ },
@@ -13998,7 +14026,7 @@ class ListThreatReq$Type extends MessageType<ListThreatReq> {
             { no: 6, name: "startTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 7, name: "endTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 8, name: "searchType", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
-            { no: 9, name: "advancedSearch", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => ListThreatReq_Details },
+            { no: 9, name: "advancedSearch", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => ListThreatReq_Details },
             { no: 10, name: "sortTm", kind: "scalar", T: 5 /*ScalarType.INT32*/ }
         ]);
     }
@@ -14181,7 +14209,7 @@ class ListThreatReply$Type extends MessageType<ListThreatReply> {
     constructor() {
         super("ada.ListThreatReply", [
             { no: 1, name: "page", kind: "message", T: () => ModelPage },
-            { no: 2, name: "List", kind: "message", jsonName: "List", repeat: 1 /*RepeatType.PACKED*/, T: () => ListThreatReply_Details },
+            { no: 2, name: "List", kind: "message", jsonName: "List", repeat: 2 /*RepeatType.UNPACKED*/, T: () => ListThreatReply_Details },
             { no: 3, name: "exhausted", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
@@ -14584,7 +14612,7 @@ class GetThreatReply$Type extends MessageType<GetThreatReply> {
             { no: 17, name: "endTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 18, name: "fieldData", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 9 /*ScalarType.STRING*/ } },
             { no: 19, name: "attackFlow", kind: "message", T: () => AttackFlowReply },
-            { no: 20, name: "activities", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => ActivityDetails },
+            { no: 20, name: "activities", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => ActivityDetails },
             { no: 21, name: "suggestion", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 22, name: "references", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 23, name: "remark", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
@@ -14804,7 +14832,7 @@ class ActionThreatReq$Type extends MessageType<ActionThreatReq> {
     constructor() {
         super("ada.ActionThreatReq", [
             { no: 1, name: "ID", kind: "scalar", jsonName: "ID", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "eventStatus", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 2, name: "eventStatus", kind: "scalar", T: 5 /*ScalarType.INT32*/, options: { "validator.field": { intGt: "-1", intLt: "4" } } },
             { no: 3, name: "remark", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
@@ -14913,7 +14941,7 @@ export const ActionThreatReply = new ActionThreatReply$Type();
 class ListActivityReq$Type extends MessageType<ListActivityReq> {
     constructor() {
         super("ada.ListActivityReq", [
-            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/, options: { "validator.field": { intGt: "0" } } },
             { no: 2, name: "pageSize", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 3, name: "level", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ },
             { no: 4, name: "dcHostname", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
@@ -15192,7 +15220,7 @@ class ListActivityReply$Type extends MessageType<ListActivityReply> {
     constructor() {
         super("ada.ListActivityReply", [
             { no: 1, name: "page", kind: "message", T: () => ModelPage },
-            { no: 2, name: "List", kind: "message", jsonName: "List", repeat: 1 /*RepeatType.PACKED*/, T: () => ActivityDetails },
+            { no: 2, name: "List", kind: "message", jsonName: "List", repeat: 2 /*RepeatType.UNPACKED*/, T: () => ActivityDetails },
             { no: 3, name: "exhausted", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
@@ -15472,7 +15500,7 @@ export const GetActivityReply = new GetActivityReply$Type();
 class ListSensitiveEntryReq$Type extends MessageType<ListSensitiveEntryReq> {
     constructor() {
         super("ada.ListSensitiveEntryReq", [
-            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/, options: { "validator.field": { intGt: "0" } } },
             { no: 2, name: "pageSize", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 3, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "domain", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
@@ -15592,7 +15620,7 @@ class ListSensitiveEntryReply$Type extends MessageType<ListSensitiveEntryReply> 
     constructor() {
         super("ada.ListSensitiveEntryReply", [
             { no: 1, name: "page", kind: "message", T: () => ModelPage },
-            { no: 2, name: "List", kind: "message", jsonName: "List", repeat: 1 /*RepeatType.PACKED*/, T: () => ListSensitiveEntryReply_Details },
+            { no: 2, name: "List", kind: "message", jsonName: "List", repeat: 2 /*RepeatType.UNPACKED*/, T: () => ListSensitiveEntryReply_Details },
             { no: 3, name: "exhausted", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
@@ -15740,7 +15768,7 @@ export const ListSensitiveEntryReply_Details = new ListSensitiveEntryReply_Detai
 class AddSensitiveEntryReq$Type extends MessageType<AddSensitiveEntryReq> {
     constructor() {
         super("ada.AddSensitiveEntryReq", [
-            { no: 1, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 1, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "user|group|computer|honeyuser" } } },
             { no: 2, name: "domain", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
@@ -15850,7 +15878,7 @@ export const AddSensitiveEntryReply = new AddSensitiveEntryReply$Type();
 class ListDomainEntryReq$Type extends MessageType<ListDomainEntryReq> {
     constructor() {
         super("ada.ListDomainEntryReq", [
-            { no: 1, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 1, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "user|group|computer|honeyuser" } } },
             { no: 2, name: "domain", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "search", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
@@ -16054,7 +16082,7 @@ export const DeleteSensitiveEntryReply = new DeleteSensitiveEntryReply$Type();
 class ListThreatWhitelistReq$Type extends MessageType<ListThreatWhitelistReq> {
     constructor() {
         super("ada.ListThreatWhitelistReq", [
-            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/, options: { "validator.field": { intGt: "0" } } },
             { no: 2, name: "pageSize", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 3, name: "ruleId", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "domain", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
@@ -16174,7 +16202,7 @@ class ListThreatWhitelistReply$Type extends MessageType<ListThreatWhitelistReply
     constructor() {
         super("ada.ListThreatWhitelistReply", [
             { no: 1, name: "page", kind: "message", T: () => ModelPage },
-            { no: 2, name: "List", kind: "message", jsonName: "List", repeat: 1 /*RepeatType.PACKED*/, T: () => ListThreatWhitelistReply_Details },
+            { no: 2, name: "List", kind: "message", jsonName: "List", repeat: 2 /*RepeatType.UNPACKED*/, T: () => ListThreatWhitelistReply_Details },
             { no: 3, name: "exhausted", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
@@ -16240,7 +16268,7 @@ class ListThreatWhitelistReply_Details$Type extends MessageType<ListThreatWhitel
             { no: 3, name: "ruleName", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "ruleType", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 5, name: "domain", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 6, name: "rules", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => ListThreatWhitelistReply_Details_ruleInfo },
+            { no: 6, name: "rules", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => ListThreatWhitelistReply_Details_ruleInfo },
             { no: 7, name: "origin", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 8, name: "remark", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 9, name: "createTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
@@ -16513,8 +16541,8 @@ class AddThreatWhitelistReq$Type extends MessageType<AddThreatWhitelistReq> {
         super("ada.AddThreatWhitelistReq", [
             { no: 1, name: "ruleId", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "domain", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 3, name: "rules", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => AddThreatWhitelistReq_ruleInfo },
-            { no: 4, name: "origin", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 3, name: "rules", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => AddThreatWhitelistReq_ruleInfo },
+            { no: 4, name: "origin", kind: "scalar", T: 5 /*ScalarType.INT32*/, options: { "validator.field": { intGt: "0", intLt: "3" } } },
             { no: 5, name: "remark", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
@@ -16701,7 +16729,7 @@ class UpdateThreatWhitelistReq$Type extends MessageType<UpdateThreatWhitelistReq
     constructor() {
         super("ada.UpdateThreatWhitelistReq", [
             { no: 1, name: "ID", kind: "scalar", jsonName: "ID", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "rules", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => UpdateThreatWhitelistReq_ruleInfo },
+            { no: 2, name: "rules", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => UpdateThreatWhitelistReq_ruleInfo },
             { no: 3, name: "remark", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
@@ -16967,7 +16995,7 @@ export const DeleteThreatWhitelistReply = new DeleteThreatWhitelistReply$Type();
 class ListThreatBlockReq$Type extends MessageType<ListThreatBlockReq> {
     constructor() {
         super("ada.ListThreatBlockReq", [
-            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/, options: { "validator.field": { intGt: "0" } } },
             { no: 2, name: "pageSize", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 4, name: "domain", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 5, name: "origin", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ },
@@ -17071,7 +17099,7 @@ class ListThreatBlockReply$Type extends MessageType<ListThreatBlockReply> {
     constructor() {
         super("ada.ListThreatBlockReply", [
             { no: 1, name: "page", kind: "message", T: () => ModelPage },
-            { no: 2, name: "List", kind: "message", jsonName: "List", repeat: 1 /*RepeatType.PACKED*/, T: () => ListThreatBlockReply_Details },
+            { no: 2, name: "List", kind: "message", jsonName: "List", repeat: 2 /*RepeatType.UNPACKED*/, T: () => ListThreatBlockReply_Details },
             { no: 3, name: "exhausted", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
@@ -17203,7 +17231,7 @@ class ListThreatBlockReply_Details$Type extends MessageType<ListThreatBlockReply
             { no: 6, name: "ipBlock", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
             { no: 7, name: "userList", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 8, name: "ipList", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
-            { no: 9, name: "results", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => ListThreatBlockReply_Results },
+            { no: 9, name: "results", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => ListThreatBlockReply_Results },
             { no: 10, name: "remark", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 11, name: "createTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 12, name: "updateTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
@@ -17709,7 +17737,7 @@ class ScanRiskStatsReq$Type extends MessageType<ScanRiskStatsReq> {
     constructor() {
         super("ada.ScanRiskStatsReq", [
             { no: 1, name: "domain", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 2, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "baseline|leak" } } }
         ]);
     }
     create(value?: PartialMessage<ScanRiskStatsReq>): ScanRiskStatsReq {
@@ -17763,7 +17791,7 @@ export const ScanRiskStatsReq = new ScanRiskStatsReq$Type();
 class ScanRiskStatsReply$Type extends MessageType<ScanRiskStatsReply> {
     constructor() {
         super("ada.ScanRiskStatsReply", [
-            { no: 1, name: "List", kind: "message", jsonName: "List", repeat: 1 /*RepeatType.PACKED*/, T: () => ScanRiskStatsReply_Details }
+            { no: 1, name: "List", kind: "message", jsonName: "List", repeat: 2 /*RepeatType.UNPACKED*/, T: () => ScanRiskStatsReply_Details }
         ]);
     }
     create(value?: PartialMessage<ScanRiskStatsReply>): ScanRiskStatsReply {
@@ -17881,7 +17909,7 @@ export const ScanRiskStatsReply_Details = new ScanRiskStatsReply_Details$Type();
 class ListBaselineReq$Type extends MessageType<ListBaselineReq> {
     constructor() {
         super("ada.ListBaselineReq", [
-            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/, options: { "validator.field": { intGt: "0" } } },
             { no: 2, name: "pageSize", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 3, name: "domain", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "subType", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
@@ -18001,7 +18029,7 @@ class ListBaselineReply$Type extends MessageType<ListBaselineReply> {
     constructor() {
         super("ada.ListBaselineReply", [
             { no: 1, name: "page", kind: "message", T: () => ModelPage },
-            { no: 2, name: "List", kind: "message", jsonName: "List", repeat: 1 /*RepeatType.PACKED*/, T: () => ListBaselineReply_Details },
+            { no: 2, name: "List", kind: "message", jsonName: "List", repeat: 2 /*RepeatType.UNPACKED*/, T: () => ListBaselineReply_Details },
             { no: 3, name: "exhausted", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
@@ -18217,7 +18245,7 @@ class GetBaselineReply$Type extends MessageType<GetBaselineReply> {
             { no: 3, name: "domain", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "subType", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 5, name: "level", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
-            { no: 6, name: "entries", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => GetBaselineReply_entryInfo },
+            { no: 6, name: "entries", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => GetBaselineReply_entryInfo },
             { no: 7, name: "result", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 8, name: "desc", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 9, name: "verify_desc", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
@@ -18410,7 +18438,7 @@ export const GetBaselineReply_entryInfo = new GetBaselineReply_entryInfo$Type();
 class ListLeakReq$Type extends MessageType<ListLeakReq> {
     constructor() {
         super("ada.ListLeakReq", [
-            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/, options: { "validator.field": { intGt: "0" } } },
             { no: 2, name: "pageSize", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 3, name: "domain", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "subType", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
@@ -18546,7 +18574,7 @@ class ListLeakReply$Type extends MessageType<ListLeakReply> {
     constructor() {
         super("ada.ListLeakReply", [
             { no: 1, name: "page", kind: "message", T: () => ModelPage },
-            { no: 2, name: "List", kind: "message", jsonName: "List", repeat: 1 /*RepeatType.PACKED*/, T: () => ListLeakReply_Details },
+            { no: 2, name: "List", kind: "message", jsonName: "List", repeat: 2 /*RepeatType.UNPACKED*/, T: () => ListLeakReply_Details },
             { no: 3, name: "exhausted", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
@@ -18734,7 +18762,7 @@ export const ListLeakReply_Details = new ListLeakReply_Details$Type();
 class ListWeakPwdReq$Type extends MessageType<ListWeakPwdReq> {
     constructor() {
         super("ada.ListWeakPwdReq", [
-            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/, options: { "validator.field": { intGt: "0" } } },
             { no: 2, name: "pageSize", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 3, name: "domain", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "locked", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ },
@@ -18838,7 +18866,7 @@ class ListWeakPwdReply$Type extends MessageType<ListWeakPwdReply> {
     constructor() {
         super("ada.ListWeakPwdReply", [
             { no: 1, name: "page", kind: "message", T: () => ModelPage },
-            { no: 2, name: "List", kind: "message", jsonName: "List", repeat: 1 /*RepeatType.PACKED*/, T: () => ListWeakPwdReply_Details },
+            { no: 2, name: "List", kind: "message", jsonName: "List", repeat: 2 /*RepeatType.UNPACKED*/, T: () => ListWeakPwdReply_Details },
             { no: 3, name: "exhausted", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
@@ -19010,11 +19038,11 @@ export const ListWeakPwdReply_Details = new ListWeakPwdReply_Details$Type();
 class ListScanTaskReq$Type extends MessageType<ListScanTaskReq> {
     constructor() {
         super("ada.ListScanTaskReq", [
-            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/, options: { "validator.field": { intGt: "0" } } },
             { no: 2, name: "pageSize", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
-            { no: 3, name: "cycle", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 4, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 5, name: "status", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "cycle", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "all|cycle|once" } } },
+            { no: 4, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "all|baseline|leak|weakpwd" } } },
+            { no: 5, name: "status", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "all|PENDING|RUNNING|FINISH|FAILURE" } } },
             { no: 6, name: "startTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 7, name: "endTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 8, name: "orderCreateTm", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
@@ -19122,7 +19150,7 @@ class ListScanTaskReply$Type extends MessageType<ListScanTaskReply> {
     constructor() {
         super("ada.ListScanTaskReply", [
             { no: 1, name: "page", kind: "message", T: () => ModelPage },
-            { no: 2, name: "List", kind: "message", jsonName: "List", repeat: 1 /*RepeatType.PACKED*/, T: () => ListScanTaskReply_Details },
+            { no: 2, name: "List", kind: "message", jsonName: "List", repeat: 2 /*RepeatType.UNPACKED*/, T: () => ListScanTaskReply_Details },
             { no: 3, name: "exhausted", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
@@ -19294,7 +19322,7 @@ export const ListScanTaskReply_Details = new ListScanTaskReply_Details$Type();
 class GetScanTaskReq$Type extends MessageType<GetScanTaskReq> {
     constructor() {
         super("ada.GetScanTaskReq", [
-            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/, options: { "validator.field": { intGt: "0" } } },
             { no: 2, name: "pageSize", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 3, name: "ID", kind: "scalar", jsonName: "ID", T: 9 /*ScalarType.STRING*/ }
         ]);
@@ -19360,7 +19388,7 @@ class GetScanTaskReply$Type extends MessageType<GetScanTaskReply> {
             { no: 1, name: "page", kind: "message", T: () => ModelPage },
             { no: 2, name: "headType", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "headField", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
-            { no: 4, name: "List", kind: "message", jsonName: "List", repeat: 1 /*RepeatType.PACKED*/, T: () => GetScanTaskReply_Details },
+            { no: 4, name: "List", kind: "message", jsonName: "List", repeat: 2 /*RepeatType.UNPACKED*/, T: () => GetScanTaskReply_Details },
             { no: 5, name: "exhausted", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
@@ -19570,7 +19598,7 @@ export const GetScanTaskReply_Details = new GetScanTaskReply_Details$Type();
 class AddScanTaskReq$Type extends MessageType<AddScanTaskReq> {
     constructor() {
         super("ada.AddScanTaskReq", [
-            { no: 1, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 1, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "all|baseline|leak|weakpwd" } } },
             { no: 2, name: "plans", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 9 /*ScalarType.STRING*/ } }
         ]);
     }
@@ -19689,7 +19717,7 @@ class RecheckScanTaskReq$Type extends MessageType<RecheckScanTaskReq> {
     constructor() {
         super("ada.RecheckScanTaskReq", [
             { no: 1, name: "ID", kind: "scalar", jsonName: "ID", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 2, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "baseline|leak|weakpwd" } } }
         ]);
     }
     create(value?: PartialMessage<RecheckScanTaskReq>): RecheckScanTaskReq {
@@ -19884,7 +19912,7 @@ export const DeleteScanTaskReply = new DeleteScanTaskReply$Type();
 class ListScanConfReq$Type extends MessageType<ListScanConfReq> {
     constructor() {
         super("ada.ListScanConfReq", [
-            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/, options: { "validator.field": { intGt: "0" } } },
             { no: 2, name: "pageSize", kind: "scalar", T: 5 /*ScalarType.INT32*/ }
         ]);
     }
@@ -19940,7 +19968,7 @@ class ListScanConfReply$Type extends MessageType<ListScanConfReply> {
     constructor() {
         super("ada.ListScanConfReply", [
             { no: 1, name: "page", kind: "message", T: () => ModelPage },
-            { no: 2, name: "List", kind: "message", jsonName: "List", repeat: 1 /*RepeatType.PACKED*/, T: () => scanConfDetail },
+            { no: 2, name: "List", kind: "message", jsonName: "List", repeat: 2 /*RepeatType.UNPACKED*/, T: () => scanConfDetail },
             { no: 3, name: "exhausted", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
@@ -20122,7 +20150,7 @@ class SetScanConfReq$Type extends MessageType<SetScanConfReq> {
         super("ada.SetScanConfReq", [
             { no: 1, name: "ID", kind: "scalar", jsonName: "ID", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "isEnable", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
-            { no: 3, name: "cycleType", kind: "scalar", T: 5 /*ScalarType.INT32*/ }
+            { no: 3, name: "cycleType", kind: "scalar", T: 5 /*ScalarType.INT32*/, options: { "validator.field": { intGt: "0", intLt: "4" } } }
         ]);
     }
     create(value?: PartialMessage<SetScanConfReq>): SetScanConfReq {
@@ -20323,7 +20351,7 @@ export const GetScanConfReply = new GetScanConfReply$Type();
 class GetScanTmplNamesReq$Type extends MessageType<GetScanTmplNamesReq> {
     constructor() {
         super("ada.GetScanTmplNamesReq", [
-            { no: 1, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 1, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "all|baseline|leak|weakpwd" } } }
         ]);
     }
     create(value?: PartialMessage<GetScanTmplNamesReq>): GetScanTmplNamesReq {
@@ -20370,7 +20398,7 @@ export const GetScanTmplNamesReq = new GetScanTmplNamesReq$Type();
 class GetScanTmplNamesReply$Type extends MessageType<GetScanTmplNamesReply> {
     constructor() {
         super("ada.GetScanTmplNamesReply", [
-            { no: 1, name: "List", kind: "message", jsonName: "List", repeat: 1 /*RepeatType.PACKED*/, T: () => GetScanTmplNamesReply_tmplNames }
+            { no: 1, name: "List", kind: "message", jsonName: "List", repeat: 2 /*RepeatType.UNPACKED*/, T: () => GetScanTmplNamesReply_tmplNames }
         ]);
     }
     create(value?: PartialMessage<GetScanTmplNamesReply>): GetScanTmplNamesReply {
@@ -20590,9 +20618,9 @@ export const UpdateScanConfReply = new UpdateScanConfReply$Type();
 class ListScanTmplReq$Type extends MessageType<ListScanTmplReq> {
     constructor() {
         super("ada.ListScanTmplReq", [
-            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/, options: { "validator.field": { intGt: "0" } } },
             { no: 2, name: "pageSize", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
-            { no: 3, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 3, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "all|baseline|leak|weakpwd" } } }
         ]);
     }
     create(value?: PartialMessage<ListScanTmplReq>): ListScanTmplReq {
@@ -20654,7 +20682,7 @@ class ListScanTmplReply$Type extends MessageType<ListScanTmplReply> {
     constructor() {
         super("ada.ListScanTmplReply", [
             { no: 1, name: "page", kind: "message", T: () => ModelPage },
-            { no: 2, name: "List", kind: "message", jsonName: "List", repeat: 1 /*RepeatType.PACKED*/, T: () => ListScanTmplReply_Details },
+            { no: 2, name: "List", kind: "message", jsonName: "List", repeat: 2 /*RepeatType.UNPACKED*/, T: () => ListScanTmplReply_Details },
             { no: 3, name: "exhausted", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
@@ -20947,7 +20975,7 @@ class GetScanTmplReply$Type extends MessageType<GetScanTmplReply> {
             { no: 1, name: "ID", kind: "scalar", jsonName: "ID", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 4, name: "Plugins", kind: "message", jsonName: "Plugins", repeat: 1 /*RepeatType.PACKED*/, T: () => pluginInfo },
+            { no: 4, name: "Plugins", kind: "message", jsonName: "Plugins", repeat: 2 /*RepeatType.UNPACKED*/, T: () => pluginInfo },
             { no: 5, name: "tmplType", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 6, name: "createTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 7, name: "updateTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
@@ -21041,7 +21069,7 @@ class UpdateScanTmplReq$Type extends MessageType<UpdateScanTmplReq> {
         super("ada.UpdateScanTmplReq", [
             { no: 1, name: "ID", kind: "scalar", jsonName: "ID", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 3, name: "Plugins", kind: "message", jsonName: "Plugins", repeat: 1 /*RepeatType.PACKED*/, T: () => pluginInfoV2 }
+            { no: 3, name: "Plugins", kind: "message", jsonName: "Plugins", repeat: 2 /*RepeatType.UNPACKED*/, T: () => pluginInfoV2 }
         ]);
     }
     create(value?: PartialMessage<UpdateScanTmplReq>): UpdateScanTmplReq {
@@ -21324,7 +21352,7 @@ class AddScanTmplReq$Type extends MessageType<AddScanTmplReq> {
         super("ada.AddScanTmplReq", [
             { no: 1, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 3, name: "Plugins", kind: "message", jsonName: "Plugins", repeat: 1 /*RepeatType.PACKED*/, T: () => pluginInfoV2 }
+            { no: 3, name: "Plugins", kind: "message", jsonName: "Plugins", repeat: 2 /*RepeatType.UNPACKED*/, T: () => pluginInfoV2 }
         ]);
     }
     create(value?: PartialMessage<AddScanTmplReq>): AddScanTmplReq {
@@ -21432,7 +21460,7 @@ export const AddScanTmplReply = new AddScanTmplReply$Type();
 class ListScanPluginReq$Type extends MessageType<ListScanPluginReq> {
     constructor() {
         super("ada.ListScanPluginReq", [
-            { no: 1, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 1, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "baseline|leak|weakpwd" } } }
         ]);
     }
     create(value?: PartialMessage<ListScanPluginReq>): ListScanPluginReq {
@@ -21479,7 +21507,7 @@ export const ListScanPluginReq = new ListScanPluginReq$Type();
 class ListScanPluginReply$Type extends MessageType<ListScanPluginReply> {
     constructor() {
         super("ada.ListScanPluginReply", [
-            { no: 1, name: "Plugins", kind: "message", jsonName: "Plugins", repeat: 1 /*RepeatType.PACKED*/, T: () => pluginInfo }
+            { no: 1, name: "Plugins", kind: "message", jsonName: "Plugins", repeat: 2 /*RepeatType.UNPACKED*/, T: () => pluginInfo }
         ]);
     }
     create(value?: PartialMessage<ListScanPluginReply>): ListScanPluginReply {
@@ -22289,7 +22317,7 @@ export const DashboardLogStatsReq = new DashboardLogStatsReq$Type();
 class DashboardLogStatsReply$Type extends MessageType<DashboardLogStatsReply> {
     constructor() {
         super("ada.DashboardLogStatsReply", [
-            { no: 1, name: "List", kind: "message", jsonName: "List", repeat: 1 /*RepeatType.PACKED*/, T: () => DashboardLogStatsReply_logStatsList }
+            { no: 1, name: "List", kind: "message", jsonName: "List", repeat: 2 /*RepeatType.UNPACKED*/, T: () => DashboardLogStatsReply_logStatsList }
         ]);
     }
     create(value?: PartialMessage<DashboardLogStatsReply>): DashboardLogStatsReply {
@@ -22399,7 +22427,7 @@ export const DashboardLogStatsReply_logStatsList = new DashboardLogStatsReply_lo
 class ListAlertRuleReq$Type extends MessageType<ListAlertRuleReq> {
     constructor() {
         super("ada.ListAlertRuleReq", [
-            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/, options: { "validator.field": { intGt: "0" } } },
             { no: 2, name: "pageSize", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 3, name: "level", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ },
             { no: 4, name: "status", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
@@ -22511,7 +22539,7 @@ class AttackFlowReply$Type extends MessageType<AttackFlowReply> {
     constructor() {
         super("ada.AttackFlowReply", [
             { no: 1, name: "desc", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "fields", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => AttackFlowReply_Field },
+            { no: 2, name: "fields", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => AttackFlowReply_Field },
             { no: 3, name: "relates", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
         ]);
     }
@@ -22653,7 +22681,8 @@ class AlertRuleInfo$Type extends MessageType<AlertRuleInfo> {
             { no: 15, name: "attackFlow", kind: "message", T: () => AttackFlowReply },
             { no: 16, name: "uniqueFilter", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 17, name: "createTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 18, name: "updateTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 18, name: "updateTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 19, name: "ruleOrigin", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<AlertRuleInfo>): AlertRuleInfo {
@@ -22675,6 +22704,7 @@ class AlertRuleInfo$Type extends MessageType<AlertRuleInfo> {
         message.uniqueFilter = [];
         message.createTm = "";
         message.updateTm = "";
+        message.ruleOrigin = "";
         if (value !== undefined)
             reflectionMergePartial<AlertRuleInfo>(this, message, value);
         return message;
@@ -22737,6 +22767,9 @@ class AlertRuleInfo$Type extends MessageType<AlertRuleInfo> {
                     break;
                 case /* string updateTm */ 18:
                     message.updateTm = reader.string();
+                    break;
+                case /* string ruleOrigin */ 19:
+                    message.ruleOrigin = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -22804,6 +22837,9 @@ class AlertRuleInfo$Type extends MessageType<AlertRuleInfo> {
         /* string updateTm = 18; */
         if (message.updateTm !== "")
             writer.tag(18, WireType.LengthDelimited).string(message.updateTm);
+        /* string ruleOrigin = 19; */
+        if (message.ruleOrigin !== "")
+            writer.tag(19, WireType.LengthDelimited).string(message.ruleOrigin);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -22819,7 +22855,7 @@ class ListAlertRuleReply$Type extends MessageType<ListAlertRuleReply> {
     constructor() {
         super("ada.ListAlertRuleReply", [
             { no: 1, name: "page", kind: "message", T: () => ModelPage },
-            { no: 2, name: "rules", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => AlertRuleInfo }
+            { no: 2, name: "rules", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => AlertRuleInfo }
         ]);
     }
     create(value?: PartialMessage<ListAlertRuleReply>): ListAlertRuleReply {
@@ -22872,7 +22908,7 @@ export const ListAlertRuleReply = new ListAlertRuleReply$Type();
 class AlertDetection$Type extends MessageType<AlertDetection> {
     constructor() {
         super("ada.AlertDetection", [
-            { no: 1, name: "eventType", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 1, name: "eventType", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { regex: "count|multi_eve|multi_pkt|multi_eve_pkt" } } },
             { no: 2, name: "winSize", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "sorted", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
             { no: 4, name: "sigmaRules", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
@@ -22952,10 +22988,10 @@ class AddAlertRuleReq$Type extends MessageType<AddAlertRuleReq> {
     constructor() {
         super("ada.AddAlertRuleReq", [
             { no: 1, name: "iD", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "title", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "title", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { stringNotEmpty: true } } },
             { no: 3, name: "description", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "enable", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
-            { no: 5, name: "level", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 5, name: "level", kind: "scalar", T: 5 /*ScalarType.INT32*/, options: { "validator.field": { intGt: "0", intLt: "6" } } },
             { no: 6, name: "status", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 7, name: "tags", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 8, name: "logsource", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
@@ -22966,7 +23002,8 @@ class AddAlertRuleReq$Type extends MessageType<AddAlertRuleReq> {
             { no: 13, name: "author", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 14, name: "autoBlock", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
             { no: 15, name: "attackFlow", kind: "message", T: () => AttackFlowReply },
-            { no: 16, name: "uniqueFilter", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
+            { no: 16, name: "uniqueFilter", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 17, name: "ruleOrigin", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<AddAlertRuleReq>): AddAlertRuleReq {
@@ -22985,6 +23022,7 @@ class AddAlertRuleReq$Type extends MessageType<AddAlertRuleReq> {
         message.author = "";
         message.autoBlock = false;
         message.uniqueFilter = [];
+        message.ruleOrigin = "";
         if (value !== undefined)
             reflectionMergePartial<AddAlertRuleReq>(this, message, value);
         return message;
@@ -23041,6 +23079,9 @@ class AddAlertRuleReq$Type extends MessageType<AddAlertRuleReq> {
                     break;
                 case /* repeated string uniqueFilter */ 16:
                     message.uniqueFilter.push(reader.string());
+                    break;
+                case /* string ruleOrigin */ 17:
+                    message.ruleOrigin = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -23102,6 +23143,9 @@ class AddAlertRuleReq$Type extends MessageType<AddAlertRuleReq> {
         /* repeated string uniqueFilter = 16; */
         for (let i = 0; i < message.uniqueFilter.length; i++)
             writer.tag(16, WireType.LengthDelimited).string(message.uniqueFilter[i]);
+        /* string ruleOrigin = 17; */
+        if (message.ruleOrigin !== "")
+            writer.tag(17, WireType.LengthDelimited).string(message.ruleOrigin);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -23171,7 +23215,7 @@ export const AddAlertRuleReply = new AddAlertRuleReply$Type();
 class UpdateAlertRuleReq$Type extends MessageType<UpdateAlertRuleReq> {
     constructor() {
         super("ada.UpdateAlertRuleReq", [
-            { no: 1, name: "ID", kind: "scalar", jsonName: "ID", T: 9 /*ScalarType.STRING*/ },
+            { no: 1, name: "ID", kind: "scalar", jsonName: "ID", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { stringNotEmpty: true } } },
             { no: 2, name: "title", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "description", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "enable", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
@@ -23186,7 +23230,8 @@ class UpdateAlertRuleReq$Type extends MessageType<UpdateAlertRuleReq> {
             { no: 13, name: "author", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 14, name: "autoBlock", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
             { no: 15, name: "attackFlow", kind: "message", T: () => AttackFlowReply },
-            { no: 16, name: "uniqueFilter", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
+            { no: 16, name: "uniqueFilter", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 17, name: "ruleOrigin", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<UpdateAlertRuleReq>): UpdateAlertRuleReq {
@@ -23205,6 +23250,7 @@ class UpdateAlertRuleReq$Type extends MessageType<UpdateAlertRuleReq> {
         message.author = "";
         message.autoBlock = false;
         message.uniqueFilter = [];
+        message.ruleOrigin = "";
         if (value !== undefined)
             reflectionMergePartial<UpdateAlertRuleReq>(this, message, value);
         return message;
@@ -23261,6 +23307,9 @@ class UpdateAlertRuleReq$Type extends MessageType<UpdateAlertRuleReq> {
                     break;
                 case /* repeated string uniqueFilter */ 16:
                     message.uniqueFilter.push(reader.string());
+                    break;
+                case /* string ruleOrigin */ 17:
+                    message.ruleOrigin = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -23322,6 +23371,9 @@ class UpdateAlertRuleReq$Type extends MessageType<UpdateAlertRuleReq> {
         /* repeated string uniqueFilter = 16; */
         for (let i = 0; i < message.uniqueFilter.length; i++)
             writer.tag(16, WireType.LengthDelimited).string(message.uniqueFilter[i]);
+        /* string ruleOrigin = 17; */
+        if (message.ruleOrigin !== "")
+            writer.tag(17, WireType.LengthDelimited).string(message.ruleOrigin);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -23383,7 +23435,7 @@ export const UpdateAlertRuleReply = new UpdateAlertRuleReply$Type();
 class DeleteAlertRuleReq$Type extends MessageType<DeleteAlertRuleReq> {
     constructor() {
         super("ada.DeleteAlertRuleReq", [
-            { no: 1, name: "ID", kind: "scalar", jsonName: "ID", T: 9 /*ScalarType.STRING*/ }
+            { no: 1, name: "ID", kind: "scalar", jsonName: "ID", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { stringNotEmpty: true } } }
         ]);
     }
     create(value?: PartialMessage<DeleteAlertRuleReq>): DeleteAlertRuleReq {
@@ -23899,7 +23951,7 @@ export const GetActivityRuleNamesReq = new GetActivityRuleNamesReq$Type();
 class GetActivityRuleNamesReply$Type extends MessageType<GetActivityRuleNamesReply> {
     constructor() {
         super("ada.GetActivityRuleNamesReply", [
-            { no: 1, name: "rules", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => RuleNameItem }
+            { no: 1, name: "rules", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => RuleNameItem }
         ]);
     }
     create(value?: PartialMessage<GetActivityRuleNamesReply>): GetActivityRuleNamesReply {
@@ -24018,7 +24070,7 @@ export const GetActivityRuleUniqueFieldsReply = new GetActivityRuleUniqueFieldsR
 class ListActivityRuleReq$Type extends MessageType<ListActivityRuleReq> {
     constructor() {
         super("ada.ListActivityRuleReq", [
-            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 1, name: "pageIdx", kind: "scalar", T: 5 /*ScalarType.INT32*/, options: { "validator.field": { intGt: "0" } } },
             { no: 2, name: "pageSize", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 3, name: "IDs", kind: "scalar", jsonName: "IDs", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "level", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ },
@@ -24159,7 +24211,8 @@ class ActivityRuleInfo$Type extends MessageType<ActivityRuleInfo> {
             { no: 12, name: "uniqueFields", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 13, name: "author", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 14, name: "createTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 15, name: "updateTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 15, name: "updateTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 16, name: "ruleOrigin", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<ActivityRuleInfo>): ActivityRuleInfo {
@@ -24179,6 +24232,7 @@ class ActivityRuleInfo$Type extends MessageType<ActivityRuleInfo> {
         message.author = "";
         message.createTm = "";
         message.updateTm = "";
+        message.ruleOrigin = "";
         if (value !== undefined)
             reflectionMergePartial<ActivityRuleInfo>(this, message, value);
         return message;
@@ -24232,6 +24286,9 @@ class ActivityRuleInfo$Type extends MessageType<ActivityRuleInfo> {
                     break;
                 case /* string updateTm */ 15:
                     message.updateTm = reader.string();
+                    break;
+                case /* string ruleOrigin */ 16:
+                    message.ruleOrigin = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -24290,6 +24347,9 @@ class ActivityRuleInfo$Type extends MessageType<ActivityRuleInfo> {
         /* string updateTm = 15; */
         if (message.updateTm !== "")
             writer.tag(15, WireType.LengthDelimited).string(message.updateTm);
+        /* string ruleOrigin = 16; */
+        if (message.ruleOrigin !== "")
+            writer.tag(16, WireType.LengthDelimited).string(message.ruleOrigin);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -24305,7 +24365,7 @@ class ListActivityRuleReply$Type extends MessageType<ListActivityRuleReply> {
     constructor() {
         super("ada.ListActivityRuleReply", [
             { no: 1, name: "page", kind: "message", T: () => ModelPage },
-            { no: 2, name: "rules", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => ActivityRuleInfo }
+            { no: 2, name: "rules", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => ActivityRuleInfo }
         ]);
     }
     create(value?: PartialMessage<ListActivityRuleReply>): ListActivityRuleReply {
@@ -24358,7 +24418,7 @@ export const ListActivityRuleReply = new ListActivityRuleReply$Type();
 class GetActivityRuleReq$Type extends MessageType<GetActivityRuleReq> {
     constructor() {
         super("ada.GetActivityRuleReq", [
-            { no: 1, name: "ID", kind: "scalar", jsonName: "ID", T: 9 /*ScalarType.STRING*/ }
+            { no: 1, name: "ID", kind: "scalar", jsonName: "ID", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { stringNotEmpty: true } } }
         ]);
     }
     create(value?: PartialMessage<GetActivityRuleReq>): GetActivityRuleReq {
@@ -24419,7 +24479,8 @@ class GetActivityRuleReply$Type extends MessageType<GetActivityRuleReply> {
             { no: 12, name: "uniqueFields", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 13, name: "author", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 14, name: "createTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 15, name: "updateTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 15, name: "updateTm", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 16, name: "ruleOrigin", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<GetActivityRuleReply>): GetActivityRuleReply {
@@ -24439,6 +24500,7 @@ class GetActivityRuleReply$Type extends MessageType<GetActivityRuleReply> {
         message.author = "";
         message.createTm = "";
         message.updateTm = "";
+        message.ruleOrigin = "";
         if (value !== undefined)
             reflectionMergePartial<GetActivityRuleReply>(this, message, value);
         return message;
@@ -24492,6 +24554,9 @@ class GetActivityRuleReply$Type extends MessageType<GetActivityRuleReply> {
                     break;
                 case /* string updateTm */ 15:
                     message.updateTm = reader.string();
+                    break;
+                case /* string ruleOrigin */ 16:
+                    message.ruleOrigin = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -24550,6 +24615,9 @@ class GetActivityRuleReply$Type extends MessageType<GetActivityRuleReply> {
         /* string updateTm = 15; */
         if (message.updateTm !== "")
             writer.tag(15, WireType.LengthDelimited).string(message.updateTm);
+        /* string ruleOrigin = 16; */
+        if (message.ruleOrigin !== "")
+            writer.tag(16, WireType.LengthDelimited).string(message.ruleOrigin);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -24564,19 +24632,20 @@ export const GetActivityRuleReply = new GetActivityRuleReply$Type();
 class AddActivityRuleReq$Type extends MessageType<AddActivityRuleReq> {
     constructor() {
         super("ada.AddActivityRuleReq", [
-            { no: 1, name: "ID", kind: "scalar", jsonName: "ID", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "title", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 1, name: "ID", kind: "scalar", jsonName: "ID", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { stringNotEmpty: true } } },
+            { no: 2, name: "title", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { stringNotEmpty: true } } },
             { no: 3, name: "description", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 4, name: "level", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 4, name: "level", kind: "scalar", T: 5 /*ScalarType.INT32*/, options: { "validator.field": { intGt: "0", intLt: "6" } } },
             { no: 5, name: "status", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 6, name: "tags", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 7, name: "logsource", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 8, name: "references", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
-            { no: 9, name: "detection", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 9, name: "detection", kind: "scalar", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { stringNotEmpty: true } } },
             { no: 10, name: "rdxKey", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 11, name: "fields", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 12, name: "uniqueFields", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
-            { no: 13, name: "author", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 13, name: "author", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 14, name: "ruleOrigin", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<AddActivityRuleReq>): AddActivityRuleReq {
@@ -24594,6 +24663,7 @@ class AddActivityRuleReq$Type extends MessageType<AddActivityRuleReq> {
         message.fields = [];
         message.uniqueFields = [];
         message.author = "";
+        message.ruleOrigin = "";
         if (value !== undefined)
             reflectionMergePartial<AddActivityRuleReq>(this, message, value);
         return message;
@@ -24641,6 +24711,9 @@ class AddActivityRuleReq$Type extends MessageType<AddActivityRuleReq> {
                     break;
                 case /* string author */ 13:
                     message.author = reader.string();
+                    break;
+                case /* string ruleOrigin */ 14:
+                    message.ruleOrigin = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -24693,6 +24766,9 @@ class AddActivityRuleReq$Type extends MessageType<AddActivityRuleReq> {
         /* string author = 13; */
         if (message.author !== "")
             writer.tag(13, WireType.LengthDelimited).string(message.author);
+        /* string ruleOrigin = 14; */
+        if (message.ruleOrigin !== "")
+            writer.tag(14, WireType.LengthDelimited).string(message.ruleOrigin);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -24762,7 +24838,7 @@ export const AddActivityRuleReply = new AddActivityRuleReply$Type();
 class UpdateActivityRuleReq$Type extends MessageType<UpdateActivityRuleReq> {
     constructor() {
         super("ada.UpdateActivityRuleReq", [
-            { no: 1, name: "ID", kind: "scalar", jsonName: "ID", T: 9 /*ScalarType.STRING*/ },
+            { no: 1, name: "ID", kind: "scalar", jsonName: "ID", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { stringNotEmpty: true } } },
             { no: 2, name: "title", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "description", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "level", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
@@ -24774,7 +24850,8 @@ class UpdateActivityRuleReq$Type extends MessageType<UpdateActivityRuleReq> {
             { no: 10, name: "rdxKey", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 11, name: "fields", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 12, name: "uniqueFields", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
-            { no: 13, name: "author", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 13, name: "author", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 14, name: "ruleOrigin", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<UpdateActivityRuleReq>): UpdateActivityRuleReq {
@@ -24792,6 +24869,7 @@ class UpdateActivityRuleReq$Type extends MessageType<UpdateActivityRuleReq> {
         message.fields = [];
         message.uniqueFields = [];
         message.author = "";
+        message.ruleOrigin = "";
         if (value !== undefined)
             reflectionMergePartial<UpdateActivityRuleReq>(this, message, value);
         return message;
@@ -24839,6 +24917,9 @@ class UpdateActivityRuleReq$Type extends MessageType<UpdateActivityRuleReq> {
                     break;
                 case /* string author */ 13:
                     message.author = reader.string();
+                    break;
+                case /* string ruleOrigin */ 14:
+                    message.ruleOrigin = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -24891,6 +24972,9 @@ class UpdateActivityRuleReq$Type extends MessageType<UpdateActivityRuleReq> {
         /* string author = 13; */
         if (message.author !== "")
             writer.tag(13, WireType.LengthDelimited).string(message.author);
+        /* string ruleOrigin = 14; */
+        if (message.ruleOrigin !== "")
+            writer.tag(14, WireType.LengthDelimited).string(message.ruleOrigin);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -24952,7 +25036,7 @@ export const UpdateActivityRuleReply = new UpdateActivityRuleReply$Type();
 class DeleteActivityRuleReq$Type extends MessageType<DeleteActivityRuleReq> {
     constructor() {
         super("ada.DeleteActivityRuleReq", [
-            { no: 1, name: "ID", kind: "scalar", jsonName: "ID", T: 9 /*ScalarType.STRING*/ }
+            { no: 1, name: "ID", kind: "scalar", jsonName: "ID", T: 9 /*ScalarType.STRING*/, options: { "validator.field": { stringNotEmpty: true } } }
         ]);
     }
     create(value?: PartialMessage<DeleteActivityRuleReq>): DeleteActivityRuleReq {

@@ -48,12 +48,13 @@
 					<!-- Attack Flow Fields Tags -->
 					<div class="field-tags" v-if="filteredFieldData.length">
 						<el-space wrap :size="8">
-							<el-tooltip v-for="field in filteredFieldData" :key="field.fullKey" placement="top">
+							<el-tooltip v-for="field in filteredFieldData" :key="field.key" placement="top">
 								<template #content>
-									<div style="max-width: 300px">
-										<strong>{{ field.key }}</strong
-										><br />
-										{{ field.fullKey }}
+									<div style="max-width: 360px">
+										<strong>{{ field.key }}</strong>
+										<div v-for="source in field.sources" :key="source.key" class="field-source">
+											{{ source.key }}: {{ source.value }}
+										</div>
 									</div>
 								</template>
 								<el-tag type="info" size="default">
@@ -147,7 +148,7 @@
 						<el-table-column :label="$t('message.threat.tableTitle.level')" width="100" align="center">
 							<template #default="scope">
 								<el-tag :type="getLevelType(scope.row.level)" effect="dark">
-									{{ $t(`message.threat.level.${scope.row.level}`) }}
+									{{ formatLevelText(scope.row.level) }}
 								</el-tag>
 							</template>
 						</el-table-column>
@@ -158,16 +159,16 @@
 								</el-space>
 							</template>
 						</el-table-column>
-						<el-table-column :label="$t('message.tableCommon.operate')" width="200" align="center" fixed="right">
+						<el-table-column :label="$t('message.tableCommon.operate')" width="120" align="center" fixed="right">
 							<template #default="scope">
-								<el-button size="small" type="primary" link @click.stop="handleViewRule(scope.row)">
-									<el-icon style="margin-right: 4px"><View /></el-icon>
-									{{ $t('message.tableCommon.view') }}
-								</el-button>
-								<el-button size="small" type="success" link @click.stop="handleViewInKibana(scope.row, scope.$index)">
-									<el-icon style="margin-right: 4px"><Link /></el-icon>
-									Kibana
-								</el-button>
+								<el-space :size="8" class="operation-actions">
+									<el-tooltip :content="T('viewRule')" placement="top">
+										<el-button size="small" type="primary" :icon="View" circle @click.stop="handleViewRule(scope.row)" />
+									</el-tooltip>
+									<el-tooltip :content="T('openKibana')" placement="top">
+										<el-button size="small" type="success" :icon="Link" circle @click.stop="handleViewInKibana(scope.row, scope.$index)" />
+									</el-tooltip>
+								</el-space>
 							</template>
 						</el-table-column>
 					</el-table>
@@ -194,84 +195,81 @@
 							<span class="card-title">{{ $t('message.threat.detail.description') }}</span>
 						</div>
 					</template>
-					<el-collapse v-model="state.activeCollapse" accordion>
-						<!-- Threat Description -->
-						<el-collapse-item name="desc">
-							<template #title>
-								<div class="collapse-title">
-									<el-icon class="collapse-icon"><Tickets /></el-icon>
-									<span>{{ T('threatDesc') }}</span>
+						<el-collapse v-model="state.activeCollapse" accordion>
+							<!-- Threat Description -->
+							<el-collapse-item name="desc">
+								<template #title>
+									<div class="collapse-title">
+										<el-icon class="collapse-icon"><Tickets /></el-icon>
+										<span>{{ T('threatDesc') }}</span>
+									</div>
+								</template>
+								<div class="collapse-content">
+									<p class="content-text">{{ threatDescription }}</p>
 								</div>
-							</template>
-							<div class="collapse-content">
-								<el-empty v-if="!state.data?.desc" description="No description available" :image-size="60" />
-								<p v-else class="content-text">{{ state.data?.desc }}</p>
-							</div>
-						</el-collapse-item>
-						<!-- Remediation Suggestions -->
-						<el-collapse-item name="suggestion">
-							<template #title>
-								<div class="collapse-title">
-									<el-icon class="collapse-icon"><Warning /></el-icon>
-									<span>{{ T('suggestion') }}</span>
+							</el-collapse-item>
+							<!-- Remediation Suggestions -->
+							<el-collapse-item name="suggestion">
+								<template #title>
+									<div class="collapse-title">
+										<el-icon class="collapse-icon"><Warning /></el-icon>
+										<span>{{ T('suggestion') }}</span>
+									</div>
+								</template>
+								<div class="collapse-content">
+									<p class="content-text">{{ suggestionText }}</p>
 								</div>
-							</template>
-							<div class="collapse-content">
-								<el-empty v-if="!state.data?.suggestion" description="No suggestion available" :image-size="60" />
-								<p v-else class="content-text">{{ state.data?.suggestion }}</p>
-							</div>
-						</el-collapse-item>
-						<!-- References -->
-						<el-collapse-item name="verify">
-							<template #title>
-								<div class="collapse-title">
-									<el-icon class="collapse-icon"><Link /></el-icon>
-									<span>{{ T('verifyDesc') }}</span>
-									<el-badge v-if="state.data?.references?.length" :value="state.data.references.length" class="reference-badge" type="primary" />
-								</div>
-							</template>
-							<div class="collapse-content">
-								<el-empty v-if="!state.data?.references?.length" description="No references available" :image-size="60" />
-								<div v-else class="reference-list">
-									<div v-for="(ref, index) in state.data.references" :key="index" class="reference-item">
-										<el-icon class="reference-icon"><Document /></el-icon>
-										<a v-if="isUrl(ref)" :href="ref" target="_blank" rel="noopener noreferrer" class="reference-link">
-											{{ ref }}
-											<el-icon class="external-link-icon"><TopRight /></el-icon>
-										</a>
-										<span v-else class="reference-text">{{ ref }}</span>
+							</el-collapse-item>
+							<!-- References -->
+							<el-collapse-item name="verify">
+								<template #title>
+									<div class="collapse-title">
+										<el-icon class="collapse-icon"><Link /></el-icon>
+										<span>{{ T('verifyDesc') }}</span>
+										<el-badge v-if="state.data?.references?.length" :value="state.data.references.length" class="reference-badge" type="primary" />
+									</div>
+								</template>
+								<div class="collapse-content">
+									<el-empty v-if="!state.data?.references?.length" :description="T('emptyReferences')" :image-size="60" />
+									<div v-else class="reference-list">
+										<div v-for="(ref, index) in state.data.references" :key="index" class="reference-item">
+											<el-icon class="reference-icon"><Document /></el-icon>
+											<a v-if="isUrl(ref)" :href="ref" target="_blank" rel="noopener noreferrer" class="reference-link">
+												{{ ref }}
+												<el-icon class="external-link-icon"><TopRight /></el-icon>
+											</a>
+											<span v-else class="reference-text">{{ ref }}</span>
+										</div>
 									</div>
 								</div>
-							</div>
-						</el-collapse-item>
-						<!-- Remarks -->
-						<el-collapse-item name="remark">
-							<template #title>
-								<div class="collapse-title">
-									<el-icon class="collapse-icon"><EditPen /></el-icon>
-									<span>{{ T('remark') }}</span>
-									<el-badge v-if="remarkHistory.length" :value="remarkHistory.length" class="reference-badge" type="primary" />
-									<el-button v-if="state.data" size="small" type="primary" link @click.stop="openRemarkDialog" style="margin-left: auto">
-										<el-icon><Edit /></el-icon>
-										{{ $t('message.tableCommon.edit') }}
-									</el-button>
-								</div>
-							</template>
-							<div class="collapse-content">
-								<el-empty v-if="!remarkHistory.length" description="No remarks available" :image-size="60" />
-								<el-timeline v-else class="remark-timeline">
-									<el-timeline-item v-for="(item, index) in remarkHistory" :key="index" :color="index === 0 ? '#409eff' : '#909399'">
-										<div class="remark-item">
-											<div class="remark-header">
-												<el-tag size="small" type="info">{{ item.user }}</el-tag>
-												<span class="remark-time">{{ item.time }}</span>
+							</el-collapse-item>
+							<!-- Remarks -->
+							<el-collapse-item name="remark">
+								<template #title>
+									<div class="collapse-title">
+										<el-icon class="collapse-icon"><EditPen /></el-icon>
+										<span>{{ T('remark') }}</span>
+										<el-badge v-if="remarkHistory.length" :value="remarkHistory.length" class="reference-badge" type="primary" />
+										<el-tooltip v-if="state.data" :content="T('editRemark')" placement="top">
+											<el-button class="remark-edit-button" size="small" type="primary" :icon="Edit" circle @click.stop="openRemarkDialog" />
+										</el-tooltip>
+									</div>
+								</template>
+								<div class="collapse-content">
+									<el-empty v-if="!remarkHistory.length" :description="T('emptyRemarks')" :image-size="60" />
+									<el-timeline v-else class="remark-timeline">
+										<el-timeline-item v-for="(item, index) in remarkHistory" :key="index" :color="index === 0 ? '#409eff' : '#909399'">
+											<div class="remark-item">
+												<div class="remark-header">
+													<el-tag size="small" type="info">{{ item.user }}</el-tag>
+													<span class="remark-time">{{ item.time }}</span>
+												</div>
+												<div class="remark-text">{{ item.text }}</div>
 											</div>
-											<div class="remark-text">{{ item.text }}</div>
-										</div>
-									</el-timeline-item>
-								</el-timeline>
-							</div>
-						</el-collapse-item>
+										</el-timeline-item>
+									</el-timeline>
+								</div>
+							</el-collapse-item>
 					</el-collapse>
 				</el-card>
 			</div>
@@ -382,6 +380,12 @@ interface RemarkItem {
 	text: string;
 }
 
+interface DisplayField {
+	key: string;
+	value: string;
+	sources: { key: string; value: string }[];
+}
+
 const state = reactive({
 	open: false,
 	loading: false,
@@ -446,6 +450,14 @@ const remarkHistory = computed<RemarkItem[]>(() => {
 		// If remark is not valid JSON, treat as legacy single remark
 		return [];
 	}
+});
+
+const threatDescription = computed(() => {
+	return state.data?.desc || state.data?.attackFlow?.desc || state.data?.title || T('emptyDescription');
+});
+
+const suggestionText = computed(() => {
+	return state.data?.suggestion || T('defaultSuggestion');
 });
 
 const openRemarkDialog = () => {
@@ -601,7 +613,7 @@ watch(
 const formattedTmpl = computed(() => {
 	// Parse explanation template and replace [xxx] with fieldData values
 	if (!state.data || !state.data.attackFlow?.desc) {
-		return '';
+		return threatDescription.value;
 	}
 
 	const fieldData = state.data.fieldData || {};
@@ -633,14 +645,14 @@ const formattedTmpl = computed(() => {
 				// Loop through keys and return the FIRST non-empty value
 				const keys = fieldKeys.split(',').map((k) => k.trim());
 
-				// Find first non-empty value
-				for (const key of keys) {
-					const value = getFieldValue(key);
-					if (value) {
-						// Found first valid value, return it immediately
-						return `<span style="color: #67c23a; font-weight: 600;">${value}</span>`;
+					// Find first non-empty value
+					for (const key of keys) {
+						const value = getFieldValue(key);
+						if (value) {
+							// Found first valid value, return it immediately
+							return `<span style="color: #67c23a; font-weight: 600;">${escapeHtml(value)}</span>`;
+						}
 					}
-				}
 
 				// No valid values found, show placeholder in gray
 				return `<span style="color: #909399; font-style: italic;">[${fieldKeys}]</span>`;
@@ -656,32 +668,58 @@ const filteredFieldData = computed(() => {
 	}
 
 	// Internal/system fields to exclude (prefixed with $ or internal metadata)
-	const excludeFields = ['eid', 'sid', 'timestamp', 'unique_key', 'mid', 'unique_id'];
+	const excludeFields = ['eid', 'sid', 'timestamp', 'unique_key', 'mid', 'unique_id', 'dc_hostname'];
+	const grouped = new Map<string, DisplayField>();
 
 	// Filter and format fieldData
-	return Object.entries(state.data.fieldData)
-		.filter(([key, value]) => {
-			// Exclude empty values and "-" values
-			if (!value || value === '' || value === '-') {
-				return false;
-			}
-			// Exclude internal fields
-			const fieldName = key.replace(/^\$s\d+\./, ''); // Remove $s1. prefix
-			if (excludeFields.includes(fieldName)) {
-				return false;
-			}
-			return true;
-		})
-		.map(([key, value]) => {
-			// Extract the field name (remove $s1. prefix if exists)
-			const cleanKey = key.replace(/^\$s\d+\.field_/, '').replace(/^\$s\d+\./, '');
-			return {
-				key: cleanKey,
-				fullKey: key,
-				value: value,
-			};
-		});
+	for (const [key, value] of Object.entries(state.data.fieldData)) {
+		if (!value || value === '' || value === '-') {
+			continue;
+		}
+
+		const cleanKey = normalizeFieldKey(key);
+		if (excludeFields.includes(cleanKey.toLowerCase())) {
+			continue;
+		}
+
+		const displayValue = normalizeDisplayValue(value);
+		const current = grouped.get(cleanKey) ?? {
+			key: cleanKey,
+			value: '',
+			sources: [],
+		};
+
+		if (!current.sources.some((source) => source.value === displayValue)) {
+			current.sources.push({ key, value: displayValue });
+			current.value = current.sources.map((source) => source.value).join(', ');
+		}
+
+		grouped.set(cleanKey, current);
+	}
+
+	return Array.from(grouped.values());
 });
+
+const normalizeFieldKey = (key: string) => {
+	return key.replace(/^\$s\d+\./, '').replace(/^field_/, '');
+};
+
+const normalizeDisplayValue = (value: string) => {
+	return value.replace(/^(-?\d+)\.0+$/, '$1');
+};
+
+const escapeHtml = (value: string) => {
+	return value.replace(/[&<>"']/g, (char) => {
+		const entities: Record<string, string> = {
+			'&': '&amp;',
+			'<': '&lt;',
+			'>': '&gt;',
+			'"': '&quot;',
+			"'": '&#39;',
+		};
+		return entities[char];
+	});
+};
 
 const isUrl = (text: string): boolean => {
 	try {
@@ -692,7 +730,7 @@ const isUrl = (text: string): boolean => {
 	}
 };
 
-const getLevelType = (level: number): string => {
+const getLevelType = (level: number | string): string => {
 	const typeMap: Record<number, string> = {
 		1: 'info',
 		2: 'success',
@@ -700,7 +738,24 @@ const getLevelType = (level: number): string => {
 		4: 'danger',
 		5: 'danger',
 	};
-	return typeMap[level] || 'info';
+	return typeMap[Number(level)] || 'info';
+};
+
+const formatLevelText = (level: number | string) => {
+	const key = `message.threat.level.${level}`;
+	const text = t(key);
+	if (text !== key) {
+		return text;
+	}
+
+	const fallback: Record<string, string> = {
+		'1': t('message.threat.level.info'),
+		'2': t('message.threat.level.low'),
+		'3': t('message.threat.level.middle'),
+		'4': t('message.threat.level.high'),
+		'5': t('message.threat.level.critical'),
+	};
+	return fallback[String(level)] || String(level);
 };
 
 const getEventStatusType = (eventStatus: number | undefined): string => {
@@ -882,11 +937,18 @@ defineExpose({
 			}
 		}
 
-		.field-tags {
-			padding-top: 16px;
-			border-top: 1px solid #ebeef5;
+			.field-tags {
+				padding-top: 16px;
+				border-top: 1px solid #ebeef5;
+			}
+
+			.field-source {
+				margin-top: 4px;
+				line-height: 1.5;
+				color: #dcdfe6;
+				word-break: break-all;
+			}
 		}
-	}
 
 	// Explanation Card Styles
 	.explanation-card {
@@ -1138,23 +1200,28 @@ defineExpose({
 		border-radius: 12px;
 		border: none;
 
-		.collapse-title {
-			display: flex;
-			align-items: center;
-			gap: 10px;
-			font-size: 15px;
-			font-weight: 500;
-			color: #303133;
+			.collapse-title {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+				width: 100%;
+				font-size: 15px;
+				font-weight: 500;
+				color: #303133;
 
 			.collapse-icon {
 				font-size: 18px;
 				color: #409eff;
 			}
 
-			.reference-badge {
-				margin-left: 8px;
+				.reference-badge {
+					margin-left: 8px;
+				}
+
+				.remark-edit-button {
+					margin-left: auto;
+				}
 			}
-		}
 
 		.collapse-content {
 			padding: 16px 20px;
@@ -1281,7 +1348,7 @@ defineExpose({
 	}
 
 	// Table Styles
-	:deep(.el-table) {
+		:deep(.el-table) {
 		.pointer-cursor {
 			cursor: pointer;
 
@@ -1290,11 +1357,16 @@ defineExpose({
 			}
 		}
 
-		.el-table__expand-icon {
-			color: #409eff;
+			.el-table__expand-icon {
+				color: #409eff;
+			}
+		}
+
+		.operation-actions {
+			justify-content: center;
+			width: 100%;
 		}
 	}
-}
 
 // YAML Viewer Styles
 .yaml-viewer {

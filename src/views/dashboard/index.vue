@@ -26,6 +26,7 @@
 							<el-row :gutter="20" style="padding-top: 10px;">
 								<el-col :xs="24" :sm="12" :lg="6">
 									<el-card class="metric-card">
+										<el-icon class="summary-icon summary-icon--assets"><UserFilled /></el-icon>
 										<el-row class="summary-title">{{ T('assets') }}</el-row>
 										<el-row class="summary-detail">
 											{{ T('users') }}: {{ state.asset.distribution.users }} |
@@ -37,6 +38,7 @@
 								</el-col>
 								<el-col :xs="24" :sm="12" :lg="6">
 									<el-card class="metric-card">
+										<el-icon class="summary-icon summary-icon--rules"><Tickets /></el-icon>
 										<el-row class="summary-title">{{ T('rules') }}</el-row>
 										<el-row class="summary-detail">
 											{{ T('alertRules') }}: {{ state.rules.distribution.alert }} |
@@ -47,6 +49,7 @@
 								</el-col>
 								<el-col :xs="24" :sm="12" :lg="6">
 									<el-card class="metric-card">
+										<el-icon class="summary-icon summary-icon--agents"><Monitor /></el-icon>
 										<el-row class="summary-title">{{ T('agents') }}</el-row>
 										<el-row class="summary-detail">
 											{{ T('domains') }}: {{ state.agent.distribution.domains }} |
@@ -58,6 +61,7 @@
 								</el-col>
 								<el-col :xs="24" :sm="12" :lg="6">
 									<el-card class="metric-card">
+										<el-icon class="summary-icon summary-icon--events"><Bell /></el-icon>
 										<el-row class="summary-title">{{ T('events') }}</el-row>
 										<el-row class="summary-detail">
 											{{ T('alertEvents') }}: {{ state.event.distribution.events }} |
@@ -85,19 +89,33 @@
 					</div>
 				</el-col>
 				<el-col :lg="8" :span="24" class="flex-item">
-					<div class="flex-item-box">
+					<div class="flex-item-box" v-loading="state.topEventsToday.loading">
 						<div class="flex-title">{{ T('topAlarmEventsToday') }}</div>
-						<div class="no-data-img">
-							<el-empty />
+						<div v-if="state.topEventsToday.list.length" class="top-event-list">
+							<div v-for="(item, index) in state.topEventsToday.list" :key="`${item.name}-${index}`" class="top-event-row">
+								<span class="top-event-index">{{ index + 1 }}</span>
+								<span class="top-event-name" :title="item.name">{{ item.name }}</span>
+								<span class="top-event-total">{{ item.total }}{{ T('countUnit') }}</span>
+							</div>
+						</div>
+						<div v-else class="no-data-img">
+							<el-empty :description="T('noData')" />
 						</div>
 					</div>
 				</el-col>
 				<el-col :lg="8" :span="24" class="flex-item">
 					<el-row style="height: 100%;">
-						<div class="flex-item-box">
+						<div class="flex-item-box" v-loading="state.majorEvents.loading">
 							<div class="flex-title">{{ T('majorEventsLast30Days') }}</div>
-							<div class="no-data-img">
-								<el-empty />
+							<div v-if="state.majorEvents.list.length" class="top-event-list">
+								<div v-for="(item, index) in state.majorEvents.list" :key="`${item.name}-${index}`" class="top-event-row">
+									<span class="top-event-index">{{ index + 1 }}</span>
+									<span class="top-event-name" :title="item.name">{{ item.name }}</span>
+									<span class="top-event-total">{{ item.total }}{{ T('countUnit') }}</span>
+								</div>
+							</div>
+							<div v-else class="no-data-img">
+								<el-empty :description="T('noData')" />
 							</div>
 						</div>
 					</el-row>
@@ -264,12 +282,13 @@ import * as echarts from 'echarts';
 import 'echarts-wordcloud';
 import { storeToRefs } from 'pinia';
 import { useTagsViewRoutes } from '/@/stores/tagsViewRoutes';
+import { Bell, Monitor, Tickets, UserFilled } from '@element-plus/icons-vue';
 import { getLevelColor, OptionType } from '/@/utils/constant';
 import { listDomainOptions } from '/@/api/grpc/method';
 import { transDashboard as T } from '/@/utils/translator';
 import { useI18n } from 'vue-i18n';
 import api from '/@/api/grpc';
-import { DashboardStatsReq, DashboardTrendsReq, DashboardLogStatsReq } from '/@/api/grpc/ada';
+import { DashboardStatsReq, DashboardTrendsReq, DashboardLogStatsReq, ThreatTopsReq, ThreatTopsReply_Details } from '/@/api/grpc/ada';
 import { alertApiError } from '/@/utils/error';
 import { formatDate } from '/@/utils/formatTime';
 
@@ -291,7 +310,8 @@ const state = reactive({
 		today: {
 			value: '000000',
 			speed: 600,
-			criticalPie: null
+			criticalPie: null,
+			hasData: false,
 		}
 	},
 	scan: {
@@ -341,6 +361,14 @@ const state = reactive({
 			activities: 0,
 		},
 	},
+	topEventsToday: {
+		list: [] as ThreatTopsReply_Details[],
+		loading: false,
+	},
+	majorEvents: {
+		list: [] as ThreatTopsReply_Details[],
+		loading: false,
+	},
 	myCharts: [] as EmptyArrayType,
 	global: {
 		alarmPie: null,
@@ -378,33 +406,85 @@ const initECharts = (ec: any, ref: any, option: any) => {
 	state.myCharts.push(ec);
 }
 
+const getAlarmLevelMeta = (key: string) => {
+	const normalizedKey = String(key).toLowerCase();
+	const map: Record<string, { label: string; color: string }> = {
+		high: { label: T('highRiskAlerts'), color: getLevelColor(5) },
+		medium: { label: T('mediumRiskAlerts'), color: getLevelColor(3) },
+		low: { label: T('lowRiskAlerts'), color: getLevelColor(2) },
+	};
+	if (map[normalizedKey]) return map[normalizedKey];
+
+	const level = Number(key);
+	return {
+		label: Number.isFinite(level) ? t(`message.tableCommon.level.${level}`) : key,
+		color: getLevelColor(level),
+	};
+};
+
 const updateAlarmTodayPie = (data: any) => {
 	if (!state.global.alarmPie) {
 		return;
 	}
 
+	const pieData = Object.entries(data || {})
+		.map(([key, value]) => {
+			const total = Number(value || 0);
+			const meta = getAlarmLevelMeta(key);
+			return {
+				value: total,
+				name: meta.label,
+				itemStyle: {
+					color: meta.color,
+				},
+				label: {
+					alignTo: 'edge',
+					formatter: '{b}\n{c}',
+					minMargin: 5,
+					edgeDistance: 10,
+					lineHeight: 15,
+				},
+			};
+		})
+		.filter(item => item.value > 0);
+
+	state.alarm.today.hasData = pieData.length > 0;
+
 	const option = {
-		series: [
+		legend: {
+			show: state.alarm.today.hasData,
+			bottom: '0%',
+			left: 'center',
+		},
+		graphic: state.alarm.today.hasData ? [] : [
 			{
-				data: Object.keys(data).map(key => ({
-					value: data[key],
-					name: t(`message.tableCommon.level.${key}`),
-					itemStyle: {
-						color: getLevelColor(Number(key)),
-					},
-					label: {
-						alignTo: 'edge',
-						formatter: '{b}\n{c}',
-						minMargin: 5,
-						edgeDistance: 10,
-						lineHeight: 15,
-					},
-				})),
-			}
+				type: 'text',
+				left: 'center',
+				top: 'middle',
+				style: {
+					text: T('noData'),
+					fill: '#8a96a3',
+					fontSize: 14,
+					fontWeight: 700,
+				},
+			},
 		],
+		series: state.alarm.today.hasData ? [
+			{
+				name: T('todayAlarmStats'),
+				type: 'pie',
+				radius: ['40%', '70%'],
+				data: pieData,
+				avoidLabelOverlap: false,
+				stillShowZeroSum: false,
+				label: {
+					show: state.alarm.today.hasData,
+				},
+			}
+		] : [],
 	};
 
-	state.global.alarmPie.setOption(option);
+	state.global.alarmPie.setOption(option, { replaceMerge: ['series', 'graphic'] });
 	state.myCharts.push(state.global.alarmPie);
 }
 
@@ -417,18 +497,24 @@ const initPie = (ref: any) => {
 			trigger: 'item'
 		},
 		legend: {
+			show: false,
 			bottom: '0%',
 			left: 'center'
 		},
-		series: [
+		graphic: [
 			{
-				name: T('todayAlarmStats'),
-				type: 'pie',
-				radius: ['40%', '70%'],
-				data: [],			// Improves the pull-out effect and only applies to the upper half
-				avoidLabelOverlap: false,
-			}
+				type: 'text',
+				left: 'center',
+				top: 'middle',
+				style: {
+					text: T('noData'),
+					fill: '#8a96a3',
+					fontSize: 14,
+					fontWeight: 700,
+				},
+			},
 		],
+		series: [],
 	};
 
 	state.global.alarmPie.setOption(option);
@@ -956,6 +1042,36 @@ const fetchDashboardStats = () => {
 		.catch(err => alertApiError(err));
 };
 
+const fetchTopEventList = (duration: number, limit = 5) => {
+	const req: ThreatTopsReq = {
+		domain: state.form.domain,
+		type: 'event',
+		duration,
+	};
+	return api.threatTops(req)
+		.then(resp => resp.response.list.slice(0, limit));
+};
+
+const fetchDashboardTopEvents = () => {
+	state.topEventsToday.loading = true;
+	fetchTopEventList(1)
+		.then(list => state.topEventsToday.list = list)
+		.catch(err => {
+			state.topEventsToday.list = [];
+			alertApiError(err);
+		})
+		.finally(() => state.topEventsToday.loading = false);
+
+	state.majorEvents.loading = true;
+	fetchTopEventList(30)
+		.then(list => state.majorEvents.list = list)
+		.catch(err => {
+			state.majorEvents.list = [];
+			alertApiError(err);
+		})
+		.finally(() => state.majorEvents.loading = false);
+};
+
 const fetchDashboardTrends = () => {
 	const year = Number(state.form.riskTrendYear) || currentYear;
 	const req: DashboardTrendsReq = {
@@ -1070,6 +1186,7 @@ onMounted(() => {
 	listDomainOptions().then(options => state.form.domainOptions = options);
 
 	fetchDashboardStats();
+	fetchDashboardTopEvents();
 	fetchDashboardTrends();
 
 	startLogStatsInterval();
@@ -1095,6 +1212,7 @@ watch(
 	() => {
 		// Re-fetch all domain-dependent data
 		fetchDashboardStats();
+		fetchDashboardTopEvents();
 		fetchDashboardTrends();
 		fetchDashboardLogStats();
 	}
@@ -1190,17 +1308,40 @@ onUnmounted(() => {
 .metric-card {
 	position: relative;
 	overflow: hidden;
+	padding-right: 64px;
+}
 
-	&::after {
-		content: '';
-		position: absolute;
-		right: 16px;
-		bottom: 14px;
-		width: 46px;
-		height: 46px;
-		border-radius: 50%;
-		background: rgba(22, 143, 122, 0.08);
-	}
+.summary-icon {
+	position: absolute;
+	right: 16px;
+	bottom: 16px;
+	width: 46px;
+	height: 46px;
+	border-radius: 50%;
+	font-size: 22px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.summary-icon--assets {
+	color: var(--ada-primary);
+	background: rgba(22, 143, 122, 0.12);
+}
+
+.summary-icon--rules {
+	color: #4f6eea;
+	background: rgba(79, 110, 234, 0.12);
+}
+
+.summary-icon--agents {
+	color: var(--ada-warning);
+	background: rgba(245, 184, 75, 0.14);
+}
+
+.summary-icon--events {
+	color: var(--ada-danger);
+	background: rgba(212, 87, 69, 0.12);
 }
 
 .risk-card {
@@ -1225,6 +1366,52 @@ onUnmounted(() => {
 	align-items: center;
 	height: 100%;
 	min-height: 260px;
+}
+
+.top-event-list {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	padding-top: 2px;
+	min-height: 260px;
+}
+
+.top-event-row {
+	display: grid;
+	grid-template-columns: 28px minmax(0, 1fr) auto;
+	align-items: center;
+	column-gap: 10px;
+	min-height: 36px;
+	padding: 8px 10px;
+	border: 1px solid rgba(220, 232, 229, 0.82);
+	border-radius: 6px;
+	background: rgba(248, 251, 250, 0.88);
+}
+
+.top-event-index {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	background: rgba(22, 143, 122, 0.12);
+	color: var(--ada-primary);
+	font-weight: 800;
+}
+
+.top-event-name {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	color: var(--ada-ink);
+	font-weight: 700;
+}
+
+.top-event-total {
+	color: var(--ada-muted);
+	font-weight: 800;
+	font-variant-numeric: tabular-nums;
 }
 
 .chart-main {

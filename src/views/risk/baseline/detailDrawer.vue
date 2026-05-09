@@ -3,7 +3,7 @@
         <template #header>
             <div class="drawer-header">
                 <div class="drawer-title-block">
-                    <span class="drawer-kicker">{{ $t('message.router.baselineIndex') }}</span>
+                    <span class="drawer-kicker">{{ $t('message.router.riskBaseline') }}</span>
                     <h3>{{ state.data?.name || state.title }}</h3>
                 </div>
             </div>

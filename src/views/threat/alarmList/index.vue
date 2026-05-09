@@ -1,196 +1,223 @@
 <template>
-    <div class="layout-pd">
-        <el-card shadow="hover">
-            <el-row class="table-filter-row alarm-filter-row">
-                <!-- Advanced search -->
-                <el-form v-if="isAdvanceSearch" class="filter-form alarm-advanced-form">
-                    <el-form-item v-for="(value, index) in advancedSearchRef" style="margin-bottom: 5px;" size="default"
-                        :key="index">
-                        <template #label>
-                            <el-col v-if="advancedSearchRef.length !== 1"
-                                style="align-items: center; justify-content: center; cursor: pointer;"
-                                @click="() => handleCloseAdvancedSearch(index)">
-                                <el-icon>
-                                    <Close />
-                                </el-icon>
-                            </el-col>
-                        </template>
-                        <AdvancedSearch v-model="advancedSearchRef[index]"></AdvancedSearch>
-                    </el-form-item>
+	<div class="layout-pd threat-events-page">
+		<section class="events-command-panel">
+			<div class="events-command-main">
+				<div class="events-command-copy">
+					<div class="events-kicker">{{ $t('message.threat.alarmList.eventConsole') }}</div>
+					<p>{{ $t('message.threat.alarmList.eventConsoleDesc') }}</p>
+				</div>
+				<div class="events-command-actions">
+					<el-switch v-model="isAdvanceSearch" size="default" :active-text="$t('message.threat.advanceSearch')" />
+					<el-switch v-model="isAutoRefresh" size="default" :active-text="$t('message.threat.autoRefresh')" @change="onAutoRefresh" />
+					<el-button type="primary" size="default" :icon="Refresh" @click="refreshThreatTable">
+						{{ $t('message.threat.refreshManually') }}
+					</el-button>
+				</div>
+			</div>
 
-                    <el-form-item @click="handleAddAdvancedSearch" style="cursor: pointer;">
-                        <template #label>
-                            <el-col style="align-items: center; justify-content: center;">
-                                <el-icon>
-                                    <Plus />
-                                </el-icon>
-                            </el-col>
-                        </template>
-                        <span>{{ $t('message.threat.addAdvancedSearch') }}</span>
-                        <!-- <el-button @click="handleAddAdvancedSearch">add</el-button> -->
-                    </el-form-item>
-                </el-form>
+			<div class="events-metrics">
+				<div class="metric-card">
+					<span class="metric-label">{{ $t('message.threat.alarmList.totalEvents') }}</span>
+					<strong>{{ total }}</strong>
+					<span>{{ $t('message.threat.alarmList.filteredScope') }}</span>
+				</div>
+				<div class="metric-card metric-hot">
+					<span class="metric-label">{{ $t('message.threat.alarmList.highRiskEvents') }}</span>
+					<strong>{{ highRiskCount }}</strong>
+					<span>{{ $t('message.threat.alarmList.currentPage') }}</span>
+				</div>
+				<div class="metric-card">
+					<span class="metric-label">{{ $t('message.threat.alarmList.pendingEvents') }}</span>
+					<strong>{{ pendingCount }}</strong>
+					<span>{{ $t('message.threat.alarmList.currentPage') }}</span>
+				</div>
+				<div class="metric-card">
+					<span class="metric-label">{{ $t('message.threat.alarmList.selectedEvents') }}</span>
+					<strong>{{ tableRowsSelected.length }}</strong>
+					<span>{{ $t('message.threat.alarmList.bulkQueue') }}</span>
+				</div>
+			</div>
 
-                <!-- Basic search -->
-                <el-form v-if="!isAdvanceSearch" :inline="true" class="filter-form">
-                    <!-- Threat type -->
-                    <el-form-item :label="$t('message.threat.threatName')">
-                        <el-select v-model="threatIds" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 150px" :placeholder="$t('message.threat.alarmList.selectThreatName')" popper-class="custom-header">
-                            <template #header>
-                                <el-checkbox v-model="threatIdsCheckAll" :indeterminate="threatIdsIndeterminate" @change="handleThreatIdsCheckAll">
-                                    {{ $t('message.tableCommon.checkAll') }}
-                                </el-checkbox>
-                            </template>
-                            <el-option v-for="option in threatIdOptions" :key="option.value" :label="option.label" :value="option.value" />
-                        </el-select>
-                    </el-form-item>
-                    <!-- Threat level -->
-                    <el-form-item :label="$t('message.threat.levelName')">
-                        <el-select v-model="threatLevel" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 110px" :placeholder="$t('message.threat.alarmList.selectLevel')" popper-class="custom-header">
-                            <template #header>
-                                <el-checkbox v-model="levelCheckAll" :indeterminate="levelIndeterminate" @change="handleLevelCheckAll">
-                                    {{ $t('message.tableCommon.checkAll') }}
-                                </el-checkbox>
-                            </template>
-                            <el-option v-for="option in levelOptions" :key="option.value" :label="option.label" :value="option.value" />
-                        </el-select>
-                    </el-form-item>
-                    <!-- Handling status -->
-                    <el-form-item :label="$t('message.threat.tableTitle.eventStatus')">
-                        <el-select v-model="eventStatus" size="default" style="width: 96px">
-                            <el-option v-for="status in eventStatusOptions" :key="status" :value="status"
-                                :label="$t(`message.threat.status.${status}`)" />
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item :label="$t('message.threat.lastOccurenceTime')">
-                        <el-date-picker class="filter-date-range" size="default" v-model="lastOccurenceTime" type="datetimerange"
-                            format="YY-MM-DD HH:mm"
-                            :range-separator="$t('message.time.to')" :start-placeholder="$t('message.time.start')"
-                            :end-placeholder="$t('message.time.end')" :shortcuts="shortcuts" />
-                    </el-form-item>
-                </el-form>
+			<div class="events-filter-panel">
+				<el-form v-if="isAdvanceSearch" class="filter-form alarm-advanced-form">
+					<div class="advanced-search-stack">
+						<div v-for="(value, index) in advancedSearchRef" :key="index" class="advanced-search-row">
+							<AdvancedSearch v-model="advancedSearchRef[index]" />
+							<button
+								v-if="advancedSearchRef.length !== 1"
+								class="advanced-icon-button advanced-remove-btn"
+								type="button"
+								:title="$t('message.tableCommon.delete')"
+								:aria-label="$t('message.tableCommon.delete')"
+								@click="() => handleCloseAdvancedSearch(index)"
+							>
+								<el-icon><Close /></el-icon>
+							</button>
+						</div>
 
-                <!-- Actions on the right -->
-                <div class="table-filter-actions">
-                    <el-switch v-model="isAdvanceSearch" size="default"
-                        :active-text="$t('message.threat.advanceSearch')" />
-                    <el-switch v-model="isAutoRefresh" size="default" :active-text="$t('message.threat.autoRefresh')"
-                        @change="onAutoRefresh" />
-                    <el-button type="primary" size="default" @click="refreshThreatTable">{{
-                        $t('message.threat.refreshManually') }}</el-button>
-                    <!-- <el-button type="primary" size="default">{{ $t('message.threat.print') }}</el-button> -->
-                </div>
-            </el-row>
-            <!-- Result list below -->
-            <el-row style="margin-top: 30px; padding-left: 28px;">
-                <el-col :span="5" class="attackFlow-container-text">
-                    {{ $t('message.threat.alarmList.attackName') }}
-                </el-col>
-                <el-col :span="4" class="attackFlow-container-text">
-                    {{ $t('message.threat.alarmList.attackSource') }}
-                </el-col>
-                <el-col :span="5" class="attackFlow-container-text">
-                    {{ $t('message.threat.alarmList.attackMethod') }}
-                </el-col>
-                <el-col :span="3" class="attackFlow-container-text">
-                    {{ $t('message.threat.alarmList.attackTarget') }}
-                </el-col>
-                <el-col :span="4" class="attackFlow-container-text">
-                    {{ $t('message.threat.alarmList.attackDomain') }}
-                </el-col>
-                <el-col :span="3" class="attackFlow-container-text">
-                    {{ $t('message.tableCommon.operation') }}
-                </el-col>
-            </el-row>
-            <el-scrollbar>
-                <el-row>
-                    <el-timeline style="width: 100%;">
-                        <el-timeline-item v-for="(item, index) in tableRows" :key="item.iD || index"
-                            :timestamp="formatApiTime(item.startTm)" placement="top" :color="getLevelColor(item.level)"
-                            center>
-                            <el-row>
-                                <el-card :class="{'pointer-cursor timeline-card': true, 'selected-card': isSelected(item)}" @click="handleDetail(item)">
-                                    <el-row>
-                                        <el-col :span="5" class="attackFlow-container">
-                                            <el-card shadow="never"
-                                                :style="{ 'border-left': `5px solid ${getLevelColor(item.level)}` }">
-                                                <el-row>{{ item.title }}</el-row>
-                                            </el-card>
-                                        </el-col>
-                                        <el-col :span="4" class="attackFlow-container">
-                                            <el-space>
-                                                <el-icon :size="32">
-                                                    <Monitor />
-                                                </el-icon>
-                                                {{ item.attackFlow?.fields?.[1]?.value ?? 'Unknown' }}
-                                            </el-space>
-                                        </el-col>
-                                        <el-col :span="5">
-                                            <el-row>
-                                                <el-tooltip :content="item.attackFlow?.desc" placement="top">
-                                                    <!-- <span class="eventTmpl-container">{{ item.attackFlow?.desc }}</span> -->
-                                                    <div v-html="formatTemplate(item.attackFlow?.desc || '')"
-                                                        class="eventTmpl-container" />
-                                                </el-tooltip>
-                                            </el-row>
-                                            <div class="arrowRight"></div>
-                                        </el-col>
-                                        <el-col :span="3" class="attackFlow-container">
-                                            <el-space>
-                                                <svg class="icon"
-                                                    style="width: 32px;height: 32px;vertical-align: middle;fill: currentColor;overflow: hidden;"
-                                                    viewBox="0 0 1024 1024" version="1.1"
-                                                    xmlns="http://www.w3.org/2000/svg" p-id="25713">
-                                                    <path
-                                                        d="M901.12 0c67.8656 0 122.88 55.0144 122.88 122.88v778.24c0 67.8656-55.0144 122.88-122.88 122.88H122.88c-67.8656 0-122.88-55.0144-122.88-122.88V122.88C0 55.0144 55.0144 0 122.88 0h778.24z m0 40.96H122.88C78.17728 40.96 41.8304 76.76928 40.97536 121.2672L40.96 122.88v778.24c0 44.70272 35.80928 81.0496 80.3072 81.90464L122.88 983.04h778.24c44.70272 0 81.0496-35.80928 81.90464-80.3072L983.04 901.12V122.88c0-44.70272-35.80928-81.0496-80.3072-81.90464L901.12 40.96z m-215.52128 287.86176c35.16416 0.3328 63.83104 10.752 86.00064 31.24736 22.1696 20.66944 36.16768 46.24896 41.99936 76.7488H755.0976c-4.50048-14.66368-12.66688-27.16672-24.4992-37.49888-12.33408-9.8304-27.33568-14.91456-45.0048-15.24736-12.99456 0.3328-24.1664 2.9184-33.49504 7.74656-9.50272 5.00224-17.16736 11.25376-22.99904 18.74944-7.168 7.8336-11.91936 17.92-14.24896 30.25408-2.66752 12.99968-4.00384 37.41696-4.00384 73.24672v2.88256c0.0768 34.2528 1.408 57.5488 4.00384 69.86752 2.3296 12.66688 7.08096 22.91712 14.24896 30.75072 5.83168 7.5008 13.49632 13.58336 22.99904 18.2528 9.33376 5.49888 20.50048 8.2432 33.50016 8.2432 31.0016 0 54.1696-16.57856 69.49888-49.74592h58.50112c-8.00256 33.83296-23.24992 59.83232-45.75232 77.99808-23.16288 18.00192-50.5856 27.00288-82.24768 27.00288-28.672-0.6656-52.5824-7.66464-71.75168-21.00224-19.49696-12.83072-33.664-27.66336-42.496-44.49792a408.5248 408.5248 0 0 1-7.25504-15.74912c-1.9968-5.1712-3.66592-11.66848-4.99712-19.50208-2.49856-14.66368-3.75296-42.83392-3.75296-84.50048v-2.92864c0.06144-40.71424 1.31072-68.0704 3.75296-82.0736 2.6624-14.33088 6.74816-25.91232 12.24704-34.74432 8.83712-16.83456 23.00416-31.83616 42.50112-45.0048 19.16928-13.33248 43.0848-20.16256 71.75168-20.49536z m-309.67808 3.00032c49.3312 0.3328 86.33344 20.83328 111.0016 61.49632 8.832 13.6704 14.4128 28.0064 16.74752 43.00288 1.83296 15.0016 2.74944 40.91392 2.74944 77.7472 0 39.168-1.41824 66.50368-4.2496 82.00192-1.3312 7.8336-3.33312 14.83264-6.00064 20.99712a194.08896 194.08896 0 0 1-10.25024 18.75456c-10.66496 17.16224-25.4976 31.3344-44.49792 42.496-18.83648 12.00128-41.91744 18.00192-69.25312 18.00192H248.4224V331.82208z m-4.16256 52.21888l-2.08896 0.03072h-65.9968v259.9936H369.664c31.0016 0 53.504-10.57792 67.50208-31.744 6.16448-7.8336 10.0864-17.75104 11.7504-29.7472 1.50016-11.83744 2.2528-34.00192 2.2528-66.5088 0-31.66208-0.75264-54.32832-2.2528-67.9936-1.9968-13.6704-6.75328-24.75008-14.25408-33.24928-15.32928-21.1712-36.99712-31.42144-64.9984-30.75072z"
-                                                        fill="#444444" p-id="25714"></path>
-                                                </svg>
-                                                {{ item.attackFlow?.fields?.[2]?.value ?? 'Unknown' }}
-                                            </el-space>
-                                        </el-col>
-                                        <el-col :span="4" class="attackFlow-container">{{ item.dcHostname }}</el-col>
-                                        <el-col :span="3" class="attackFlow-container">
-                                            <el-space>
-                                                <el-checkbox :model-value="isSelected(item)"
-                                                    @change="toggleSelect(item)" @click.stop />
-                                                <el-button @click.stop="handleDetail(item)" :icon="ArrowRight">{{
-                                                    $t('message.tableCommon.detail')
-                                                    }}</el-button>
-                                            </el-space>
-                                        </el-col>
-                                    </el-row>
-                                </el-card>
-                            </el-row>
-                        </el-timeline-item>
-                    </el-timeline>
-                </el-row>
-            </el-scrollbar>
-            <!-- Pagination -->
-            <el-row style="margin-top: 10px" justify="space-between">
-                <el-button type="primary" size="default" :disabled="tableRowsSelected.length === 0"
-                    @click="handleClose(tableRowsSelected)">{{ $t('message.tableCommon.closeBulk') }}</el-button>
-                <el-pagination v-model:current-page="pageIdx" v-model:page-size="pageSize"
-                    :page-sizes="[10, 20, 30, 40, 50]" layout="sizes, prev, pager, next, jumper" :total="total"
-                    @size-change="handleSizeChange" @current-change="handleCurrentChange" />
-            </el-row>
-        </el-card>
-        <DetailDrawer ref="detailDrawerRef" />
-        <AddWhiteDialog v-model="addWhiteVisiable" :fields="addWhiteFields" :title="addWhiteTitle"
-            :domain="addWhiteDomain" :flow-id="addWhiteFlowId" />
-    </div>
+						<button
+							class="advanced-icon-button advanced-add-btn"
+							type="button"
+							:title="$t('message.threat.addAdvancedSearch')"
+							:aria-label="$t('message.threat.addAdvancedSearch')"
+							@click="handleAddAdvancedSearch"
+						>
+							<el-icon><Plus /></el-icon>
+						</button>
+					</div>
+				</el-form>
+
+				<el-form v-if="!isAdvanceSearch" :inline="true" class="filter-form events-basic-filter">
+					<el-form-item :label="$t('message.threat.threatName')">
+						<el-select v-model="threatIds" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" class="filter-threat-select" :placeholder="$t('message.threat.alarmList.selectThreatName')" popper-class="custom-header">
+							<template #header>
+								<el-checkbox v-model="threatIdsCheckAll" :indeterminate="threatIdsIndeterminate" @change="handleThreatIdsCheckAll">
+									{{ $t('message.tableCommon.checkAll') }}
+								</el-checkbox>
+							</template>
+							<el-option v-for="option in threatIdOptions" :key="option.value" :label="option.label" :value="option.value" />
+						</el-select>
+					</el-form-item>
+					<el-form-item :label="$t('message.threat.levelName')">
+						<el-select v-model="threatLevel" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" class="filter-level-select" :placeholder="$t('message.threat.alarmList.selectLevel')" popper-class="custom-header">
+							<template #header>
+								<el-checkbox v-model="levelCheckAll" :indeterminate="levelIndeterminate" @change="handleLevelCheckAll">
+									{{ $t('message.tableCommon.checkAll') }}
+								</el-checkbox>
+							</template>
+							<el-option v-for="option in levelOptions" :key="option.value" :label="option.label" :value="option.value" />
+						</el-select>
+					</el-form-item>
+					<el-form-item :label="$t('message.threat.tableTitle.eventStatus')">
+						<el-select v-model="eventStatus" size="default" class="filter-status-select">
+							<el-option v-for="status in eventStatusOptions" :key="status" :value="status" :label="getEventStatusLabel(status)" />
+						</el-select>
+					</el-form-item>
+					<el-form-item :label="$t('message.threat.lastOccurenceTime')">
+						<el-date-picker
+							v-model="lastOccurenceTime"
+							class="filter-date-range"
+							size="default"
+							type="datetimerange"
+							format="YY-MM-DD HH:mm"
+							:range-separator="$t('message.time.to')"
+							:start-placeholder="$t('message.time.start')"
+							:end-placeholder="$t('message.time.end')"
+							:shortcuts="shortcuts"
+						/>
+					</el-form-item>
+				</el-form>
+			</div>
+		</section>
+
+		<section class="events-list-panel" v-loading="tableLoading">
+			<div class="events-list-header">
+				<div>
+					<span>{{ $t('message.threat.alarmList.attackName') }}</span>
+					<strong>{{ tableRows.length }}</strong>
+				</div>
+				<el-button class="bulk-close-button" type="primary" size="default" :disabled="tableRowsSelected.length === 0" @click="handleClose(tableRowsSelected)">
+					{{ $t('message.tableCommon.closeBulk') }}
+				</el-button>
+			</div>
+
+			<el-empty v-if="!tableLoading && tableRows.length === 0" :description="$t('message.threat.alarmList.noEvents')" />
+
+			<div v-else class="event-card-list">
+				<article v-for="(item, index) in tableRows" :key="item.iD || index" class="event-card" :class="{ 'is-selected': isSelected(item) }" @click="handleDetail(item)">
+					<div class="event-card-rail" :style="{ '--level-color': getLevelColor(item.level) }">
+						<span class="event-index">{{ String((pageIdx - 1) * pageSize + index + 1).padStart(2, '0') }}</span>
+						<span class="event-dot"></span>
+					</div>
+
+					<div class="event-card-body">
+						<div class="event-title-row">
+							<div class="event-title-main">
+								<div class="event-title">
+									{{ item.title || unknownText }}
+								</div>
+								<div class="event-tags">
+									<span class="level-chip" :style="{ '--level-color': getLevelColor(item.level) }">{{ getLevelLabel(item.level) }}</span>
+									<span class="status-chip" :class="`status-${item.eventStatus}`">{{ getEventStatusLabel(item.eventStatus) }}</span>
+									<span v-if="item.status" class="soft-chip">{{ formatRuleStatus(item.status) }}</span>
+								</div>
+							</div>
+							<div class="event-actions" @click.stop>
+								<el-checkbox :model-value="isSelected(item)" @change="toggleSelect(item)" />
+								<el-tooltip :content="$t('message.tableCommon.detail')" placement="top">
+									<el-button class="operation-icon-button" size="small" type="primary" :icon="ArrowRight" :aria-label="$t('message.tableCommon.detail')" @click="handleDetail(item)" />
+								</el-tooltip>
+							</div>
+						</div>
+
+						<div class="event-info-grid">
+							<div v-for="node in getFlowNodes(item)" :key="node.key" class="flow-node">
+								<div class="flow-node-icon">
+									<el-icon><component :is="node.icon" /></el-icon>
+								</div>
+								<div class="flow-node-copy">
+									<span>{{ node.label }}</span>
+									<strong :title="node.value">{{ node.value }}</strong>
+								</div>
+							</div>
+
+							<div class="flow-node method-node">
+								<div class="flow-node-icon method-icon">
+									<el-icon><Aim /></el-icon>
+								</div>
+								<div class="flow-node-copy">
+									<span>{{ $t('message.threat.alarmList.attackMethod') }}</span>
+									<strong :title="getAttackMethod(item).summary">{{ getAttackMethod(item).summary }}</strong>
+									<div class="method-tags">
+										<span v-for="tag in getAttackMethod(item).tags" :key="tag">{{ tag }}</span>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="attack-path">
+							<div class="attack-path-line" v-html="formatAttackDescription(item)" />
+						</div>
+
+						<div class="event-meta-row">
+							<span><el-icon><Timer /></el-icon>{{ formatApiTime(item.startTm) }} - {{ formatApiTime(item.endTm) }}</span>
+							<span><el-icon><Connection /></el-icon>{{ item.domain || getDomainLabel(item) }}</span>
+							<span><el-icon><Monitor /></el-icon>{{ item.dcHostname || unknownText }}</span>
+							<span><el-icon><Flag /></el-icon>{{ formatDuration(item.duration) }}</span>
+						</div>
+					</div>
+				</article>
+			</div>
+
+			<div class="events-pagination">
+				<el-pagination
+					v-model:current-page="pageIdx"
+					v-model:page-size="pageSize"
+					:page-sizes="[10, 20, 30, 40, 50]"
+					layout="sizes, prev, pager, next, jumper"
+					:total="total"
+					@size-change="handleSizeChange"
+					@current-change="handleCurrentChange"
+				/>
+			</div>
+		</section>
+
+		<DetailDrawer ref="detailDrawerRef" />
+		<AddWhiteDialog v-model="addWhiteVisiable" :fields="addWhiteFields" :title="addWhiteTitle" :domain="addWhiteDomain" :flow-id="addWhiteFlowId" />
+	</div>
 </template>
 
 <script setup lang="ts">
 
-import { defineAsyncComponent, onMounted, onUnmounted, ref, watch } from 'vue';
+import { computed, defineAsyncComponent, onMounted, onUnmounted, ref, watch } from 'vue';
 import { formatApiTime, formatDate, getPrev1Year, shortcuts } from '/@/utils/formatTime';
 import { ListThreatReply, ListThreatReply_Details, ListThreatReq } from '/@/api/grpc/ada';
 import api from '/@/api/grpc';
 import { ElMessage } from 'element-plus';
 import { useI18n } from 'vue-i18n';
-import { closeThreats, formatTemplate } from './operation';
+import { closeThreats } from './operation';
 import AddWhiteDialog from './AddWhiteDialog.vue';
-import { Monitor, ArrowRight  } from '@element-plus/icons-vue';
+import { Aim, ArrowRight, Close, Connection, Flag, Monitor, Plus, Refresh, Timer, User } from '@element-plus/icons-vue';
 import { getLevelColor, getLevelOptions2, OptionType } from '/@/utils/constant';
 import { listThreatRuleOptions } from '/@/api/grpc/method';
 
@@ -208,7 +235,7 @@ const threatIdOptions = ref<OptionType[]>([]);
 const levelOptions = getLevelOptions2();
 const threatLevel = ref<number[]>([]);
 const eventStatus = ref<number>(0);
-const eventStatusOptions = [0, 1];
+const eventStatusOptions = [-1, 0, 1, 2, 3];
 
 // Checkbox states for "Check All"
 const threatIdsCheckAll = ref(false);
@@ -231,19 +258,162 @@ const addWhiteVisiable = ref<boolean>(false);
 const addWhiteTitle = ref<string>('');
 const addWhiteDomain = ref<string>('');
 const addWhiteFlowId = ref<string>('');
+const unknownText = 'Unknown';
+
+const highRiskCount = computed(() => tableRows.value.filter(item => item.level >= 4).length);
+const pendingCount = computed(() => tableRows.value.filter(item => item.eventStatus === 0).length);
+
+const escapeHtml = (value: string) => value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+
+const titleCase = (value: string) => value
+    .replace(/^attack\./i, '')
+    .replace(/[._-]+/g, ' ')
+    .replace(/\b\w/g, char => char.toUpperCase());
+
+const normalizeFieldValue = (value?: string) => {
+    if (!value) return unknownText;
+    return value.replace(/^::ffff:/i, '').trim() || unknownText;
+};
+
+const findFlowField = (row: ListThreatReply_Details, objects: string[], keys: string[] = []) => {
+    const fields = row.attackFlow?.fields ?? [];
+    const normalizedObjects = objects.map(item => item.toLowerCase());
+    const normalizedKeys = keys.map(item => item.toLowerCase());
+
+    return fields.find(field => normalizedObjects.includes((field.obj || '').toLowerCase()) && field.value)
+        ?? fields.find(field => normalizedKeys.some(key => (field.key || '').toLowerCase().includes(key)) && field.value);
+};
+
+const findFlowValue = (row: ListThreatReply_Details, objects: string[], keys: string[] = []) => {
+    return normalizeFieldValue(findFlowField(row, objects, keys)?.value);
+};
+
+const findFlowValueByKey = (row: ListThreatReply_Details, key: string) => {
+    const normalizedKey = key.toLowerCase();
+    const field = (row.attackFlow?.fields ?? []).find(item => (item.key || '').toLowerCase() === normalizedKey);
+    return normalizeFieldValue(field?.value);
+};
+
+const getAttackSource = (row: ListThreatReply_Details) => findFlowValue(row, ['ip'], ['ipaddress', 'source_ip', 'src_ip']);
+const getAttackAccount = (row: ListThreatReply_Details) => findFlowValue(row, ['user'], ['targetusername', 'username', 'user']);
+const getAttackTarget = (row: ListThreatReply_Details) => findFlowValue(row, ['computer', 'dc'], ['hostname', 'target', 'computer']);
+
+const getFlowNodes = (row: ListThreatReply_Details) => [
+    {
+        key: 'source',
+        label: t('message.threat.alarmList.attackSource'),
+        value: getAttackSource(row),
+        icon: Connection,
+    },
+    {
+        key: 'account',
+        label: t('message.threat.alarmList.account'),
+        value: getAttackAccount(row),
+        icon: User,
+    },
+    {
+        key: 'target',
+        label: t('message.threat.alarmList.attackTarget'),
+        value: getAttackTarget(row),
+        icon: Monitor,
+    },
+];
+
+const getAttackMethod = (row: ListThreatReply_Details) => {
+    const tags = row.tags ?? [];
+    const techniques = tags.filter(tag => /^attack\.t/i.test(tag)).map(tag => tag.replace(/^attack\./i, '').toUpperCase());
+    const tactics = tags.filter(tag => /^attack\.(?!t)/i.test(tag)).map(titleCase);
+    const matrices = tags.filter(tag => /^TA\d+/i.test(tag)).map(tag => tag.toUpperCase());
+    const methodTags = [...techniques, ...tactics, ...matrices].filter(Boolean);
+
+    return {
+        summary: methodTags.slice(0, 2).join(' / ') || row.attckId || unknownText,
+        tags: methodTags.slice(0, 4),
+    };
+};
+
+const formatRuleStatus = (status: string) => titleCase(status || unknownText);
+
+const getLevelLabel = (level: number) => t(`message.threat.level.${level}`);
+
+const getEventStatusLabel = (status: number) => {
+    if (status === -1) return t('message.threat.alarmList.eventStatusAll');
+    return t(`message.threat.status.${status}`);
+};
+
+const getDomainLabel = (row: ListThreatReply_Details) => {
+    const hostname = row.dcHostname || '';
+    const parts = hostname.split('.');
+    return parts.length > 1 ? parts.slice(1).join('.') : unknownText;
+};
+
+const formatDuration = (seconds: number) => {
+    if (!seconds || seconds <= 0) return '<1s';
+    if (seconds < 60) return `${seconds}s`;
+    const minutes = Math.floor(seconds / 60);
+    const restSeconds = seconds % 60;
+    if (minutes < 60) return restSeconds > 0 ? `${minutes}m ${restSeconds}s` : `${minutes}m`;
+    const hours = Math.floor(minutes / 60);
+    const restMinutes = minutes % 60;
+    return restMinutes > 0 ? `${hours}h ${restMinutes}m` : `${hours}h`;
+};
+
+const formatAttackDescription = (row: ListThreatReply_Details) => {
+    const template = row.attackFlow?.desc || row.desc || row.title || '';
+    if (!template) return unknownText;
+
+    return escapeHtml(template).replace(/\[([^\]]+)\]/g, (_, key: string) => {
+        const value = findFlowValueByKey(row, key);
+        return `<span class="flow-token">${escapeHtml(value === unknownText ? `[${key}]` : value)}</span>`;
+    });
+};
+
+const normalizeAdvancedValue = (value: unknown) => {
+    if (value instanceof Date) {
+        return formatDate(value, 'YYYY-mm-dd HH:MM:SS');
+    }
+
+    return String(value ?? '').trim();
+};
+
+const getEffectiveAdvancedSearch = () => {
+    return advancedSearchRef.value
+        .map((item) => {
+            const rawValues = Array.isArray(item.value) ? item.value : [item.value];
+            const value = rawValues.map(normalizeAdvancedValue).filter(Boolean);
+
+            return {
+                name: item.name,
+                type: item.type,
+                value,
+            };
+        })
+        .filter((item) => {
+            if (!item.name || !item.type || item.value.length === 0) return false;
+            if (item.name === 'time' && item.type === 'bt') return item.value.length >= 2;
+            return true;
+        });
+};
 
 const refreshThreatTable = () => {
+    const effectiveAdvancedSearch = isAdvanceSearch.value ? getEffectiveAdvancedSearch() : [];
+    const hasAdvancedSearch = effectiveAdvancedSearch.length > 0;
     const req: ListThreatReq = {
         pageIdx: pageIdx.value,
         pageSize: pageSize.value,
-        iDs: threatIds.value, // Threat ID list
-        level: threatLevel.value, // Threat levels and severity
-        startTm: formatDate(lastOccurenceTime.value[0], 'YYYY-mm-dd HH:MM:SS'), // Start time
-        endTm: formatDate(lastOccurenceTime.value[1], 'YYYY-mm-dd HH:MM:SS'), // End time
-        searchType: isAdvanceSearch.value ? 1 : 0, // Search type: `0` basic, `1` advanced
-        advancedSearch: isAdvanceSearch.value ? advancedSearchRef.value : [], // Advanced search
+        iDs: hasAdvancedSearch ? [] : threatIds.value, // Threat ID list
+        level: hasAdvancedSearch ? [] : threatLevel.value, // Threat levels and severity
+        startTm: hasAdvancedSearch ? '' : formatDate(lastOccurenceTime.value[0], 'YYYY-mm-dd HH:MM:SS'), // Start time
+        endTm: hasAdvancedSearch ? '' : formatDate(lastOccurenceTime.value[1], 'YYYY-mm-dd HH:MM:SS'), // End time
+        searchType: hasAdvancedSearch ? 1 : 0,
+        advancedSearch: hasAdvancedSearch ? effectiveAdvancedSearch : [],
         sortTm: -1, // Sort by time: `1` asc, `-1` desc
-        eventStatus: eventStatus.value,
+        eventStatus: hasAdvancedSearch ? -1 : eventStatus.value,
     };
     
     tableLoading.value = true;
@@ -366,18 +536,21 @@ onUnmounted(() => {
 });
 
 watch(advancedSearchRef,
-    (newValue, oldValue) => {
+    () => {
+        if (!isAdvanceSearch.value) return;
+        pageIdx.value = 1;
         refreshThreatTable();
     }, { deep: true }
 );
 
 watch(isAdvanceSearch, (value) => {
+    pageIdx.value = 1;
     if (value === true) {
-        advancedSearchRef.value = [{
-            name: 'level',
-            type: 'eq',
-            value: ['2', '3', '4', '5'],
-        }];
+        if (advancedSearchRef.value.length === 0) {
+            advancedSearchRef.value = [{ name: '', type: '', value: [] }];
+        } else {
+            refreshThreatTable();
+        }
     } else {
         refreshThreatTable();
     }
@@ -414,94 +587,594 @@ watch([lastOccurenceTime, eventStatus], () => {
 </script>
 
 <style lang="scss">
-.pointer-cursor {
-    cursor: pointer;
+.threat-events-page {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+	background: #f5f7fb;
+
+	.events-command-panel,
+	.events-list-panel {
+		border: 1px solid #dfe6ef;
+		border-radius: 8px;
+		background: #ffffff;
+		box-shadow: 0 10px 28px rgba(31, 45, 61, 0.06);
+	}
+
+	.events-command-panel {
+		overflow: hidden;
+	}
+
+	.events-command-main {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		gap: 18px;
+		padding: 18px 20px;
+		color: #17233d;
+		background:
+			linear-gradient(135deg, rgba(22, 143, 122, 0.1), rgba(245, 184, 75, 0.08)),
+			#ffffff;
+		border-bottom: 1px solid rgba(220, 232, 229, 0.86);
+	}
+
+	.events-kicker {
+		margin-bottom: 6px;
+		color: var(--ada-primary);
+		font-size: 12px;
+		font-weight: 700;
+		text-transform: uppercase;
+	}
+
+	.events-command-copy {
+		min-width: 0;
+
+		p {
+			margin: 0;
+			max-width: 760px;
+			color: #64748b;
+			font-size: 13px;
+			line-height: 1.5;
+		}
+	}
+
+	.events-command-actions {
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		flex-wrap: wrap;
+		gap: 12px;
+		min-width: 360px;
+
+		.el-switch__label {
+			color: #475569;
+		}
+	}
+
+	.events-metrics {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 1px;
+		background: rgba(220, 232, 229, 0.86);
+	}
+
+	.metric-card {
+		min-width: 0;
+		padding: 14px 18px;
+		background: linear-gradient(180deg, #ffffff, #f8fbff);
+
+		.metric-label,
+		span:last-child {
+			display: block;
+			color: #6b778c;
+			font-size: 12px;
+		}
+
+		strong {
+			display: block;
+			margin: 4px 0;
+			color: #17233d;
+			font-size: 25px;
+			line-height: 1;
+		}
+
+		&.metric-hot strong {
+			color: #c2412f;
+		}
+	}
+
+	.events-filter-panel {
+		padding: 14px 18px 6px;
+
+		.filter-form {
+			display: flex;
+			align-items: flex-start;
+			flex-wrap: wrap;
+			column-gap: 12px;
+		}
+	}
+
+	.filter-threat-select {
+		width: 220px;
+	}
+
+	.filter-level-select {
+		width: 150px;
+	}
+
+	.filter-status-select {
+		width: 132px;
+	}
+
+	.alarm-advanced-form {
+		display: block;
+		width: 100%;
+	}
+
+	.advanced-search-stack {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 8px;
+		width: 100%;
+	}
+
+	.advanced-search-row {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		max-width: 100%;
+
+		.el-space {
+			align-items: center;
+			padding: 3px;
+			border: 1px solid rgba(220, 232, 229, 0.92);
+			border-radius: 8px;
+			background: #fbfcfe;
+		}
+	}
+
+	.advanced-icon-button {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 32px;
+		height: 32px;
+		padding: 0;
+		border: 1px solid rgba(22, 143, 122, 0.24);
+		border-radius: 8px;
+		background: #ffffff;
+		color: var(--ada-primary);
+		cursor: pointer;
+		transition: border-color 0.16s ease, background-color 0.16s ease, color 0.16s ease, transform 0.16s ease;
+
+		&:hover {
+			border-color: rgba(22, 143, 122, 0.5);
+			background: rgba(22, 143, 122, 0.08);
+			transform: translateY(-1px);
+		}
+	}
+
+	.advanced-remove-btn {
+		width: 28px;
+		height: 28px;
+		border-color: transparent;
+		background: transparent;
+		color: var(--ada-danger);
+
+		&:hover {
+			border-color: transparent;
+			background: rgba(217, 86, 86, 0.08);
+			transform: none;
+		}
+	}
+
+	.advanced-add-btn {
+		flex: 0 0 auto;
+		background: rgba(22, 143, 122, 0.1);
+	}
+
+	.advanced-add-btn .el-icon,
+	.advanced-remove-btn .el-icon {
+		font-size: 16px;
+	}
+
+	.events-list-panel {
+		padding: 16px 18px;
+	}
+
+	.events-list-header,
+	.events-pagination {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 12px;
+	}
+
+	.events-list-header {
+		margin-bottom: 12px;
+
+		div {
+			display: flex;
+			align-items: baseline;
+			gap: 8px;
+		}
+
+		span {
+			color: #536271;
+			font-size: 13px;
+			font-weight: 700;
+			text-transform: uppercase;
+		}
+
+		strong {
+			color: #17233d;
+			font-size: 20px;
+		}
+
+		.bulk-close-button {
+			border: 0;
+			background: linear-gradient(135deg, #14b8a6, #059669);
+			box-shadow: 0 10px 24px rgba(20, 184, 166, 0.22);
+			color: #ffffff !important;
+			font-weight: 800;
+			letter-spacing: 0;
+
+			&.is-disabled,
+			&.is-disabled:hover,
+			&.is-disabled:focus {
+				background: linear-gradient(135deg, rgba(20, 184, 166, 0.72), rgba(5, 150, 105, 0.72)) !important;
+				box-shadow: none;
+				color: rgba(255, 255, 255, 0.86) !important;
+			}
+		}
+	}
+
+	.event-card-list {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+	}
+
+	.event-card {
+		position: relative;
+		display: grid;
+		grid-template-columns: 64px minmax(0, 1fr);
+		min-width: 0;
+		overflow: hidden;
+		border: 1px solid #dfe6ef;
+		border-radius: 8px;
+		background: #ffffff;
+		cursor: pointer;
+		transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+
+		&:hover {
+			border-color: #9bc8ff;
+			box-shadow: 0 12px 28px rgba(31, 45, 61, 0.1);
+			transform: translateY(-1px);
+		}
+
+		&.is-selected {
+			border-color: #409eff;
+			box-shadow: 0 0 0 2px rgba(64, 158, 255, 0.16);
+		}
+	}
+
+	.event-card-rail {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-right: 1px solid rgba(220, 232, 229, 0.86);
+		background:
+			linear-gradient(180deg, rgba(248, 251, 255, 0.98), rgba(238, 247, 245, 0.96)),
+			#f8fbff;
+
+		&::before {
+			content: '';
+			position: absolute;
+			inset: 0 auto 0 0;
+			width: 4px;
+			background: linear-gradient(180deg, var(--level-color), rgba(22, 143, 122, 0.42));
+		}
+
+		&::after {
+			content: '';
+			position: absolute;
+			top: 18px;
+			bottom: 18px;
+			left: 50%;
+			width: 1px;
+			background: linear-gradient(180deg, transparent, rgba(148, 163, 184, 0.34), transparent);
+			transform: translateX(-50%);
+		}
+	}
+
+	.event-index {
+		position: relative;
+		z-index: 1;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 34px;
+		height: 34px;
+		border: 1px solid rgba(22, 143, 122, 0.2);
+		border-radius: 10px;
+		background:
+			linear-gradient(180deg, #ffffff, #f6fafc),
+			#ffffff;
+		box-shadow: 0 8px 18px rgba(31, 45, 61, 0.08), inset 0 0 0 3px rgba(22, 143, 122, 0.05);
+		color: #17233d;
+		font-size: 12px;
+		font-weight: 800;
+		transition: border-color 0.18s ease, box-shadow 0.18s ease, color 0.18s ease;
+	}
+
+	.event-card:hover .event-index,
+	.event-card.is-selected .event-index {
+		border-color: var(--level-color);
+		box-shadow: 0 10px 22px rgba(31, 45, 61, 0.11), inset 0 0 0 3px rgba(64, 158, 255, 0.08);
+		color: var(--level-color);
+	}
+
+	.event-dot {
+		position: absolute;
+		right: -5px;
+		z-index: 2;
+		width: 10px;
+		height: 10px;
+		border: 2px solid #ffffff;
+		border-radius: 50%;
+		background: var(--level-color);
+		box-shadow: 0 0 0 3px rgba(64, 158, 255, 0.1);
+	}
+
+	.event-card-body {
+		min-width: 0;
+		padding: 14px 16px 13px 18px;
+	}
+
+	.event-title-row,
+	.event-meta-row {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 12px;
+	}
+
+	.event-title-main {
+		min-width: 0;
+	}
+
+	.event-title {
+		overflow: hidden;
+		color: #17233d;
+		font-size: 16px;
+		font-weight: 800;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.event-tags,
+	.method-tags,
+	.event-meta-row {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 7px;
+	}
+
+	.level-chip,
+	.status-chip,
+	.soft-chip,
+	.method-tags span {
+		display: inline-flex;
+		align-items: center;
+		max-width: 180px;
+		min-height: 22px;
+		padding: 2px 8px;
+		overflow: hidden;
+		border-radius: 6px;
+		font-size: 12px;
+		font-weight: 700;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.level-chip {
+		color: var(--level-color);
+		background: color-mix(in srgb, var(--level-color) 12%, #ffffff);
+	}
+
+	.status-chip {
+		color: #52606d;
+		background: #eef2f6;
+
+		&.status-0 {
+			color: #c2412f;
+			background: #fff0ed;
+		}
+
+		&.status-1 {
+			color: #2f7a43;
+			background: #edf8ee;
+		}
+
+		&.status-2 {
+			color: #536271;
+			background: #eef2f6;
+		}
+
+		&.status-3 {
+			color: #a16207;
+			background: #fff6df;
+		}
+	}
+
+	.soft-chip,
+	.method-tags span {
+		color: #536271;
+		background: #f2f5f8;
+	}
+
+	.event-actions {
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		flex: 0 0 auto;
+	}
+
+	.event-info-grid {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 10px;
+		margin-top: 14px;
+	}
+
+	.flow-node {
+		display: grid;
+		grid-template-columns: 34px minmax(0, 1fr);
+		align-items: center;
+		gap: 9px;
+		min-width: 0;
+		padding: 10px;
+		border: 1px solid #edf1f5;
+		border-radius: 8px;
+		background: #fbfcfe;
+	}
+
+	.flow-node-icon {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 34px;
+		height: 34px;
+		border-radius: 8px;
+		color: #0b6fb3;
+		background: #eaf5ff;
+	}
+
+	.method-icon {
+		color: #c2412f;
+		background: #fff0ed;
+	}
+
+	.flow-node-copy {
+		min-width: 0;
+
+		span {
+			display: block;
+			color: #7a8795;
+			font-size: 12px;
+		}
+
+		strong {
+			display: block;
+			overflow: hidden;
+			color: #17233d;
+			font-size: 13px;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+	}
+
+	.attack-path {
+		margin-top: 12px;
+		padding: 10px 12px;
+		border: 1px solid #dfe6ef;
+		border-left: 4px solid #409eff;
+		border-radius: 8px;
+		background: linear-gradient(90deg, #f7fbff, #ffffff);
+	}
+
+	.attack-path-line {
+		display: -webkit-box;
+		overflow: hidden;
+		color: #3d4c5c;
+		font-size: 13px;
+		line-height: 1.55;
+		text-overflow: ellipsis;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+		line-clamp: 2;
+	}
+
+	.flow-token {
+		display: inline-flex;
+		max-width: 220px;
+		margin: 0 2px;
+		padding: 0 6px;
+		overflow: hidden;
+		border-radius: 5px;
+		color: #0b6fb3;
+		background: #eaf5ff;
+		font-weight: 800;
+		text-overflow: ellipsis;
+		vertical-align: bottom;
+		white-space: nowrap;
+	}
+
+	.event-meta-row {
+		margin-top: 12px;
+		color: #697789;
+		font-size: 12px;
+
+		span {
+			display: inline-flex;
+			align-items: center;
+			gap: 4px;
+			min-width: 0;
+		}
+	}
+
+	.events-pagination {
+		margin-top: 14px;
+	}
 }
 
-.eventTmpl-container {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 12px;
+@media (max-width: 1200px) {
+	.threat-events-page {
+		.events-command-main,
+		.event-title-row {
+			flex-direction: column;
+			align-items: stretch;
+		}
+
+		.events-command-actions {
+			justify-content: flex-start;
+			min-width: 0;
+		}
+
+		.events-metrics,
+		.event-info-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
 }
 
-.attackFlow-container {
-    align-items: center;
-    justify-content: center;
-    /* justify-content: center; */
-    display: flex;
-}
+@media (max-width: 768px) {
+	.threat-events-page {
+		.events-metrics,
+		.event-info-grid {
+			grid-template-columns: 1fr;
+		}
 
-.attackFlow-container-text {
-    align-items: center;
-    justify-content: center;
-    /* justify-content: center; */
-    display: flex;
-    font-size: 16px;
-    font-weight: bold;
-}
+		.event-card {
+			grid-template-columns: 52px minmax(0, 1fr);
+		}
 
-.arrowRight {
-    // width: 290px;
-    width: calc(100% - 20px);
-    /* Total width */
-    height: 20px;
-    /* Total height, including borders */
-    border-top: 1px solid black;
-    /* Use the top border as the straight line */
-    position: relative;
-    /* Use relative positioning so the pseudo-element has an anchor */
-    top: 10%;
-    /* Place the arrow at the vertical center of the line */
-}
+		.event-index {
+			width: 28px;
+			height: 28px;
+			border-radius: 8px;
+			font-size: 11px;
+		}
 
-.arrowRight::after {
-    content: '';
-    /* Pseudo-elements require content to render */
-    position: absolute;
-    /* Absolute positioning */
-    right: 0;
-    /* Position it on the right side of the container */
-    top: -15%;
-    /* Place the arrow at the vertical center of the line */
-    margin-top: -3px;
-    /* Shift upward by half the arrow height to keep it centered vertically */
-    border-left: 6px solid black;
-    /* Use the left black border to form the arrow */
-    border-top: 6px solid transparent;
-    /* Transparent top border */
-    border-bottom: 6px solid transparent;
-    /* Transparent bottom border */
-}
-
-.select-button {
-    height: 100px;
-    width: 50px;
-    border: 1px solid var(--el-card-border-color);
-    background-color: rgb(233, 235, 239);
-    align-items: center;
-    justify-content: center;
-    display: flex;
-}
-
-.timeline-card {
-    border-radius: 0;
-    width: 100%;
-    min-width: 0;
-}
-
-.selected-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 0;
-  border-left: 30px solid #409EFF; /* Blue left border that forms the other side and base of the triangle */
-  border-top: 0px solid transparent; /* Transparent top border that forms one side of the isosceles triangle */
-  border-bottom: 30px solid transparent; /* Transparent bottom border */
+		.events-list-header,
+		.events-pagination {
+			align-items: flex-start;
+			flex-direction: column;
+		}
+	}
 }
 </style>

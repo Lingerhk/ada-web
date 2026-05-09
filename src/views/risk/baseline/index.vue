@@ -82,12 +82,16 @@
                     <el-table-column :label="$t('message.risk.updateTm')">
                         <template #default="scope">{{ formatApiTime(scope.row.updateTm) }}</template>
                     </el-table-column>
-                    <el-table-column :label="$t('message.tableCommon.operation')" width="160" fixed="right" align="center">
+                    <el-table-column :label="$t('message.tableCommon.operation')" width="92" fixed="right" align="center">
                         <template #default="scope">
-                            <el-button size="small" @click="handleDetail(scope.row)">{{
-                                $t('message.tableCommon.detail') }}</el-button>
-                            <el-button size="small" @click="handleScan(scope.row)">{{
-                                $t('message.tableCommon.scanNow') }}</el-button>
+                            <div class="operation-icon-group">
+                                <el-tooltip :content="$t('message.tableCommon.detail')" placement="top">
+                                    <el-button class="operation-icon-button" size="small" type="primary" :icon="View" :aria-label="$t('message.tableCommon.detail')" @click="handleDetail(scope.row)" />
+                                </el-tooltip>
+                                <el-tooltip :content="$t('message.tableCommon.scanNow')" placement="top">
+                                    <el-button class="operation-icon-button" size="small" :icon="Refresh" :aria-label="$t('message.tableCommon.scanNow')" @click="handleScan(scope.row)" />
+                                </el-tooltip>
+                            </div>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -111,7 +115,7 @@ import { onMounted, reactive, watch, defineAsyncComponent, ref } from 'vue';
 import { ListBaselineReply, ListBaselineReply_Details, ListBaselineReq } from '/@/api/grpc/ada';
 import api from '/@/api/grpc';
 import { alertApiError } from '/@/utils/error';
-import { Search } from '@element-plus/icons-vue';
+import { Refresh, Search, View } from '@element-plus/icons-vue';
 import { formatApiTime } from '/@/utils/formatTime';
 import { getResultOptions, getSubTypeOptions } from './constant';
 import { useI18n } from 'vue-i18n';

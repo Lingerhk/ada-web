@@ -49,7 +49,7 @@
 			<template #dropdown>
 				<el-dropdown-menu>
 					<el-dropdown-item command="changePassword">{{ $t('message.accountPerson.changePasswordTitle') }}</el-dropdown-item>
-					<el-dropdown-item command="/person">{{ $t('message.router.accountPersonIndex') }}</el-dropdown-item>
+					<el-dropdown-item command="/me">{{ $t('message.router.me') }}</el-dropdown-item>
 					<el-dropdown-item divided command="logOut">{{ $t('message.user.dropdown5') }}</el-dropdown-item>
 				</el-dropdown-menu>
 			</template>

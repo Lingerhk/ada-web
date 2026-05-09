@@ -30,7 +30,7 @@
                             </el-form-item>
                             <el-form-item>
                                 <template #label><span class="form-label">{{ T('role') }}:</span></template>
-                                {{ T("role_" + state.me?.role) }}
+                                {{ state.me?.role ? T(`role_${state.me.role}`) : '-' }}
                             </el-form-item>
                         </div>
                         <div style="margin-left: 200px;">
@@ -164,13 +164,20 @@
                     </el-table-column>
                     <el-table-column :label="$t('message.tableCommon.operation')" width="100" fixed="right" align="center">
                         <template #default="scope">
-                            <el-button
-                                size="small"
-                                type="danger"
-                                :disabled="scope.row.status === 'disabled'"
-                                @click="handleDeleteKey(scope.row)">
-                                {{ T('disable') }}
-                            </el-button>
+                            <div class="operation-icon-group">
+                                <el-tooltip :content="T('disable')" placement="top">
+                                    <span class="operation-icon-trigger">
+                                        <el-button
+                                            class="operation-icon-button"
+                                            size="small"
+                                            type="danger"
+                                            :icon="CircleClose"
+                                            :aria-label="T('disable')"
+                                            :disabled="scope.row.status === 'disabled'"
+                                            @click="handleDeleteKey(scope.row)" />
+                                    </span>
+                                </el-tooltip>
+                            </div>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -185,7 +192,7 @@ import api from '/@/api/grpc/index';
 import { DisableMfaReq, EnableMfaReq, ListUserReply_Details, ListUserReq, UpdateUserReq, AccessKeyDetails, ListAccessKeyReq, GenerateAccessKeyReq, DeleteAccessKeyReq } from '/@/api/grpc/ada';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import type { FormInstance, FormRules, UploadProps } from 'element-plus'
-import { Plus, Edit } from '@element-plus/icons-vue';
+import { CircleClose, Edit, Plus } from '@element-plus/icons-vue';
 import { useI18n } from 'vue-i18n';
 import { alertApiError, alertResult } from '/@/utils/error';
 import { formatApiTime } from '/@/utils/formatTime';

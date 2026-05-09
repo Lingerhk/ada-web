@@ -54,14 +54,19 @@
                         :formatter="(_: any, __: any, value: string, ___: any) => formatApiTime(value)" />
                     <el-table-column prop="origin" :label="T('origin')"
                         :formatter="(_: any, __: any, value: string, ___: any) => T(`origin_${value}`)" />
-                    <el-table-column :label="T('operation')" width="210" fixed="right" align="center">
+                    <el-table-column :label="T('operation')" width="124" fixed="right" align="center">
                         <template #default="scope">
-                            <el-button size="small" @click="handleDetail(scope.row)">{{ T('detail')
-                                }}</el-button>
-                            <el-button size="small" @click="handleEdit(scope.row)">{{ T('edit')
-                                }}</el-button>
-                            <el-button size="small" type="danger" @click="handleDelete(scope.row)">{{ T('delete')
-                                }}</el-button>
+                            <div class="operation-icon-group">
+                                <el-tooltip :content="T('detail')" placement="top">
+                                    <el-button class="operation-icon-button" size="small" type="primary" :icon="View" :aria-label="T('detail')" @click="handleDetail(scope.row)" />
+                                </el-tooltip>
+                                <el-tooltip :content="T('edit')" placement="top">
+                                    <el-button class="operation-icon-button" size="small" :icon="Edit" :aria-label="T('edit')" @click="handleEdit(scope.row)" />
+                                </el-tooltip>
+                                <el-tooltip :content="T('delete')" placement="top">
+                                    <el-button class="operation-icon-button" size="small" type="danger" :icon="Delete" :aria-label="T('delete')" @click="handleDelete(scope.row)" />
+                                </el-tooltip>
+                            </div>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -93,7 +98,7 @@ import { formatApiTime, shortcuts } from '/@/utils/formatTime';
 import AddModDrawer from './addModDrawer.vue';
 import DetailModDrawer from './detailDrawer.vue';
 import { ElMessageBox } from 'element-plus';
-import { Plus } from '@element-plus/icons-vue';
+import { Delete, Edit, Plus, View } from '@element-plus/icons-vue';
 import { useI18n } from 'vue-i18n';
 
 const drawerRef = ref();

@@ -84,11 +84,23 @@
                         {{ prop.row.activeTm ? formatApiTime(prop.row.activeTm) : '-' }}
                     </template>
                 </el-table-column>
-                <el-table-column :label="T('operation')" width="210" fixed="right" align="center">
+                <el-table-column :label="T('operation')" width="124" fixed="right" align="center">
                     <template #default="scope">
-                        <el-button size="small" plain @click="onViewAccount(scope.row)">{{ T('view') }}</el-button>
-                        <el-button size="small" plain :disabled="priv > scope.row.priv" @click="onEditAccount(scope.row)">{{ T('edit') }}</el-button>
-                        <el-button size="small" type="danger" :disabled="priv > scope.row.priv || currentUser === scope.row.username" @click="onDelete(scope.row)">{{ T('delete') }}</el-button>
+                        <div class="operation-icon-group">
+                            <el-tooltip :content="T('view')" placement="top">
+                                <el-button class="operation-icon-button" size="small" type="primary" :icon="View" :aria-label="T('view')" @click="onViewAccount(scope.row)" />
+                            </el-tooltip>
+                            <el-tooltip :content="T('edit')" placement="top">
+                                <span class="operation-icon-trigger">
+                                    <el-button class="operation-icon-button" size="small" :icon="Edit" :aria-label="T('edit')" :disabled="priv > scope.row.priv" @click="onEditAccount(scope.row)" />
+                                </span>
+                            </el-tooltip>
+                            <el-tooltip :content="T('delete')" placement="top">
+                                <span class="operation-icon-trigger">
+                                    <el-button class="operation-icon-button" size="small" type="danger" :icon="Delete" :aria-label="T('delete')" :disabled="priv > scope.row.priv || currentUser === scope.row.username" @click="onDelete(scope.row)" />
+                                </span>
+                            </el-tooltip>
+                        </div>
                     </template>
                 </el-table-column>
             </el-table>
@@ -110,7 +122,7 @@ import { defineAsyncComponent, onMounted, reactive, ref, watch } from 'vue';
 import { ListUserReq, ListUserReply_Details } from '/@/api/grpc/ada';
 import api from '/@/api/grpc';
 import { ElMessageBox } from 'element-plus';
-import { Plus } from '@element-plus/icons-vue';
+import { Delete, Edit, Plus, View } from '@element-plus/icons-vue';
 import { transAccount as T } from '/@/utils/translator';
 import { formatApiTime, shortcuts } from '/@/utils/formatTime';
 import { useI18n } from 'vue-i18n';
@@ -317,9 +329,9 @@ watch([createTimeRange, passTimeRange], () => {
 onMounted(() => {
     refreshUser();
 
-    const user = Local.get('user');
-    priv.value = user['priv'] ?? 99;
-    currentUser.value = user['username'] ?? '';
+    const user = Local.get('user') || {};
+    priv.value = user.priv ?? 99;
+    currentUser.value = user.username ?? user.userName ?? '';
 });
 
 </script>

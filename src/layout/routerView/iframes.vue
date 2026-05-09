@@ -26,7 +26,6 @@
 						v-show="getRoutePath === v.path"
 						ref="iframeRef"
 						allow="fullscreen"
-						allowfullscreen
 					/>
 				</transition-group>
 			</div>
@@ -78,7 +77,7 @@ const getRoutePath = computed(() => {
 });
 // Kibana/log-search uses the iframe route and needs a direct browser full-screen affordance
 const isKibanaRoute = computed(() => {
-	return route.path === '/kibana' || route.name === 'threatKibana';
+	return route.path === '/threat/kibana' || route.name === 'threatKibana';
 });
 const fullscreenTooltip = computed(() => {
 	return isKibanaFullscreen.value ? t('message.tagsView.closeFullscreen') : t('message.tagsView.fullscreen');
@@ -119,11 +118,11 @@ const closeIframeLoading = (val: string, item: RouteItem) => {
 watch(
 	() => route.fullPath,
 	async (val) => {
-		const item: any = props.list.find((v: any) => v.path === val);
+		const item: any = props.list.find((v: any) => v.path === val || v.path === route.path || v.name === route.name);
 		if (!item) return false;
 
 		// Initialize Kibana session if this is a Kibana route
-		if (item.path === '/kibana' || item.name === 'threatKibana') {
+		if (item.path === '/threat/kibana' || item.name === 'threatKibana') {
 			try {
 				await initKibanaSession();
 			} catch {

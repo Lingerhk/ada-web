@@ -61,14 +61,19 @@
 				{{ formatApiTime(scope.row.lastOnlineTm) }}
 			</template>
 		</el-table-column>
-		<el-table-column :label="$t('message.tableCommon.operation')" width="210" fixed="right" align="center">
+		<el-table-column :label="$t('message.tableCommon.operation')" width="124" fixed="right" align="center">
 			<template #default="scope">
-				<el-button size="small" @click="onDetail(scope.row)">{{
-					$t('message.tableCommon.detail') }}</el-button>
-				<el-button size="small" @click="onEdit(scope.row)">{{
-					$t('message.tableCommon.edit') }}</el-button>
-				<el-button size="small" type="danger" @click="onDelete(scope.row)">{{
-					$t('message.tableCommon.delete') }}</el-button>
+				<div class="operation-icon-group">
+					<el-tooltip :content="$t('message.tableCommon.detail')" placement="top">
+						<el-button class="operation-icon-button" size="small" type="primary" :icon="View" :aria-label="$t('message.tableCommon.detail')" @click="onDetail(scope.row)" />
+					</el-tooltip>
+					<el-tooltip :content="$t('message.tableCommon.edit')" placement="top">
+						<el-button class="operation-icon-button" size="small" :icon="Edit" :aria-label="$t('message.tableCommon.edit')" @click="onEdit(scope.row)" />
+					</el-tooltip>
+					<el-tooltip :content="$t('message.tableCommon.delete')" placement="top">
+						<el-button class="operation-icon-button" size="small" type="danger" :icon="Delete" :aria-label="$t('message.tableCommon.delete')" @click="onDelete(scope.row)" />
+					</el-tooltip>
+				</div>
 			</template>
 		</el-table-column>
 	</el-table>
@@ -86,7 +91,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, reactive, ref, watch } from 'vue';
 import { CmdSensorReq, ListSensorReply_Details, ListSensorReq, UpdateSensorReq } from '/@/api/grpc/ada';
-import { Search } from '@element-plus/icons-vue';
+import { Delete, Edit, Search, View } from '@element-plus/icons-vue';
 import { ElMessageBox, ElCheckbox, type CheckboxValueType } from 'element-plus';
 import api from '/@/api/grpc';
 import { alertApiError, alertResult } from '/@/utils/error';

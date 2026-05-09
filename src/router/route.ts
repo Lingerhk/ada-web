@@ -49,10 +49,10 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 		children: [
 			{
 				path: '/dashboard',
-				name: 'dashboardIndex',
+				name: 'dashboard',
 				component: () => import('/@/views/dashboard/index.vue'),
 				meta: {
-					title: 'message.router.dashboardIndex',
+					title: 'message.router.dashboard',
 					isLink: '',
 					isHide: false,
 					isKeepAlive: true,
@@ -64,11 +64,11 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 			},
 			{
 				path: '/threat',
-				name: 'threatIndex',
+				name: 'threat',
 				component: () => import('/@/layout/routerView/parent.vue'),
-				redirect: '/safetyOverview',
+				redirect: '/threat/overview',
 				meta: {
-					title: 'message.router.threatIndex',
+					title: 'message.router.threat',
 					isLink: '',
 					isHide: false,
 					isKeepAlive: true,
@@ -79,11 +79,12 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 				},
 				children: [
 					{
-						path: '/safetyOverview',
-						name: 'safetyOverviewIndex',
+						path: '/threat/overview',
+						name: 'threatOverview',
+						alias: ['/threat/safety-overview', '/safetyOverview', '/saftyOverview'],
 						component: () => import('/@/views/threat/safetyOverview/index.vue'),
 						meta: {
-							title: 'message.router.safetyOverviewIndex',
+							title: 'message.router.threatOverview',
 							isLink: '',
 							isHide: false,
 							isKeepAlive: true,
@@ -94,19 +95,12 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 						},
 					},
 					{
-						path: '/saftyOverview',
-						name: 'legacySafetyOverviewIndex',
-						redirect: '/safetyOverview',
-						meta: {
-							isHide: true,
-						},
-					},
-					{
-						path: '/alarmList',
-						name: 'alarmListIndex',
+						path: '/threat/events',
+						name: 'threatEvents',
+						alias: ['/threat/alarm-list', '/alarmList'],
 						component: () => import('/@/views/threat/alarmList/index.vue'),
 						meta: {
-							title: 'message.router.alarmListIndex',
+							title: 'message.router.threatEvents',
 							isLink: '',
 							isHide: false,
 							isKeepAlive: true,
@@ -117,11 +111,12 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 						},
 					},
 					{
-						path: '/activityList',
-						name: 'activityListIndex',
+						path: '/threat/activity',
+						name: 'threatActivity',
+						alias: ['/threat/activity-list', '/activityList'],
 						component: () => import('/@/views/threat/activityList/index.vue'),
 						meta: {
-							title: 'message.router.activityListIndex',
+							title: 'message.router.threatActivity',
 							isLink: '',
 							isHide: false,
 							isKeepAlive: true,
@@ -132,8 +127,9 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 						},
 					},
 					{
-						path: '/kibana',
+						path: '/threat/kibana',
 						name: 'threatKibana',
+						alias: '/kibana',
 						component: () => import('/@/layout/routerView/iframes.vue'),
 						meta: {
 							title: 'message.router.threatKibana',
@@ -147,11 +143,12 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 						},
 					},
 					{
-						path: '/sensitiveEntryList',
-						name: 'sensitiveEntryListListIndex',
+						path: '/threat/entries',
+						name: 'threatEntries',
+						alias: ['/threat/sensitive-entry-list', '/sensitiveEntryList'],
 						component: () => import('/@/views/threat/sensitiveEntryList/index.vue'),
 						meta: {
-							title: 'message.router.sensitiveEntryListIndex',
+							title: 'message.router.threatEntries',
 							isLink: '',
 							isHide: false,
 							isKeepAlive: true,
@@ -162,11 +159,12 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 						},
 					},
 					{
-						path: '/threatBlock',
-						name: 'threatBlockIndex',
+						path: '/threat/blocks',
+						name: 'threatBlocks',
+						alias: ['/threat/block', '/threatBlock'],
 						component: () => import('/@/views/threat/threatBlock/index.vue'),
 						meta: {
-							title: 'message.router.threatBlockIndex',
+							title: 'message.router.threatBlocks',
 							isLink: '',
 							isHide: false,
 							isKeepAlive: true,
@@ -178,11 +176,12 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 					},
 
 					{
-						path: '/whiteList',
-						name: 'whiteListIndex',
+						path: '/threat/whitelist',
+						name: 'threatWhitelist',
+						alias: ['/threat/white-list', '/whiteList'],
 						component: () => import('/@/views/threat/whiteList/index.vue'),
 						meta: {
-							title: 'message.router.whiteListIndex',
+							title: 'message.router.threatWhitelist',
 							isLink: '',
 							isHide: false,
 							isKeepAlive: true,
@@ -193,11 +192,12 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 						},
 					},
 					{
-						path: '/ruleManage',
-						name: 'ruleManageIndex',
+						path: '/threat/rules',
+						name: 'threatRules',
+						alias: ['/threat/rule-manage', '/ruleManage'],
 						component: () => import('/@/views/threat/ruleManage/index.vue'),
 						meta: {
-							title: 'message.router.ruleManageIndex',
+							title: 'message.router.threatRules',
 							isLink: '',
 							isHide: false,
 							isKeepAlive: true,
@@ -211,11 +211,11 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 			},
 			{
 				path: '/risk',
-				name: 'riskIndex',
+				name: 'risk',
 				component: () => import('/@/layout/routerView/parent.vue'),
-				redirect: '/riskOverview',
+				redirect: '/risk/overview',
 				meta: {
-					title: 'message.router.riskIndex',
+					title: 'message.router.risk',
 					isLink: '',
 					isHide: false,
 					isKeepAlive: true,
@@ -226,11 +226,12 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 				},
 				children: [
 					{
-						path: '/riskOverview',
-						name: 'riskOverviewIndex',
+						path: '/risk/overview',
+						name: 'riskOverview',
+						alias: '/riskOverview',
 						component: () => import('/@/views/risk/riskOverview/index.vue'),
 						meta: {
-							title: 'message.router.riskOverviewIndex',
+							title: 'message.router.riskOverview',
 							isLink: '',
 							isHide: false,
 							isKeepAlive: true,
@@ -241,11 +242,12 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 						},
 					},
 					{
-						path: '/baseline',
-						name: 'baselineIndex',
+						path: '/risk/baseline',
+						name: 'riskBaseline',
+						alias: '/baseline',
 						component: () => import('/@/views/risk/baseline/index.vue'),
 						meta: {
-							title: 'message.router.baselineIndex',
+							title: 'message.router.riskBaseline',
 							isLink: '',
 							isHide: false,
 							isKeepAlive: true,
@@ -256,11 +258,12 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 						},
 					},
 					{
-						path: '/leak',
-						name: 'leakIndex',
+						path: '/risk/leaks',
+						name: 'riskLeaks',
+						alias: ['/risk/leak', '/leak'],
 						component: () => import('/@/views/risk/leak/index.vue'),
 						meta: {
-							title: 'message.router.leakIndex',
+							title: 'message.router.riskLeaks',
 							isLink: '',
 							isHide: false,
 							isKeepAlive: true,
@@ -271,11 +274,12 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 						},
 					},
 					{
-						path: '/weakpwd',
-						name: 'weakpwdIndex',
+						path: '/risk/weakpwd',
+						name: 'riskWeakpwd',
+						alias: ['/risk/weak-pwd', '/weakpwd'],
 						component: () => import('/@/views/risk/weakpwd/index.vue'),
 						meta: {
-							title: 'message.router.weakpwdIndex',
+							title: 'message.router.riskWeakpwd',
 							isLink: '',
 							isHide: false,
 							isKeepAlive: true,
@@ -286,11 +290,12 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 						},
 					},
 					{
-						path: '/task',
-						name: 'taskIndex',
+						path: '/risk/tasks',
+						name: 'riskTasks',
+						alias: ['/risk/task', '/task'],
 						component: () => import('/@/views/risk/task/index.vue'),
 						meta: {
-							title: 'message.router.taskIndex',
+							title: 'message.router.riskTasks',
 							isLink: '',
 							isHide: false,
 							isKeepAlive: true,
@@ -301,11 +306,12 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 						},
 					},
 					{
-						path: '/ruleConfig',
-						name: 'ruleConfigIndex',
+						path: '/risk/rules',
+						name: 'riskRules',
+						alias: ['/risk/rule-config', '/ruleConfig'],
 						component: () => import('/@/views/risk/ruleConfig/index.vue'),
 						meta: {
-							title: 'message.router.ruleConfigIndex',
+							title: 'message.router.riskRules',
 							isLink: '',
 							isHide: false,
 							isKeepAlive: true,
@@ -318,12 +324,13 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 				],
 			},
 			{
-				path: '/sysConfig',
-				name: 'sycConfigIndex',
+				path: '/settings',
+				name: 'settings',
+				alias: ['/sys-config', '/sysConfig'],
 				component: () => import('/@/layout/routerView/parent.vue'),
-				redirect: '/domainConfig',
+				redirect: '/settings/domain',
 				meta: {
-					title: 'message.router.sycConfigIndex',
+					title: 'message.router.settings',
 					isLink: '',
 					isHide: false,
 					isKeepAlive: true,
@@ -334,11 +341,12 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 				},
 				children: [
 					{
-						path: '/domainConfig',
-						name: 'domainConfigIndex',
+						path: '/settings/domain',
+						name: 'settingsDomain',
+						alias: ['/sys-config/domain-config', '/domainConfig'],
 						component: () => import('/@/views/sysConfig/domainConfig/index.vue'),
 						meta: {
-							title: 'message.router.domainConfigIndex',
+							title: 'message.router.settingsDomain',
 							isLink: '',
 							isHide: false,
 							isKeepAlive: true,
@@ -349,11 +357,12 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 						},
 					},
 					{
-						path: '/person',
-						name: 'personIndex',
+						path: '/me',
+						name: 'me',
+						alias: ['/sys-config/person', '/person'],
 						component: () => import('/@/views/account/person/index.vue'),
 						meta: {
-							title: 'message.router.accountPersonIndex',
+							title: 'message.router.me',
 							isLink: '',
 							isHide: true,
 							isKeepAlive: true,
@@ -364,11 +373,12 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 						},
 					},
 					{
-						path: '/account',
-						name: 'accountManagementIndex',
+						path: '/settings/users',
+						name: 'settingsUsers',
+						alias: ['/sys-config/account', '/account'],
 						component: () => import('/@/views/account/management/index.vue'),
 						meta: {
-							title: 'message.router.accountManagementIndex',
+							title: 'message.router.settingsUsers',
 							isLink: '',
 							isHide: false,
 							isKeepAlive: true,
@@ -379,11 +389,12 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 						},
 					},
 					{
-						path: '/system/systemInfo',
-						name: 'systemInfoIndex',
+						path: '/settings/system',
+						name: 'settingsSystem',
+						alias: ['/sys-config/system-info', '/system/systemInfo'],
 						component: () => import('/@/views/system/systemInfo/index.vue'),
 						meta: {
-							title: 'message.router.systemInfoIndex',
+							title: 'message.router.settingsSystem',
 							isLink: '',
 							isHide: false,
 							isKeepAlive: true,
@@ -394,11 +405,12 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 						},
 					},
 					{
-						path: '/system/monitor',
-						name: 'monitorIndex',
+						path: '/settings/monitor',
+						name: 'settingsMonitor',
+						alias: ['/sys-config/monitor', '/system/monitor'],
 						component: () => import('/@/views/system/monitor/index.vue'),
 						meta: {
-							title: 'message.router.monitorIndex',
+							title: 'message.router.settingsMonitor',
 							isLink: '',
 							isHide: false,
 							isKeepAlive: true,
@@ -409,11 +421,12 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 						},
 					},
 					{
-						path: '/system/webssh',
-						name: 'websshIndex',
+						path: '/settings/ssh',
+						name: 'settingsSsh',
+						alias: ['/sys-config/webssh', '/system/webssh'],
 						component: () => import('/@/views/system/webssh/index.vue'),
 						meta: {
-							title: 'message.router.websshIndex',
+							title: 'message.router.settingsSsh',
 							isLink: '',
 							isHide: true,
 							isKeepAlive: true,
@@ -423,11 +436,12 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 						},
 					},
 					{
-						path: '/notify',
-						name: 'notifyIndex',
+						path: '/settings/notifications',
+						name: 'settingsNotifications',
+						alias: ['/sys-config/notify', '/notify'],
 						component: () => import('/@/views/system/notify/index.vue'),
 						meta: {
-							title: 'message.router.notifyIndex',
+							title: 'message.router.settingsNotifications',
 							isLink: '',
 							isHide: false,
 							isKeepAlive: true,
@@ -438,11 +452,12 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 						},
 					},
 					{
-						path: '/message',
-						name: 'messageIndex',
+						path: '/settings/messages',
+						name: 'settingsMessages',
+						alias: ['/sys-config/message', '/message'],
 						component: () => import('/@/views/system/message/index.vue'),
 						meta: {
-							title: 'message.router.messageIndex',
+							title: 'message.router.settingsMessages',
 							isLink: '',
 							isHide: false,
 							isKeepAlive: true,
@@ -453,11 +468,12 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 						},
 					},
 					{
-						path: '/audit',
-						name: 'auditIndex',
+						path: '/settings/audit',
+						name: 'settingsAudit',
+						alias: ['/sys-config/audit', '/audit'],
 						component: () => import('/@/views/system/audit/index.vue'),
 						meta: {
-							title: 'message.router.auditIndex',
+							title: 'message.router.settingsAudit',
 							isLink: '',
 							isHide: false,
 							isKeepAlive: true,
@@ -468,11 +484,12 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 						},
 					},
 					{
-						path: '/export',
-						name: 'exportIndex',
+						path: '/settings/reports',
+						name: 'settingsReports',
+						alias: ['/sys-config/export', '/export'],
 						component: () => import('/@/views/system/export/index.vue'),
 						meta: {
-							title: 'message.router.exportIndex',
+							title: 'message.router.settingsReports',
 							isLink: '',
 							isHide: false,
 							isKeepAlive: true,

@@ -90,12 +90,16 @@
                                 :class="props.row.result === 0 ? 'success-color' : 'failed-color'">{{
                                     $t(`message.risk.baseline.result_${props.row.result}`) }}</span></template>
                     </el-table-column>
-                    <el-table-column :label="$t('message.tableCommon.operation')" width="160" fixed="right" align="center">
+                    <el-table-column :label="$t('message.tableCommon.operation')" width="92" fixed="right" align="center">
                         <template #default="scope">
-                            <el-button size="small" @click="handleDetail(scope.row)">{{
-                                $t('message.tableCommon.detail') }}</el-button>
-                            <el-button size="small" @click="handleScan(scope.row)">{{
-                                $t('message.tableCommon.scanNow') }}</el-button>
+                            <div class="operation-icon-group">
+                                <el-tooltip :content="$t('message.tableCommon.detail')" placement="top">
+                                    <el-button class="operation-icon-button" size="small" type="primary" :icon="View" :aria-label="$t('message.tableCommon.detail')" @click="handleDetail(scope.row)" />
+                                </el-tooltip>
+                                <el-tooltip :content="$t('message.tableCommon.scanNow')" placement="top">
+                                    <el-button class="operation-icon-button" size="small" :icon="Refresh" :aria-label="$t('message.tableCommon.scanNow')" @click="handleScan(scope.row)" />
+                                </el-tooltip>
+                            </div>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -125,7 +129,7 @@ import { listDomainOptions, recheckTask } from '/@/api/grpc/method';
 import { getLevelOptions, getRiskResultOptions } from '/@/utils/constant';
 import { useI18n } from 'vue-i18n';
 import { shortcuts } from '/@/utils/formatTime';
-import { Search } from '@element-plus/icons-vue';
+import { Refresh, Search, View } from '@element-plus/icons-vue';
 import { getLeakTypeOptions } from '../constant';
 import { ElMessageBox } from 'element-plus';
 import ExportButton from '/@/views/system/export/exportButton.vue';

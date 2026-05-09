@@ -35,8 +35,8 @@ const state = reactive({
 
 const userOptions = [
     { label: T('all'), value: 'all' },
-    { label: T('ul'), value: 'net_rx' },
-    { label: T('dl'), value: 'net_tx' },
+    { label: T('dl'), value: 'net_rx' },
+    { label: T('ul'), value: 'net_tx' },
 ];
 
 const timeRangeOptions = [
@@ -47,34 +47,42 @@ const timeRangeOptions = [
 const chartContainer = ref(null);
 let myChart = null;
 let intervalId = null;
-let ulData = [];
-let dlData = [];
+let downloadData = [];
+let uploadData = [];
+
+const formatThroughput = (value: number) => {
+    const kbps = Number(value);
+    if (!Number.isFinite(kbps)) return '0 Kbps';
+    if (Math.abs(kbps) >= 1024) return `${(kbps / 1024).toFixed(2)} Mbps`;
+    if (Math.abs(kbps) >= 10) return `${kbps.toFixed(0)} Kbps`;
+    return `${kbps.toFixed(2)} Kbps`;
+};
 
 const updateRtData = () => {
     const now = new Date();
     const time = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
-    const ulValue = (Math.random() * 10 + 5).toFixed(2) - 0;
-    const dlValue = (Math.random() * 10 + 5).toFixed(2) - 0;
+    const downloadValue = (Math.random() * 10 + 5).toFixed(2) - 0;
+    const uploadValue = (Math.random() * 10 + 5).toFixed(2) - 0;
 
-    ulData.push([time, ulValue]);
-    dlData.push([time, dlValue]);
+    downloadData.push([time, downloadValue]);
+    uploadData.push([time, uploadValue]);
 
-    if (ulData.length > 1200) {
-        ulData.shift();
+    if (downloadData.length > 1200) {
+        downloadData.shift();
     }
 
-    if (dlData.length > 1200) {
-        dlData.shift();
+    if (uploadData.length > 1200) {
+        uploadData.shift();
     }
 
     myChart.setOption({
         xAxis: {
-            data: dlData.map(item => item[0])
+            data: downloadData.map(item => item[0])
         },
         series: [{
-            data: ulData
+            data: downloadData.map(item => item[1])
         }, {
-            data: dlData
+            data: uploadData.map(item => item[1])
         }]
     });
 };
@@ -90,10 +98,18 @@ const initChart = () => {
                 label: {
                     backgroundColor: '#6a7985'
                 }
-            }
+            },
+            formatter: (params) => {
+                let result = params[0].axisValueLabel + '<br>';
+                params.forEach(item => {
+                    result += `${item.marker} ${item.seriesName}: ${formatThroughput(item.value)}<br>`;
+                });
+
+                return result;
+            },
         },
         legend: {
-            data: [T('ul'), T('dl')],
+            data: [T('dl'), T('ul')],
             bottom: '0%',
         },
         xAxis: {
@@ -103,23 +119,17 @@ const initChart = () => {
         yAxis: {
             type: 'value',
             boundaryGap: [0, '25%'],
-            name: 'Mbps', // Add the unit here
+            name: 'Kbps / Mbps',
             nameLocation: 'end',    // Render the unit label at the top of the axis
             nameTextStyle: {
                 fontSize: 12,
                 padding: [0, 0, 20, -20]  // Adjust text padding for better positioning
+            },
+            axisLabel: {
+                formatter: (value) => formatThroughput(value),
             }
         },
         series: [
-            {
-                name: T('ul'),
-                type: 'line',
-                showSymbol: false,
-                emphasis: {
-                    scale: false,
-                },
-                data: ulData
-            },
             {
                 name: T('dl'),
                 type: 'line',
@@ -127,7 +137,16 @@ const initChart = () => {
                 emphasis: {
                     scale: false,
                 },
-                data: dlData
+                data: downloadData.map(item => item[1])
+            },
+            {
+                name: T('ul'),
+                type: 'line',
+                showSymbol: false,
+                emphasis: {
+                    scale: false,
+                },
+                data: uploadData.map(item => item[1])
             }
         ],
         grid: {
@@ -174,24 +193,28 @@ const fetch = async (t: string) => {
 };
 
 const convert = (arr: StatsInfo[]): any[] => {
-    return arr.sort().map(d => [formatApiTime(Number(d.timestamp) * 1000), Number(d.value)]);
+    return arr
+        .sort((a, b) => Number(a.timestamp) - Number(b.timestamp))
+        .map(d => [formatApiTime(Number(d.timestamp) * 1000), Number(d.value)]);
 };
 
 const enableHistoryChart = async () => {
     disposeChart();
     initChart();
 
-    dlData = convert(state.form.typeSelected === 'all' || state.form.typeSelected === 'net_tx' ? await fetch('net_tx') : []);
-    ulData = convert(state.form.typeSelected === 'all' || state.form.typeSelected === 'net_rx' ? await fetch('net_rx') : []);
+    const showDownload = state.form.typeSelected === 'all' || state.form.typeSelected === 'net_rx';
+    const showUpload = state.form.typeSelected === 'all' || state.form.typeSelected === 'net_tx';
+    downloadData = convert(showDownload ? await fetch('net_rx') : []);
+    uploadData = convert(showUpload ? await fetch('net_tx') : []);
 
     myChart.setOption({
         xAxis: {
-            data: state.form.typeSelected === 'all' || state.form.typeSelected === 'net_tx' ? dlData.map(item => item[0]) : ulData.map(item => item[0]),
+            data: showDownload ? downloadData.map(item => item[0]) : uploadData.map(item => item[0]),
         },
         series: [{
-            data: ulData
+            data: downloadData.map(item => item[1])
         }, {
-            data: dlData
+            data: uploadData.map(item => item[1])
         }]
     });
 }

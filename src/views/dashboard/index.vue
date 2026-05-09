@@ -276,7 +276,7 @@
 	</div>
 </template>
 
-<script setup lang="ts" name="dashboardIndex">
+<script setup lang="ts" name="dashboard">
 import { reactive, onMounted, watch, nextTick, onActivated, ref, markRaw, onUnmounted } from 'vue';
 import * as echarts from 'echarts';
 import 'echarts-wordcloud';

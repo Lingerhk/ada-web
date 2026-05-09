@@ -36,16 +36,23 @@
                             <el-table-column prop="updateTm" :label="$t('message.risk.ruleConfig.updateTm')">
                                 <template #default="scope">{{ formatApiTime(scope.row.updateTm) }}</template>
                             </el-table-column>
-                            <el-table-column :label="$t('message.tableCommon.operation')" width="210" fixed="right" align="center">
+                            <el-table-column :label="$t('message.tableCommon.operation')" width="124" fixed="right" align="center">
                                 <template #default="scope">
-                                    <el-button size="small" @click="handleEdit(scope.row)"
-                                        :disabled="scope.row.tmplType !== 2">{{
-                                            $t('message.tableCommon.edit') }}</el-button>
-                                    <el-button size="small" @click="handleDetail(scope.row)">{{
-                                        $t('message.tableCommon.detail') }}</el-button>
-                                    <el-button size="small" type="danger" @click="handleDelete(scope.row)"
-                                        :disabled="scope.row.tmplType !== 2">{{
-                                            $t('message.tableCommon.delete') }}</el-button>
+                                    <div class="operation-icon-group">
+                                        <el-tooltip :content="$t('message.tableCommon.edit')" placement="top">
+                                            <span class="operation-icon-trigger">
+                                                <el-button class="operation-icon-button" size="small" :icon="Edit" :aria-label="$t('message.tableCommon.edit')" @click="handleEdit(scope.row)" :disabled="scope.row.tmplType !== 2" />
+                                            </span>
+                                        </el-tooltip>
+                                        <el-tooltip :content="$t('message.tableCommon.detail')" placement="top">
+                                            <el-button class="operation-icon-button" size="small" type="primary" :icon="View" :aria-label="$t('message.tableCommon.detail')" @click="handleDetail(scope.row)" />
+                                        </el-tooltip>
+                                        <el-tooltip :content="$t('message.tableCommon.delete')" placement="top">
+                                            <span class="operation-icon-trigger">
+                                                <el-button class="operation-icon-button" size="small" type="danger" :icon="Delete" :aria-label="$t('message.tableCommon.delete')" @click="handleDelete(scope.row)" :disabled="scope.row.tmplType !== 2" />
+                                            </span>
+                                        </el-tooltip>
+                                    </div>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -94,10 +101,13 @@
                             <el-table-column prop="updateTm" :label="$t('message.risk.ruleConfig.confUpdateTm')">
                                 <template #default="scope">{{ formatApiTime(scope.row.updateTm) }}</template>
                             </el-table-column>
-                            <el-table-column :label="$t('message.tableCommon.operation')" width="100" fixed="right" align="center">
+                            <el-table-column :label="$t('message.tableCommon.operation')" width="64" fixed="right" align="center">
                                 <template #default="scope">
-                                    <el-button size="small" @click="handleConfigEdit(scope.row)">{{
-                                        $t('message.tableCommon.edit') }}</el-button>
+                                    <div class="operation-icon-group">
+                                        <el-tooltip :content="$t('message.tableCommon.edit')" placement="top">
+                                            <el-button class="operation-icon-button" size="small" :icon="Edit" :aria-label="$t('message.tableCommon.edit')" @click="handleConfigEdit(scope.row)" />
+                                        </el-tooltip>
+                                    </div>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -141,7 +151,7 @@ import { getRiskTypeOptions } from '../constant';
 import { useI18n } from 'vue-i18n';
 import { formatApiTime } from '/@/utils/formatTime';
 import { ElMessageBox } from 'element-plus';
-import { Plus, QuestionFilled } from '@element-plus/icons-vue';
+import { Delete, Edit, Plus, QuestionFilled, View } from '@element-plus/icons-vue';
 import api from '/@/api/grpc';
 
 const DetailDrawerRef = ref();

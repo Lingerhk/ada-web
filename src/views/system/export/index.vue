@@ -43,7 +43,7 @@
                         :formatter="(_, __, value, ___) => transExport(`type_${value}`)" />
                     <el-table-column min-width="80" prop="status" :label="transExport('status')">
                         <template #default="prop">
-                            <span :class="`status-${prop.row.status}`">{{ transExport(`status_${prop.row.status}`)
+                            <span :class="`status-${prop.row.status}`">{{ transExport(`statusShort_${prop.row.status}`)
                                 }}</span>
                             <el-tooltip v-if="prop.row.errMsg !== ''" :content="prop.row.errMsg" placement="top-start">
                                 <el-icon>
@@ -57,15 +57,20 @@
                         :formatter="(_, __, value, ___) => formatApiTime(value)" />
                     <el-table-column min-width="120" prop="updateTm" :label="transExport('updateTm')"
                         :formatter="(_, __, value, ___) => formatApiTime(value)" />
-                    <el-table-column :label="transExport('operation')" width="200" fixed="right" align="center">
+                    <el-table-column :label="transExport('operation')" width="92" fixed="right" align="center">
                         <template #default="prop">
-                            <el-button size="small" @click="handleDownload(prop.row)"
-                                :disabled="prop.row.status !== 'finish'"
-                                :loading="downloadingTask.findIndex((id) => id === prop.row.iD) !== -1">{{
-                                transExport('download')
-                                }}</el-button>
-                            <el-button size="small" type="danger" @click="handleDelete(prop.row)">{{ transExport('delete')
-                                }}</el-button>
+                            <div class="operation-icon-group">
+                                <el-tooltip :content="transExport('download')" placement="top">
+                                    <span class="operation-icon-trigger">
+                                        <el-button class="operation-icon-button" size="small" type="primary" :icon="Download" :aria-label="transExport('download')" @click="handleDownload(prop.row)"
+                                            :disabled="prop.row.status !== 'finish'"
+                                            :loading="downloadingTask.findIndex((id) => id === prop.row.iD) !== -1" />
+                                    </span>
+                                </el-tooltip>
+                                <el-tooltip :content="transExport('delete')" placement="top">
+                                    <el-button class="operation-icon-button" size="small" type="danger" :icon="Delete" :aria-label="transExport('delete')" @click="handleDelete(prop.row)" />
+                                </el-tooltip>
+                            </div>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -93,7 +98,7 @@ import { transExport } from '/@/utils/translator';
 import { formatApiTime, shortcuts } from '/@/utils/formatTime';
 import { ElMessageBox } from 'element-plus';
 import { useI18n } from 'vue-i18n';
-import { QuestionFilled } from '@element-plus/icons-vue';
+import { Delete, Download, QuestionFilled } from '@element-plus/icons-vue';
 import { downloadFile } from '/@/utils/download';
 
 const { t } = useI18n();

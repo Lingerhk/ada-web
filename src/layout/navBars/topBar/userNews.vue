@@ -58,7 +58,7 @@ const onAllReadClick = () => {
 
 // Handle navigation to the notification center
 const onGotoMessageCenter = () => {
-	router.push('/message');
+	router.push('/settings/messages');
 };
 </script>
 

@@ -92,11 +92,19 @@
                                 {{ formatTime(row.updateTm) }}
                             </template>
                         </el-table-column>
-                        <el-table-column :label="$t('message.tableCommon.operate')" width="210" fixed="right" align="center">
+                        <el-table-column :label="$t('message.tableCommon.operate')" width="124" fixed="right" align="center">
                             <template #default="{ row }">
-                                <el-button size="small" @click="handleViewAlertRule(row)">{{ $t('message.tableCommon.view') }}</el-button>
-                                <el-button size="small" @click="handleEditAlertRule(row)">{{ $t('message.tableCommon.edit') }}</el-button>
-                                <el-button size="small" type="danger" @click="handleDeleteAlertRule(row)">{{ $t('message.tableCommon.delete') }}</el-button>
+                                <div class="operation-icon-group">
+                                    <el-tooltip :content="$t('message.tableCommon.view')" placement="top">
+                                        <el-button class="operation-icon-button" size="small" type="primary" :icon="View" :aria-label="$t('message.tableCommon.view')" @click="handleViewAlertRule(row)" />
+                                    </el-tooltip>
+                                    <el-tooltip :content="$t('message.tableCommon.edit')" placement="top">
+                                        <el-button class="operation-icon-button" size="small" :icon="Edit" :aria-label="$t('message.tableCommon.edit')" @click="handleEditAlertRule(row)" />
+                                    </el-tooltip>
+                                    <el-tooltip :content="$t('message.tableCommon.delete')" placement="top">
+                                        <el-button class="operation-icon-button" size="small" type="danger" :icon="Delete" :aria-label="$t('message.tableCommon.delete')" @click="handleDeleteAlertRule(row)" />
+                                    </el-tooltip>
+                                </div>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -180,11 +188,19 @@
                                 {{ formatTime(row.updateTm) }}
                             </template>
                         </el-table-column>
-                        <el-table-column :label="$t('message.tableCommon.operate')" width="200" fixed="right" align="center">
+                        <el-table-column :label="$t('message.tableCommon.operate')" width="124" fixed="right" align="center">
                             <template #default="{ row }">
-                                <el-button size="small" @click="handleViewActivityRule(row)">{{ $t('message.tableCommon.view') }}</el-button>
-                                <el-button size="small" @click="handleEditActivityRule(row)">{{ $t('message.tableCommon.edit') }}</el-button>
-                                <el-button size="small" type="danger" @click="handleDeleteActivityRule(row)">{{ $t('message.tableCommon.delete') }}</el-button>
+                                <div class="operation-icon-group">
+                                    <el-tooltip :content="$t('message.tableCommon.view')" placement="top">
+                                        <el-button class="operation-icon-button" size="small" type="primary" :icon="View" :aria-label="$t('message.tableCommon.view')" @click="handleViewActivityRule(row)" />
+                                    </el-tooltip>
+                                    <el-tooltip :content="$t('message.tableCommon.edit')" placement="top">
+                                        <el-button class="operation-icon-button" size="small" :icon="Edit" :aria-label="$t('message.tableCommon.edit')" @click="handleEditActivityRule(row)" />
+                                    </el-tooltip>
+                                    <el-tooltip :content="$t('message.tableCommon.delete')" placement="top">
+                                        <el-button class="operation-icon-button" size="small" type="danger" :icon="Delete" :aria-label="$t('message.tableCommon.delete')" @click="handleDeleteActivityRule(row)" />
+                                    </el-tooltip>
+                                </div>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -194,7 +210,7 @@
                         <el-pagination
                             v-model:current-page="activityRules.pageIdx"
                             v-model:page-size="activityRules.pageSize"
-                            :page-sizes="[10, 20, 50, 100]"
+                            :page-sizes="[5, 10, 20, 50]"
                             :total="activityRules.total"
                             layout="total, sizes, prev, pager, next, jumper"
                             @size-change="handleActivityRulePageChange"
@@ -570,7 +586,7 @@
 import { ref, reactive, onMounted, watch, nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { Plus, Minus, QuestionFilled, Upload } from '@element-plus/icons-vue';
+import { Delete, Edit, Minus, Plus, QuestionFilled, Upload, View } from '@element-plus/icons-vue';
 import { listAlertRules, addAlertRule, updateAlertRule, deleteAlertRule, listActivityRules, addActivityRule, updateActivityRule, deleteActivityRule, getAlertTypes, getAlertRuleTags, getActivityRuleFields, getActivityRuleUniqueFields, getActivityRuleNames } from '/@/api/grpc/method';
 import type { ListAlertRuleReq, AddAlertRuleReq, UpdateAlertRuleReq, ListActivityRuleReq, AddActivityRuleReq, UpdateActivityRuleReq, AlertRuleInfo, ActivityRuleInfo } from '/@/api/grpc/ada';
 import yaml from 'js-yaml';
@@ -629,7 +645,7 @@ const activityRules = reactive({
     list: [] as ActivityRuleInfo[],
     total: 0,
     pageIdx: 1,
-    pageSize: 10,
+    pageSize: 5,
     loading: false,
     filters: {
         title: '',

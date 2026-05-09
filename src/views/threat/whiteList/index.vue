@@ -64,14 +64,16 @@
                     <el-table-column :min-width="200" :label="T('updateTm')" prop="updateTm"
                         :formatter="(row: any, column: any, cellValue: any, index: number) => formatApiTime(cellValue)" />
                     <el-table-column :width="200" :label="T('remark')" prop="remark" show-overflow-tooltip />
-                    <el-table-column :label="T('operation')" width="160" fixed="right" align="center">
+                    <el-table-column :label="T('operation')" width="92" fixed="right" align="center">
                         <template #default="prop">
-                            <el-button size="small" @click="handleUpdate(prop.row)">{{
-                                T('updateRule')
-                                }}</el-button>
-                            <el-button size="small" type="danger" @click="handleDelete(prop.row)">{{
-                                T('deleteRule')
-                                }}</el-button>
+                            <div class="operation-icon-group">
+                                <el-tooltip :content="T('updateRule')" placement="top">
+                                    <el-button class="operation-icon-button" size="small" type="primary" :icon="Edit" :aria-label="T('updateRule')" @click="handleUpdate(prop.row)" />
+                                </el-tooltip>
+                                <el-tooltip :content="T('deleteRule')" placement="top">
+                                    <el-button class="operation-icon-button" size="small" type="danger" :icon="Delete" :aria-label="T('deleteRule')" @click="handleDelete(prop.row)" />
+                                </el-tooltip>
+                            </div>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -107,7 +109,7 @@ import { transWhiteList as T } from '/@/utils/translator';
 import { formatApiTime, getPrev7Days, shortcuts } from '/@/utils/formatTime';
 import UpdateWhiteDialog from './UpdateWhiteDialog.vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { Plus } from '@element-plus/icons-vue';
+import { Delete, Edit, Plus } from '@element-plus/icons-vue';
 import { useI18n } from 'vue-i18n';
 import AddGlobalWhiteDialog from './AddGlobalWhiteDialog.vue';
 

@@ -56,14 +56,19 @@
 				</el-tooltip>
 			</template>
 		</el-table-column>
-		<el-table-column :label="$t('message.tableCommon.operation')" width="210" fixed="right" align="center">
+		<el-table-column :label="$t('message.tableCommon.operation')" width="124" fixed="right" align="center">
 			<template #default="scope">
-				<el-button size="small" @click="onOpenDetailDialog(scope.row)">{{
-					$t('message.tableCommon.detail') }}</el-button>
-				<el-button size="small" @click="handleEdit(scope.row)">{{
-					$t('message.tableCommon.edit') }}</el-button>
-				<el-button size="small" type="danger" @click="onTabelRowDel(scope.row)">{{
-					$t('message.tableCommon.delete') }}</el-button>
+				<div class="operation-icon-group">
+					<el-tooltip :content="$t('message.tableCommon.detail')" placement="top">
+						<el-button class="operation-icon-button" size="small" type="primary" :icon="View" :aria-label="$t('message.tableCommon.detail')" @click="onOpenDetailDialog(scope.row)" />
+					</el-tooltip>
+					<el-tooltip :content="$t('message.tableCommon.edit')" placement="top">
+						<el-button class="operation-icon-button" size="small" :icon="Edit" :aria-label="$t('message.tableCommon.edit')" @click="handleEdit(scope.row)" />
+					</el-tooltip>
+					<el-tooltip :content="$t('message.tableCommon.delete')" placement="top">
+						<el-button class="operation-icon-button" size="small" type="danger" :icon="Delete" :aria-label="$t('message.tableCommon.delete')" @click="onTabelRowDel(scope.row)" />
+					</el-tooltip>
+				</div>
 			</template>
 		</el-table-column>
 	</el-table>
@@ -81,7 +86,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent, ref, onMounted, reactive, watch } from 'vue';
 import { ElMessageBox, ElMessage } from 'element-plus';
-import { Search, QuestionFilled, Plus } from '@element-plus/icons-vue';
+import { Delete, Edit, Plus, QuestionFilled, Search, View } from '@element-plus/icons-vue';
 import api from '/@/api/grpc/index';
 import * as proto from '/@/api/grpc/ada';
 import { alertApiError } from '/@/utils/error';

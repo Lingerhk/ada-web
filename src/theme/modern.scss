@@ -477,6 +477,83 @@ body {
 	line-height: 1.55;
 }
 
+.operation-icon-group {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: nowrap;
+	gap: 6px;
+	width: 100%;
+	white-space: nowrap;
+
+	.el-button,
+	.el-button + .el-button {
+		margin-left: 0;
+	}
+}
+
+.operation-icon-button.el-button {
+	width: 30px;
+	height: 30px;
+	min-width: 30px;
+	padding: 0;
+	border-color: transparent !important;
+	border-radius: 8px;
+	background: transparent !important;
+	box-shadow: none;
+	color: #64748b;
+	--el-button-bg-color: transparent;
+	--el-button-border-color: transparent;
+	--el-button-hover-bg-color: transparent;
+	--el-button-hover-border-color: transparent;
+	--el-button-active-bg-color: transparent;
+	--el-button-active-border-color: transparent;
+	--el-button-disabled-bg-color: transparent;
+	--el-button-disabled-border-color: transparent;
+
+	&:hover,
+	&:focus,
+	&:active {
+		border-color: transparent !important;
+		background: transparent !important;
+		box-shadow: none;
+	}
+
+	&.el-button--primary {
+		color: var(--ada-primary);
+		--el-button-text-color: var(--ada-primary);
+		--el-button-hover-text-color: var(--ada-primary);
+		--el-button-active-text-color: var(--ada-primary);
+	}
+
+	&.el-button--success {
+		color: var(--ada-success);
+		--el-button-text-color: var(--ada-success);
+		--el-button-hover-text-color: var(--ada-success);
+		--el-button-active-text-color: var(--ada-success);
+	}
+
+	&.el-button--danger {
+		color: var(--ada-danger);
+		--el-button-text-color: var(--ada-danger);
+		--el-button-hover-text-color: var(--ada-danger);
+		--el-button-active-text-color: var(--ada-danger);
+	}
+
+	&.is-disabled,
+	&.is-disabled:hover,
+	&.is-disabled:focus {
+		border-color: transparent !important;
+		background: transparent !important;
+		opacity: 0.38;
+	}
+}
+
+.operation-icon-trigger {
+	display: inline-flex;
+	flex: 0 0 auto;
+}
+
 .el-table__row {
 	transition: background-color 0.16s ease;
 }

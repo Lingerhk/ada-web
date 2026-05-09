@@ -83,11 +83,13 @@
                             </div>
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('message.tableCommon.operation')" width="100" align="center">
+                    <el-table-column :label="$t('message.tableCommon.operation')" width="64" align="center">
                         <template #default="scope">
-                            <el-button size="small" type="danger" @click="handleRemoveMapping(scope.$index)">
-                                {{ $t('message.tableCommon.delete') }}
-                            </el-button>
+                            <div class="operation-icon-group">
+                                <el-tooltip :content="$t('message.tableCommon.delete')" placement="top">
+                                    <el-button class="operation-icon-button" size="small" type="danger" :icon="Delete" :aria-label="$t('message.tableCommon.delete')" @click="handleRemoveMapping(scope.$index)" />
+                                </el-tooltip>
+                            </div>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -112,7 +114,7 @@
 <script setup lang="ts">
 import { reactive, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Plus, QuestionFilled } from '@element-plus/icons-vue';
+import { Delete, Plus, QuestionFilled } from '@element-plus/icons-vue';
 import { ElMessage } from 'element-plus';
 import {
     scanConfDetail,

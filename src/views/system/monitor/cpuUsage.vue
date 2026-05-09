@@ -39,6 +39,14 @@ let myChart = null;
 let data = [];
 let intervalId = null;
 
+const normalizeCpuPercent = (value: string) => {
+    const parsed = Number(value);
+    if (!Number.isFinite(parsed)) return 0;
+    return Math.max(0, Math.min(parsed, 100));
+};
+
+const formatCpuPercent = (value: number) => `${Number(value).toFixed(2)}%`;
+
 const updateRtData = () => {
     const now = new Date();
     const time = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
@@ -79,8 +87,8 @@ const initChart = () => {
                             + " "
                             + item.seriesName
                             + ": "
-                            + (item.value).toFixed(2)
-                            + "%<br>";
+                            + formatCpuPercent(item.value)
+                            + "<br>";
                 });
 
                 return result;
@@ -101,8 +109,10 @@ const initChart = () => {
         },
         yAxis: {
             type: 'value',
+            min: 0,
+            max: 100,
             boundaryGap: [0, '25%'],
-            // name: '%', // Add the unit here
+            name: '%',
             nameLocation: 'end',    // Render the unit label at the top of the axis
             nameTextStyle: {
                 fontSize: 12,
@@ -110,7 +120,7 @@ const initChart = () => {
             },
             axisLabel: {
                 formatter: (value) => {
-                    return (value).toFixed(2) + ' %';
+                    return `${Number(value).toFixed(0)}%`;
                 },
             }
         },
@@ -164,7 +174,9 @@ const fetch = () => {
     .then(resp => resp.response)
     .then(arr => {
         data = [];
-        arr.stats.sort().forEach(d => data.push([formatApiTime(Number(d.timestamp) * 1000), Number(d.value) * 100]));
+        arr.stats
+            .sort((a, b) => Number(a.timestamp) - Number(b.timestamp))
+            .forEach(d => data.push([formatApiTime(Number(d.timestamp) * 1000), normalizeCpuPercent(d.value)]));
 
         myChart.setOption({
             xAxis: {

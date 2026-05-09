@@ -1,11 +1,48 @@
 <template>
-    <div class="layout-pd">
-        <el-card shadow="hover">
-            <el-row class="table-filter-row activity-filter-row">
-                <!-- Search controls -->
-                <el-form :inline="true" class="filter-form">
+    <div class="layout-pd activity-page">
+        <section class="activity-command-panel">
+            <div class="activity-command-main">
+                <div class="activity-command-copy">
+                    <div class="activity-kicker">{{ $t('message.threat.activityList.activityConsole') }}</div>
+                    <p>{{ $t('message.threat.activityList.activityConsoleDesc') }}</p>
+                </div>
+                <div class="activity-command-actions">
+                    <el-button size="default" :icon="RefreshLeft" @click="resetReqParams">
+                        {{ $t('message.threat.reset') }}
+                    </el-button>
+                    <el-button type="primary" size="default" :icon="Refresh" @click="refreshActivity">
+                        {{ $t('message.threat.refreshManually') }}
+                    </el-button>
+                </div>
+            </div>
+
+            <div class="activity-metrics">
+                <div class="metric-card">
+                    <span class="metric-label">{{ $t('message.threat.activityList.totalActivities') }}</span>
+                    <strong>{{ total }}</strong>
+                    <span>{{ $t('message.threat.activityList.filteredScope') }}</span>
+                </div>
+                <div class="metric-card metric-hot">
+                    <span class="metric-label">{{ $t('message.threat.activityList.highRiskRows') }}</span>
+                    <strong>{{ highRiskCount }}</strong>
+                    <span>{{ $t('message.threat.activityList.currentPage') }}</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-label">{{ $t('message.threat.activityList.visibleRows') }}</span>
+                    <strong>{{ data.length }}</strong>
+                    <span>{{ exhausted ? $t('message.threat.activityList.lastPage') : $t('message.threat.activityList.morePages') }}</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-label">{{ $t('message.threat.activityList.activeControllers') }}</span>
+                    <strong>{{ dcCount }}</strong>
+                    <span>{{ $t('message.threat.activityList.currentPage') }}</span>
+                </div>
+            </div>
+
+            <div class="activity-filter-panel">
+                <el-form :inline="true" class="filter-form activity-filter-form">
                     <el-form-item :label="$t('message.threat.levelName')">
-                        <el-select v-model="threatLevel" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 130px" :placeholder="$t('message.threat.alarmList.selectLevel')" popper-class="custom-header">
+                        <el-select v-model="threatLevel" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" class="filter-level-select" :placeholder="$t('message.threat.alarmList.selectLevel')" popper-class="custom-header">
                             <template #header>
                                 <el-checkbox v-model="levelCheckAll" :indeterminate="levelIndeterminate" @change="handleLevelCheckAll">
                                     {{ $t('message.tableCommon.checkAll') }}
@@ -15,7 +52,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item :label="$t('message.tableCommon.dcHostname')">
-                        <el-select v-model="dchostSelected" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.threat.activityList.selectDcHostname')" popper-class="custom-header">
+                        <el-select v-model="dchostSelected" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" class="filter-host-select" :placeholder="$t('message.threat.activityList.selectDcHostname')" popper-class="custom-header">
                             <template #header>
                                 <el-checkbox v-model="dchostCheckAll" :indeterminate="dchostIndeterminate" @change="handleDchostCheckAll">
                                     {{ $t('message.tableCommon.checkAll') }}
@@ -25,7 +62,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item :label="$t('message.tableCommon.activityTitle')">
-                        <el-select v-model="titleSelected" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" style="width: 200px" :placeholder="$t('message.threat.activityList.selectTitle')" popper-class="custom-header">
+                        <el-select v-model="titleSelected" multiple clearable collapse-tags collapse-tags-tooltip :max-collapse-tags="1" size="default" class="filter-title-select" :placeholder="$t('message.threat.activityList.selectTitle')" popper-class="custom-header">
                             <template #header>
                                 <el-checkbox v-model="titleCheckAll" :indeterminate="titleIndeterminate" @change="handleTitleCheckAll">
                                     {{ $t('message.tableCommon.checkAll') }}
@@ -36,90 +73,124 @@
                     </el-form-item>
                     <el-form-item :label="$t('message.threat.lastOccurenceTime')">
                         <el-date-picker class="filter-date-range" size="default" v-model="lastOccurenceTime" type="datetimerange"
+                            format="YY-MM-DD HH:mm"
                             :range-separator="$t('message.time.to')" :start-placeholder="$t('message.time.start')"
                             :end-placeholder="$t('message.time.end')" :shortcuts="shortcuts" />
                     </el-form-item>
                     <el-form-item>
-                        <el-input class="filter-search-input" v-model="idInput" size="default" :placeholder="$t('message.threat.idInput')"
+                        <el-input class="filter-search-input" v-model="idInput" size="default" :placeholder="$t('message.threat.activityList.searchActivityId')"
                             :suffix-icon="Search" clearable></el-input>
                     </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" size="default" @click="resetReqParams">{{
-                            $t('message.threat.reset') }}</el-button>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" size="default" @click="refreshActivity">{{
-                            $t('message.threat.refreshManually') }}</el-button>
-                    </el-form-item>
-                    <!-- <el-button type="primary" size="default">{{ $t('message.threat.print') }}</el-button> -->
                 </el-form>
-            </el-row>
-            <!-- Result list below -->
-            <el-row style="margin-top: 10px">
-                <div style="width: 100%; overflow-x: auto;">
-                    <el-table :data="data" v-loading="loading" :border="true" row-class-name="pointer-cursor"
-                        style="width: 100%;" @row-click="handleRowClick" ref="activityTable">
-                        <el-table-column type="expand" width="50">
-                            <template #default="props">
-                                <div class="json-viewer-wrapper">
-                                    <JsonViewer class="activity-json-viewer" :value="parseRawLog(props.row.rawLog)" copyable sort></JsonViewer>
-                                </div>
-                            </template>
-                        </el-table-column>
-                        <el-table-column prop="title" :label="$t('message.threat.tableTitle.title')" :width="250" show-overflow-tooltip />
-                    <el-table-column :label="$t('message.threat.tableTitle.createTm')" :width="160">
-                        <template #default="scope">{{ formatApiTime(scope.row.createTm) }}</template>
-                    </el-table-column>
-                        <el-table-column prop="dcHostname" :label="$t('message.threat.tableTitle.dcHostname')" :width="200" />
-                    <el-table-column :label="$t('message.threat.tableTitle.level')" :width="100" align="center">
-                        <template #default="scope">
-                            <el-tag :type="getLevelType(scope.row.level)" effect="dark">
-                                {{ $t(`message.threat.level.${scope.row.level}`) }}
-                            </el-tag>
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="desc" :label="$t('message.threat.tableTitle.desc')" :width="300"
-                        show-overflow-tooltip />
-                    <el-table-column prop="fieldData" :label="$t('message.threat.tableTitle.fieldData')" :width="160">
-                        <template #default="scope">
-                            <el-space wrap size="small">
-                                <el-tooltip v-for="key in filterFieldDataKey(scope.row.fieldData)" :key="key"
-                                    class="box-item" effect="dark" :content="scope.row.fieldData[key]" placement="top">
-                                    <el-tag size="small">{{ key }}</el-tag>
-                                </el-tooltip>
-                            </el-space>
-                        </template>
-                    </el-table-column>
-                    <el-table-column :label="$t('message.threat.tableTitle.tags')" :width="120">
-                        <template #default="scope">
-                            <el-space wrap size="small">
-                                <el-tag v-for="tag in scope.row.tags" size="small" :key="tag">{{ tag }}</el-tag>
-                            </el-space>
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="ruleConfidence" :label="$t('message.threat.tableTitle.ruleConfidence')" :width="120" />
-                </el-table>
+            </div>
+        </section>
+
+        <section class="activity-table-panel">
+            <div class="activity-list-header">
+                <div>
+                    <span>{{ $t('message.threat.activityList.activityFeed') }}</span>
+                    <strong>{{ data.length }}</strong>
                 </div>
-            </el-row>
-            <!-- Pagination -->
-            <el-row style="margin-top: 10px" justify="space-between">
-                <div></div>
+            </div>
+
+            <div class="activity-table-shell">
+                <el-table :data="data" v-loading="loading" :border="false" row-class-name="activity-row"
+                    class="activity-table" style="width: 100%;" @row-click="handleRowClick" ref="activityTable">
+                    <el-table-column type="expand" width="52">
+                        <template #default="props">
+                            <div class="json-viewer-wrapper">
+                                <div class="raw-log-header">
+                                    <div>
+                                        <strong>{{ $t('message.threat.activityList.rawLog') }}</strong>
+                                        <span>{{ $t('message.threat.activityList.rawLogDesc') }}</span>
+                                    </div>
+                                    <code>{{ getCompactId(props.row.iD) }}</code>
+                                </div>
+                                <JsonViewer class="activity-json-viewer" :value="parseRawLog(props.row.rawLog)" copyable sort></JsonViewer>
+                            </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column :label="$t('message.threat.tableTitle.title')" min-width="300" show-overflow-tooltip>
+                        <template #default="scope">
+                            <div class="activity-title-cell">
+                                <strong>{{ scope.row.title || unknownText }}</strong>
+                                <span>{{ scope.row.desc || unknownText }}</span>
+                                <div class="activity-id-row">
+                                    <span v-if="scope.row.ruleId">{{ $t('message.threat.activityList.ruleId') }} {{ scope.row.ruleId }}</span>
+                                    <span v-if="scope.row.attckId">{{ $t('message.threat.activityList.attackId') }} {{ scope.row.attckId }}</span>
+                                </div>
+                            </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column :label="$t('message.threat.tableTitle.createTm')" width="170">
+                        <template #default="scope">
+                            <span class="time-chip">{{ formatApiTime(scope.row.createTm) }}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column :label="$t('message.threat.tableTitle.dcHostname')" min-width="180">
+                        <template #default="scope">
+                            <span class="host-chip">{{ scope.row.dcHostname || unknownText }}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column :label="$t('message.threat.tableTitle.level')" width="115" align="center">
+                        <template #default="scope">
+                            <span class="level-chip" :style="{ '--level-color': getLevelColor(scope.row.level) }">
+                                {{ $t(`message.threat.level.${scope.row.level}`) }}
+                            </span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column :label="$t('message.threat.activityList.keyFields')" min-width="260">
+                        <template #default="scope">
+                            <div class="field-chip-group">
+                                <el-tooltip v-for="entry in getFieldEntries(scope.row.fieldData)" :key="entry.key" effect="dark" :content="entry.value" placement="top">
+                                    <span class="field-chip">
+                                        <b>{{ entry.key }}</b>
+                                        <em>{{ entry.value }}</em>
+                                    </span>
+                                </el-tooltip>
+                                <span v-if="getRemainingFieldCount(scope.row.fieldData) > 0" class="more-chip">
+                                    {{ $t('message.threat.activityList.moreFields', [getRemainingFieldCount(scope.row.fieldData)]) }}
+                                </span>
+                            </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column :label="$t('message.threat.tableTitle.tags')" min-width="180">
+                        <template #default="scope">
+                            <div class="tag-chip-group">
+                                <span v-for="tag in getDisplayTags(scope.row.tags)" :key="tag" class="soft-chip">{{ tag }}</span>
+                                <span v-if="getRemainingTagCount(scope.row.tags) > 0" class="more-chip">
+                                    {{ $t('message.threat.activityList.moreTags', [getRemainingTagCount(scope.row.tags)]) }}
+                                </span>
+                            </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column :label="$t('message.threat.activityList.confidence')" width="140" align="center">
+                        <template #default="scope">
+                            <span class="confidence-chip" :class="`confidence-${normalizeConfidence(scope.row.ruleConfidence)}`">
+                                {{ formatConfidence(scope.row.ruleConfidence) }}
+                            </span>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+
+            <div class="activity-pagination">
                 <el-pagination v-model:current-page="pageIdx" v-model:page-size="pageSize"
                     :page-sizes="[10, 20, 30, 40, 50]"
                     :layout='exhausted ? "sizes, prev, pager, jumper" : "sizes, prev, pager, next, jumper"'
                     :total="total" @size-change="handleSizeChange" @current-change="handleCurrentChange" />
-            </el-row>
-        </el-card>
+            </div>
+        </section>
     </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import api from '/@/api/grpc';
 import { ActivityDetails, ListActivityReply, ListActivityReq } from '/@/api/grpc/ada';
 import { alertApiError } from '/@/utils/error';
-import { formatApiTime, shortcuts } from '/@/utils/formatTime';
-import { Search } from '@element-plus/icons-vue';
+import { formatApiTime, formatDate, shortcuts } from '/@/utils/formatTime';
+import { Refresh, RefreshLeft, Search } from '@element-plus/icons-vue';
 import { listActivityOptions, listDchostOptions } from '/@/api/grpc/method';
 import { getLevelOptions2 } from '/@/utils/constant';
 import { JsonViewer } from 'vue3-json-viewer';
@@ -130,8 +201,9 @@ const total = ref(0);
 const exhausted = ref(false);
 const threatLevel = ref<number[]>([]);
 const levelOptions = getLevelOptions2();
-const lastOccurenceTime = ref<string[]>([]);
+const lastOccurenceTime = ref<Array<Date | string>>([]);
 const idInput = ref('');
+const unknownText = '-';
 
 const dchostSelected = ref<string[]>([]);
 const dchostOptions = ref<any[]>([]);
@@ -151,9 +223,55 @@ const dchostIndeterminate = ref(false);
 const titleCheckAll = ref(false);
 const titleIndeterminate = ref(false);
 
-const filterFieldDataKey = (fieldData: Object) => {
-    return Object.keys(fieldData).filter(key => key.toLowerCase() !== 'hostname');
-}
+const highRiskCount = computed(() => data.value.filter(item => item.level >= 4).length);
+const dcCount = computed(() => new Set(data.value.map(item => item.dcHostname).filter(Boolean)).size);
+
+const fieldEntries = (fieldData?: Record<string, string>) => {
+    const seen = new Set<string>();
+
+    return Object.entries(fieldData || {}).filter(([key]) => {
+        const normalizedKey = key.toLowerCase();
+        if (normalizedKey === 'hostname' || normalizedKey === 'computer' || seen.has(normalizedKey)) return false;
+        seen.add(normalizedKey);
+        return true;
+    });
+};
+
+const getFieldEntries = (fieldData?: Record<string, string>) => fieldEntries(fieldData)
+    .slice(0, 4)
+    .map(([key, value]) => ({ key, value }));
+
+const getRemainingFieldCount = (fieldData?: Record<string, string>) => Math.max(fieldEntries(fieldData).length - 4, 0);
+
+const getDisplayTags = (tags: string[] = []) => tags.slice(0, 3);
+
+const getRemainingTagCount = (tags: string[] = []) => Math.max(tags.length - 3, 0);
+
+const getCompactId = (id: string) => id ? id.slice(0, 10) : unknownText;
+
+const getLevelColor = (level: number) => {
+    const colorMap: Record<number, string> = {
+        1: '#2f8af5',
+        2: '#2fa66a',
+        3: '#f0a51b',
+        4: '#e56b3f',
+        5: '#c2412f',
+    };
+    return colorMap[level] || '#64748b';
+};
+
+const normalizeConfidence = (confidence = '') => confidence.toLowerCase().replace(/[^a-z0-9]/g, '') || 'unknown';
+
+const formatConfidence = (confidence = '') => {
+    if (!confidence) return unknownText;
+    return confidence.replace(/[_-]+/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+};
+
+const formatRequestTime = (value?: Date | string) => {
+    if (!value) return '';
+    if (value instanceof Date) return formatDate(value, 'YYYY-mm-dd HH:MM:SS');
+    return value;
+};
 
 const parseRawLog = (rawLog?: string) => {
     if (!rawLog) return {};
@@ -168,21 +286,14 @@ const parseRawLog = (rawLog?: string) => {
 const resetReqParams = () => {
     threatLevel.value = [];
     lastOccurenceTime.value = [];
+    dchostSelected.value = [];
+    titleSelected.value = [];
+    idInput.value = '';
+    pageIdx.value = 1;
 };
 
 const handleRowClick = (row: ActivityDetails) => {
     activityTable.value?.toggleRowExpansion(row);
-};
-
-const getLevelType = (level: number): string => {
-    const typeMap: Record<number, string> = {
-        1: 'info',
-        2: 'success',
-        3: 'warning',
-        4: 'danger',
-        5: 'danger',
-    };
-    return typeMap[level] || 'info';
 };
 
 const refreshActivity = () => {
@@ -190,12 +301,12 @@ const refreshActivity = () => {
         pageIdx: pageIdx.value,
         pageSize: pageSize.value,
         level: threatLevel.value, // Threat levels and severity
-        iD: '', // Optional. If provided, query the threat activity that matches the given activity ID
-        startTm: '', // Optional start time
-        endTm: '', // Optional end time
+        iD: idInput.value.trim(), // Optional. If provided, query the threat activity that matches the given activity ID
+        startTm: formatRequestTime(lastOccurenceTime.value[0]), // Optional start time
+        endTm: formatRequestTime(lastOccurenceTime.value[1]), // Optional end time
         orderCreateTm: -1, // Optional sort order: 1 or -1
         dcHostname: dchostSelected.value,
-        title: [],
+        title: titleSelected.value,
     };
 
     loading.value = true;
@@ -269,6 +380,7 @@ watch(threatLevel, (val) => {
     } else {
         levelIndeterminate.value = true;
     }
+    pageIdx.value = 1;
     refreshActivity();
 });
 
@@ -281,6 +393,7 @@ watch(dchostSelected, (val) => {
     } else {
         dchostIndeterminate.value = true;
     }
+    pageIdx.value = 1;
     refreshActivity();
 });
 
@@ -293,14 +406,360 @@ watch(titleSelected, (val) => {
     } else {
         titleIndeterminate.value = true;
     }
+    pageIdx.value = 1;
     refreshActivity();
 });
 
-watch(() => [lastOccurenceTime.value, idInput.value], refreshActivity);
+watch(() => [lastOccurenceTime.value, idInput.value], () => {
+    pageIdx.value = 1;
+    refreshActivity();
+});
 
 </script>
 
 <style lang="scss" scoped>
+.activity-page {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    background: #f5f7fb;
+}
+
+.activity-command-panel,
+.activity-table-panel {
+    border: 1px solid #dfe6ef;
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 0 10px 28px rgba(31, 45, 61, 0.06);
+}
+
+.activity-command-panel {
+    overflow: hidden;
+}
+
+.activity-command-main {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 18px 20px;
+    border-bottom: 1px solid rgba(220, 232, 229, 0.86);
+    background:
+        linear-gradient(135deg, rgba(22, 143, 122, 0.1), rgba(64, 158, 255, 0.08)),
+        #ffffff;
+}
+
+.activity-command-copy {
+    min-width: 0;
+
+    p {
+        margin: 0;
+        max-width: 780px;
+        color: #64748b;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+}
+
+.activity-kicker {
+    margin-bottom: 6px;
+    color: var(--ada-primary);
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.activity-command-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;
+    min-width: 240px;
+}
+
+.activity-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1px;
+    background: rgba(220, 232, 229, 0.86);
+}
+
+.metric-card {
+    min-width: 0;
+    padding: 14px 18px;
+    background: linear-gradient(180deg, #ffffff, #f8fbff);
+
+    .metric-label,
+    span:last-child {
+        display: block;
+        color: #6b778c;
+        font-size: 12px;
+    }
+
+    strong {
+        display: block;
+        margin: 4px 0;
+        color: #17233d;
+        font-size: 25px;
+        line-height: 1;
+    }
+
+    &.metric-hot strong {
+        color: #c2412f;
+    }
+}
+
+.activity-filter-panel {
+    padding: 14px 18px 6px;
+}
+
+.activity-filter-form {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    column-gap: 12px;
+}
+
+.filter-level-select {
+    width: 150px;
+}
+
+.filter-host-select,
+.filter-title-select {
+    width: 220px;
+}
+
+.activity-table-panel {
+    padding: 16px 18px;
+}
+
+.activity-list-header,
+.activity-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.activity-list-header {
+    margin-bottom: 12px;
+
+    div {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+    }
+
+    span {
+        color: #536271;
+        font-size: 13px;
+        font-weight: 800;
+        text-transform: uppercase;
+    }
+
+    strong {
+        color: #17233d;
+        font-size: 20px;
+    }
+}
+
+.activity-table-shell {
+    overflow: hidden;
+    border: 1px solid #dfe6ef;
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+.activity-table {
+    :deep(.el-table__header-wrapper th) {
+        height: 44px;
+        background: #f8fbff;
+        color: #536271;
+        font-size: 12px;
+        font-weight: 800;
+    }
+
+    :deep(.el-table__row) {
+        cursor: pointer;
+    }
+
+    :deep(.el-table__row:hover > td.el-table__cell) {
+        background: #f5fbff;
+    }
+
+    :deep(td.el-table__cell) {
+        border-bottom-color: #edf1f5;
+    }
+
+    :deep(.el-table__expanded-cell) {
+        padding: 0;
+        background: #f7f9fc;
+    }
+}
+
+.activity-title-cell {
+    min-width: 0;
+
+    strong {
+        display: block;
+        overflow: hidden;
+        color: #17233d;
+        font-size: 14px;
+        font-weight: 800;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    > span {
+        display: -webkit-box;
+        margin-top: 4px;
+        overflow: hidden;
+        color: #64748b;
+        font-size: 12px;
+        line-height: 1.45;
+        text-overflow: ellipsis;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+    }
+}
+
+.activity-id-row,
+.tag-chip-group,
+.field-chip-group {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.activity-id-row {
+    margin-top: 8px;
+
+    span {
+        max-width: 180px;
+        padding: 2px 7px;
+        overflow: hidden;
+        border-radius: 6px;
+        background: #f2f5f8;
+        color: #536271;
+        font-size: 11px;
+        font-weight: 700;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
+.time-chip,
+.host-chip,
+.level-chip,
+.confidence-chip,
+.soft-chip,
+.more-chip {
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+    min-height: 24px;
+    padding: 3px 8px;
+    overflow: hidden;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.time-chip {
+    color: #536271;
+    background: #f2f5f8;
+}
+
+.host-chip {
+    color: #0b6fb3;
+    background: #eaf5ff;
+}
+
+.level-chip {
+    color: var(--level-color);
+    background: color-mix(in srgb, var(--level-color) 12%, #ffffff);
+}
+
+.confidence-chip {
+    color: #536271;
+    background: #eef2f6;
+}
+
+.confidence-stable {
+    color: #2f7a43;
+    background: #edf8ee;
+}
+
+.confidence-test {
+    color: #a16207;
+    background: #fff6df;
+}
+
+.confidence-experimental {
+    color: #c2412f;
+    background: #fff0ed;
+}
+
+.soft-chip,
+.more-chip {
+    color: #536271;
+    background: #f2f5f8;
+}
+
+.more-chip {
+    color: #0b6fb3;
+    background: #eaf5ff;
+}
+
+.field-chip-group {
+    align-items: stretch;
+}
+
+.field-chip {
+    display: inline-grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    max-width: 220px;
+    min-height: 25px;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    background: #fbfcfe;
+
+    b,
+    em {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    b {
+        padding: 4px 7px;
+        color: #0b6fb3;
+        font-size: 11px;
+        font-style: normal;
+        font-weight: 800;
+        background: #eaf5ff;
+    }
+
+    em {
+        padding: 4px 8px;
+        color: #334155;
+        font-size: 11px;
+        font-style: normal;
+    }
+}
+
+.activity-pagination {
+    margin-top: 14px;
+}
+
 .json-viewer-wrapper {
     margin: 14px 18px;
     padding: 16px;
@@ -310,6 +769,39 @@ watch(() => [lastOccurenceTime.value, idInput.value], refreshActivity);
     border: 1px solid rgba(148, 163, 184, 0.22);
     border-radius: 10px;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75);
+
+    .raw-log-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 12px;
+
+        div {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        strong {
+            color: #17233d;
+            font-size: 14px;
+        }
+
+        span {
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        code {
+            padding: 4px 8px;
+            border-radius: 6px;
+            background: #eaf5ff;
+            color: #0b6fb3;
+            font-size: 12px;
+            font-weight: 800;
+        }
+    }
 
     :deep(.jv-container) {
         border-color: rgba(148, 163, 184, 0.26);
@@ -368,6 +860,34 @@ watch(() => [lastOccurenceTime.value, idInput.value], refreshActivity);
         padding: 6px 8px;
         color: #2563eb;
         font-size: 12px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .activity-command-main {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .activity-command-actions {
+        justify-content: flex-start;
+        min-width: 0;
+    }
+
+    .activity-metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .activity-metrics {
+        grid-template-columns: 1fr;
+    }
+
+    .activity-list-header,
+    .activity-pagination {
+        align-items: flex-start;
+        flex-direction: column;
     }
 }
 </style>

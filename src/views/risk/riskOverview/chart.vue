@@ -1,181 +1,218 @@
 <template>
-    <div class="chart-wrapper">
-        <div v-if="loading" class="chart-loading">
-            <el-skeleton :rows="8" animated />
-        </div>
-        <div v-else-if="isEmpty" class="chart-empty">
-            <el-empty />
-        </div>
-        <div v-else ref="chartContainer" class="chart-container"></div>
-    </div>
+	<div class="chart-wrapper" :style="chartStyle">
+		<div v-if="loading" class="chart-state" :style="chartStyle">
+			<el-skeleton :rows="7" animated />
+		</div>
+		<div v-else-if="isEmpty" class="chart-state" :style="chartStyle">
+			<el-empty />
+		</div>
+		<div v-else ref="chartContainer" class="chart-container" :style="chartStyle"></div>
+	</div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onBeforeUnmount, ref, watch, shallowRef, nextTick } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, shallowRef, watch } from 'vue';
 import * as echarts from 'echarts';
-import type { EChartsOption, ECharts } from 'echarts';
+import type { ECharts, EChartsOption } from 'echarts';
 
-interface SeriesItem {
-    name: string;
-    type: string;
-    data: number[];
-}
+type ChartMode = 'bar' | 'stackedBar' | 'line' | 'horizontalBar';
+type SeriesItem = {
+	name: string;
+	type?: string;
+	data: number[];
+	stack?: string;
+	smooth?: boolean;
+	showSymbol?: boolean;
+	areaStyle?: Record<string, unknown>;
+	lineStyle?: Record<string, unknown>;
+};
 
 const props = withDefaults(defineProps<{
-    text?: string;
-    xAxis?: string[];
-    series?: SeriesItem[];
-    loading?: boolean;
+	title?: string;
+	xAxis?: string[];
+	series?: SeriesItem[];
+	loading?: boolean;
+	mode?: ChartMode;
+	height?: number;
+	colors?: string[];
 }>(), {
-    text: '',
-    xAxis: () => [],
-    series: () => [],
-    loading: false,
+	title: '',
+	xAxis: () => [],
+	series: () => [],
+	loading: false,
+	mode: 'bar',
+	height: 300,
+	colors: () => ['#d95656', '#168f7a', '#d49a2a', '#3b82c4', '#7c6fd6'],
 });
 
 const chartContainer = ref<HTMLElement | null>(null);
-// Use shallowRef for ECharts instance to avoid deep reactivity overhead
 const myChart = shallowRef<ECharts | null>(null);
 
-const isEmpty = computed(() => {
-    return !props.loading && (!props.series?.length || !props.xAxis?.length);
-});
+const isHorizontal = computed(() => props.mode === 'horizontalBar');
+const isStacked = computed(() => props.mode === 'stackedBar' || props.mode === 'horizontalBar');
+const isLine = computed(() => props.mode === 'line');
+const isEmpty = computed(() => !props.loading && (!props.series?.length || !props.xAxis?.length));
+const chartStyle = computed(() => ({
+	height: `${props.height}px`,
+	minHeight: `${props.height}px`,
+}));
+
+const getSeries = () => (props.series || []).map((item, index) => ({
+	...item,
+	type: item.type || (isLine.value ? 'line' : 'bar'),
+	stack: isStacked.value ? (item.stack || 'total') : item.stack,
+	smooth: isLine.value ? (item.smooth ?? true) : item.smooth,
+	showSymbol: isLine.value ? (item.showSymbol ?? false) : item.showSymbol,
+	barMaxWidth: isHorizontal.value ? 18 : 34,
+	lineStyle: isLine.value ? { width: 2, ...(item.lineStyle || {}) } : item.lineStyle,
+	areaStyle: isLine.value ? (item.areaStyle || { opacity: 0.08 }) : item.areaStyle,
+	itemStyle: {
+		color: props.colors[index % props.colors.length],
+		borderRadius: isHorizontal.value ? [0, 4, 4, 0] : [4, 4, 0, 0],
+	},
+}));
 
 const getChartOptions = (): EChartsOption => ({
-    title: {
-        text: props.text,
-        left: '50%',
-        textAlign: 'center',
-        textStyle: {
-            fontSize: 14,
-            fontWeight: 'bold',
-        },
-    },
-    tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-            type: 'shadow',
-        },
-    },
-    legend: {
-        data: props.series?.map((item) => item.name) || [],
-        bottom: 0,
-    },
-    grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '12%',
-        top: '15%',
-        containLabel: true,
-    },
-    xAxis: {
-        type: 'category',
-        data: props.xAxis || [],
-        axisLabel: {
-            interval: 0,
-            rotate: props.xAxis.length > 5 ? 25 : 0,
-            fontSize: 11,
-        },
-    },
-    yAxis: {
-        type: 'value',
-        minInterval: 1,
-    },
-    series: props.series?.map((item) => ({
-        ...item,
-        barMaxWidth: 35,
-        itemStyle: {
-            borderRadius: [4, 4, 0, 0],
-        },
-    })) || [],
+	color: props.colors,
+	title: props.title ? {
+		text: props.title,
+		left: 0,
+		top: 0,
+		textStyle: {
+			color: '#202a36',
+			fontSize: 13,
+			fontWeight: 800,
+		},
+	} : undefined,
+	tooltip: {
+		trigger: 'axis',
+		axisPointer: {
+			type: isLine.value ? 'line' : 'shadow',
+		},
+	},
+	legend: {
+		bottom: 0,
+		left: 0,
+		itemWidth: 10,
+		itemHeight: 10,
+		textStyle: {
+			color: '#66758a',
+			fontSize: 12,
+		},
+		data: props.series?.map(item => item.name) || [],
+	},
+	grid: {
+		top: props.title ? 36 : 12,
+		left: isHorizontal.value ? 110 : 12,
+		right: 18,
+		bottom: 42,
+		containLabel: true,
+	},
+	xAxis: isHorizontal.value ? {
+		type: 'value',
+		minInterval: 1,
+		axisLabel: {
+			color: '#66758a',
+		},
+		splitLine: {
+			lineStyle: {
+				color: '#edf3f1',
+			},
+		},
+	} : {
+		type: 'category',
+		data: props.xAxis || [],
+		axisLabel: {
+			color: '#66758a',
+			interval: 0,
+			rotate: (props.xAxis?.length || 0) > 4 ? 24 : 0,
+			hideOverlap: true,
+		},
+		axisTick: {
+			alignWithLabel: true,
+		},
+	},
+	yAxis: isHorizontal.value ? {
+		type: 'category',
+		data: props.xAxis || [],
+		axisLabel: {
+			color: '#66758a',
+			width: 96,
+			overflow: 'truncate',
+		},
+	} : {
+		type: 'value',
+		minInterval: 1,
+		axisLabel: {
+			color: '#66758a',
+		},
+		splitLine: {
+			lineStyle: {
+				color: '#edf3f1',
+			},
+		},
+	},
+	series: getSeries(),
 });
 
 const initChart = async () => {
-    // Wait for next tick to ensure DOM is rendered
-    await nextTick();
+	await nextTick();
+	if (!chartContainer.value || isEmpty.value || props.loading) return;
 
-    if (!chartContainer.value) return;
+	if (chartContainer.value.clientWidth === 0 || chartContainer.value.clientHeight === 0) {
+		window.setTimeout(initChart, 100);
+		return;
+	}
 
-    // Check if container has dimensions
-    if (chartContainer.value.clientWidth === 0 || chartContainer.value.clientHeight === 0) {
-        // Retry after a short delay
-        setTimeout(initChart, 100);
-        return;
-    }
-
-    if (!myChart.value) {
-        myChart.value = echarts.init(chartContainer.value);
-    }
-
-    if (myChart.value && props.series?.length && props.xAxis?.length) {
-        myChart.value.setOption(getChartOptions(), true);
-    }
+	if (!myChart.value) {
+		myChart.value = echarts.init(chartContainer.value);
+	}
+	myChart.value.setOption(getChartOptions(), true);
 };
 
 const handleResize = () => {
-    myChart.value?.resize();
+	myChart.value?.resize();
 };
 
-// Debounced resize handler for better performance
 let resizeTimer: ReturnType<typeof setTimeout> | null = null;
 const debouncedResize = () => {
-    if (resizeTimer) clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(handleResize, 100);
+	if (resizeTimer) clearTimeout(resizeTimer);
+	resizeTimer = setTimeout(handleResize, 100);
 };
 
-// Watch for data changes
 watch(
-    () => [props.xAxis, props.series, props.loading],
-    () => {
-        if (!props.loading && props.series?.length && props.xAxis?.length) {
-            initChart();
-        }
-    },
-    { deep: true }
+	() => [props.xAxis, props.series, props.loading, props.mode, props.height],
+	() => {
+		if (!props.loading) initChart();
+	},
+	{ deep: true }
 );
 
 onMounted(() => {
-    if (!props.loading && props.series?.length && props.xAxis?.length) {
-        initChart();
-    }
-    window.addEventListener('resize', debouncedResize);
+	initChart();
+	window.addEventListener('resize', debouncedResize);
 });
 
 onBeforeUnmount(() => {
-    // Clean up resize listener
-    window.removeEventListener('resize', debouncedResize);
-    if (resizeTimer) clearTimeout(resizeTimer);
-
-    // Dispose ECharts instance to prevent memory leak
-    if (myChart.value) {
-        myChart.value.dispose();
-        myChart.value = null;
-    }
+	window.removeEventListener('resize', debouncedResize);
+	if (resizeTimer) clearTimeout(resizeTimer);
+	if (myChart.value) {
+		myChart.value.dispose();
+		myChart.value = null;
+	}
 });
 </script>
 
 <style scoped>
-.chart-wrapper {
-    width: 100%;
-    min-height: 400px;
-    position: relative;
-}
-
+.chart-wrapper,
 .chart-container {
-    width: 100%;
-    height: 400px;
+	width: 100%;
 }
 
-.chart-loading,
-.chart-empty {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 400px;
-    padding: 20px;
-}
-
-.chart-loading {
-    flex-direction: column;
+.chart-state {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 18px;
 }
 </style>

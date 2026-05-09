@@ -66,10 +66,11 @@
                             </el-table-column>
                             <el-table-column :label="$t('message.tableCommon.operation')" width="100" fixed="right" align="center">
                                 <template #default="scope">
-                                    <el-button size="small" type="danger"
-                                        @click="() => handleClose(scope.row)">
-                                        {{ $t('message.tableCommon.delete') }}
-                                    </el-button>
+                                    <div class="operation-icon-group">
+                                        <el-tooltip :content="$t('message.tableCommon.delete')" placement="top">
+                                            <el-button class="operation-icon-button" size="small" type="danger" :icon="Delete" :aria-label="$t('message.tableCommon.delete')" @click="() => handleClose(scope.row)" />
+                                        </el-tooltip>
+                                    </div>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -102,7 +103,7 @@ import api from '/@/api/grpc';
 import { alertApiError } from '/@/utils/error';
 import { formatApiTime, shortcuts } from '/@/utils/formatTime';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { Plus } from '@element-plus/icons-vue';
+import { Delete, Plus } from '@element-plus/icons-vue';
 import { typeOptions, originOptions } from './constant';
 import { OptionType } from '/@/utils/constant';
 import { listDomainOptions } from '/@/api/grpc/method';

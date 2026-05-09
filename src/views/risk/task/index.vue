@@ -38,7 +38,7 @@
                     <el-table-column type="index" width="80" :label="$t('message.tableCommon.index')" />
                     <el-table-column prop="type" :label="$t('message.risk.task.type')">
                         <template #default="props">
-                            {{ $t(`message.router.${props.row.type}Index`) }}
+                            {{ getScanTypeLabel(props.row.type) }}
                         </template>
                     </el-table-column>
                     <el-table-column prop="status" :label="$t('message.risk.task.status')">
@@ -73,14 +73,16 @@
                             {{ $t(`message.risk.task.cycle_${props.row.cycle}`) }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="operation" :label="$t('message.tableCommon.operation')" width="140" fixed="right" align="center">
+                    <el-table-column prop="operation" :label="$t('message.tableCommon.operation')" width="92" fixed="right" align="center">
                         <template #default="prop">
-                            <el-button size="small" @click="handleDetail(prop.row)">
-                                {{ $t('message.tableCommon.detail') }}
-                            </el-button>
-                            <el-button size="small" type="danger" @click="handleDelete(prop.row)">
-                                {{ $t('message.tableCommon.delete') }}
-                            </el-button>
+                            <div class="operation-icon-group">
+                                <el-tooltip :content="$t('message.tableCommon.detail')" placement="top">
+                                    <el-button class="operation-icon-button" size="small" type="primary" :icon="View" :aria-label="$t('message.tableCommon.detail')" @click="handleDetail(prop.row)" />
+                                </el-tooltip>
+                                <el-tooltip :content="$t('message.tableCommon.delete')" placement="top">
+                                    <el-button class="operation-icon-button" size="small" type="danger" :icon="Delete" :aria-label="$t('message.tableCommon.delete')" @click="handleDelete(prop.row)" />
+                                </el-tooltip>
+                            </div>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -107,7 +109,7 @@ import { formatApiTime } from '/@/utils/formatTime';
 import { useI18n } from 'vue-i18n';
 import { shortcuts } from '/@/utils/formatTime';
 import { getRiskTypeOptions, getTaskCycleOptions, getTaskStatusOptions } from '../constant';
-import { QuestionFilled } from '@element-plus/icons-vue';
+import { Delete, QuestionFilled, View } from '@element-plus/icons-vue';
 import Drawer from './drawer.vue';
 import { ElMessageBox } from 'element-plus';
 
@@ -118,6 +120,12 @@ const { t } = useI18n();
 const RiekTypeOptions = getRiskTypeOptions(t);
 const CycleOptions = getTaskCycleOptions(t);
 const StatusOptions = getTaskStatusOptions(t);
+const scanTypeRouterKey: Record<string, string> = {
+    baseline: 'riskBaseline',
+    leak: 'riskLeaks',
+    weakpwd: 'riskWeakpwd',
+};
+const getScanTypeLabel = (type: string) => t(`message.router.${scanTypeRouterKey[type] || type}`);
 
 const timeRange = ref([] as string[]);
 

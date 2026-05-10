@@ -1607,7 +1607,7 @@ message pluginInfo {
   string verify_desc = 13;
   string suggestion = 14;
   string reference = 15;
-  string remark = 16;
+  reserved 16;
   int64 update_tm = 17;
   map<string, string> metaDataDesc = 18;
 }

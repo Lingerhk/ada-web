@@ -594,7 +594,11 @@ const fetchDashboardStats = async () => {
 const fetchDashboardTrends = async () => {
 	state.trendLoading = true;
 	try {
-		state.dashboardTrends = await api.dashboardTrends({ domain: state.domain, year: currentYear } as DashboardTrendsReq).then(resp => resp.response);
+		state.dashboardTrends = await api.dashboardTrends({
+			domain: state.domain,
+			year: currentYear,
+			durationDays: 0,
+		} as DashboardTrendsReq).then(resp => resp.response);
 	} catch (err) {
 		state.dashboardTrends = createDashboardTrends();
 		alertApiError(err);

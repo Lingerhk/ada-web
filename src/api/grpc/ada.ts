@@ -4417,10 +4417,6 @@ export interface pluginInfo {
      */
     reference: string;
     /**
-     * @generated from protobuf field: string remark = 16;
-     */
-    remark: string;
-    /**
      * @generated from protobuf field: int64 update_tm = 17;
      */
     updateTm: bigint;
@@ -20938,7 +20934,6 @@ class pluginInfo$Type extends MessageType<pluginInfo> {
             { no: 13, name: "verify_desc", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 14, name: "suggestion", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 15, name: "reference", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 16, name: "remark", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 17, name: "update_tm", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ },
             { no: 18, name: "metaDataDesc", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 9 /*ScalarType.STRING*/ } }
         ]);
@@ -20960,7 +20955,6 @@ class pluginInfo$Type extends MessageType<pluginInfo> {
         message.verifyDesc = "";
         message.suggestion = "";
         message.reference = "";
-        message.remark = "";
         message.updateTm = 0n;
         message.metaDataDesc = {};
         if (value !== undefined)
@@ -21016,9 +21010,6 @@ class pluginInfo$Type extends MessageType<pluginInfo> {
                     break;
                 case /* string reference */ 15:
                     message.reference = reader.string();
-                    break;
-                case /* string remark */ 16:
-                    message.remark = reader.string();
                     break;
                 case /* int64 update_tm */ 17:
                     message.updateTm = reader.int64().toBigInt();
@@ -21115,9 +21106,6 @@ class pluginInfo$Type extends MessageType<pluginInfo> {
         /* string reference = 15; */
         if (message.reference !== "")
             writer.tag(15, WireType.LengthDelimited).string(message.reference);
-        /* string remark = 16; */
-        if (message.remark !== "")
-            writer.tag(16, WireType.LengthDelimited).string(message.remark);
         /* int64 update_tm = 17; */
         if (message.updateTm !== 0n)
             writer.tag(17, WireType.Varint).int64(message.updateTm);

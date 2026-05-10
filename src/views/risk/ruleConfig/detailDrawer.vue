@@ -529,7 +529,6 @@ const pluginDetailReservedFields = new Set([
     'reference',
     'desc',
     'suggestion',
-    'remark',
     'metaData',
     'enable',
     'level',

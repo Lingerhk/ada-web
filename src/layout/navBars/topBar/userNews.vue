@@ -12,17 +12,18 @@
 					</div>
 				</div>
 			</div>
-			<el-button
-				v-if="news.length > 0"
-				link
-				type="primary"
-				size="small"
-				:loading="markingRead"
-				@click.stop="onAllReadClick"
-			>
-				<el-icon><Check /></el-icon>
-				<span>{{ $t('message.user.newBtn') }}</span>
-			</el-button>
+			<el-tooltip v-if="news.length > 0" :content="$t('message.user.newBtn')" placement="bottom">
+				<el-button
+					class="mark-read-icon-button"
+					text
+					circle
+					size="small"
+					:icon="Check"
+					:loading="markingRead"
+					:aria-label="$t('message.user.newBtn')"
+					@click.stop="onAllReadClick"
+				/>
+			</el-tooltip>
 		</div>
 		<div class="content-box" :class="{ 'is-empty': news.length === 0 }">
 			<template v-if="news.length > 0">
@@ -180,6 +181,24 @@ const onGotoMessageCenter = () => {
 		color: var(--el-text-color-secondary);
 		font-size: 12px;
 		line-height: 16px;
+	}
+	.mark-read-icon-button {
+		height: 32px;
+		width: 32px;
+		border: 1px solid var(--el-color-primary-light-5);
+		border-radius: 8px;
+		color: var(--el-color-primary);
+		background: var(--el-bg-color);
+		box-shadow: 0 2px 8px rgba(22, 143, 122, 0.12);
+		:deep(.el-icon) {
+			font-size: 16px;
+		}
+		&:hover,
+		&:focus {
+			background: var(--el-color-primary-light-9);
+			border-color: var(--el-color-primary-light-3);
+			color: var(--el-color-primary);
+		}
 	}
 	.content-box {
 		max-height: 360px;

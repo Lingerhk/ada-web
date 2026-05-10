@@ -88,6 +88,35 @@ const state = reactive({
 	},
 });
 
+type LoginPrefillConfig = {
+	enabled?: boolean;
+	username?: string;
+	password?: string;
+};
+
+const LOGIN_PREFILL_HOSTS = new Set(['192.168.7.2']);
+
+const loadLoginPrefill = async () => {
+	if (!LOGIN_PREFILL_HOSTS.has(window.location.hostname)) return;
+
+	try {
+		const resp = await fetch('/runtime/login-prefill.json', { cache: 'no-store' });
+		if (!resp.ok) return;
+
+		const config = await resp.json() as LoginPrefillConfig;
+		if (!config.enabled) return;
+
+		if (typeof config.username === 'string' && !state.ruleForm.userName) {
+			state.ruleForm.userName = config.username;
+		}
+		if (typeof config.password === 'string' && !state.ruleForm.password) {
+			state.ruleForm.password = config.password;
+		}
+	} catch {
+		// Runtime config is optional and only present in test environments.
+	}
+};
+
 const rules = computed<FormRules>(() => ({
 	userName: [
 		{ required: true, message: t('message.login.usernameRequired'), trigger: 'blur' }
@@ -183,6 +212,8 @@ onMounted(async () => {
 		ElMessage.info(msg);
 		Local.remove("msg");
 	}
+
+	await loadLoginPrefill();
 });
 </script>
 

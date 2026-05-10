@@ -20,7 +20,7 @@ export const getRiskTypeOptions2 = (t: any): OptionType[] => {
 
 export const getLeakTypeOptions = (t: any): OptionType[] => {
     return toOptionType(
-        ['command_execution', 'privilege_escalation', 'information_leakage', 'improper_configuration'],
+        ['command_execution', 'privilege_escalation', 'information_leakage', 'improper_configuration', 'configuration'],
         t,
         'message.risk.ruleConfig.leakDetailValue_');
 };

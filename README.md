@@ -6,15 +6,12 @@ ADAegis Portal is the web interface for ADAegis, an open security platform focus
 
 ADAegis Portal is designed for teams that need clear visibility into domain controllers, users, authentication behavior, Windows security telemetry, scan findings, and identity-driven attack paths.
 
-<div align="center">
-  <a href="https://youtu.be/Oexs-58C-Fg">
-    <img src="https://img.youtube.com/vi/Oexs-58C-Fg/maxresdefault.jpg" alt="ADAegis introduction video" width="720" />
-  </a>
-  <br />
-  <a href="https://youtu.be/Oexs-58C-Fg"><strong>Watch the ADAegis introduction video on YouTube</strong></a>
-  <br />
-  <a href="https://demo.adaegis.net/"><strong>Try the live ADAegis demo</strong></a>
-</div>
+<p>
+  <big>
+    <a href="https://youtu.be/Oexs-58C-Fg" style="text-decoration: none;"><strong>Adaegis Introduction:</strong> https://youtu.be/Oexs-58C-Fg</a><br />
+    <a href="https://demo.adaegis.net/" style="text-decoration: none;"><strong>Adaegis Demo:</strong> https://demo.adaegis.net/</a>
+  </big>
+</p>
 
 ## What Problems ADAegis Portal Solves
 

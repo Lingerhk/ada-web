@@ -2,6 +2,7 @@ import { createI18n } from 'vue-i18n';
 import pinia from '/@/stores/index';
 import { storeToRefs } from 'pinia';
 import { useThemeConfig } from '/@/stores/themeConfig';
+import { Local } from '/@/utils/storage';
 
 // Define the internationalization content
 
@@ -53,6 +54,36 @@ for (const key in itemize) {
 const stores = useThemeConfig(pinia);
 const { themeConfig } = storeToRefs(stores);
 
+type SupportedLocale = 'zh-cn' | 'en';
+
+const normalizeLocale = (lang?: string | null): SupportedLocale | '' => {
+	const normalizedLang = `${lang || ''}`.toLowerCase();
+	if (normalizedLang.startsWith('zh')) return 'zh-cn';
+	if (normalizedLang.startsWith('en')) return 'en';
+	return '';
+};
+
+const getCachedLocale = (): SupportedLocale | '' => {
+	try {
+		return normalizeLocale(Local.get('themeConfig')?.globalI18n);
+	} catch {
+		return '';
+	}
+};
+
+const getBrowserLocale = (): SupportedLocale | '' => {
+	if (typeof navigator === 'undefined') return '';
+	const browserLanguages = navigator.languages?.length ? navigator.languages : [navigator.language];
+	for (const lang of browserLanguages) {
+		const locale = normalizeLocale(lang);
+		if (locale) return locale;
+	}
+	return 'en';
+};
+
+const initialLocale = getCachedLocale() || getBrowserLocale() || normalizeLocale(themeConfig.value.globalI18n) || 'zh-cn';
+themeConfig.value.globalI18n = initialLocale;
+
 // Export the i18n instance
 // https://vue-i18n.intlify.dev/guide/essentials/fallback.html#explicit-fallback-with-one-locale
 export const i18n = createI18n({
@@ -61,7 +92,7 @@ export const i18n = createI18n({
 	missingWarn: false,
 	silentFallbackWarn: true,
 	fallbackWarn: false,
-	locale: themeConfig.value.globalI18n,
+	locale: initialLocale,
 	fallbackLocale: zhcnLocale.name,
 	messages,
 });

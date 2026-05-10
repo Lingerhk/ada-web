@@ -14,9 +14,11 @@
                                 </el-button>
                             </el-form-item>
                             <el-form-item :label="$t('message.risk.ruleConfig.templateType')">
-                                <el-select size="default" v-model="templateState.req.type" clearable
+                                <el-select size="default" v-model="templateState.req.type" clearable filterable
+                                    :filter-method="filterRiskTypeOptions"
+                                    @visible-change="handleRiskTypeVisibleChange"
                                     style="width: 240px" :placeholder="$t('message.risk.ruleConfig.selectType')">
-                                    <el-option v-for="option in RiskTypeOptions" :key="option.value" :label="option.label"
+                                    <el-option v-for="option in filteredRiskTypeOptions" :key="option.value" :label="option.label"
                                         :value="option.value"></el-option>
                                 </el-select>
                             </el-form-item>
@@ -25,12 +27,21 @@
                     <!-- Result list below -->
                     <el-row style="margin-top: 10px">
                         <el-table :data="templateState.data" v-loading="templateState.loading" :border="true" row-class-name="pointer-cursor"
-                            style="width: 100%">
+                            class="scan-template-table" style="width: 100%">
                             <el-table-column type="index" width="80" :label="$t('message.tableCommon.index')" />
                             <el-table-column prop="name" :label="$t('message.risk.ruleConfig.templateName')" />
-                            <el-table-column prop="type" :label="$t('message.risk.ruleConfig.templateType')">
+                            <el-table-column prop="type" :label="$t('message.risk.ruleConfig.templateType')" width="150" class-name="nowrap-column" header-class-name="nowrap-column">
                                 <template #default="scope">
-                                    {{ $t(`message.risk.ruleConfig.${scope.row.type}`) }}
+                                    {{ getRiskTypeText(scope.row.type) }}
+                                </template>
+                            </el-table-column>
+                            <el-table-column :label="$t('message.risk.ruleConfig.enabledPlugins')" width="150" align="center" class-name="nowrap-column" header-class-name="nowrap-column">
+                                <template #default="scope">
+                                    <div class="plugin-count-cell">
+                                        <span class="plugin-count-cell__total">{{ getPluginCountStats(scope.row.iD).total }}</span>
+                                        <span class="plugin-count-cell__divider">/</span>
+                                        <span class="plugin-count-cell__enabled">{{ getPluginCountStats(scope.row.iD).enabled }}</span>
+                                    </div>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="updateTm" :label="$t('message.risk.ruleConfig.updateTm')">
@@ -63,15 +74,19 @@
                 <el-tab-pane :label="$t('message.risk.ruleConfig.ruleConfigTab')" name="ruleConfig">
                     <el-row style="margin-top: 10px">
                         <el-table :data="configState.data" v-loading="configState.loading" :border="true"
-                            style="width: 100%">
+                            class="rule-config-table" style="width: 100%">
                             <el-table-column type="index" width="80" :label="$t('message.risk.ruleConfig.confId')" />
-                            <el-table-column prop="name" :label="$t('message.risk.ruleConfig.confName')" />
-                            <el-table-column prop="type" :label="$t('message.risk.ruleConfig.confType')">
+                            <el-table-column prop="name" :label="$t('message.risk.ruleConfig.confName')">
                                 <template #default="scope">
-                                    {{ $t(`message.risk.ruleConfig.${scope.row.type}`) }}
+                                    {{ getScanConfigName(scope.row) }}
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="isEnable" :label="$t('message.risk.ruleConfig.confEnabled')" width="100">
+                            <el-table-column prop="type" :label="$t('message.risk.ruleConfig.confType')" width="130" class-name="nowrap-column" header-class-name="nowrap-column">
+                                <template #default="scope">
+                                    {{ getRiskTypeText(scope.row.type) }}
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="isEnable" :label="$t('message.risk.ruleConfig.confEnabled')" width="100" class-name="nowrap-column" header-class-name="nowrap-column">
                                 <template #default="scope">
                                     <el-switch
                                         :model-value="scope.row.isEnable"
@@ -81,7 +96,7 @@
                                     />
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="cycleType" width="150">
+                            <el-table-column prop="cycleType" width="150" class-name="nowrap-column" header-class-name="nowrap-column">
                                 <template #header>
                                     <span>{{ $t('message.risk.ruleConfig.confCycleType') }}</span>
                                     <el-tooltip
@@ -101,7 +116,7 @@
                             <el-table-column prop="updateTm" :label="$t('message.risk.ruleConfig.confUpdateTm')">
                                 <template #default="scope">{{ formatApiTime(scope.row.updateTm) }}</template>
                             </el-table-column>
-                            <el-table-column :label="$t('message.tableCommon.operation')" width="64" fixed="right" align="center">
+                            <el-table-column :label="$t('message.tableCommon.operation')" width="96" fixed="right" align="center" class-name="nowrap-column" header-class-name="nowrap-column">
                                 <template #default="scope">
                                     <div class="operation-icon-group">
                                         <el-tooltip :content="$t('message.tableCommon.edit')" placement="top">
@@ -111,17 +126,6 @@
                                 </template>
                             </el-table-column>
                         </el-table>
-                    </el-row>
-                    <el-row style="margin-top: 10px" justify="end">
-                        <el-pagination
-                            v-model:current-page="configState.req.pageIdx"
-                            v-model:page-size="configState.req.pageSize"
-                            :page-sizes="[10, 30, 60, 100]"
-                            layout="sizes, prev, pager, next, jumper"
-                            :total="configState.page?.total ?? 0"
-                            @size-change="handleConfigPageSizeChange"
-                            @current-change="handleConfigPageChange"
-                        />
                     </el-row>
                 </el-tab-pane>
             </el-tabs>
@@ -133,9 +137,8 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, onMounted, reactive, ref, watch } from 'vue';
+import { computed, defineAsyncComponent, onMounted, reactive, ref, watch } from 'vue';
 import {
-    DeleteScanTmplReq,
     ListScanTmplReply,
     ListScanTmplReply_Details,
     ListScanTmplReq,
@@ -143,11 +146,9 @@ import {
     ListScanConfReply,
     scanConfDetail,
     SetScanConfReq,
-    ModelPage
 } from '/@/api/grpc/ada';
-import { listScanTmpl } from '/@/api/grpc/method';
+import { getScanTmpl, listScanTmpl } from '/@/api/grpc/method';
 import { alertApiError, alertResult } from '/@/utils/error';
-import { getRiskTypeOptions } from '../constant';
 import { useI18n } from 'vue-i18n';
 import { formatApiTime } from '/@/utils/formatTime';
 import { ElMessageBox } from 'element-plus';
@@ -160,11 +161,58 @@ const EditDrawerRef = ref();
 const EditDrawer = defineAsyncComponent(() => import('./editDrawer.vue'));
 const ScanConfigEditDrawerRef = ref();
 const ScanConfigEditDrawer = defineAsyncComponent(() => import('./scanConfigEditDrawer.vue'));
-const { t } = useI18n();
+const { t, te, locale } = useI18n();
 
-const RiskTypeOptions = getRiskTypeOptions(t);
+const riskTypeValues = ['all', 'baseline', 'leak', 'weakpwd'] as const;
+const riskTypeKeyword = ref('');
+const riskTypeAliases: Record<string, string[]> = {
+    all: ['all', '全部', '所有', '所有检测'],
+    baseline: ['baseline', '基线', '基线检测'],
+    leak: ['vulnerability', 'leak', '漏洞', '漏洞检测'],
+    weakpwd: ['weak password', 'weakpwd', 'weak password detection', '弱口令', '弱口令检测'],
+};
+
+const translateOrFallback = (key: string, fallback: string) => te(key) ? t(key) : fallback;
+
+const getRiskTypeText = (type: string) => translateOrFallback(`message.risk.ruleConfig.${type}`, type);
+
+const getScanConfigName = (row: scanConfDetail) => {
+    return translateOrFallback(`message.risk.ruleConfig.confName_${row.type}`, row.name);
+};
+
+const riskTypeOptions = computed(() => {
+    locale.value;
+    return riskTypeValues.map(value => ({
+        value,
+        label: getRiskTypeText(value),
+        keywords: [getRiskTypeText(value), ...(riskTypeAliases[value] ?? [])].map(v => v.toLowerCase()),
+    }));
+});
+
+const filteredRiskTypeOptions = computed(() => {
+    const keyword = riskTypeKeyword.value.trim().toLowerCase();
+    if (!keyword) {
+        return riskTypeOptions.value;
+    }
+    return riskTypeOptions.value.filter(option => option.keywords.some(item => item.includes(keyword)));
+});
+
+const filterRiskTypeOptions = (value: string) => {
+    riskTypeKeyword.value = value;
+};
+
+const handleRiskTypeVisibleChange = (visible: boolean) => {
+    if (!visible) {
+        riskTypeKeyword.value = '';
+    }
+};
 
 const activeTab = ref('ruleTemplate');
+
+type PluginCountStats = {
+    total: number;
+    enabled: number;
+};
 
 // =============== Rule Template State ===============
 const templateState = reactive({
@@ -174,6 +222,7 @@ const templateState = reactive({
         type: 'all',
     } as ListScanTmplReq,
     data: [] as ListScanTmplReply_Details[],
+    pluginCountStats: {} as Record<string, PluginCountStats>,
     exhausted: false,
     loading: false,
 });
@@ -182,10 +231,9 @@ const templateState = reactive({
 const configState = reactive({
     req: {
         pageIdx: 1,
-        pageSize: 10,
+        pageSize: 1000,
     } as ListScanConfReq,
     data: [] as scanConfDetail[],
-    page: null as ModelPage | null,
     exhausted: false,
     loading: false,
     switchLoading: {} as Record<string, boolean>,
@@ -241,15 +289,64 @@ const handleDelete = (data: ListScanTmplReply_Details) => {
     .catch(err => {});
 };
 
-const refreshTemplates = () => {
+const getPluginCountStats = (id: string) => {
+    const stats = templateState.pluginCountStats[id];
+    if (!stats || stats.total < 0 || stats.enabled < 0) {
+        return {
+            total: '-',
+            enabled: '-',
+        };
+    }
+
+    return {
+        total: String(stats.total),
+        enabled: String(stats.enabled),
+    };
+};
+
+let templateRefreshSeq = 0;
+
+const refreshPluginCountStats = async (rows: ListScanTmplReply_Details[], seq: number) => {
+    const counts: Record<string, PluginCountStats> = {};
+    await Promise.all(rows.map(async row => {
+        try {
+            const data = await getScanTmpl(row.iD);
+            counts[row.iD] = {
+                total: data.plugins.length,
+                enabled: data.plugins.filter(plugin => plugin.enable === 1).length,
+            };
+        } catch (err) {
+            counts[row.iD] = {
+                total: -1,
+                enabled: -1,
+            };
+        }
+    }));
+
+    if (seq === templateRefreshSeq) {
+        templateState.pluginCountStats = counts;
+    }
+};
+
+const refreshTemplates = async () => {
+    const seq = ++templateRefreshSeq;
     templateState.loading = true;
-    listScanTmpl(templateState.req)
-        .then((data: ListScanTmplReply) => {
-            templateState.exhausted = data.exhausted;
-            templateState.data = data.list;
-        })
-        .catch(err => alertApiError(err))
-        .finally(() => templateState.loading = false);
+    try {
+        const data: ListScanTmplReply = await listScanTmpl(templateState.req);
+        if (seq !== templateRefreshSeq) {
+            return;
+        }
+        templateState.exhausted = data.exhausted;
+        templateState.data = data.list;
+        templateState.pluginCountStats = {};
+        await refreshPluginCountStats(data.list, seq);
+    } catch (err) {
+        alertApiError(err);
+    } finally {
+        if (seq === templateRefreshSeq) {
+            templateState.loading = false;
+        }
+    }
 };
 
 // =============== Rule Configuration Methods ===============
@@ -260,7 +357,6 @@ const refreshConfigs = () => {
         .then((data: ListScanConfReply) => {
             configState.exhausted = data.exhausted;
             configState.data = data.list;
-            configState.page = data.page ?? null;
         })
         .catch(err => alertApiError(err))
         .finally(() => configState.loading = false);
@@ -303,16 +399,6 @@ const handleConfigEdit = (row: scanConfDetail) => {
     ScanConfigEditDrawerRef.value.open(row, refreshConfigs);
 };
 
-const handleConfigPageSizeChange = (newPageSize: number) => {
-    configState.req.pageSize = newPageSize;
-    refreshConfigs();
-};
-
-const handleConfigPageChange = (newPage: number) => {
-    configState.req.pageIdx = newPage;
-    refreshConfigs();
-};
-
 // Watch template type filter
 watch(() => templateState.req.type, () => {
     templateState.req.pageIdx = 1;
@@ -339,3 +425,32 @@ onMounted(() => {
 });
 
 </script>
+
+<style scoped>
+:deep(.nowrap-column .cell) {
+    white-space: nowrap;
+}
+
+.plugin-count-cell {
+    display: inline-flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 5px;
+    font-variant-numeric: tabular-nums;
+}
+
+.plugin-count-cell__total {
+    color: #17233c;
+    font-weight: 700;
+}
+
+.plugin-count-cell__divider {
+    color: #94a3b8;
+    font-size: 12px;
+}
+
+.plugin-count-cell__enabled {
+    color: var(--el-color-success);
+    font-weight: 700;
+}
+</style>

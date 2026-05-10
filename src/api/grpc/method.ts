@@ -38,6 +38,7 @@ import {
 import { alertApiError } from '/@/utils/error';
 import { OptionType } from '/@/utils/constant';
 import { formatApiTime, getPrev7Days } from '/@/utils/formatTime';
+import { Local } from '/@/utils/storage';
 
 export const listDomainOptions = async (): Promise<OptionType[]> => {
 	const req: ListDomainReq = {
@@ -230,7 +231,7 @@ export const getSysLanguage = async (): Promise<string> => {
 		.getSystemInfo({} as GetSystemInfoReq)
 		.then((resp) => resp.response)
 		.then((data) => data.systemLanguage)
-		.catch((err) => 'ZH');
+		.catch(() => Local.get('themeConfig')?.globalI18n === 'en' ? 'EN' : 'ZH');
 };
 
 export const updateSysLanguage = async (lang: string) => {

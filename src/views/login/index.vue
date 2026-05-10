@@ -5,6 +5,18 @@
 	>
 		<section class="login-shell">
 			<div class="login-panel">
+				<div class="login-locale" role="group" aria-label="Language">
+					<button
+						v-for="item in localeOptions"
+						:key="item.value"
+						type="button"
+						:class="{ active: locale === item.value }"
+						:aria-pressed="locale === item.value"
+						@click="onLocaleChange(item.value)"
+					>
+						{{ item.label }}
+					</button>
+				</div>
 				<div class="login-brand">
 					<img src="/logo.svg" alt="ADAegis" />
 					<span>ADAegis</span>
@@ -14,38 +26,43 @@
 				<div class="login-center-form"><Account /></div>
 			</div>
 			<div class="login-copy">
-				<div class="login-copy-kicker">Identity Security Operations</div>
-				<h1>持续感知域内风险，统一处置身份威胁</h1>
-				<p>面向 AD 安全运营的实时监测、风险扫描与响应控制台。</p>
+				<div class="login-copy-kicker">{{ $t('message.login.copyKicker') }}</div>
+				<h1>{{ $t('message.login.copyTitle') }}</h1>
+				<p>{{ $t('message.login.copyText') }}</p>
 			</div>
 		</section>
 	</div>
 </template>
 
 <script setup lang="ts" name="loginIndex">
-import { defineAsyncComponent, onMounted, reactive, computed } from 'vue';
+import { defineAsyncComponent, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { storeToRefs } from 'pinia';
 import { useThemeConfig } from '/@/stores/themeConfig';
 import { NextLoading } from '/@/utils/loading';
-import BackgroundImage from '/@/assets/logo-bg.png'
+import { Local } from '/@/utils/storage';
+import BackgroundImage from '/@/assets/logo-bg.png';
 
 // Import components
 const Account = defineAsyncComponent(() => import('/@/views/login/component/account.vue'));
 
 // Define reactive state and refs
-const { t } = useI18n(); // Initialize t function
+const { locale } = useI18n();
 const storesThemeConfig = useThemeConfig();
 const { themeConfig } = storeToRefs(storesThemeConfig);
-const state = reactive({
-	tabsActiveName: 'account',
-	isScan: false,
-});
 
-// Read layout settings
-const getThemeConfig = computed(() => {
-	return themeConfig.value;
-});
+const localeOptions = [
+	{ label: '中文', value: 'zh-cn' },
+	{ label: 'EN', value: 'en' },
+] as const;
+
+const onLocaleChange = (lang: 'zh-cn' | 'en') => {
+	if (locale.value === lang) return;
+	themeConfig.value.globalI18n = lang;
+	Local.set('themeConfig', themeConfig.value);
+	locale.value = lang;
+};
+
 // On mount
 onMounted(() => {
 	NextLoading.done();
@@ -87,6 +104,38 @@ onMounted(() => {
 		padding: 34px 42px 40px;
 		box-shadow: 0 24px 60px rgba(8, 28, 32, 0.28);
 		backdrop-filter: blur(18px);
+
+		.login-locale {
+			position: absolute;
+			top: 18px;
+			right: 22px;
+			display: inline-flex;
+			align-items: center;
+			padding: 2px;
+			border-radius: 999px;
+			background: rgba(19, 54, 56, 0.08);
+			border: 1px solid rgba(19, 54, 56, 0.1);
+
+			button {
+				border: 0;
+				border-radius: 999px;
+				background: transparent;
+				color: #4a5b60;
+				cursor: pointer;
+				font-size: 11px;
+				font-weight: 800;
+				line-height: 1;
+				min-width: 34px;
+				padding: 6px 8px;
+				transition: all 0.18s ease;
+
+				&.active {
+					background: #168f7a;
+					color: #ffffff;
+					box-shadow: 0 6px 16px rgba(22, 143, 122, 0.24);
+				}
+			}
+		}
 
 		.login-brand {
 			display: flex;

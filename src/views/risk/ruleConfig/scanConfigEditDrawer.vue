@@ -8,7 +8,7 @@
                 <!-- Config Info Display -->
                 <el-descriptions :column="2" border style="margin-bottom: 20px;">
                     <el-descriptions-item :label="$t('message.risk.ruleConfig.confName')">
-                        {{ state.configData?.name }}
+                        {{ getScanConfigName() }}
                     </el-descriptions-item>
                     <el-descriptions-item :label="$t('message.risk.ruleConfig.confType')">
                         {{ state.configData?.type ? $t(`message.risk.ruleConfig.${state.configData.type}`) : '-' }}
@@ -129,7 +129,7 @@ import api from '/@/api/grpc';
 import { alertApiError, alertResult } from '/@/utils/error';
 import { listScanTmpl } from '/@/api/grpc/method';
 
-const { t } = useI18n();
+const { t, te } = useI18n();
 
 interface DomainTemplateMapping {
     domain: string;
@@ -146,6 +146,15 @@ const state = reactive({
     cycleType: 1 as number,
     onClose: () => {},
 });
+
+const getScanConfigName = () => {
+    const config = state.configData;
+    if (!config) {
+        return '-';
+    }
+    const key = `message.risk.ruleConfig.confName_${config.type}`;
+    return te(key) ? t(key) : config.name;
+};
 
 // Cycle type options
 const cycleTypeOptions = computed(() => [

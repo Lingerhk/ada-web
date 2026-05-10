@@ -1,5 +1,5 @@
 <template>
-	<el-form ref="loginFormRef" :model="state.ruleForm" :rules="state.rules" size="large" class="login-content-form" @keyup.enter="onSignIn">
+	<el-form ref="loginFormRef" :model="state.ruleForm" :rules="rules" size="large" class="login-content-form" @keyup.enter="onSignIn">
 		<el-form-item class="login-animation1" prop="userName">
 			<el-input text :placeholder="$t('message.login.usernamePlaceholder')" v-model="state.ruleForm.userName" clearable autocomplete="off" name="username">
 				<template #prefix>
@@ -62,10 +62,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus';
 import { useI18n } from 'vue-i18n';
 import Cookies from 'js-cookie';
-import { storeToRefs } from 'pinia';
-import { useThemeConfig } from '/@/stores/themeConfig';
 import { initFrontEndControlRoutes } from '/@/router/frontEnd';
-import { initBackEndControlRoutes } from '/@/router/backEnd';
 import { Session, Local } from '/@/utils/storage';
 import { formatAxis } from '/@/utils/formatTime';
 import { NextLoading } from '/@/utils/loading';
@@ -75,8 +72,6 @@ import { alertApiError } from '/@/utils/error';
 
 // Define reactive state and refs
 const { t } = useI18n();
-const storesThemeConfig = useThemeConfig();
-const { themeConfig } = storeToRefs(storesThemeConfig);
 const route = useRoute();
 const router = useRouter();
 const loginFormRef = ref<FormInstance>();
@@ -88,18 +83,19 @@ const state = reactive({
 		password: '',
 		code: '',
 	},
-	rules: {
-		userName: [
-			{ required: true, message: t('message.login.usernameRequired'), trigger: 'blur' }
-		],
-		password: [
-			{ required: true, message: t('message.login.passwordRequired'), trigger: 'blur' }
-		],
-	} as FormRules,
 	loading: {
 		signIn: false,
 	},
 });
+
+const rules = computed<FormRules>(() => ({
+	userName: [
+		{ required: true, message: t('message.login.usernameRequired'), trigger: 'blur' }
+	],
+	password: [
+		{ required: true, message: t('message.login.passwordRequired'), trigger: 'blur' }
+	],
+}));
 
 // Get the current time
 const currentTime = computed(() => {

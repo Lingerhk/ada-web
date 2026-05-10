@@ -3,12 +3,22 @@
 		<div class="chart-warp-top dashboard-filter-bar">
 			<div class="big-data-up mb15">
 				<div class="up-left">
-					<el-form :model="state.form" style="width: 200px">
+					<el-form :model="state.form" class="dashboard-filter-form" inline>
 						<el-form-item>
-							<el-select v-model="state.form.domain" :placeholder="T('allDomains')">
+							<el-select v-model="state.form.domain" class="dashboard-filter-select" :placeholder="T('allDomains')">
 								<el-option :label="T('allDomains')" value="all" />
 								<el-option v-for="opt in state.form.domainOptions" :key="opt.value" :value="opt.value"
 									:label="opt.label" />
+							</el-select>
+						</el-form-item>
+						<el-form-item>
+							<el-select v-model="state.form.trendDurationDays" class="dashboard-filter-select" :placeholder="T('trendRange')">
+								<el-option
+									v-for="days in state.form.trendDurationOptions"
+									:key="days"
+									:label="trendDurationLabel(days)"
+									:value="days"
+								/>
 							</el-select>
 						</el-form-item>
 					</el-form>
@@ -126,13 +136,6 @@
 					<div class="flex-item-box">
 						<div class="flex-title">
 							<span>{{ T('alarmEventRiskTrend') }}</span>
-							<el-form :model="state.form" style="width: 150px">
-								<el-form-item>
-									<el-select v-model="state.form.riskTrendYear" :placeholder="T('fullYear')">
-										<el-option v-for="year in state.form.riskTrendYearOptions" :key="year" :label="`${year}`" :value="year" />
-									</el-select>
-								</el-form-item>
-							</el-form>
 						</div>
 						<div class="flex-item dashboard-chart">
 							<div ref="alarmRiskTrendLineRef" style="width: 100%; min-height: 300px;"></div>
@@ -297,13 +300,13 @@ const { t } = useI18n();
 // Define reactive state and refs
 const storesTagsViewRoutes = useTagsViewRoutes();
 const { isTagsViewCurrenFull } = storeToRefs(storesTagsViewRoutes);
-const currentYear = new Date().getFullYear();
+const trendDurationOptions = [30, 60, 90, 120];
 const state = reactive({
 	form: {
-		riskTrendYear: currentYear,
-		riskTrendYearOptions: Array.from({ length: 5 }, (_, index) => currentYear - index),
 		domain: 'all',
 		domainOptions: [] as OptionType[],
+		trendDurationDays: trendDurationOptions[0],
+		trendDurationOptions,
 		logStatsDuration: 1,
 	},
 	alarm: {
@@ -652,7 +655,24 @@ const initBaseLinePie = (high: number, medium: number, low: number) => {
 	state.myCharts.push(state.global.baseLinePie);
 }
 
-const buildYearLabels = (year: number) => Array.from({ length: 12 }, (_, index) => `${year}-${String(index + 1).padStart(2, '0')}`);
+const trendDurationLabel = (days: number) => T('latestDays', [days]);
+
+const normalizeTrendDurationDays = (durationDays: number) => {
+	return trendDurationOptions.includes(durationDays) ? durationDays : trendDurationOptions[0];
+};
+
+const buildDurationLabels = (durationDays: number) => {
+	const normalizedDays = normalizeTrendDurationDays(durationDays);
+	const today = new Date();
+	today.setHours(0, 0, 0, 0);
+	const start = new Date(today);
+	start.setDate(start.getDate() - normalizedDays + 1);
+	return Array.from({ length: normalizedDays }, (_, index) => {
+		const date = new Date(start);
+		date.setDate(start.getDate() + index);
+		return formatDate(date, 'YYYY-mm-dd');
+	});
+};
 
 const fitTrendData = (values: number[] | undefined, length: number) => Array.from({ length }, (_, index) => Number(values?.[index] || 0));
 
@@ -661,7 +681,7 @@ const updateAlarmRiskTrendLine = (xData: string[], trendData: { total?: number[]
 		return;
 	}
 
-	const labels = xData.length ? xData : buildYearLabels(Number(state.form.riskTrendYear) || currentYear);
+	const labels = xData.length ? xData : buildDurationLabels(Number(state.form.trendDurationDays));
 	const seriesNames = {
 		total: T('totalAlerts'),
 		high: T('highRiskAlerts'),
@@ -680,7 +700,7 @@ const updateAlarmRiskTrendLine = (xData: string[], trendData: { total?: number[]
 			right: 24,
 			bottom: 32,
 		},
-		xAxis: { data: labels, },
+		xAxis: { data: labels, axisLabel: { hideOverlap: true } },
 		series: [
 			{
 				name: seriesNames.total,
@@ -743,6 +763,7 @@ const initAlarmRiskTrendLine = () => {
 		xAxis: {
 			type: 'category',
 			boundaryGap: false,
+			axisLabel: { hideOverlap: true },
 			// data: ['2024-01', '2024-02', '2024-03', '2024-04', '2024-05', '2024-06', '2024-07', '2024-08', '2024-09', '2024-10', '2024-11', '2024-12']
 			data: [],
 		},
@@ -764,7 +785,7 @@ const updateAlertDispositionTrendBar = (labels: string[], data: { pending?: numb
 	state.global.alertDispositionTrendBar.setOption({
 		legend: { top: 0, right: 0 },
 		grid: { top: 48, left: 42, right: 24, bottom: 32 },
-		xAxis: { type: 'category', data: labels },
+		xAxis: { type: 'category', data: labels, axisLabel: { hideOverlap: true } },
 		yAxis: { type: 'value' },
 		series: [
 			{ name: T('pendingAlerts'), type: 'bar', stack: 'status', data: fitTrendData(data.pending, labels.length) },
@@ -784,7 +805,7 @@ const initAlertDispositionTrendBar = () => {
 		tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
 		legend: { top: 0, right: 0 },
 		grid: { top: 48, left: 42, right: 24, bottom: 32 },
-		xAxis: { type: 'category', data: [] },
+		xAxis: { type: 'category', data: [], axisLabel: { hideOverlap: true } },
 		yAxis: { type: 'value' },
 		series: [],
 	});
@@ -839,7 +860,7 @@ const updateScanTaskTrendBar = (labels: string[], data: any) => {
 	state.global.scanTaskTrendBar.setOption({
 		legend: { type: 'scroll', top: 0, right: 0 },
 		grid: { top: 72, left: 42, right: 24, bottom: 32 },
-		xAxis: { type: 'category', data: labels },
+		xAxis: { type: 'category', data: labels, axisLabel: { hideOverlap: true } },
 		yAxis: { type: 'value' },
 		series,
 	});
@@ -854,7 +875,7 @@ const initScanTaskTrendBar = () => {
 		tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
 		legend: { type: 'scroll', top: 0, right: 0 },
 		grid: { top: 72, left: 42, right: 24, bottom: 32 },
-		xAxis: { type: 'category', data: [] },
+		xAxis: { type: 'category', data: [], axisLabel: { hideOverlap: true } },
 		yAxis: { type: 'value' },
 		series: [],
 	});
@@ -1073,16 +1094,17 @@ const fetchDashboardTopEvents = () => {
 };
 
 const fetchDashboardTrends = () => {
-	const year = Number(state.form.riskTrendYear) || currentYear;
+	const durationDays = normalizeTrendDurationDays(Number(state.form.trendDurationDays));
 	const req: DashboardTrendsReq = {
 		domain: state.form.domain,
-		year,
+		year: 0,
+		durationDays,
 	};
 
 	api.dashboardTrends(req)
 		.then(resp => resp.response)
 		.then(data => {
-			const labels = data.labels || buildYearLabels(year);
+			const labels = data.labels?.length ? data.labels : buildDurationLabels(durationDays);
 			updateAlarmRiskTrendLine(labels, {
 				total: data.total,
 				high: data.high,
@@ -1113,7 +1135,7 @@ const fetchDashboardTrends = () => {
 			});
 		})
 		.catch(err => {
-			const labels = buildYearLabels(year);
+			const labels = buildDurationLabels(durationDays);
 			alertApiError(err);
 			updateAlarmRiskTrendLine(labels, {});
 			updateAlertDispositionTrendBar(labels, {});
@@ -1218,9 +1240,9 @@ watch(
 	}
 );
 
-// Watch for trend year changes
+// Watch for trend duration changes
 watch(
-	() => state.form.riskTrendYear,
+	() => state.form.trendDurationDays,
 	() => {
 		fetchDashboardTrends();
 	}
@@ -1249,6 +1271,21 @@ onUnmounted(() => {
 
 .dashboard-filter-bar {
 	margin-bottom: 2px;
+}
+
+.dashboard-filter-form {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin: 0;
+}
+
+.dashboard-filter-form :deep(.el-form-item) {
+	margin: 0;
+}
+
+.dashboard-filter-select {
+	width: 200px;
 }
 
 .bug-title {
@@ -1556,6 +1593,15 @@ onUnmounted(() => {
 	.big-data-up {
 		height: auto;
 		padding: 14px;
+	}
+
+	.dashboard-filter-select {
+		width: 100%;
+	}
+
+	.dashboard-filter-form,
+	.dashboard-filter-form :deep(.el-form-item) {
+		width: 100%;
 	}
 
 	.big-data-up .up-left {

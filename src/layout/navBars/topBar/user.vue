@@ -15,8 +15,13 @@
 				</el-dropdown-menu>
 			</template>
 		</el-dropdown>
-		<div class="layout-navbars-breadcrumb-user-icon" ref="userNewsBadgeRef" v-click-outside="onUserNewsClick">
-			<el-badge :is-dot="news.length > 0">
+		<div
+			class="layout-navbars-breadcrumb-user-icon notice-bell"
+			:class="{ 'is-active': news.length > 0 }"
+			ref="userNewsBadgeRef"
+			v-click-outside="onUserNewsClick"
+		>
+			<el-badge :value="news.length" :max="99" :hidden="news.length === 0" type="danger">
 				<el-icon :title="$t('message.user.title4')">
 					<ele-Bell />
 				</el-icon>
@@ -34,7 +39,8 @@
 			trigger="click"
 			transition="el-zoom-in-top"
 			virtual-triggering
-			:width="300"
+			:width="420"
+			popper-class="user-news-popper"
 			:persistent="false"
 		>
 			<UserNews v-model="news" />
@@ -59,7 +65,7 @@
 </template>
 
 <script setup lang="ts" name="layoutBreadcrumbUser">
-import { defineAsyncComponent, ref, unref, computed, reactive, onMounted, onUnmounted } from 'vue';
+import { defineAsyncComponent, ref, unref, computed, reactive, onMounted, onUnmounted, h } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessageBox, ClickOutside as vClickOutside, ElNotification } from 'element-plus';
 import { useI18n } from 'vue-i18n';
@@ -71,6 +77,7 @@ import { Session, Local } from '/@/utils/storage';
 import { getSysLanguage, getUnreadNotification, updateSysLanguage } from '/@/api/grpc/method';
 import { formatApiTime } from '/@/utils/formatTime';
 import mittBus from '/@/utils/mitt';
+import type { VNode } from 'vue';
 
 // Import components
 const UserNews = defineAsyncComponent(() => import('/@/layout/navBars/topBar/userNews.vue'));
@@ -170,7 +177,18 @@ const initI18nOrSize = (value: string, attr: string) => {
 };
 
 let messageTimerId: NodeJS.Timeout | null = null;
-const news = ref<Array<any>>([]);
+
+type NoticeItem = {
+	id: string;
+	label: string;
+	value: string;
+	time: string;
+	msgType: string;
+	eventType: string;
+	desc: string;
+};
+
+const news = ref<NoticeItem[]>([]);
 
 // Get shown notification IDs from session storage
 const getShownNotificationIds = (): string[] => {
@@ -183,19 +201,37 @@ const saveShownNotificationIds = (ids: string[]) => {
 	Session.set('shownNotificationIds', ids);
 };
 
+const getNotificationType = (msgType: string) => {
+	if (msgType === 'alert') return 'error';
+	if (msgType === 'baseline' || msgType === 'leak') return 'warning';
+	return 'info';
+};
+
+const buildNotificationMessage = (data: NoticeItem): VNode => {
+	const meta = [data.label, data.eventType, data.time].filter(Boolean).join(' · ');
+	return h('div', { class: 'ada-message-toast' }, [
+		h('div', { class: 'ada-message-toast__title' }, data.value),
+		data.desc ? h('div', { class: 'ada-message-toast__desc' }, data.desc) : null,
+		meta ? h('div', { class: 'ada-message-toast__meta' }, meta) : null,
+	]);
+};
+
 const refreshMessage = () => {
 	getUnreadNotification().then(data => {
 
-		let _news: any[] = [];
+		let _news: NoticeItem[] = [];
 		const shownIds = getShownNotificationIds();
 		const newShownIds = [...shownIds];
 
 		data.list.forEach(d => {
-			const _data = {
+			const _data: NoticeItem = {
 				id: d.iD,
 				label: t(`message.system.message.msgType_${d.msgType}`),
 				value: d.title,
 				time: formatApiTime(d.createTm),
+				msgType: d.msgType,
+				eventType: d.eventType,
+				desc: d.desc,
 			};
 
 			_news = [..._news, _data];
@@ -210,11 +246,14 @@ const refreshMessage = () => {
 
 			// Use a timeout to avoid style overlap
 			setTimeout(() => {
-				ElNotification.warning({
-					title: t('message.system.message.message'),
-					message: `<span style="font-size:16px;font-weight:bold;">${_data.value}<br>${formatApiTime(_data.time)}</span>`,
-					dangerouslyUseHTMLString: true,
-					customClass: 'message-notification'
+				ElNotification({
+					title: t('message.user.newTitle'),
+					message: buildNotificationMessage(_data),
+					type: getNotificationType(_data.msgType),
+					duration: 7000,
+					position: 'top-right',
+					showClose: true,
+					customClass: `ada-message-notification ada-message-notification--${_data.msgType || 'system'}`,
 				});
 			});
 		});
@@ -296,6 +335,22 @@ onUnmounted(() => {
 			}
 		}
 	}
+	.notice-bell {
+		position: relative;
+		:deep(.el-icon) {
+			transition: color 0.16s ease, transform 0.16s ease;
+		}
+		&.is-active {
+			:deep(.el-icon) {
+				color: var(--el-color-warning);
+			}
+		}
+		&:hover {
+			:deep(.el-icon) {
+				transform: translateY(-1px);
+			}
+		}
+	}
 	:deep(.el-dropdown) {
 		color: var(--next-bg-topBarColor);
 	}
@@ -310,9 +365,80 @@ onUnmounted(() => {
 	}
 }
 
-.message-notification {
-	:deep(.el-notification__title) {
-		color: red !important;
-	}
+:global(.user-news-popper) {
+	padding: 0 !important;
+	border-radius: 8px !important;
+	overflow: hidden;
+	box-shadow: 0 18px 42px rgba(15, 23, 42, 0.16) !important;
+}
+
+:global(.ada-message-notification) {
+	width: 360px !important;
+	padding: 15px 16px !important;
+	border-radius: 10px !important;
+	border: 1px solid var(--el-border-color-lighter) !important;
+	border-left: 4px solid var(--el-color-info) !important;
+	box-shadow: 0 16px 40px rgba(15, 23, 42, 0.18) !important;
+}
+
+:global(.ada-message-notification--alert) {
+	border-left-color: var(--el-color-danger) !important;
+}
+
+:global(.ada-message-notification--baseline),
+:global(.ada-message-notification--leak) {
+	border-left-color: var(--el-color-warning) !important;
+}
+
+:global(.ada-message-notification--system) {
+	border-left-color: var(--el-color-success) !important;
+}
+
+:global(.ada-message-notification .el-notification__group) {
+	min-width: 0;
+	margin-left: 12px;
+}
+
+:global(.ada-message-notification .el-notification__title) {
+	color: var(--el-text-color-primary);
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 20px;
+}
+
+:global(.ada-message-notification .el-notification__content) {
+	margin-top: 6px;
+	text-align: left;
+}
+
+:global(.ada-message-toast) {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	min-width: 0;
+}
+
+:global(.ada-message-toast__title) {
+	color: var(--el-text-color-primary);
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 20px;
+	word-break: break-word;
+}
+
+:global(.ada-message-toast__desc) {
+	color: var(--el-text-color-secondary);
+	font-size: 13px;
+	line-height: 18px;
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+}
+
+:global(.ada-message-toast__meta) {
+	color: var(--el-text-color-placeholder);
+	font-size: 12px;
+	line-height: 16px;
 }
 </style>

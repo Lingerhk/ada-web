@@ -49,7 +49,7 @@
                     <el-table-column prop="password" :label="$t('message.risk.weakpwd.password')" />
                     <el-table-column prop="expirationTm" :label="$t('message.risk.weakpwd.expirationTm')">
                         <template #default="props">
-                            {{ formatApiTime(props.row.expirationTm) }}
+                            {{ formatExpirationTime(props.row.expirationTm) }}
                         </template>
                     </el-table-column>
                     <el-table-column prop="lastUpdateTm" :label="$t('message.risk.weakpwd.lastUpdateTm')">
@@ -133,6 +133,13 @@ const handleDetail = (data: ListWeakPwdReply_Details) => {
 };
 
 const handleScan = (data: ListWeakPwdReply_Details) => {
+};
+
+const formatExpirationTime = (value?: string) => {
+    if (!value) return '';
+    const normalized = value.trim();
+    if (normalized === '永不过期' || normalized.toLowerCase() === 'never') return t('message.risk.weakpwd.neverExpires');
+    return formatApiTime(normalized) || normalized;
 };
 
 const refresh = () => {

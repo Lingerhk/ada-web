@@ -7,10 +7,10 @@ ADAegis Portal 是 ADAegis 的 Web 界面。ADAegis 是一个面向 Active Direc
 ADAegis Portal 适用于需要清晰观察域控、用户、认证行为、Windows 安全遥测、扫描发现和身份攻击路径的团队。
 
 <p>
-  <big>
-    <a href="https://youtu.be/Oexs-58C-Fg" style="text-decoration: none;"><strong>Adaegis Introduction:</strong> https://youtu.be/Oexs-58C-Fg</a><br />
-    <a href="https://demo.adaegis.net/" style="text-decoration: none;"><strong>Adaegis Demo:</strong> https://demo.adaegis.net/</a>
-  </big>
+  <big><strong>Introduction Video:</strong> <a href="https://youtu.be/Oexs-58C-Fg" style="text-decoration: none;">https://youtu.be/Oexs-58C-Fg</a></big>
+</p>
+<p>
+  <big><strong>Demo Portal:</strong> <a href="https://demo.adaegis.net/" style="text-decoration: none;">https://demo.adaegis.net/</a></big>
 </p>
 
 ## ADAegis Portal 解决什么问题

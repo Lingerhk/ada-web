@@ -84,7 +84,7 @@
                         </div>
                         <el-pagination v-model:current-page="state.req.pageIdx" v-model:page-size="state.req.pageSize"
                             :page-sizes="[10, 20, 30, 40, 50]"
-                            :layout='state.exhausted ? "sizes, prev, jumper" : "sizes, prev, next, jumper"' :total="400"
+                            layout="sizes, prev, pager, next, jumper" :total="state.total"
                             @size-change="handleSizeChange" @current-change="handleCurrentChange" />
                     </el-row>
 
@@ -96,7 +96,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, onMounted, reactive, ref, watch  } from 'vue';
+import { defineAsyncComponent, onMounted, reactive, ref, watch } from 'vue';
 import { DeleteSensitiveEntryReply, DeleteSensitiveEntryReq, ListSensitiveEntryReply, ListSensitiveEntryReply_Details, ListSensitiveEntryReq } from '/@/api/grpc/ada';
 import { useI18n } from 'vue-i18n';
 import api from '/@/api/grpc';
@@ -138,6 +138,7 @@ const state = reactive({
     } as ListSensitiveEntryReq,
     loading: false,
     exhausted: false,
+    total: 0,
     data: [] as ListSensitiveEntryReply_Details[],
     domainOptions: [] as OptionType[],
 });
@@ -205,6 +206,7 @@ const refreshList = () => {
         state.req.pageIdx = data.page?.pageIdx || state.req.pageIdx;
         state.req.pageSize = data.page?.pageSize || state.req.pageSize;
         state.exhausted = data.exhausted;
+        state.total = data.page?.total ?? 0;
         state.data = data.list;
     })
     .catch(err => alertApiError(err))

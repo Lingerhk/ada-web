@@ -109,7 +109,7 @@
                 <div></div>
                 <el-pagination v-model:current-page="state.req.pageIdx" v-model:page-size="state.req.pageSize"
                     :page-sizes="[10, 20, 30, 40, 50]"
-                    :layout='state.exhausted ? "sizes, prev, jumper" : "sizes, prev, next, jumper"' :total="400"
+                    layout="sizes, prev, pager, next, jumper" :total="state.total"
                     @size-change="(val: number) => state.req.pageSize = val"
                     @current-change="(val: number) => state.req.pageIdx = val" />
             </el-row>
@@ -174,6 +174,7 @@ const state = reactive({
     } as ListLeakReq,
     data: [] as ListLeakReply_Details[],
     exhausted: false,
+    total: 0,
     domainOptions: [] as any[],
 });
 
@@ -204,6 +205,7 @@ const refresh = () => {
     .then((data: ListLeakReply) => {
         state.data = data.list;
         state.exhausted = data.exhausted;
+        state.total = data.page?.total ?? 0;
     })
     .catch(err => alertApiError(err))
     .finally(() => state.loading = false);
